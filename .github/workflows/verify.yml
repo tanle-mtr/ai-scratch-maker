@@ -16,21 +16,27 @@ jobs:
     timeout-minutes: 25
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: 安装依赖
         run: |
           python -m pip install --upgrade pip
           pip install pyyaml pillow
           npm --prefix ai-scratch-maker install --no-audit --no-fund
+
+      - name: 安装 scratch-vm（可选：用于 L4 运行时校验）
+        # 装不上不阻断——校验脚本在找不到 scratch-vm 时按设计输出 SKIP 并以 0 退出，
+        # 所以这一层是「白赚」：装上了多校验一层运行时，装不上只是少一层。
+        continue-on-error: true
+        run: npm --prefix ai-scratch-maker install scratch-vm scratch-parser --no-audit --no-fund
 
       - name: 构建旗舰示例工程
         working-directory: ai-scratch-maker
