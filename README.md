@@ -230,6 +230,16 @@ python3 scripts/prep_asset.py --in 原图.png --out 素材.png --remove-bg --che
 
 > 🔒 默认最高质量：除非用户明确要求降级，一律 `quality: high` + 大尺寸出图。
 
+### 画质对比
+
+同一批素材，走本项目的素材管线前后的差别（`docs/art-quality-comparison.png`）：
+
+![画质改进前后对比](docs/art-quality-comparison.png)
+
+左列是「占位/未加工」的状态——空网格背景、只有文字的标题页、简笔画角色；
+右列是走完 `prep_asset.py`（裁填 + 抠底 + 去水印）与 `enhance_svg.py`
+（五层体积感）之后的成品。**观感差距主要来自管线，不来自模型。**
+
 ### 社区素材（未随仓库分发）
 
 社区素材包里的造型/音效来自第三方 Scratch 社区的公开作品，
