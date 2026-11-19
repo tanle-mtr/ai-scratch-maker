@@ -1,0 +1,1152 @@
+project:
+  name: 三消游戏
+  stage:
+    backdrops:
+    - name: 背景1
+      asset: assets/backdrop1.svg
+    sounds:
+    - name: 选择音
+      asset: assets/sfx/ui_click.wav
+    - name: 消除音
+      asset: assets/sfx/fx_coin.wav
+    - name: 通关音
+      asset: assets/sfx/ev_win.wav
+    variables:
+      分数: 0
+      选中: 0
+      交换A: 0
+      交换B: 0
+      点击序号: 0
+      本轮消除: 0
+      步数: 0
+      k: 0
+      r1: 0
+      c1: 0
+      cnt: 0
+      __l1: 0
+      __l2: 0
+      __u1: 0
+      __u2: 0
+      __cand: 0
+    lists:
+      棋盘:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      掩码:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      列缓存:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+    procedures:
+    - name: 生成棋盘
+      script:
+      - set_variable:
+          var: k
+          value: 0
+      - repeat:
+          times: 36
+          do:
+          - set_variable:
+              var: k
+              value:
+                add:
+                - var: k
+                - 1
+          - replace_item_of_list:
+              list: 棋盘
+              index:
+                var: k
+              item: 0
+      - set_variable:
+          var: r1
+          value: 0
+      - repeat:
+          times: 6
+          do:
+          - set_variable:
+              var: r1
+              value:
+                add:
+                - var: r1
+                - 1
+          - set_variable:
+              var: c1
+              value: 0
+          - repeat:
+              times: 6
+              do:
+              - set_variable:
+                  var: c1
+                  value:
+                    add:
+                    - var: c1
+                    - 1
+              - set_variable:
+                  var: k
+                  value:
+                    add:
+                    - add:
+                      - multiply:
+                        - subtract:
+                          - var: r1
+                          - 1
+                        - 6
+                      - subtract:
+                        - var: c1
+                        - 1
+                    - 1
+              - set_variable:
+                  var: __l1
+                  value:
+                    item_of_list:
+                      list: 棋盘
+                      index:
+                        subtract:
+                        - var: k
+                        - 1
+              - set_variable:
+                  var: __l2
+                  value:
+                    item_of_list:
+                      list: 棋盘
+                      index:
+                        subtract:
+                        - var: k
+                        - 2
+              - set_variable:
+                  var: __u1
+                  value:
+                    item_of_list:
+                      list: 棋盘
+                      index:
+                        subtract:
+                        - var: k
+                        - 6
+              - set_variable:
+                  var: __u2
+                  value:
+                    item_of_list:
+                      list: 棋盘
+                      index:
+                        subtract:
+                        - var: k
+                        - 12
+              - set_variable:
+                  var: __cand
+                  value:
+                    random:
+                      from: 1
+                      to: 4
+              - repeat_until:
+                  cond:
+                    and:
+                    - or:
+                      - not:
+                          operand:
+                            equals:
+                            - var: __cand
+                            - var: __l1
+                      - not:
+                          operand:
+                            equals:
+                            - var: __l1
+                            - var: __l2
+                    - or:
+                      - not:
+                          operand:
+                            equals:
+                            - var: __cand
+                            - var: __u1
+                      - not:
+                          operand:
+                            equals:
+                            - var: __u1
+                            - var: __u2
+                  do:
+                  - set_variable:
+                      var: __cand
+                      value:
+                        add:
+                        - mod:
+                          - var: __cand
+                          - 4
+                        - 1
+              - replace_item_of_list:
+                  list: 棋盘
+                  index:
+                    var: k
+                  item:
+                    var: __cand
+    - name: 检测并消除
+      script:
+      - set_variable:
+          var: 本轮消除
+          value: 0
+      - set_variable:
+          var: k
+          value: 0
+      - repeat:
+          times: 36
+          do:
+          - set_variable:
+              var: k
+              value:
+                add:
+                - var: k
+                - 1
+          - replace_item_of_list:
+              list: 掩码
+              index:
+                var: k
+              item: 0
+      - set_variable:
+          var: r1
+          value: 0
+      - repeat:
+          times: 6
+          do:
+          - set_variable:
+              var: r1
+              value:
+                add:
+                - var: r1
+                - 1
+          - set_variable:
+              var: c1
+              value: 0
+          - repeat:
+              times: 4
+              do:
+              - set_variable:
+                  var: c1
+                  value:
+                    add:
+                    - var: c1
+                    - 1
+              - if:
+                  cond:
+                    and:
+                    - and:
+                      - equals:
+                        - item_of_list:
+                            list: 棋盘
+                            index:
+                              add:
+                              - add:
+                                - multiply:
+                                  - subtract:
+                                    - var: r1
+                                    - 1
+                                  - 6
+                                - subtract:
+                                  - var: c1
+                                  - 1
+                              - 1
+                        - item_of_list:
+                            list: 棋盘
+                            index:
+                              add:
+                              - add:
+                                - add:
+                                  - multiply:
+                                    - subtract:
+                                      - var: r1
+                                      - 1
+                                    - 6
+                                  - subtract:
+                                    - var: c1
+                                    - 1
+                                - 1
+                              - 1
+                      - equals:
+                        - item_of_list:
+                            list: 棋盘
+                            index:
+                              add:
+                              - add:
+                                - multiply:
+                                  - subtract:
+                                    - var: r1
+                                    - 1
+                                  - 6
+                                - subtract:
+                                  - var: c1
+                                  - 1
+                              - 1
+                        - item_of_list:
+                            list: 棋盘
+                            index:
+                              add:
+                              - add:
+                                - add:
+                                  - multiply:
+                                    - subtract:
+                                      - var: r1
+                                      - 1
+                                    - 6
+                                  - subtract:
+                                    - var: c1
+                                    - 1
+                                - 1
+                              - 2
+                    - not:
+                        operand:
+                          equals:
+                          - item_of_list:
+                              list: 棋盘
+                              index:
+                                add:
+                                - add:
+                                  - multiply:
+                                    - subtract:
+                                      - var: r1
+                                      - 1
+                                    - 6
+                                  - subtract:
+                                    - var: c1
+                                    - 1
+                                - 1
+                          - 0
+                  do:
+                  - replace_item_of_list:
+                      list: 掩码
+                      index:
+                        add:
+                        - add:
+                          - multiply:
+                            - subtract:
+                              - var: r1
+                              - 1
+                            - 6
+                          - subtract:
+                            - var: c1
+                            - 1
+                        - 1
+                      item: 1
+                  - replace_item_of_list:
+                      list: 掩码
+                      index:
+                        add:
+                        - add:
+                          - add:
+                            - multiply:
+                              - subtract:
+                                - var: r1
+                                - 1
+                              - 6
+                            - subtract:
+                              - var: c1
+                              - 1
+                          - 1
+                        - 1
+                      item: 1
+                  - replace_item_of_list:
+                      list: 掩码
+                      index:
+                        add:
+                        - add:
+                          - add:
+                            - multiply:
+                              - subtract:
+                                - var: r1
+                                - 1
+                              - 6
+                            - subtract:
+                              - var: c1
+                              - 1
+                          - 1
+                        - 2
+                      item: 1
+      - set_variable:
+          var: c1
+          value: 0
+      - repeat:
+          times: 6
+          do:
+          - set_variable:
+              var: c1
+              value:
+                add:
+                - var: c1
+                - 1
+          - set_variable:
+              var: r1
+              value: 0
+          - repeat:
+              times: 4
+              do:
+              - set_variable:
+                  var: r1
+                  value:
+                    add:
+                    - var: r1
+                    - 1
+              - if:
+                  cond:
+                    and:
+                    - and:
+                      - equals:
+                        - item_of_list:
+                            list: 棋盘
+                            index:
+                              add:
+                              - add:
+                                - multiply:
+                                  - subtract:
+                                    - var: r1
+                                    - 1
+                                  - 6
+                                - subtract:
+                                  - var: c1
+                                  - 1
+                              - 1
+                        - item_of_list:
+                            list: 棋盘
+                            index:
+                              add:
+                              - add:
+                                - add:
+                                  - multiply:
+                                    - subtract:
+                                      - var: r1
+                                      - 1
+                                    - 6
+                                  - subtract:
+                                    - var: c1
+                                    - 1
+                                - 1
+                              - 6
+                      - equals:
+                        - item_of_list:
+                            list: 棋盘
+                            index:
+                              add:
+                              - add:
+                                - multiply:
+                                  - subtract:
+                                    - var: r1
+                                    - 1
+                                  - 6
+                                - subtract:
+                                  - var: c1
+                                  - 1
+                              - 1
+                        - item_of_list:
+                            list: 棋盘
+                            index:
+                              add:
+                              - add:
+                                - add:
+                                  - multiply:
+                                    - subtract:
+                                      - var: r1
+                                      - 1
+                                    - 6
+                                  - subtract:
+                                    - var: c1
+                                    - 1
+                                - 1
+                              - 12
+                    - not:
+                        operand:
+                          equals:
+                          - item_of_list:
+                              list: 棋盘
+                              index:
+                                add:
+                                - add:
+                                  - multiply:
+                                    - subtract:
+                                      - var: r1
+                                      - 1
+                                    - 6
+                                  - subtract:
+                                    - var: c1
+                                    - 1
+                                - 1
+                          - 0
+                  do:
+                  - replace_item_of_list:
+                      list: 掩码
+                      index:
+                        add:
+                        - add:
+                          - multiply:
+                            - subtract:
+                              - var: r1
+                              - 1
+                            - 6
+                          - subtract:
+                            - var: c1
+                            - 1
+                        - 1
+                      item: 1
+                  - replace_item_of_list:
+                      list: 掩码
+                      index:
+                        add:
+                        - add:
+                          - add:
+                            - multiply:
+                              - subtract:
+                                - var: r1
+                                - 1
+                              - 6
+                            - subtract:
+                              - var: c1
+                              - 1
+                          - 1
+                        - 6
+                      item: 1
+                  - replace_item_of_list:
+                      list: 掩码
+                      index:
+                        add:
+                        - add:
+                          - add:
+                            - multiply:
+                              - subtract:
+                                - var: r1
+                                - 1
+                              - 6
+                            - subtract:
+                              - var: c1
+                              - 1
+                          - 1
+                        - 12
+                      item: 1
+      - set_variable:
+          var: k
+          value: 0
+      - repeat:
+          times: 36
+          do:
+          - set_variable:
+              var: k
+              value:
+                add:
+                - var: k
+                - 1
+          - if:
+              cond:
+                equals:
+                - item_of_list:
+                    list: 掩码
+                    index:
+                      var: k
+                - 1
+              do:
+              - replace_item_of_list:
+                  list: 棋盘
+                  index:
+                    var: k
+                  item: 0
+              - set_variable:
+                  var: 本轮消除
+                  value:
+                    add:
+                    - var: 本轮消除
+                    - 1
+      - set_variable:
+          var: 分数
+          value:
+            add:
+            - var: 分数
+            - multiply:
+              - var: 本轮消除
+              - 10
+      - set_variable:
+          var: 分数
+          value:
+            add:
+            - var: 分数
+            - multiply:
+              - var: 本轮消除
+              - var: 本轮消除
+      - if:
+          cond:
+            greater_than:
+              a:
+                var: 本轮消除
+              b: 0
+          do:
+          - set_variable:
+              var: c1
+              value: 0
+          - repeat:
+              times: 6
+              do:
+              - set_variable:
+                  var: c1
+                  value:
+                    add:
+                    - var: c1
+                    - 1
+              - set_variable:
+                  var: cnt
+                  value: 0
+              - set_variable:
+                  var: r1
+                  value: 6
+              - repeat:
+                  times: 6
+                  do:
+                  - set_variable:
+                      var: r1
+                      value:
+                        subtract:
+                        - var: r1
+                        - 1
+                  - if:
+                      cond:
+                        not:
+                          operand:
+                            equals:
+                            - item_of_list:
+                                list: 棋盘
+                                index:
+                                  add:
+                                  - add:
+                                    - multiply:
+                                      - var: r1
+                                      - 6
+                                    - subtract:
+                                      - var: c1
+                                      - 1
+                                  - 1
+                            - 0
+                      do:
+                      - replace_item_of_list:
+                          list: 列缓存
+                          index:
+                            add:
+                            - var: cnt
+                            - 1
+                          item:
+                            item_of_list:
+                              list: 棋盘
+                              index:
+                                add:
+                                - add:
+                                  - multiply:
+                                    - var: r1
+                                    - 6
+                                  - subtract:
+                                    - var: c1
+                                    - 1
+                                - 1
+                      - set_variable:
+                          var: cnt
+                          value:
+                            add:
+                            - var: cnt
+                            - 1
+              - set_variable:
+                  var: r1
+                  value: 6
+              - repeat:
+                  times: 6
+                  do:
+                  - set_variable:
+                      var: r1
+                      value:
+                        subtract:
+                        - var: r1
+                        - 1
+                  - if:
+                      cond:
+                        less_than:
+                          a:
+                            subtract:
+                            - 5
+                            - var: r1
+                          b:
+                            var: cnt
+                      do:
+                      - replace_item_of_list:
+                          list: 棋盘
+                          index:
+                            add:
+                            - add:
+                              - multiply:
+                                - var: r1
+                                - 6
+                              - subtract:
+                                - var: c1
+                                - 1
+                            - 1
+                          item:
+                            item_of_list:
+                              list: 列缓存
+                              index:
+                                add:
+                                - subtract:
+                                  - 5
+                                  - var: r1
+                                - 1
+                      - replace_item_of_list:
+                          list: 棋盘
+                          index:
+                            add:
+                            - add:
+                              - multiply:
+                                - var: r1
+                                - 6
+                              - subtract:
+                                - var: c1
+                                - 1
+                            - 1
+                          item:
+                            random:
+                              from: 1
+                              to: 4
+    scripts:
+    - - when_green_flag_clicked: null
+      - broadcast:
+          message: 重置
+    - - when_receive:
+          message: 重置
+      - call:
+          proc: 生成棋盘
+          args: []
+      - broadcast:
+          message: 生成棋盘克隆
+      - broadcast:
+          message: 刷新
+    - - when_receive:
+          message: 格子被点
+      - play_sound: { sound: 选择音 }
+    - - when_receive:
+          message: 交换并检测
+      - play_sound: { sound: 消除音 }
+    - - when_receive:
+          message: 重置
+      - play_sound: { sound: 通关音 }
+    - - when_receive:
+          message: 格子被点
+      - if:
+          cond:
+            equals:
+            - var: 选中
+            - 0
+          do:
+          - set_variable:
+              var: 选中
+              value:
+                var: 点击序号
+          - if_else:
+              cond:
+                equals:
+                - add:
+                  - mathop:
+                      operator: abs
+                      num:
+                        subtract:
+                        - &id002
+                          mathop:
+                            operator: floor
+                            num:
+                              divide:
+                              - subtract:
+                                - &id001
+                                  var: 选中
+                                - 1
+                              - 6
+                        - &id004
+                          mathop:
+                            operator: floor
+                            num:
+                              divide:
+                              - subtract:
+                                - &id003
+                                  var: 点击序号
+                                - 1
+                              - 6
+                  - mathop:
+                      operator: abs
+                      num:
+                        subtract:
+                        - subtract:
+                          - subtract:
+                            - *id001
+                            - 1
+                          - multiply:
+                            - *id002
+                            - 6
+                        - subtract:
+                          - subtract:
+                            - *id003
+                            - 1
+                          - multiply:
+                            - *id004
+                            - 6
+                - 1
+              do:
+              - set_variable:
+                  var: 交换A
+                  value:
+                    var: 选中
+              - set_variable:
+                  var: 交换B
+                  value:
+                    var: 点击序号
+              - set_variable:
+                  var: 选中
+                  value: 0
+              - broadcast:
+                  message: 交换并检测
+              else:
+              - set_variable:
+                  var: 选中
+                  value:
+                    var: 点击序号
+    - - when_receive:
+          message: 交换并检测
+      - set_variable:
+          var: k
+          value:
+            item_of_list:
+              list: 棋盘
+              index:
+                var: 交换A
+      - replace_item_of_list:
+          list: 棋盘
+          index:
+            var: 交换A
+          item:
+            item_of_list:
+              list: 棋盘
+              index:
+                var: 交换B
+      - replace_item_of_list:
+          list: 棋盘
+          index:
+            var: 交换B
+          item:
+            var: k
+      - call:
+          proc: 检测并消除
+          args: []
+      - if_else:
+          cond:
+            equals:
+            - var: 本轮消除
+            - 0
+          do:
+          - set_variable:
+              var: k
+              value:
+                item_of_list:
+                  list: 棋盘
+                  index:
+                    var: 交换A
+          - replace_item_of_list:
+              list: 棋盘
+              index:
+                var: 交换A
+              item:
+                item_of_list:
+                  list: 棋盘
+                  index:
+                    var: 交换B
+          - replace_item_of_list:
+              list: 棋盘
+              index:
+                var: 交换B
+              item:
+                var: k
+          else: []
+      - set_variable:
+          var: 步数
+          value:
+            add:
+            - var: 步数
+            - 1
+      - broadcast:
+          message: 刷新
+  sprites:
+  - name: 粒子
+    x: 0
+    y: 0
+    costumes:
+    - name: 帧1
+      asset: assets/match3/fx_spark1.svg
+    - name: 帧2
+      asset: assets/match3/fx_spark2.svg
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+    - - when_receive:
+          message: 交换并检测
+      - show: null
+      - repeat:
+          times: 8
+          do:
+          - next_costume: null
+          - wait: 0.04
+      - hide: null
+  - name: 连击
+    x: 0
+    y: 0
+    costumes:
+    - name: 帧1
+      asset: assets/match3/fx_combo1.svg
+    - name: 帧2
+      asset: assets/match3/fx_combo2.svg
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+    - - when_receive:
+          message: 刷新
+      - show: null
+      - repeat:
+          times: 8
+          do:
+          - next_costume: null
+          - wait: 0.04
+      - hide: null
+  - name: 格子
+    x: 0
+    y: 0
+    costumes:
+    - name: '1'
+      asset: assets/match3/果1.png
+    - name: '2'
+      asset: assets/match3/果2.png
+    - name: '3'
+      asset: assets/match3/果3.png
+    - name: '4'
+      asset: assets/match3/果4.png
+    - name: 空
+      asset: assets/match3/空.png
+    variables:
+      序号: 0
+      是克隆: 0
+    procedures:
+    - name: 刷新本格
+      script:
+      - if:
+          cond:
+            equals:
+            - item_of_list:
+                list: 棋盘
+                index:
+                  var: 序号
+            - 1
+          do:
+          - switch_costume:
+              costume: '1'
+      - if:
+          cond:
+            equals:
+            - item_of_list:
+                list: 棋盘
+                index:
+                  var: 序号
+            - 2
+          do:
+          - switch_costume:
+              costume: '2'
+      - if:
+          cond:
+            equals:
+            - item_of_list:
+                list: 棋盘
+                index:
+                  var: 序号
+            - 3
+          do:
+          - switch_costume:
+              costume: '3'
+      - if:
+          cond:
+            equals:
+            - item_of_list:
+                list: 棋盘
+                index:
+                  var: 序号
+            - 4
+          do:
+          - switch_costume:
+              costume: '4'
+      - if:
+          cond:
+            equals:
+            - item_of_list:
+                list: 棋盘
+                index:
+                  var: 序号
+            - 0
+          do:
+          - switch_costume:
+              costume: 空
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+    - - when_receive:
+          message: 生成棋盘克隆
+      - if_else:
+          cond:
+            equals:
+            - var: 是克隆
+            - 0
+          do:
+          - set_variable:
+              var: 序号
+              value: 0
+          - repeat:
+              times: 36
+              do:
+              - set_variable:
+                  var: 序号
+                  value:
+                    add:
+                    - var: 序号
+                    - 1
+              - create_clone_of:
+                  clone: _myself_
+          else: []
+    - - when_start_as_clone: null
+      - set_variable:
+          var: 是克隆
+          value: 1
+      - set_variable:
+          var: r1
+          value:
+            mathop:
+              operator: floor
+              num:
+                divide:
+                - subtract:
+                  - var: 序号
+                  - 1
+                - 6
+      - set_variable:
+          var: c1
+          value:
+            subtract:
+            - subtract:
+              - var: 序号
+              - 1
+            - multiply:
+              - var: r1
+              - 6
+      - set_x:
+          x:
+            add:
+            - -150
+            - multiply:
+              - var: c1
+              - 60
+      - set_y:
+          y:
+            subtract:
+            - 150
+            - multiply:
+              - var: r1
+              - 60
+      - show: null
+      - call:
+          proc: 刷新本格
+          args: []
+    - - when_receive:
+          message: 刷新
+      - if_else:
+          cond:
+            equals:
+            - var: 是克隆
+            - 1
+          do:
+          - call:
+              proc: 刷新本格
+              args: []
+          else: []
+    - - when_this_sprite_clicked: null
+      - if_else:
+          cond:
+            equals:
+            - var: 是克隆
+            - 1
+          do:
+          - set_variable:
+              var: 点击序号
+              value:
+                var: 序号
+          - broadcast:
+              message: 格子被点
+          else: []

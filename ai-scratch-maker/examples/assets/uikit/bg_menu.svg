@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="480" height="360" viewBox="0 0 480 360">
+<defs><radialGradient id="rg1" cx="0.5" cy="0.18" r="0.95"><stop offset="0" stop-color="#65A79A" stop-opacity="1"/><stop offset="0.55" stop-color="#3A8E7D" stop-opacity="1"/><stop offset="1" stop-color="#2F7365" stop-opacity="1"/></radialGradient><linearGradient id="lg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000000" stop-opacity="0"/><stop offset="1" stop-color="#000000" stop-opacity="0.34"/></linearGradient></defs>
+<rect x="0" y="0" width="480" height="360" fill="url(#rg1)"/>
+<circle cx="240" cy="43.2" r="110" fill="none" stroke="#C4FFE3" stroke-width="1.6" opacity="0.12"/>
+<circle cx="240" cy="43.2" r="170" fill="none" stroke="#C4FFE3" stroke-width="1.6" opacity="0.09"/>
+<circle cx="240" cy="43.2" r="235" fill="none" stroke="#C4FFE3" stroke-width="1.6" opacity="0.06"/>
+<rect x="0" y="264" width="480" height="96" fill="url(#lg2)"/>
+<rect x="0" y="0" width="6" height="360" fill="#6BAA9E" opacity="0.25"/>
+<rect x="474" y="0" width="6" height="360" fill="#6BAA9E" opacity="0.25"/>
+</svg>

@@ -1,0 +1,61 @@
+{
+  "project": {
+    "name": "图片背景示例",
+    "stage": {
+      "backdrops": [
+        {
+          "name": "海底",
+          "asset": "assets/sample_bg_stage.png"
+        }
+      ],
+      "scripts": [
+        [
+          {
+            "when_green_flag_clicked": null
+          },
+          {
+            "broadcast": "开始"
+          }
+        ]
+      ]
+    },
+    "sprites": [
+      {
+        "name": "Cat",
+        "x": 0,
+        "y": 0,
+        "costumes": [
+          {
+            "name": "cat1",
+            "asset": "assets/cat.svg"
+          }
+        ],
+        "sounds": [
+          {
+            "name": "beep",
+            "asset": "assets/beep.wav"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": "开始"
+            },
+            {
+              "say": {
+                "text": "看，这是生成的背景！",
+                "secs": 2
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "beep"
+              }
+            }
+          ]
+        ],
+        "rotationStyle": "left-right"
+      }
+    ]
+  }
+}

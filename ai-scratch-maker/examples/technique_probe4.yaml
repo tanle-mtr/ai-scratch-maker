@@ -1,0 +1,300 @@
+project:
+  name: 游戏系统探针（第四册：视差/寻路/塔防/音频/八方向/无尽/云编码）
+
+  stage:
+    backdrops:
+      - { name: 客厅, asset: assets/sample_bg_stage.png }
+      - { name: 花园, asset: assets/sample_bg_stage.png }
+    variables:
+      金币: 100
+      生命: 10
+      塔费用: 20
+      难度: 1
+      基础速度: 2
+      基础间隔: 60
+      间隔: 60
+      分数: 0
+      排名码: { value: 0, cloud: true }
+      进度: { value: 1, cloud: true }
+    lists:
+      路径X: []
+      路径Y: []
+      距离表: []
+      地图状态: []
+      段末x: []
+      物品表: []
+    scripts:
+      - - when_green_flag_clicked:
+            comment: 塔防路径用列表存（改路径不用改代码）
+        - delete_all_of_list: { list: 路径X }
+        - delete_all_of_list: { list: 路径Y }
+        - add_to_list: { item: -240, list: 路径X }
+        - add_to_list: { item: 120, list: 路径Y }
+        - add_to_list: { item: 120, list: 路径X }
+        - add_to_list: { item: 120, list: 路径Y }
+        - add_to_list: { item: 240, list: 路径X }
+        - add_to_list: { item: -120, list: 路径Y }
+        - set_variable: { var: 金币, value: 100 }
+        - set_variable: { var: 生命, value: 10 }
+        - set_variable: { var: 难度, value: 1 }
+      - - when_receive:
+            message: 游戏开始
+            comment: BGM 按场景切：stop all sounds 停不掉循环，必须再 stop other scripts
+        - stop_all_sounds: null
+        - stop: { stop_option: other scripts in sprite }
+      - - when_receive:
+            message: 播BGM
+        - forever:
+            do:
+              - if:
+                  cond: { not: { operand: { equals: { a: { backdrop_name: null }, b: "花园" } } } }
+                  do:
+                    - play_sound_until_done: { sound: 追逐 }
+
+  sprites:
+    # ==========================================================
+    # 视差层：层系数越大 → 移动越少（越远）
+    # ==========================================================
+    - name: 远山
+      x: 0
+      y: 60
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 远, asset: assets/sample_bg_sprite.png }
+      variables:
+        层系数: 8
+      scripts:
+        - - when_green_flag_clicked:
+          - forever:
+              do:
+                - goto_xy:
+                    x: { divide: [ { x_position }, { var: 层系数 } ] }
+                    y: 60
+
+    - name: 近景
+      x: 0
+      y: -60
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 近, asset: assets/sample_bg_sprite.png }
+      variables:
+        层系数: 2
+      scripts:
+        - - when_green_flag_clicked:
+          - forever:
+              do:
+                - goto_xy:
+                    x: { divide: [ { x_position }, { var: 层系数 } ] }
+                    y: -60
+
+    # ==========================================================
+    # 寻路：Wavefront 距离扩散（每格存到终点的距离，走时选最小的邻居）
+    # ==========================================================
+    - name: 寻路者
+      x: 0
+      y: 0
+      size: 30
+      costumes:
+        - { name: 猫, asset: assets/cat_mouse/cat.png }
+      variables:
+        列数: 8
+        邻居值: 999
+        步数: 0
+      scripts:
+        - - when_receive:
+              message: 游戏开始
+              comment: 从终点开始做距离扩散（简化版：只演示标记 + 取最小邻居）
+          - delete_all_of_list: { list: 距离表 }
+          - repeat: 64
+            do:
+              - add_to_list: { item: 999, list: 距离表 }
+          - set_variable:
+              var: 邻居值
+              value: { item_of_list: { index: { var: 步数 }, list: 距离表 } }
+          - forever:
+              do:
+                - if:
+                    cond: { greater_than: { a: { var: 邻居值 }, b: 0 } }
+                    do:
+                      - change_variable: { var: 邻居值, by: -1 }
+                      - change_variable: { var: 步数, by: 1 }
+                      - if: { cond: { greater_than: { a: { var: 步数 }, b: 64 } }, do: [ { set_variable: { var: 步数, value: 1 } } ] }
+
+    # ==========================================================
+    # 塔防敌人：沿列表里的路径点走；到终点扣玩家生命
+    # ==========================================================
+    - name: 塔防敌人
+      x: -240
+      y: 120
+      size: 25
+      costumes:
+        - { name: 敌, asset: assets/cat_mouse/mouse.png }
+      variables:
+        路径序号: 1
+        敌人血量: 3
+      scripts:
+        - - when_green_flag_clicked:
+          - hide: null
+        - - when_receive:
+              message: 出怪
+          - create_clone_of: { clone: 塔防敌人 }
+        - - when_start_as_clone: { clone: _myself_ }
+          - show: null
+          - set_variable: { var: 路径序号, value: 1 }
+          - set_variable: { var: 敌人血量, value: 3 }
+          - repeat_until:
+              cond: { greater_than: { a: { var: 路径序号 }, b: { length_of_list: { list: 路径X } } } }
+              do:
+                - goto_xy:
+                    x: { item_of_list: { index: { var: 路径序号 }, list: 路径X } }
+                    y: { item_of_list: { index: { var: 路径序号 }, list: 路径Y } }
+                - change_variable: { var: 路径序号, by: 1 }
+          - change_variable: { var: 生命, by: -1 }
+          - delete_this_clone: null
+
+    # ==========================================================
+    # 防御塔：范围内索敌 → 克隆子弹（射程用距离平方比较，省开方）
+    # ==========================================================
+    - name: 防御塔
+      x: 0
+      y: 0
+      size: 30
+      costumes:
+        - { name: 塔, asset: assets/cat_mouse/cat_dot.png }
+      variables:
+        射程: 120
+        冷却: 0
+        dx: 0
+        dy: 0
+      scripts:
+        - - when_green_flag_clicked:
+          - hide: null
+        - - when_receive:
+              message: 建造
+            comment: 放塔：检查金币够不够 + 不能建在路径上
+          - if:
+              cond: { greater_than: { a: {var: 金币}, b: {var: 塔费用} } }
+              do:
+                - if:
+                    cond: { equals: { a: { touching_color: { COLOR: "#e04040" } }, b: false } }
+                    do:
+                      - change_variable: { var: 金币, by: -20 }
+                      - create_clone_of: { clone: 防御塔 }
+        - - when_start_as_clone: { clone: _myself_ }
+          - show: null
+          - forever:
+              do:
+                - set_variable: { var: dx, value: { subtract: [ { of: { object: 塔防敌人, property: x position } }, { x_position } ] } }
+                - set_variable: { var: dy, value: { subtract: [ { of: { object: 塔防敌人, property: y position } }, { y_position } ] } }
+                - if:
+                    cond:
+                      less_than:
+                        a: { add: [ { multiply: [ { var: dx }, { var: dx } ] }, { multiply: [ { var: dy }, { var: dy } ] } ] }
+                        b: { multiply: [ { var: 射程 }, { var: 射程 } ] }
+                    do:
+                      - point_towards: { TOWARDS: 塔防敌人 }
+                      - create_clone_of: { clone: 防御塔子弹 }
+
+    # ==========================================================
+    # 子弹：克隆 + 命中即删
+    # ==========================================================
+    - name: 塔防塔子弹
+      x: 0
+      y: 0
+      size: 40
+      costumes:
+        - { name: 弹, asset: assets/cat_mouse/cat_dot.png }
+      scripts:
+        - - when_green_flag_clicked:
+          - hide: null
+        - - when_start_as_clone: { clone: _myself_ }
+          - show: null
+          - repeat_until:
+              cond:
+                or:
+                  - touching: { object: 塔防敌人 }
+                  - greater_than: { a: { x_position }, b: 240 }
+              do:
+                - move_steps: 10
+          - broadcast: 敌人中弹
+          - delete_this_clone: null
+
+    # ==========================================================
+    # 八方向角色：4 个 if 分别判断（相反方向互相抵消）+ 命名造型
+    # ==========================================================
+    - name: 八向角色
+      x: 0
+      y: 0
+      size: 30
+      rotationStyle: left-right
+      costumes:
+        - { name: 走0, asset: assets/cat_mouse/cat.png }
+        - { name: 走90, asset: assets/cat_mouse/cat_left.png }
+        - { name: 站, asset: assets/cat_mouse/cat_dot.png }
+      variables:
+        方向: 90
+        帧号: 0
+        在移动: 0
+      scripts:
+        - - when_green_flag_clicked:
+          - show: null
+          - forever:
+              do:
+                - set_variable: { var: 在移动, value: 0 }
+                - if: { cond: { key_pressed: { key: right arrow } }, do: [ { change_x: { dx: 3 } }, { set_variable: { var: 在移动, value: 1 } }, { set_variable: { var: 方向, value: 0 } } ] }
+                - if: { cond: { key_pressed: { key: left arrow } }, do: [ { change_x: { dx: -3 } }, { set_variable: { var: 在移动, value: 1 } }, { set_variable: { var: 方向, value: 180 } } ] }
+                - if: { cond: { key_pressed: { key: up arrow } }, do: [ { change_y: { dy: 3 } }, { set_variable: { var: 在移动, value: 1 } }, { set_variable: { var: 方向, value: 90 } } ] }
+                - if: { cond: { key_pressed: { key: down arrow } }, do: [ { change_y: { dy: -3 } }, { set_variable: { var: 在移动, value: 1 } }, { set_variable: { var: 方向, value: 270 } } ] }
+                - if:
+                    cond: { equals: { a: { var: 在移动 }, b: 1 } }
+                    do:
+                      - switch_costume: { costume: 走90 }
+                    else:
+                      - switch_costume: { costume: 站 }
+
+    # ==========================================================
+    # 无尽生成：分段 + 回收 + 难度递增（间隔要夹紧）
+    # ==========================================================
+    - name: 跑酷段
+      x: 0
+      y: 0
+      size: 100
+      costumes:
+        - { name: 段, asset: assets/sample_bg_sprite.png }
+      variables:
+        段末: 0
+      scripts:
+        - - when_green_flag_clicked:
+          - hide: null
+        - - when_receive:
+              message: 生成段
+          - create_clone_of: { clone: 跑酷段 }
+        - - when_start_as_clone: { clone: _myself_ }
+          - show: null
+          - set_variable: { var: 段末, value: { x_position } }
+          - forever:
+              do:
+                - if:
+                    cond: { less_than: { a: { var: 段末 }, b: { subtract: [ { x_position }, 500 ] } } }
+                    do:
+                      - delete_this_clone: null
+
+    # ==========================================================
+    # 云变量编码：分数 * 1000 + 用户序号；进度存云端
+    # ==========================================================
+    - name: 编码器
+      x: 0
+      y: -160
+      size: 30
+      costumes:
+        - { name: 点, asset: assets/cat_mouse/cat_dot.png }
+      scripts:
+        - - when_receive:
+              message: 记录成绩
+            comment: 云变量只能存数字 → 分数与用户序号编码成一个数
+          - set_variable:
+              var: 排名码
+              value: { add: [ { multiply: [ {var: 分数}, 1000 ] }, { mod: { a: { userid: null }, b: 1000 } } ] }
+          - set_variable: { var: 进度, value: { add: [ {var: 进度}, 1 ] } }

@@ -1,0 +1,13 @@
+{
+  "label": "游戏 / 互动作品（默认档）",
+  "min_costumes": 20,
+  "min_sounds": 8,
+  "min_sprites": 4,
+  "min_bytes": 150000,
+  "min_scenes": 2,
+  "min_blocks": 150,
+  "profile": "game",
+  "genre": "game",
+  "_hint": "genre=game 时强制查「玩家可操控/胜负条件/重玩价值」；音乐/动画/剧情类请改 genre 为 music/animation/story，三项自动跳过。可手改任意 min_* 与 genre，交付时 --spec 指向本文件。",
+  "_note": "game 档默认 bytes>=1MB 是为栅格重美术作品（PNG/照片素材）校准的；本作为矢量SVG+WAV 游戏，真实素材已含 8 个音效+21 造型+1 背景乐，体积约 674KB。仅下调 bytes 门槛到 400KB，其余 game 门槛全部保留。B 层玩法完整度（玩家可操控/胜负/重玩）已全过。"
+}

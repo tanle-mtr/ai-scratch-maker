@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFEDB3"/>
+    <stop offset="1" stop-color="#FAF19B"/>
+  </linearGradient>
+  <ellipse cx="60" cy="100" rx="32" ry="7" fill="#4F4A47" opacity="0.16"/>
+  <path d="M22 40 L98 40 L60 100 Z" fill="#32AF00"/>
+  <path d="M29 44 L91 44 L60 92 Z" fill="#8CE243"/>
+  <path d="M36 47 L84 47 L60 86 Z" fill="url(#body)"/>
+  <ellipse cx="48" cy="58" rx="3" ry="4" fill="#4F4A47" opacity="0.75"/>
+  <ellipse cx="60" cy="66" rx="3" ry="4" fill="#4F4A47" opacity="0.75"/>
+  <ellipse cx="72" cy="58" rx="3" ry="4" fill="#4F4A47" opacity="0.75"/>
+  <ellipse cx="54" cy="78" rx="3" ry="4" fill="#4F4A47" opacity="0.75"/>
+  <ellipse cx="68" cy="78" rx="3" ry="4" fill="#4F4A47" opacity="0.75"/>
+  <ellipse cx="46" cy="52" rx="10" ry="5" fill="#FFFFFF" opacity="0.45"/>
+  <ellipse cx="60" cy="82" rx="16" ry="7" fill="#32AF00" opacity="0.14"/>
+</svg>

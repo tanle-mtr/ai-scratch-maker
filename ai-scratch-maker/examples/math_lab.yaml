@@ -1,0 +1,647 @@
+project:
+  name: 数学实验室（回溯 / 分数 / 质数）
+  stage:
+    backdrops:
+    - name: 实验室
+      asset: assets/uikit/bg_menu.svg
+    variables:
+      模式: 0
+      帧计数: 0
+      自动帧: 1
+      结果: ''
+      n: 8
+      行: 0
+      试用: 0
+      找到: 0
+      冲突: 0
+      k: 0
+      解数: 0
+      节点数: 0
+      解上限: 100000
+      fa: 1
+      fb: 2
+      fc: 1
+      fd: 3
+      分子: 0
+      分母: 0
+      g: 0
+      r: 0
+      tmp: 0
+      上限: 100
+      质数个数: 0
+      i: 0
+      j: 0
+      格子: 30
+    lists:
+      皇后列:
+      - 0
+      筛表:
+      - 0
+      质数表:
+      - 0
+    scripts:
+    - - when_green_flag_clicked: null
+      - set_variable:
+          var: 自动帧
+          value: 1
+      - set_variable:
+          var: 模式
+          value: 0
+      - set_variable:
+          var: 结果
+          value: 按 1/2/3 切换：N 皇后 / 分数 / 质数
+      - show: null
+      - forever:
+          do:
+          - if:
+              cond:
+                equals:
+                - var: 自动帧
+                - 1
+              do:
+              - change_variable:
+                  var: 帧计数
+                  by: 1
+              - broadcast:
+                  message: 帧
+          - wait:
+              secs: 0.02
+    - - when_receive:
+          message: 重置
+      - set_variable:
+          var: 结果
+          value: 已重置
+  sprites:
+  - name: 数学引擎
+    x: 0
+    y: 0
+    costumes:
+    - name: dot
+      asset: assets/dot.svg
+    variables: {}
+    scripts:
+    - - when_receive:
+          message: 跑皇后
+      - set_variable:
+          var: 解数
+          value: 0
+      - set_variable:
+          var: 节点数
+          value: 0
+      - delete_all_of_list:
+          list: 皇后列
+      - repeat:
+          times:
+            var: n
+          do:
+          - add_to_list:
+              list: 皇后列
+              item: 0
+      - set_variable:
+          var: 行
+          value: 1
+      - repeat_until:
+          cond:
+            or:
+            - less_than:
+              - var: 行
+              - 1
+            - not:
+                operand:
+                  equals:
+                  - less_than:
+                    - var: 解数
+                    - var: 解上限
+                  - true
+          do:
+          - change_variable:
+              var: 节点数
+              by: 1
+          - set_variable:
+              var: 试用
+              value:
+                add:
+                - item_of_list:
+                    list: 皇后列
+                    index:
+                      var: 行
+                - 1
+          - set_variable:
+              var: 找到
+              value: 0
+          - repeat_until:
+              cond:
+                or:
+                - greater_than:
+                  - var: 试用
+                  - var: n
+                - equals:
+                  - var: 找到
+                  - 1
+              do:
+              - set_variable:
+                  var: 冲突
+                  value: 0
+              - set_variable:
+                  var: k
+                  value: 0
+              - repeat:
+                  times:
+                    subtract:
+                    - var: 行
+                    - 1
+                  do:
+                  - change_variable:
+                      var: k
+                      by: 1
+                  - if:
+                      cond:
+                        or:
+                        - equals:
+                          - item_of_list:
+                              list: 皇后列
+                              index:
+                                var: k
+                          - var: 试用
+                        - equals:
+                          - mathop:
+                              operator: abs
+                              num:
+                                subtract:
+                                - item_of_list:
+                                    list: 皇后列
+                                    index:
+                                      var: k
+                                - var: 试用
+                          - subtract:
+                            - var: 行
+                            - var: k
+                      do:
+                      - set_variable:
+                          var: 冲突
+                          value: 1
+              - if:
+                  cond:
+                    equals:
+                    - var: 冲突
+                    - 0
+                  do:
+                  - set_variable:
+                      var: 找到
+                      value: 1
+                  else:
+                  - change_variable:
+                      var: 试用
+                      by: 1
+          - if:
+              cond:
+                equals:
+                - var: 找到
+                - 1
+              do:
+              - replace_item_of_list:
+                  list: 皇后列
+                  index:
+                    var: 行
+                  item:
+                    var: 试用
+              - change_variable:
+                  var: 行
+                  by: 1
+              - if:
+                  cond:
+                    greater_than:
+                    - var: 行
+                    - var: n
+                  do:
+                  - change_variable:
+                      var: 解数
+                      by: 1
+                  - set_variable:
+                      var: 行
+                      value:
+                        var: n
+              else:
+              - replace_item_of_list:
+                  list: 皇后列
+                  index:
+                    var: 行
+                  item: 0
+              - change_variable:
+                  var: 行
+                  by: -1
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a: N 皇后 n=
+                              b:
+                                var: n
+                          b: '  解数='
+                      b:
+                        var: 解数
+                  b: '  访问节点='
+              b:
+                var: 节点数
+      - broadcast:
+          message: 画棋盘
+    - - when_receive:
+          message: 跑分数
+      - set_variable:
+          var: 分子
+          value:
+            add:
+            - multiply:
+              - var: fa
+              - var: fd
+            - multiply:
+              - var: fc
+              - var: fb
+      - set_variable:
+          var: 分母
+          value:
+            multiply:
+            - var: fb
+            - var: fd
+      - set_variable:
+          var: g
+          value:
+            mathop:
+              operator: abs
+              num:
+                var: 分子
+      - set_variable:
+          var: tmp
+          value:
+            mathop:
+              operator: abs
+              num:
+                var: 分母
+      - repeat_until:
+          cond:
+            equals:
+            - var: tmp
+            - 0
+          do:
+          - set_variable:
+              var: r
+              value:
+                mod:
+                - var: g
+                - var: tmp
+          - set_variable:
+              var: g
+              value:
+                var: tmp
+          - set_variable:
+              var: tmp
+              value:
+                var: r
+      - if:
+          cond:
+            equals:
+            - var: g
+            - 0
+          do:
+          - set_variable:
+              var: g
+              value: 1
+      - set_variable:
+          var: 分子
+          value:
+            round:
+            - divide:
+              - var: 分子
+              - var: g
+      - set_variable:
+          var: 分母
+          value:
+            round:
+            - divide:
+              - var: 分母
+              - var: g
+      - if:
+          cond:
+            less_than:
+            - var: 分母
+            - 0
+          do:
+          - set_variable:
+              var: 分子
+              value:
+                subtract:
+                - 0
+                - var: 分子
+          - set_variable:
+              var: 分母
+              value:
+                subtract:
+                - 0
+                - var: 分母
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a:
+                                    join:
+                                      a:
+                                        join:
+                                          a:
+                                            join:
+                                              a:
+                                                join:
+                                                  a:
+                                                    var: fa
+                                                  b: /
+                                              b:
+                                                var: fb
+                                          b: ' + '
+                                      b:
+                                        var: fc
+                                  b: /
+                              b:
+                                var: fd
+                          b: ' = '
+                      b:
+                        var: 分子
+                  b: /
+              b:
+                var: 分母
+    - - when_receive:
+          message: 跑质数
+      - set_variable:
+          var: 质数个数
+          value: 0
+      - delete_all_of_list:
+          list: 筛表
+      - delete_all_of_list:
+          list: 质数表
+      - repeat:
+          times:
+            var: 上限
+          do:
+          - add_to_list:
+              list: 筛表
+              item: 1
+      - replace_item_of_list:
+          list: 筛表
+          index: 1
+          item: 0
+      - set_variable:
+          var: i
+          value: 2
+      - repeat_until:
+          cond:
+            greater_than:
+            - multiply:
+              - var: i
+              - var: i
+            - var: 上限
+          do:
+          - if:
+              cond:
+                equals:
+                - item_of_list:
+                    list: 筛表
+                    index:
+                      var: i
+                - 1
+              do:
+              - set_variable:
+                  var: j
+                  value:
+                    multiply:
+                    - var: i
+                    - var: i
+              - repeat_until:
+                  cond:
+                    greater_than:
+                    - var: j
+                    - var: 上限
+                  do:
+                  - replace_item_of_list:
+                      list: 筛表
+                      index:
+                        var: j
+                      item: 0
+                  - change_variable:
+                      var: j
+                      by:
+                        var: i
+          - change_variable:
+              var: i
+              by: 1
+      - set_variable:
+          var: i
+          value: 1
+      - repeat:
+          times:
+            var: 上限
+          do:
+          - if:
+              cond:
+                equals:
+                - item_of_list:
+                    list: 筛表
+                    index:
+                      var: i
+                - 1
+              do:
+              - change_variable:
+                  var: 质数个数
+                  by: 1
+              - add_to_list:
+                  list: 质数表
+                  item:
+                    var: i
+          - change_variable:
+              var: i
+              by: 1
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a: 1~
+                          b:
+                            var: 上限
+                      b: ' 的质数共 '
+                  b:
+                    var: 质数个数
+              b: ' 个'
+    - - when_green_flag_clicked: null
+      - hide: null
+  - name: 棋盘
+    x: 0
+    y: 0
+    costumes:
+    - name: dot
+      asset: assets/dot.svg
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+      - pen_clear: null
+    - - when_receive:
+          message: 画棋盘
+      - pen_clear: null
+      - set_pen_color:
+          COLOR: '#4F4A47'
+      - set_pen_size:
+          size: 2
+      - pen_up: null
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times:
+            add:
+            - var: n
+            - 1
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - goto_xy:
+              x: -120
+              y:
+                subtract:
+                - 100
+                - multiply:
+                  - var: 格子
+                  - subtract:
+                    - var: i
+                    - 1
+          - pen_down: null
+          - goto_xy:
+              x:
+                subtract:
+                - 0
+                - -120
+              y:
+                subtract:
+                - 100
+                - multiply:
+                  - var: 格子
+                  - subtract:
+                    - var: i
+                    - 1
+          - pen_up: null
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times:
+            add:
+            - var: n
+            - 1
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - goto_xy:
+              x:
+                add:
+                - -120
+                - multiply:
+                  - var: 格子
+                  - subtract:
+                    - var: i
+                    - 1
+              y: 100
+          - pen_down: null
+          - goto_xy:
+              x:
+                add:
+                - -120
+                - multiply:
+                  - var: 格子
+                  - subtract:
+                    - var: i
+                    - 1
+              y:
+                subtract:
+                - 100
+                - multiply:
+                  - var: 格子
+                  - var: n
+          - pen_up: null
+      - set_pen_color:
+          COLOR: '#FFCF4D'
+      - set_pen_size:
+          size: 18
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times:
+            var: n
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - goto_xy:
+              x:
+                add:
+                - -120
+                - multiply:
+                  - var: 格子
+                  - subtract:
+                    - item_of_list:
+                        list: 皇后列
+                        index:
+                          var: i
+                    - 0.5
+              y:
+                subtract:
+                - 100
+                - multiply:
+                  - var: 格子
+                  - subtract:
+                    - var: i
+                    - 0.5
+          - pen_down: null
+          - pen_up: null
+  - name: 显示板
+    x: -232
+    y: 168
+    costumes:
+    - name: dot
+      asset: assets/dot.svg
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - goto_xy:
+          x: -232
+          y: 168
+      - set_size:
+          value: 70
+      - show: null
+    - - when_receive:
+          message: 帧
+      - looks_say:
+          MESSAGE:
+            var: 结果

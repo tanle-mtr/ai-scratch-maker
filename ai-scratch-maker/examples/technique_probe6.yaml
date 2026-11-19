@@ -1,0 +1,542 @@
+project:
+  name: 游戏系统探针（第六册：物理引擎 AABB/Verlet/绳索/引力/弹性碰撞/斜坡/对象池/分桶）
+
+  extensions:
+    - pen
+
+  stage:
+    backdrops:
+      - { name: 底, asset: assets/sample_bg_stage.png }
+    variables:
+      # —— AABB 碰撞（§51）——
+      我半宽: 12
+      我半高: 12
+      他半宽: 12
+      他半高: 12
+      我左: 0
+      我右: 0
+      我上: 0
+      我下: 0
+      他左: 0
+      他右: 0
+      他上: 0
+      他下: 0
+      撞到了: 0
+      距离平方: 0
+      # —— 绳索（§53）——
+      我的ID: 1
+      上x: 0
+      上y: 0
+      本x: 0
+      本y: 0
+      距平方: 0
+      距: 0
+      修正比例: 0
+      静止长度: 16
+      精度: 6
+      # —— 万有引力（§54）——
+      中心x: 0
+      中心y: 0
+      引力常数: 800
+      半径: 100
+      轨道角: 0
+      # —— 弹性碰撞（§55）——
+      m1: 1
+      m2: 2
+      v1: 4
+      v2: -2
+      新v1: 0
+      新v2: 0
+      # —— 斜坡（§56）——
+      斜坡: 0
+      # —— 对象池（§57）——
+      下一个索引: 1
+      目标索引: 0
+      找过了: 0
+      激活参数: 0
+      # —— 空间分桶（§58）——
+      格宽: 120
+      格高: 90
+      我的格X: 0
+      我的格Y: 0
+      格号: 0
+    lists:
+      # §57 对象池：所有角色的数据都存这里（必须是舞台全局列表）
+      子弹状态: []
+      子弹X: []
+      子弹Y: []
+      # §53 绳索：每个关节 3 项（x, y, 类型）
+      关节X: []
+      关节Y: []
+      关节类型: []
+      # §58 空间分桶：每个格子一条列表
+      桶0: []
+      桶1: []
+      桶2: []
+      桶3: []
+    scripts:
+      - - when_green_flag_clicked:
+            comment: §57 对象池初始化：预建 N 个克隆体，状态全 0（空闲）
+        - delete_all_of_list: { list: 子弹状态 }
+        - delete_all_of_list: { list: 子弹X }
+        - delete_all_of_list: { list: 子弹Y }
+        - set_variable: { var: 下一个索引, value: 1 }
+        - repeat: 20
+          do:
+            - create_clone_of: { clone: 子弹 }
+            - add_to_list: { item: 0, list: 子弹状态 }
+            - add_to_list: { item: 0, list: 子弹X }
+            - add_to_list: { item: 0, list: 子弹Y }
+        - set_variable: { var: 中心x, value: 0 }
+        - set_variable: { var: 中心y, value: 0 }
+
+      - - when_receive:
+            message: 开火
+            comment: §57 对象池：找第一个状态为 0 的索引并激活（不新建克隆体）
+        - set_variable: { var: 目标索引, value: 0 }
+        - set_variable: { var: 找过了, value: 0 }
+        - repeat_until:
+            cond: { greater_than: { a: {var: 找过了}, b: { length_of_list: { list: 子弹状态 } } } }
+            do:
+              - change_variable: { var: 找过了, by: 1 }
+              - if:
+                  cond: { equals: { a: { item_of_list: { index: {var: 找过了}, list: 子弹状态 } }, b: 0 } }
+                  do:
+                    - set_variable: { var: 目标索引, value: {var: 找过了} }
+                    - set_variable: { var: 找过了, value: 999 }
+        - if:
+            cond: { less_than: { a: {var: 目标索引}, b: { length_of_list: { list: 子弹状态 } } } }
+            do:
+              - replace_item_of_list: { item: 1, index: {var: 目标索引}, list: 子弹状态 }
+              - set_variable: { var: 激活参数, value: {var: 目标索引} }
+              - broadcast: 激活子弹
+
+      - - when_receive:
+            message: 弹性碰撞演示
+            comment: §55 弹性碰撞：等质量两球正面碰撞 = 交换速度
+        - set_variable:
+            var: 新v1
+            value:
+              divide:
+                - add:
+                    - multiply: [ { subtract: [ {var: m1}, {var: m2} ] }, {var: v1} ]
+                    - multiply: [ { multiply: [ 2, {var: m2} ] }, {var: v2} ]
+                - add: [ {var: m1}, {var: m2} ]
+        - set_variable:
+            var: 新v2
+            value:
+              divide:
+                - add:
+                    - multiply: [ { multiply: [ 2, {var: m1} ] }, {var: v1} ]
+                    - multiply: [ { subtract: [ {var: m2}, {var: m1} ] }, {var: v2} ]
+                - add: [ {var: m1}, {var: m2} ]
+
+      - - when_receive:
+            message: 建绳
+            comment: §53 绳索：每个关节 3 项（x, y, 类型），类型 1=中间 0=固定端
+        - delete_all_of_list: { list: 关节X }
+        - delete_all_of_list: { list: 关节Y }
+        - delete_all_of_list: { list: 关节类型 }
+        - repeat: 8
+          do:
+            - add_to_list: { item: 0, list: 关节X }
+            - add_to_list: { item: 0, list: 关节Y }
+            - add_to_list: { item: 1, list: 关节类型 }
+
+  sprites:
+    # ==========================================================
+    # §51 AABB 包围盒碰撞演示
+    # ==========================================================
+    - name: 碰撞体
+      x: 0
+      y: 0
+      size: 30
+      costumes:
+        - { name: 方, asset: assets/cat_mouse/cat_dot.png }
+      variables:
+        对方X: 60
+        对方Y: 0
+      scripts:
+        - - when_green_flag_clicked:
+          - forever:
+              do:
+                # 算自己的边界
+                - set_variable: { var: 我左, value: { subtract: [ { x_position }, {var: 我半宽} ] } }
+                - set_variable: { var: 我右, value: { add: [ { x_position }, {var: 我半宽} ] } }
+                - set_variable: { var: 我上, value: { add: [ { y_position }, {var: 我半高} ] } }
+                - set_variable: { var: 我下, value: { subtract: [ { y_position }, {var: 我半高} ] } }
+                # 算对方的边界
+                - set_variable: { var: 他左, value: { subtract: [ {var: 对方X}, {var: 他半宽} ] } }
+                - set_variable: { var: 他右, value: { add: [ {var: 对方X}, {var: 他半宽} ] } }
+                - set_variable: { var: 他上, value: { add: [ {var: 对方Y}, {var: 他半高} ] } }
+                - set_variable: { var: 他下, value: { subtract: [ {var: 对方Y}, {var: 他半高} ] } }
+                # ⚠️ 「与」只有 2 个输入 → 4 个条件必须嵌套成 2+2
+                - if:
+                    cond:
+                      and:
+                        - and:
+                            - greater_than: { a: {var: 我右}, b: {var: 他左} }
+                            - less_than:    { a: {var: 我左}, b: {var: 他右} }
+                        - and:
+                            - greater_than: { a: {var: 我上}, b: {var: 他下} }
+                            - less_than:    { a: {var: 我下}, b: {var: 他上} }
+                    do:
+                      - set_variable: { var: 撞到了, value: 1 }
+                    else:
+                      - set_variable: { var: 撞到了, value: 0 }
+                # 圆形碰撞：比较距离平方与半径和平方（不开方）
+                - set_variable:
+                    var: 距离平方
+                    value:
+                      add:
+                        - multiply:
+                            - subtract: [ { x_position }, {var: 对方X} ]
+                            - subtract: [ { x_position }, {var: 对方X} ]
+                        - multiply:
+                            - subtract: [ { y_position }, {var: 对方Y} ]
+                            - subtract: [ { y_position }, {var: 对方Y} ]
+                - change_x: { dx: 1.5 }
+
+    # ==========================================================
+    # §52 Verlet 积分演示（只存位置，速度由相减隐式得到）
+    # ==========================================================
+    - name: 粒子
+      x: 0
+      y: 100
+      size: 20
+      costumes:
+        - { name: 点, asset: assets/cat_mouse/cat_dot.png }
+      variables:
+        # §52 Verlet：这些必须是**私有变量**，不能和别的角色共用
+        ox: 0
+        oy: 0
+        nx: 0
+        ny: 0
+        ax: 0
+        ay: -0.3          # ⚠️ Scratch 的 y+ 朝**上**，重力要取负值
+        dt: 1
+      scripts:
+        - - when_green_flag_clicked:
+          - set_variable: { var: ox, value: { x_position } }
+          - set_variable: { var: oy, value: { y_position } }
+          - set_variable: { var: ax, value: 0 }
+          - set_variable: { var: ay, value: -0.3 }    # ⚠️ Scratch 的 y+ 朝上，重力取负
+          - forever:
+              do:
+                # 1) Verlet 积分：新位置 = 2×当前 − 上一帧 + a×dt²
+                # ⚠️ 「加」只有 2 个输入槽 → 3 项相加必须**嵌套**（写平了第 3 项会被静默丢弃）
+                - set_variable:
+                    var: nx
+                    value:
+                      add:
+                        - multiply: [ 2, { x_position } ]
+                        - add:
+                            - multiply: [ -1, {var: ox} ]
+                            - multiply: [ {var: ax}, { multiply: [ {var: dt}, {var: dt} ] } ]
+                - set_variable:
+                    var: ny
+                    value:
+                      add:
+                        - multiply: [ 2, { y_position } ]
+                        - add:
+                            - multiply: [ -1, {var: oy} ]
+                            - multiply: [ {var: ay}, { multiply: [ {var: dt}, {var: dt} ] } ]
+                # 2) 保存上一帧位置
+                - set_variable: { var: ox, value: { x_position } }
+                - set_variable: { var: oy, value: { y_position } }
+                # 3) 移到新位置
+                - goto_xy: { x: {var: nx}, y: {var: ny} }
+                # 4) 撞地板反弹：Verlet 的速度是「当前 − 上一帧」隐式表达的，
+                #    所以要改的是 oy（上一帧位置），而不是速度变量。
+                #    v_old = 当前y − oy（向下为负）→ 反弹后 v_new = −0.7 × v_old
+                #    oy_new = −170 + 0.7 × v_old
+                - if:
+                    cond: { less_than: { a: { y_position }, b: -170 } }
+                    do:
+                      - set_variable:
+                          var: oy
+                          value:
+                            add:
+                              - -170
+                              - multiply:
+                                  - 0.7
+                                  - subtract: [ { y_position }, {var: oy} ]
+                      - goto_xy: { x: {var: nx}, y: -170 }
+
+    # ==========================================================
+    # §53 绳索（Verlet + 约束松弛，画笔渲染）
+    # ==========================================================
+    - name: 绳
+      x: 0
+      y: 120
+      size: 12
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 结, asset: assets/cat_mouse/cat_dot.png }
+      variables:
+        我的索引: 1
+      scripts:
+        - - when_green_flag_clicked:
+          - hide: null
+          - set_variable: { var: 精度, value: 6 }
+          - set_variable: { var: 静止长度, value: 16 }
+        - - when_receive:
+              message: 建绳
+          - set_variable: { var: 我的索引, value: 1 }
+          - forever:
+              do:
+                # 读出本关节与上一关节
+                - set_variable: { var: 本x, value: { item_of_list: { index: {var: 我的索引}, list: 关节X } } }
+                - set_variable: { var: 本y, value: { item_of_list: { index: {var: 我的索引}, list: 关节Y } } }
+                - set_variable: { var: 上x, value: { item_of_list: { index: { subtract: [ {var: 我的索引}, 1 ] }, list: 关节X } } }
+                - set_variable: { var: 上y, value: { item_of_list: { index: { subtract: [ {var: 我的索引}, 1 ] }, list: 关节Y } } }
+                # 距离平方（不开根号）
+                - set_variable:
+                    var: 距平方
+                    value:
+                      add:
+                        - multiply: [ { subtract: [ {var: 本x}, {var: 上x} ] }, { subtract: [ {var: 本x}, {var: 上x} ] } ]
+                        - multiply: [ { subtract: [ {var: 本y}, {var: 上y} ] }, { subtract: [ {var: 本y}, {var: 上y} ] } ]
+                # 约束松弛：距离超过静止长度就往回拉（只拉一半）
+                - if:
+                    cond: { greater_than: { a: {var: 距平方}, b: { multiply: [ {var: 静止长度}, {var: 静止长度} ] } } }
+                    do:
+                      - set_variable: { var: 距, value: { mathop: { operator: sqrt, num: {var: 距平方} } } }
+                      - set_variable:
+                          var: 修正比例
+                          value: { divide: [ { subtract: [ {var: 距}, {var: 静止长度} ] }, {var: 距} ] }
+                      - replace_item_of_list:
+                          item: { add: [ {var: 本x}, { multiply: [ {var: 修正比例}, { multiply: [ 0.5, { subtract: [ {var: 本x}, {var: 上x} ] } ] } ] } ] }
+                          index: {var: 我的索引}
+                          list: 关节X
+                      - replace_item_of_list:
+                          item: { add: [ {var: 本y}, { multiply: [ {var: 修正比例}, { multiply: [ 0.5, { subtract: [ {var: 本y}, {var: 上y} ] } ] } ] } ] }
+                          index: {var: 我的索引}
+                          list: 关节Y
+                # 画笔渲染：沿关节连线
+                - goto_xy: { x: {var: 上x}, y: {var: 上y} }
+                - pen_down: null
+                - goto_xy: { x: {var: 本x}, y: {var: 本y} }
+                - pen_up: null
+                - change_variable: { var: 我的索引, by: 1 }
+                - if:
+                    cond: { greater_than: { a: {var: 我的索引}, b: { length_of_list: { list: 关节X } } } }
+                    do:
+                      - set_variable: { var: 我的索引, value: 1 }
+
+    # ==========================================================
+    # §54 万有引力：参数化轨道 + 真引力加速度
+    # ==========================================================
+    - name: 恒星
+      x: 0
+      y: 0
+      size: 40
+      costumes:
+        - { name: 星, asset: assets/cat_mouse/cat_dot.png }
+      scripts:
+        - - when_green_flag_clicked:
+          - goto_xy: { x: 0, y: 0 }
+          - forever:
+              do:
+                # §54 参数化圆轨道（教学首选）：稳定、绝对不会飞走
+                #   x = 中心x + R·cos(θ)，y = 中心y + R·sin(θ)
+                - change_variable: { var: 轨道角, by: 2 }
+                - goto_xy:
+                    x: { add: [ {var: 中心x}, { multiply: [ {var: 半径}, { mathop: { operator: cos, num: {var: 轨道角} } } ] } ] }
+                    y: { add: [ {var: 中心y}, { multiply: [ {var: 半径}, { mathop: { operator: sin, num: {var: 轨道角} } } ] } ] }
+
+    # ==========================================================
+    # §54 真引力轨道：a = G / r²，方向指向中心
+    # ==========================================================
+    - name: 行星
+      x: 120
+      y: 0
+      size: 22
+      costumes:
+        - { name: 行, asset: assets/cat_mouse/cat_dot.png }
+      variables:
+        # 真引力用**自己的** Verlet 状态（私有变量，不能和别的角色共用）
+        pox: 0
+        poy: 0
+        pnx: 0
+        pny: 0
+        pax: 0
+        pay: 0
+        pdt: 1
+        距: 0
+        距平方: 0
+      scripts:
+        - - when_green_flag_clicked:
+          - goto_xy: { x: 120, y: 0 }
+          # 圆轨道初速度：v = sqrt(G / r)（圆周运动 v² = a·r，a = G/r²）
+          # Verlet 的速度是「当前 − 上一帧」隐式表达的，
+          # 所以要造出初速度 v，就把「上一帧位置」放在 当前位置 − v 的位置。
+          - set_variable:
+              var: pox
+              value: { subtract: [ { x_position }, { multiply: [ 0, {var: 距} ] } ] }
+          - set_variable:
+              var: poy
+              value:
+                subtract:
+                  - { y_position }
+                  - mathop: { operator: sqrt, num: { divide: [ {var: 引力常数}, {var: 半径} ] } }
+          - forever:
+              do:
+                # 1) 算到中心的距离与距离平方
+                - set_variable:
+                    var: 距平方
+                    value:
+                      add:
+                        - multiply: [ { x_position }, { x_position } ]
+                        - multiply: [ { y_position }, { y_position } ]
+                - set_variable:
+                    var: 距
+                    value: { mathop: { operator: sqrt, num: {var: 距平方} } }
+                # 2) 引力加速度 = G / r²，方向**指向中心**
+                #    ⚠️ 方向是「从中心指向自己」的**反向** → 必须取负号，
+                #    否则引力会把行星推出去（越飞越远）。
+                - set_variable:
+                    var: pax
+                    value: { multiply: [ -1, { multiply: [ { divide: [ {var: 引力常数}, {var: 距平方} ] }, { divide: [ { x_position }, {var: 距} ] } ] } ] }
+                - set_variable:
+                    var: pay
+                    value: { multiply: [ -1, { multiply: [ { divide: [ {var: 引力常数}, {var: 距平方} ] }, { divide: [ { y_position }, {var: 距} ] } ] } ] }
+                # 3) Verlet 积分（新位置 = 2×当前 − 上一帧 + a×dt²）
+                - set_variable:
+                    var: pnx
+                    value:
+                      add:
+                        - multiply: [ 2, { x_position } ]
+                        - add:
+                            - multiply: [ -1, {var: pox} ]
+                            - multiply: [ {var: pax}, { multiply: [ {var: pdt}, {var: pdt} ] } ]
+                - set_variable:
+                    var: pny
+                    value:
+                      add:
+                        - multiply: [ 2, { y_position } ]
+                        - add:
+                            - multiply: [ -1, {var: poy} ]
+                            - multiply: [ {var: pay}, { multiply: [ {var: pdt}, {var: pdt} ] } ]
+                # 4) 保存上一帧位置并移动
+                - set_variable: { var: pox, value: { x_position } }
+                - set_variable: { var: poy, value: { y_position } }
+                - goto_xy: { x: {var: pnx}, y: {var: pny} }
+
+    # ==========================================================
+    # §56 斜坡检测：水平移动后尝试向上爬 8 像素
+    # ==========================================================
+    - name: 斜坡体
+      x: -150
+      y: 0
+      size: 30
+      costumes:
+        - { name: 块, asset: assets/cat_mouse/cat_dot.png }
+      scripts:
+        - - when_green_flag_clicked:
+          - forever:
+              do:
+                # 水平移动
+                - change_x: { dx: 2 }
+                # 尝试爬坡：最多爬 8 像素
+                - set_variable: { var: 斜坡, value: 0 }
+                - repeat: 8
+                  do:
+                    - change_y: { dy: 1 }
+                    - change_variable: { var: 斜坡, by: 1 }
+                    - if:
+                        cond: { not: { operand: { touching: { object: 地面 } } } }
+                        do:
+                          - stop: { stop_option: this script }
+                # 爬满了还是地面 → 坡太陡，退回原位
+                - if:
+                    cond: { equals: { a: {var: 斜坡}, b: 8 } }
+                    do:
+                      - change_y: { dy: { multiply: [ {var: 斜坡}, -1 ] } }
+                      - change_x: { dx: -2 }
+
+    - name: 地面
+      x: 0
+      y: -160
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 地, asset: assets/sample_bg_sprite.png }
+      scripts:
+        - - when_green_flag_clicked:
+          - goto_xy: { x: 0, y: -170 }
+          - show: null
+
+    # ==========================================================
+    # §57 对象池：克隆体自己记索引，所有数据存列表
+    # ==========================================================
+    - name: 子弹
+      x: 0
+      y: 0
+      size: 12
+      costumes:
+        - { name: 弹, asset: assets/cat_mouse/cat_dot.png }
+      variables:
+        我的池索引: 0
+        我的速度: 4
+        是否克隆: 0
+      scripts:
+        - - when_green_flag_clicked:
+          - hide: null
+        - - when_start_as_clone: { clone: _myself_ }
+          - set_variable: { var: 我的池索引, value: {var: 下一个索引} }
+          - change_variable: { var: 下一个索引, by: 1 }
+          - hide: null
+        - - when_receive:
+              message: 激活子弹
+              comment: §57 广播不能带参数 → 用全局变量传索引
+          - if:
+              cond: { equals: { a: {var: 我的池索引}, b: {var: 激活参数} } }
+              do:
+                - show: null
+                - set_variable: { var: 我的速度, value: 4 }
+                - goto_xy: { x: -230, y: 0 }
+                - forever:
+                    do:
+                      - change_x: { dx: {var: 我的速度} }
+                      - if:
+                          cond: { greater_than: { a: { x_position }, b: 240 } }
+                          do:
+                            - replace_item_of_list: { item: 0, index: {var: 我的池索引}, list: 子弹状态 }
+                            - hide: null
+                            - stop: { stop_option: this script }
+
+    # ==========================================================
+    # §58 空间分桶：算自己的格子号
+    # ==========================================================
+    - name: 分桶体
+      x: 0
+      y: 0
+      size: 20
+      costumes:
+        - { name: 粒, asset: assets/cat_mouse/cat_dot.png }
+      scripts:
+        - - when_green_flag_clicked:
+          - forever:
+              do:
+                # 格子号 = floor((坐标 + 舞台半宽) / 格宽)
+                - set_variable:
+                    var: 我的格X
+                    value: { mathop: { operator: floor, num: { divide: [ { add: [ { x_position }, 240 ] }, {var: 格宽} ] } } }
+                - set_variable:
+                    var: 我的格Y
+                    value: { mathop: { operator: floor, num: { divide: [ { add: [ { y_position }, 180 ] }, {var: 格高} ] } } }
+                - set_variable:
+                    var: 格号
+                    value: { add: [ { multiply: [ {var: 我的格Y}, 4 ] }, {var: 我的格X} ] }
+                - change_x: { dx: 1.2 }
+                - change_y: { dy: 0.6 }
+                # 走出边界就绕回另一侧（水平 + 垂直都要，否则会一直飞出舞台）
+                - if:
+                    cond: { greater_than: { a: { x_position }, b: 235 } }
+                    do:
+                      - goto_xy: { x: -235, y: { y_position } }
+                - if:
+                    cond: { greater_than: { a: { y_position }, b: 175 } }
+                    do:
+                      - goto_xy: { x: { x_position }, y: -175 }

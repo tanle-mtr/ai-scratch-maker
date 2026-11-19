@@ -1,0 +1,580 @@
+project:
+  name: 游戏系统探针（第五册：战斗/场景/菜单/节奏/AI决策/视线/物理/成长）
+
+  stage:
+    backdrops:
+      - { name: 标题页, asset: assets/sample_bg_stage.png }
+      - { name: 探索场景, asset: assets/sample_bg_stage.png }
+      - { name: 战斗场景, asset: assets/sample_bg_stage.png }
+    variables:
+      # —— 场景与菜单状态 ——
+      state: 0                # 0标题 1游戏 2暂停 3结算
+      当前关卡: 1
+      来自场景: ""
+      # —— 战斗属性（社区 C_/E_ 前缀规范）——
+      C_Atk: 10
+      C_Def: 4
+      C_MaxHP: 30
+      C_HP: 30
+      C_MaxMP: 10
+      C_MP: 10
+      C_Wep_Atk: 2
+      C_Wep_P: 3
+      E_Atk: 8
+      E_Def: 3
+      E_MaxHP: 20
+      E_HP: 20
+      攻击方属性: "火"
+      防守方属性: "水"
+      typeMod: 1
+      rawDamage: 0
+      battle_state: 0         # 0结束 1等玩家 2玩家动画 3敌人行动 4敌人动画
+      技能冷却: 0
+      # —— 节奏 ——
+      拍数: 1
+      判定差: 0
+      判定点X: -150
+      连击: 0
+      分数: 0
+      # —— AI 决策（效用 AI）——
+      追击分: 0
+      攻击分: 0
+      逃跑分: 0
+      最好分: 10
+      最好行动: "巡逻"
+      AI状态: 0
+      玩家已暴露: 0
+      最后看到X: 0
+      最后看到Y: 0
+      看得见: 0
+      距离: 0
+      # —— 物理 ——
+      vy: 0
+      力度: 0
+      吸取范围: 100
+      # —— 成长 ——
+      玩家XP: 0
+      xpToLevel: 10
+      玩家等级: 1
+      玩家攻击: 10
+      玩家防御: 4
+      玩家最大HP: 30
+      基础攻击: 8
+      装备加成: 0
+      品质: 0
+      随机数: 0
+    lists:
+      异常状态: []            # 成对：[状态名, 剩余回合, 状态名, 剩余回合...]
+      场景配置: []
+      谱面A: []               # 成对：[拍号, 类型(1单击 2长按)]
+      词条名: []
+      词条类型: []
+      词条数值: []
+      技能: []                # 成对：[技能名, 是否解锁, ...]
+    scripts:
+      # ==========================================================
+      # §45 菜单系统：状态机 + 重置逻辑挂在广播上（不是绿旗）
+      # ==========================================================
+      - - when_green_flag_clicked:
+            comment: 绿旗只做全局初始化（进标题页），不要在这里复位局内数据
+        - set_variable: { var: state, value: 0 }
+        - switch_backdrop: { backdrop: 标题页 }
+
+      - - when_receive:
+            message: 重置
+            comment: 铁律：一切「一局开始要复位」的东西都挂在这里，不能挂绿旗
+        - set_variable: { var: state, value: 1 }
+        - set_variable: { var: 分数, value: 0 }
+        - set_variable: { var: 连击, value: 0 }
+        - set_variable: { var: C_HP, value: {var: C_MaxHP} }
+        - set_variable: { var: C_MP, value: {var: C_MaxMP} }
+        - set_variable: { var: E_HP, value: {var: E_MaxHP} }
+        - set_variable: { var: battle_state, value: 1 }
+        - set_variable: { var: 技能冷却, value: 0 }
+        - delete_all_of_list: { list: 异常状态 }
+        - switch_backdrop: { backdrop: 探索场景 }
+        - broadcast: 玩家出生
+
+      - - when_receive:
+            message: 回到标题
+        - set_variable: { var: state, value: 0 }
+        - switch_backdrop: { backdrop: 标题页 }
+
+      - - when_key_pressed:
+            key: p
+            comment: §45 暂停 = 只改状态变量；Scratch 没有 Esc 键，社区都用 P
+        - if:
+            cond: { equals: { a: {var: state}, b: 1 } }
+            do:
+              - set_variable: { var: state, value: 2 }
+          else:
+            - if:
+                cond: { equals: { a: {var: state}, b: 2 } }
+                do:
+                  - set_variable: { var: state, value: 1 }
+
+      # ==========================================================
+      # §44 场景管理：背景切换钩子 + 跨场景带数据
+      # ==========================================================
+      - - when_backdrop_switches_to:
+            backdrop: 探索场景
+            comment: §44 「当背景切换到」比广播更可靠（不会拼错名字静默失效）
+        - broadcast: 回到探索
+      - - when_backdrop_switches_to:
+            backdrop: 战斗场景
+        - broadcast: 进入战斗
+
+      - - when_receive:
+            message: 进入战斗
+        - set_variable: { var: state, value: 3 }
+        - set_variable: { var: battle_state, value: 1 }
+        - broadcast: 战斗开始
+
+      - - when_receive:
+            message: 战斗结束
+        - switch_backdrop: { backdrop: 探索场景 }
+
+      # ==========================================================
+      # §43 回合制战斗：伤害公式 + 属性克制（独立 if，不是 elseif）
+      # ==========================================================
+      - - when_receive:
+            message: 战斗开始
+        - set_variable: { var: battle_state, value: 1 }
+
+      - - when_receive:
+            message: 玩家攻击
+            comment: §43 伤害公式 + 最低伤害保底（否则高防对高防永远 0 伤害卡死）
+        - if:
+            cond: { equals: { a: {var: battle_state}, b: 1 } }
+            do:
+              - set_variable: { var: battle_state, value: 2 }
+              - set_variable:
+                  var: rawDamage
+                  value: { add: [ { add: [ {var: C_Atk}, {var: C_Wep_Atk} ] },
+                                  { random: { from: 0, to: {var: C_Wep_P} } } ] }
+              - set_variable: { var: rawDamage, value: { subtract: [ {var: rawDamage}, {var: E_Def} ] } }
+              - if:
+                  cond: { less_than: { a: {var: rawDamage}, b: 1 } }
+                  do:
+                    - set_variable: { var: rawDamage, value: 1 }
+              # 属性克制：每个 if 独立判断，加属性只需再加一个 if
+              - set_variable: { var: typeMod, value: 1 }
+              - if:
+                  cond: { equals: { a: {var: 攻击方属性}, b: "火" } }
+                  do:
+                    - if:
+                        cond: { equals: { a: {var: 防守方属性}, b: "水" } }
+                        do:
+                          - set_variable: { var: typeMod, value: 2 }
+              - if:
+                  cond: { equals: { a: {var: 攻击方属性}, b: "火" } }
+                  do:
+                    - if:
+                        cond: { equals: { a: {var: 防守方属性}, b: "草" } }
+                        do:
+                          - set_variable: { var: typeMod, value: 0.5 }
+              - set_variable:
+                  var: rawDamage
+                  value: { multiply: [ {var: rawDamage}, {var: typeMod} ] }
+              - change_variable:
+                  var: E_HP
+                  by: { multiply: [ {var: rawDamage}, -1 ] }
+              - broadcast: 更新血条
+              - if:
+                  cond: { less_than: { a: {var: E_HP}, b: 1 } }
+                  do:
+                    - set_variable: { var: battle_state, value: 0 }
+                    - broadcast: 战斗结束
+
+      - - when_receive:
+            message: 施加中毒
+            comment: §43 状态异常用「成对列表」存 [状态名, 剩余回合]
+        - add_to_list: { item: "中毒", list: 异常状态 }
+        - add_to_list: { item: 3, list: 异常状态 }
+
+      - - when_receive:
+            message: 回合结算
+            comment: §43 技能冷却按「回合」减 1，不是按帧
+        - if:
+            cond: { greater_than: { a: {var: 技能冷却}, b: 0 } }
+            do:
+              - change_variable: { var: 技能冷却, by: -1 }
+        - if:
+            cond: { greater_than: { a: {var: 连击}, b: 0 } }
+            do:
+              - change_variable: { var: 连击, by: 1 }
+
+      # ==========================================================
+      # §46 节奏游戏：计时器做节拍（必须 > 不是 =）
+      # ==========================================================
+      - - when_receive:
+            message: 开始节拍
+        - reset_timer: null
+        - set_variable: { var: 拍数, value: 1 }
+
+      - - when_receive:
+            message: 打拍
+        - wait_until:
+            cond: { greater_than: { a: { timer: null }, b: { multiply: [ {var: 拍数}, 0.5 ] } } }
+        - broadcast: 拍点
+        - change_variable: { var: 拍数, by: 1 }
+
+      # ==========================================================
+      # §47 敌人 AI 决策：效用 AI（给每个选项打分，选最高）
+      # ==========================================================
+      - - when_receive:
+            message: 敌人决策
+            comment: §47 效用 AI：基准分先设成巡逻分，否则所有行动分可能都低于 0
+        - set_variable:
+            var: 追击分
+            value: { subtract: [ 100, { distance_to: { object: 玩家 } } ] }
+        - set_variable: { var: 攻击分, value: 50 }
+        - if:
+            cond: { less_than: { a: {var: C_HP}, b: 10 } }
+            do:
+              - change_variable: { var: 攻击分, by: 30 }
+        - set_variable: { var: 逃跑分, value: 0 }
+        - if:
+            cond: { less_than: { a: {var: E_HP}, b: 8 } }
+            do:
+              - set_variable: { var: 逃跑分, value: 80 }
+        - set_variable: { var: 最好分, value: 10 }
+        - set_variable: { var: 最好行动, value: "巡逻" }
+        - if:
+            cond: { greater_than: { a: {var: 追击分}, b: {var: 最好分} } }
+            do:
+              - set_variable: { var: 最好分, value: {var: 追击分} }
+              - set_variable: { var: 最好行动, value: "追击" }
+        - if:
+            cond: { greater_than: { a: {var: 攻击分}, b: {var: 最好分} } }
+            do:
+              - set_variable: { var: 最好分, value: {var: 攻击分} }
+              - set_variable: { var: 最好行动, value: "攻击" }
+        - if:
+            cond: { greater_than: { a: {var: 逃跑分}, b: {var: 最好分} } }
+            do:
+              - set_variable: { var: 最好分, value: {var: 逃跑分} }
+              - set_variable: { var: 最好行动, value: "逃跑" }
+
+      # ==========================================================
+      # §48 射线检测：步进 + 碰到颜色
+      # ==========================================================
+      - - when_receive:
+            message: 视线检查
+            comment: §48 探针从敌人走向玩家，撞墙 = 看不见
+        - set_variable: { var: 距离, value: 0 }
+        - set_variable: { var: 看得见, value: 0 }
+        - goto_xy: { x: { of: { object: 敌人, property: "x position" } }, y: { of: { object: 敌人, property: "y position" } } }
+        - point_towards: { TOWARDS: 玩家 }
+        - repeat_until:
+            cond: { greater_than: { a: {var: 距离}, b: 200 } }
+            do:
+              - move_steps: 5
+              - change_variable: { var: 距离, by: 5 }
+              - if:
+                  cond: { touching_color: { COLOR: "#2a2a2aff" } }
+                  do:
+                    - set_variable: { var: 距离, value: 999 }
+        - if:
+            cond: { less_than: { a: {var: 距离}, b: 200 } }
+            do:
+              - set_variable: { var: 看得见, value: 1 }
+
+      # ==========================================================
+      # §50 成长：经验曲线 + 装备加成（从基础值重算，不做增量加减）
+      # ==========================================================
+      - - when_receive:
+            message: 获得经验
+        - change_variable: { var: 玩家XP, by: 5 }
+        - if:
+            cond: { greater_than: { a: {var: 玩家XP}, b: {var: xpToLevel} } }
+            do:
+              - change_variable: { var: 玩家等级, by: 1 }
+              - change_variable: { var: 玩家最大HP, by: 5 }
+              - set_variable: { var: 玩家XP, value: 0 }
+              - change_variable: { var: xpToLevel, by: 3 }
+
+      - - when_receive:
+            message: 装备词条
+            comment: §50 装备加成：从基础值重算，避免穿脱累积出怪数值
+        - change_variable: { var: 装备加成, by: { item_of_list: { index: { random: { from: 1, to: 3 } }, list: 词条数值 } } }
+        - set_variable:
+            var: 玩家攻击
+            value: { add: [ {var: 基础攻击}, {var: 装备加成} ] }
+
+      - - when_receive:
+            message: 抽词条
+            comment: §50 品质按随机数分档（普通 60% / 稀有 30% / 传说 10%）
+        - set_variable: { var: 随机数, value: { random: { from: 1, to: 100 } } }
+        - set_variable: { var: 品质, value: 1 }
+        - if:
+            cond: { less_than: { a: {var: 随机数}, b: 61 } }
+            do:
+              - set_variable: { var: 品质, value: 1 }
+        - if:
+            cond: { and: [ { greater_than: { a: {var: 随机数}, b: 60 } }, { less_than: { a: {var: 随机数}, b: 91 } } ] }
+            do:
+              - set_variable: { var: 品质, value: 2 }
+        - if:
+            cond: { greater_than: { a: {var: 随机数}, b: 90 } }
+            do:
+              - set_variable: { var: 品质, value: 3 }
+
+  sprites:
+    # ==========================================================
+    # §45 开始按钮
+    # ==========================================================
+    - name: 开始按钮
+      x: 0
+      y: -60
+      size: 60
+      costumes:
+        - { name: 按, asset: assets/cat_mouse/btn_start.png }
+      scripts:
+        - - when_this_sprite_clicked:
+            comment: §45 关键：点开始 = 广播「重置」，不是自己复位
+          - broadcast: 重置
+
+    # ==========================================================
+    # §43 战斗角色（演示属性变量与回合流程）
+    # ==========================================================
+    - name: 战斗角色
+      x: -100
+      y: 0
+      size: 40
+      costumes:
+        - { name: 战, asset: assets/cat_mouse/cat.png }
+      scripts:
+        - - when_receive:
+              message: 玩家攻击
+          - switch_costume: { costume: 战 }
+          - wait: 0.2
+
+    - name: 敌人
+      x: 100
+      y: 0
+      size: 35
+      costumes:
+        - { name: 敌, asset: assets/cat_mouse/mouse.png }
+      scripts:
+        - - when_receive:
+              message: 进入战斗
+          - show: null
+        - - when_receive:
+              message: 战斗结束
+          - hide: null
+        - - when_receive:
+              message: 敌人决策
+          - if:
+              cond: { equals: { a: {var: 最好行动}, b: "追击" } }
+              do:
+                - point_towards: { TOWARDS: 战斗角色 }
+                - move_steps: 2
+
+    # ==========================================================
+    # §44 场景门（碰到就切背景 + 换位置）
+    # ==========================================================
+    - name: 传送门
+      x: 220
+      y: 0
+      size: 20
+      costumes:
+        - { name: 门, asset: assets/cat_mouse/cat_dot.png }
+      scripts:
+        - - when_receive:
+              message: 玩家出生
+          - goto_xy: { x: 220, y: 0 }
+        - - when_receive:
+              message: 探索更新
+          - if:
+              cond: { and: [ { equals: { a: { backdrop_name: null }, b: "探索场景" } },
+                             { touching: { object: 玩家 } } ] }
+              do:
+                - set_variable: { var: 来自场景, value: "探索场景" }
+                - switch_backdrop: { backdrop: 战斗场景 }
+                - broadcast: 进入战斗
+
+    # ==========================================================
+    # §47 玩家（被敌人 AI 追）
+    # ==========================================================
+    - name: 玩家
+      x: 0
+      y: 0
+      size: 30
+      costumes:
+        - { name: 玩, asset: assets/cat_mouse/cat.png }
+      scripts:
+        - - when_receive:
+              message: 玩家出生
+          - goto_xy: { x: 0, y: 0 }
+          - show: null
+        - - when_receive:
+              message: 回到探索
+          - show: null
+        - - when_key_pressed:
+            key: a
+            comment: §43 战斗输入：只有 battle_state=1 才接受，防止动画期间连击
+          - if:
+              cond: { equals: { a: {var: battle_state}, b: 1 } }
+              do:
+                - broadcast: 玩家攻击
+        - - when_key_pressed:
+            key: x
+          - broadcast: 获得经验
+        - - when_key_pressed:
+            key: z
+          - broadcast: 施加中毒
+        - - when_key_pressed:
+            key: c
+          - broadcast: 抽词条
+
+    # ==========================================================
+    # §46 判定点（节奏游戏的固定判定线）
+    # ==========================================================
+    - name: 判定点
+      x: -150
+      y: 120
+      size: 25
+      costumes:
+        - { name: 点, asset: assets/cat_mouse/cat_dot.png }
+      scripts:
+        - - when_green_flag_clicked:
+          - show: null
+        - - when_key_pressed:
+            key: j
+            comment: §46 判定：按距离分段给分（避免除零，也避免越近分越离谱）
+          - set_variable: { var: 判定差, value: { distance_to: { object: 判定点 } } }
+          - if:
+              cond: { less_than: { a: {var: 判定差}, b: 8 } }
+              do:
+                - if:
+                    cond: { less_than: { a: {var: 判定差}, b: 0.5 } }
+                    do:
+                      - change_variable: { var: 分数, by: 100 }
+                - if:
+                    cond: { and: [ { greater_than: { a: {var: 判定差}, b: 0.5 } }, { less_than: { a: {var: 判定差}, b: 2 } } ] }
+                    do:
+                      - change_variable: { var: 分数, by: 75 }
+                - change_variable: { var: 连击, by: 1 }
+            else:
+              - change_variable: { var: 连击, by: -1 }
+
+    # ==========================================================
+    # §48 视线探针（全透明 + 置后，不能让玩家看见）
+    # ==========================================================
+    - name: 视线探针
+      x: 0
+      y: 0
+      size: 10
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 针, asset: assets/cat_mouse/cat_dot.png }
+      scripts:
+        - - when_green_flag_clicked:
+          - hide: null
+        - - when_receive:
+              message: 视线检查
+          - set_effect: { effect: GHOST, value: 100 }
+          - go_to_front_back: back
+          - show: null
+
+    # ==========================================================
+    # §49 磁力吸取（距离衰减，力度必须夹紧防除零）
+    # ==========================================================
+    - name: 磁铁
+      x: 120
+      y: -100
+      size: 25
+      costumes:
+        - { name: 磁, asset: assets/cat_mouse/cat_dot.png }
+      scripts:
+        - - when_green_flag_clicked:
+          - set_variable: { var: 吸取范围, value: 100 }
+        - - when_receive:
+              message: 磁力
+          - set_variable: { var: 距离, value: { distance_to: { object: 玩家 } } }
+          - if:
+              cond: { less_than: { a: {var: 距离}, b: 1 } }
+              do:
+                - set_variable: { var: 距离, value: 1 }
+          - if:
+              cond: { less_than: { a: {var: 距离}, b: {var: 吸取范围} } }
+              do:
+                - point_towards: { TOWARDS: 玩家 }
+                - set_variable:
+                    var: 力度
+                    value: { divide: [ {var: 吸取范围}, {var: 距离} ] }
+                - move_steps: { var: 力度 }
+
+    # ==========================================================
+    # §49 弹球（速度 + 重力 + 反弹失能）
+    # ==========================================================
+    - name: 弹球
+      x: 0
+      y: 100
+      size: 20
+      costumes:
+        - { name: 球, asset: assets/cat_mouse/cat_dot.png }
+      variables:
+        vy: 0
+        vx: 3
+      scripts:
+        - - when_green_flag_clicked:
+          - set_variable: { var: vy, value: 0 }
+          - set_variable: { var: vx, value: 3 }
+          - forever:
+              do:
+              # 重力：速度变量每帧累加（不是直接改位置）
+              # 重力：速度变量每帧累加（不是直接改位置）
+              - change_variable: { var: vy, by: -2 }
+              # ⚠️ 摩擦必须「乘」不能「减」：vx -= 0.2 会让速度一路减到 -∞（球会加速飞走）
+              - set_variable: { var: vx, value: { multiply: [ {var: vx}, 0.99 ] } }
+              - change_y: { dy: {var: vy} }
+              - change_x: { dx: {var: vx} }
+              # 撞地板：反弹 + 能量损失
+              - if:
+                  cond: { less_than: { a: { y_position }, b: -160 } }
+                  do:
+                    - set_variable: { var: vy, value: { multiply: [ {var: vy}, -0.8 ] } }
+                    - goto_xy: { x: { x_position }, y: -160 }
+              # 撞左右墙：反弹 + 能量损失
+              - if:
+                  cond: { greater_than: { a: { x_position }, b: 230 } }
+                  do:
+                    - set_variable: { var: vx, value: { multiply: [ {var: vx}, -0.9 ] } }
+                    - goto_xy: { x: 230, y: { y_position } }
+              - if:
+                  cond: { less_than: { a: { x_position }, b: -230 } }
+                  do:
+                    - set_variable: { var: vx, value: { multiply: [ {var: vx}, -0.9 ] } }
+                    - goto_xy: { x: -230, y: { y_position } }
+
+    # ==========================================================
+    # §45 选关按钮（一个角色多造型，造型号 = 关卡号）
+    # ==========================================================
+    - name: 选关按钮
+      x: 0
+      y: 100
+      size: 50
+      costumes:
+        - { name: 关1, asset: assets/cat_mouse/btn_start.png }
+        - { name: 关2, asset: assets/cat_mouse/btn_start.png }
+        - { name: 关3, asset: assets/cat_mouse/btn_start.png }
+      variables:
+        造型序号: 1
+      scripts:
+        - - when_key_pressed:
+            key: right arrow
+          - next_costume: null
+          - set_variable: { var: 造型序号, value: { costume_number_name: null } }
+        - - when_key_pressed:
+            key: left arrow
+          - change_variable: { var: 造型序号, by: -1 }
+          - if:
+              cond: { less_than: { a: {var: 造型序号}, b: 1 } }
+              do:
+                - set_variable: { var: 造型序号, value: 1 }
+                - switch_costume: { costume: 关1 }
+        - - when_this_sprite_clicked:
+          - set_variable: { var: 当前关卡, value: { costume_number_name: null } }
+          - broadcast: 重置

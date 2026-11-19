@@ -1,0 +1,606 @@
+project:
+  name: 打地鼠（Whack-a-Mole）
+
+  # 首页（标题页）：点「开始游戏」才进正题（游戏类作品硬性要求 · 铁律待办）
+  title_screen:
+    backdrop: assets/whack_a_mole/title_bg.png
+    button:
+      asset: assets/whack_a_mole/btn_start.png
+      x: 0
+      y: -110
+    game_backdrop: 游戏场景
+    broadcast: 开始游戏
+
+  stage:
+    backdrops:
+      - { name: 游戏场景, asset: assets/whack_a_mole/ground.svg }
+    sounds:
+      - { name: 背景乐, asset: assets/audio/bgm_calm.wav }
+      - { name: 敲击音, asset: assets/audio/fx_hit.wav }
+      - { name: 得分音, asset: assets/audio/fx_coin.wav }
+      - { name: 冒头音, asset: assets/audio/fx_pop.wav }
+      - { name: 升级音, asset: assets/audio/ev_levelup.wav }
+      - { name: 胜利音, asset: assets/audio/ev_win.wav }
+      - { name: 失败音, asset: assets/audio/ev_lose.wav }
+      - { name: 点击音, asset: assets/audio/ui_click.wav }
+    # 全局变量：状态机 + 共享计数（跨角色读取必须全局）
+    variables:
+      分数: 0
+      时间: 60
+      最高分: 0            # 最佳分数：绝不挂在绿旗上清空（铁律6），只在刷新纪录时更新
+      关卡: 1
+      关阈值: 10          # 每超过该分数升一关、阈值 +10
+      连击: 0
+      游戏状态: 0          # 0=标题  1=游戏中  2=结束（状态机）
+      音效开: 1
+      冻结: 0              # 顿帧计数器（命中时短暂冻结所有地鼠，营造打击感）
+      震屏: 0              # 命中震屏强度（像素，衰减归零）
+      命中x: 0
+      命中y: 0
+    scripts:
+      # 绿旗：回到标题态，复位开关/冻结/震屏（最高分这里不碰）
+      - - when_green_flag_clicked:
+            comment: 绿旗：回到标题态，复位通用开关与顿帧/震屏
+        - set_variable: { var: 游戏状态, value: 0 }
+        - set_variable: { var: 音效开, value: 1 }
+        - set_variable: { var: 冻结, value: 0 }
+        - set_variable: { var: 震屏, value: 0 }
+      # 开始 / 再来一局：重置并进入游戏态
+      - - when_receive:
+            message: 开始游戏
+            comment: 开始/重开：复位分数/时间/关卡/连击，进入游戏态
+        - set_variable: { var: 分数, value: 0 }
+        - set_variable: { var: 时间, value: 60 }
+        - set_variable: { var: 关卡, value: 1 }
+        - set_variable: { var: 关阈值, value: 10 }
+        - set_variable: { var: 连击, value: 0 }
+        - set_variable: { var: 冻结, value: 0 }
+        - set_variable: { var: 震屏, value: 0 }
+        - set_variable: { var: 游戏状态, value: 1 }
+        - if:
+            cond: { equals: { a: {var: 音效开}, b: 1 } }
+            do:
+              - play_sound: { sound: 点击音 }
+      # BGM：游戏中循环播放（绿旗常驻，按游戏态开关）
+      - - when_green_flag_clicked:
+            comment: BGM 常驻循环，仅游戏中播放
+        - forever:
+            do:
+              - if_else:
+                  cond: { equals: { a: {var: 游戏状态}, b: 1 } }
+                  do:
+                    - if:
+                        cond: { equals: { a: {var: 音效开}, b: 1 } }
+                        do:
+                          - play_sound_until_done: { sound: 背景乐 }
+                  else:
+                    - wait: 0.2
+      # 倒计时：每秒减 1，归零就结束（游戏状态≠1 时停止计数）
+      - - when_receive:
+            message: 游戏开始
+            comment: 倒计时：每秒减 1，归零或结束态都停
+        - repeat:
+            times: 60
+            do:
+              - wait: 1
+              - if:
+                  cond:
+                    and:
+                      - equals: { a: {var: 游戏状态}, b: 1 }
+                      - greater_than: { a: {var: 时间}, b: 1 }
+                  do:
+                    - change_variable: { var: 时间, by: -1 }
+              - if:
+                  cond: { less_than: { a: {var: 时间}, b: 1 } }
+                  do:
+                    - broadcast: 时间到
+      # 时间到：切结算态、刷新最高分
+      - - when_receive:
+            message: 时间到
+            comment: 结算：进结束态，若破纪录则更新最高分
+        - set_variable: { var: 游戏状态, value: 2 }
+        - if:
+            cond: { greater_than: { a: {var: 分数}, b: {var: 最高分} } }
+            do:
+              - set_variable: { var: 最高分, value: {var: 分数} }
+        - wait: 0.2
+        - broadcast: 公布成绩
+      # 公布成绩：按是否得分播胜利/失败音
+      - - when_receive:
+            message: 公布成绩
+            comment: 结算音效：有得分=胜利，零分=失败
+        - if_else:
+            cond: { greater_than: { a: {var: 分数}, b: 0 } }
+            do:
+              - if: { cond: { equals: { a: {var: 音效开}, b: 1 } }, do: [ { play_sound: { sound: 胜利音 } } ] }
+            else:
+              - if: { cond: { equals: { a: {var: 音效开}, b: 1 } }, do: [ { play_sound: { sound: 失败音 } } ] }
+      # 加分：分数跨过阈值 → 升关（关卡上限 8，避免地鼠快到不合理）
+      - - when_receive:
+            message: 加分
+            comment: 关卡递进：分数超过关阈值就升一关并广播升级
+        - if:
+            cond: { greater_than: { a: {var: 分数}, b: {var: 关阈值} } }
+            do:
+              - if:
+                  cond: { less_than: { a: {var: 关卡}, b: 8 } }
+                  do:
+                    - change_variable: { var: 关卡, by: 1 }
+              - change_variable: { var: 关阈值, by: 10 }
+              - broadcast: 升级
+      # 返回首页：切回标题态（结算页按钮广播，地鼠随游戏态≠1 自行删除）
+      - - when_receive:
+            message: 回标题
+            comment: 返回首页：回标题态并切回标题背景
+        - set_variable: { var: 游戏状态, value: 0 }
+        - switch_backdrop: { backdrop: 首页 }
+
+  sprites:
+    # ==========================================================
+    # 地鼠（克隆体 ×9，每洞一只）：出洞/缩回状态机 + 缓动升降 + 点击命中
+    # ==========================================================
+    - name: 地鼠
+      x: 0
+      y: 0
+      size: 85
+      rotationStyle: don't rotate
+      costumes:
+        - { name: mole_up, asset: assets/whack_a_mole/mole_up.svg }
+        - { name: mole_hit, asset: assets/whack_a_mole/mole_hit.svg }
+      variables:
+        洞号: 1
+        洞x: 0
+        洞y: 0
+        状态: 0              # 0=缩回  1=冒头  2=被砸
+        计时: 0
+        目标y: 0
+        当前y: 0
+      scripts:
+        - - when_green_flag_clicked:
+              comment: 原始角色只是「克隆工厂」，要藏起来
+          - { hide: null }
+        - - when_receive:
+              message: 游戏开始
+              comment: 在 9 个洞位各生成一个克隆（写洞号/洞坐标后再克隆，克隆继承这些值）
+          - { hide: null }
+          - set_variable: { var: 洞号, value: 1 }
+          - set_variable: { var: 洞x, value: -150 }
+          - set_variable: { var: 洞y, value: 70 }
+          - create_clone_of: { clone: _myself_ }
+          - set_variable: { var: 洞号, value: 2 }
+          - set_variable: { var: 洞x, value: 0 }
+          - set_variable: { var: 洞y, value: 70 }
+          - create_clone_of: { clone: _myself_ }
+          - set_variable: { var: 洞号, value: 3 }
+          - set_variable: { var: 洞x, value: 150 }
+          - set_variable: { var: 洞y, value: 70 }
+          - create_clone_of: { clone: _myself_ }
+          - set_variable: { var: 洞号, value: 4 }
+          - set_variable: { var: 洞x, value: -150 }
+          - set_variable: { var: 洞y, value: -10 }
+          - create_clone_of: { clone: _myself_ }
+          - set_variable: { var: 洞号, value: 5 }
+          - set_variable: { var: 洞x, value: 0 }
+          - set_variable: { var: 洞y, value: -10 }
+          - create_clone_of: { clone: _myself_ }
+          - set_variable: { var: 洞号, value: 6 }
+          - set_variable: { var: 洞x, value: 150 }
+          - set_variable: { var: 洞y, value: -10 }
+          - create_clone_of: { clone: _myself_ }
+          - set_variable: { var: 洞号, value: 7 }
+          - set_variable: { var: 洞x, value: -150 }
+          - set_variable: { var: 洞y, value: -90 }
+          - create_clone_of: { clone: _myself_ }
+          - set_variable: { var: 洞号, value: 8 }
+          - set_variable: { var: 洞x, value: 0 }
+          - set_variable: { var: 洞y, value: -90 }
+          - create_clone_of: { clone: _myself_ }
+          - set_variable: { var: 洞号, value: 9 }
+          - set_variable: { var: 洞x, value: 150 }
+          - set_variable: { var: 洞y, value: -90 }
+          - create_clone_of: { clone: _myself_ }
+        - - when_start_as_clone:
+              comment: 每只克隆继承洞号/洞坐标；状态机 + 缓动升降 + 震屏偏移
+          - { hide: null }
+          - set_variable: { var: 状态, value: 0 }
+          - set_variable: { var: 计时, value: 0 }
+          - set_variable: { var: 目标y, value: {subtract: [{var: 洞y}, 45]} }
+          - set_variable: { var: 当前y, value: {subtract: [{var: 洞y}, 45]} }
+          - forever:
+              do:
+                # 顿帧：命中瞬间全局冻结几帧（命中顿挫感，铁律9 §226）
+                - if_else:
+                    cond: { greater_than: { a: {var: 冻结}, b: 0 } }
+                    do:
+                      - change_variable: { var: 冻结, by: -1 }
+                      - wait: 0.03
+                    else:
+                      # 游戏结束或回标题：克隆自行删除
+                      - if_else: { cond: { equals: { a: {var: 游戏状态}, b: 1 } }, else: [ { delete_this_clone: null } ] }
+                      # —— 状态机 ——
+                      # 缩回中：等随机延迟后冒头（延迟随关卡缩短，越快越难）
+                      - if:
+                          cond: { equals: { a: {var: 状态}, b: 0 } }
+                          do:
+                            - change_variable: { var: 计时, by: 1 }
+                            - if:
+                                cond: { greater_than: { a: {var: 计时}, b: {subtract: [60, {multiply: [{var: 关卡}, 5]}]} } }
+                                do:
+                                  - set_variable: { var: 状态, value: 1 }
+                                  - set_variable: { var: 计时, value: 0 }
+                                  - set_variable: { var: 目标y, value: {var: 洞y} }
+                                  - set_variable: { var: 当前y, value: {subtract: [{var: 洞y}, 45]} }
+                                  - { show: null }
+                                  - switch_costume: { costume: mole_up }
+                                  - if: { cond: { equals: { a: {var: 音效开}, b: 1 } }, do: [ { play_sound: { sound: 冒头音 } } ] }
+                      # 冒头中：停留片刻后缩回；缩回即视为漏击，连击断
+                      - if:
+                          cond: { equals: { a: {var: 状态}, b: 1 } }
+                          do:
+                            - change_variable: { var: 计时, by: 1 }
+                            - if:
+                                cond: { greater_than: { a: {var: 计时}, b: {subtract: [38, {multiply: [{var: 关卡}, 3]}]} } }
+                                do:
+                                  - set_variable: { var: 状态, value: 0 }
+                                  - set_variable: { var: 计时, value: 0 }
+                                  - set_variable: { var: 目标y, value: {subtract: [{var: 洞y}, 45]} }
+                                  - set_variable: { var: 连击, value: 0 }
+                      # 被砸中：换眩晕造型停留 0.4s 后缩回
+                      - if:
+                          cond: { equals: { a: {var: 状态}, b: 2 } }
+                          do:
+                            - change_variable: { var: 计时, by: 1 }
+                            - if:
+                                cond: { equals: { a: {var: 计时}, b: 1 } }
+                                do:
+                                  - switch_costume: { costume: mole_hit }
+                                  - { show: null }
+                                  - set_variable: { var: 目标y, value: {var: 洞y} }
+                            - if:
+                                cond: { greater_than: { a: {var: 计时}, b: 12 } }
+                                do:
+                                  - set_variable: { var: 状态, value: 0 }
+                                  - set_variable: { var: 计时, value: 0 }
+                                  - set_variable: { var: 目标y, value: {subtract: [{var: 洞y}, 45]} }
+                # —— 渲染：缓动升降（一切变化有帧，铁律9 §223）+ 震屏偏移 ——
+                - set_variable:
+                    var: 当前y
+                    value: { add: [ {var: 当前y}, { multiply: [ { subtract: [ {var: 目标y}, {var: 当前y} ] }, 0.3 ] } ] }
+                - if:
+                    cond:
+                      and:
+                        - equals: { a: {var: 状态}, b: 0 }
+                        - less_than: { a: {var: 当前y}, b: {subtract: [{var: 洞y}, 40]} }
+                    do:
+                      - { hide: null }
+                - set_x: { x: { add: [ {var: 洞x}, { multiply: [ {random: [-1, 1]}, {var: 震屏} ] } ] } }
+                - set_y: { y: { add: [ {var: 当前y}, { multiply: [ {random: [-1, 1]}, {var: 震屏} ] } ] } }
+        - - when_this_sprite_clicked:
+              comment: 点击命中（仅冒头且游戏中有效）：计分/连击/顿帧/震屏/音效/粒子
+          - if:
+              cond:
+                and:
+                  - equals: { a: {var: 游戏状态}, b: 1 }
+                  - equals: { a: {var: 状态}, b: 1 }
+              do:
+                - set_variable: { var: 状态, value: 2 }
+                - set_variable: { var: 计时, value: 0 }
+                - set_variable: { var: 连击, value: { add: [ {var: 连击}, 1 ] } }
+                - if: { cond: { greater_than: { a: {var: 连击}, b: 10 } }, do: [ { set_variable: { var: 连击, value: 10 } } ] }
+                - set_variable: { var: 分数, value: { add: [ {var: 分数}, {var: 连击} ] } }
+                - set_variable: { var: 命中x, value: { x_position } }
+                - set_variable: { var: 命中y, value: { y_position } }
+                - if: { cond: { equals: { a: {var: 音效开}, b: 1 } }, do: [ { play_sound: { sound: 敲击音 } } ] }
+                - set_variable: { var: 冻结, value: 4 }
+                - set_variable: { var: 震屏, value: 3 }
+                - broadcast: 命中
+                - broadcast: 加分
+
+    # ==========================================================
+    # 锤子：跟随鼠标，命中时挥下（游戏手感 · 铁律9 §231）
+    # ==========================================================
+    - name: 锤子
+      x: 0
+      y: 0
+      size: 70
+      rotationStyle: all around
+      costumes:
+        - { name: hammer, asset: assets/whack_a_mole/hammer.svg }
+      variables:
+        锤摆: 0
+      scripts:
+        - - when_green_flag_clicked:
+          - { hide: null }
+        - - when_receive:
+              message: 游戏开始
+          - { show: null }
+          - go_to_front_back: front
+        - - when_receive:
+              message: 公布成绩
+          - { hide: null }
+        - - when_receive:
+              message: 回标题
+          - { hide: null }
+        - - when_receive:
+              message: 命中
+              comment: 命中时挥锤（锤摆=1，逐帧衰减回正）
+          - set_variable: { var: 锤摆, value: 1 }
+        - - when_green_flag_clicked:
+          - forever:
+              do:
+                - if:
+                    cond: { equals: { a: {var: 游戏状态}, b: 1 } }
+                    do:
+                      - goto_xy: { x: { mouse_x }, y: { mouse_y } }
+                      - if_else:
+                          cond: { greater_than: { a: {var: 锤摆}, b: 0 } }
+                          do:
+                            - point_in_direction: { direction: { multiply: [ {var: 锤摆}, -40 ] } }
+                            - set_variable: { var: 锤摆, value: { subtract: [ {var: 锤摆}, 0.15 ] } }
+                            - if: { cond: { less_than: { a: {var: 锤摆}, b: 0 } }, do: [ { set_variable: { var: 锤摆, value: 0 } } ] }
+                          else:
+                            - point_in_direction: { direction: 0 }
+
+    # ==========================================================
+    # 火花：命中处的粒子爆裂（克隆粒子系统，私有 vx/vy + 阻尼用乘，铁律5）
+    # ==========================================================
+    - name: 火花
+      x: 0
+      y: 0
+      size: 50
+      rotationStyle: don't rotate
+      costumes:
+        - { name: spark, asset: assets/whack_a_mole/spark.svg }
+      variables:
+        vx: 0
+        vy: 0
+        是否克隆: 0
+      scripts:
+        - - when_green_flag_clicked:
+              comment: 本体只是工厂，藏起来
+          - { hide: null }
+          - set_variable: { var: 是否克隆, value: 0 }
+        - - when_receive:
+              message: 命中
+              comment: 在命中位置爆一簇火花
+          - goto_xy: { x: {var: 命中x}, y: {var: 命中y} }
+          - repeat:
+              times: 10
+              do:
+                - create_clone_of: { clone: _myself_ }
+        - - when_start_as_clone:
+              comment: 每个克隆一份私有速度，飞散后渐隐
+          - { show: null }
+          - set_variable: { var: 是否克隆, value: 1 }
+          - set_variable: { var: vx, value: {random: [-4, 4]} }
+          - set_variable: { var: vy, value: {random: [-4, 4]} }
+          - repeat: 14
+            do:
+              - change_effect: { effect: GHOST, value: 6 }
+              - change_x: { dx: { var: vx } }
+              - change_y: { dy: { var: vy } }
+              # 阻尼用「乘」不用「减」（铁律5）
+              - set_variable: { var: vx, value: { multiply: [ {var: vx}, 0.92 ] } }
+              - set_variable: { var: vy, value: { multiply: [ {var: vy}, 0.92 ] } }
+          - delete_this_clone: null
+
+    # ==========================================================
+    # 分数显示（数字精灵 + 文字标签，铁律1）
+    # ==========================================================
+    - name: 分数显示
+      x: -175
+      y: 150
+      size: 95
+      digit_display:
+        variable: 分数
+        assets: assets/whack_a_mole
+        digits: 3
+        label: 分数
+        label_side: left
+        label_size: 90
+        label_font: 28
+        label_color: "#4F4A47"
+
+    # ==========================================================
+    # 时间显示（倒计时）
+    # ==========================================================
+    - name: 时间显示
+      x: -25
+      y: 150
+      size: 95
+      digit_display:
+        variable: 时间
+        assets: assets/whack_a_mole
+        digits: 2
+        label: 时间
+        label_side: left
+        label_size: 90
+        label_font: 28
+        label_color: "#4F4A47"
+
+    # ==========================================================
+    # 最佳显示（历史最高分，绿旗不复位，铁律6）
+    # ==========================================================
+    - name: 最佳显示
+      x: 105
+      y: 150
+      size: 95
+      digit_display:
+        variable: 最高分
+        assets: assets/whack_a_mole
+        digits: 3
+        label: 最佳
+        label_side: left
+        label_size: 90
+        label_font: 28
+        label_color: "#4F4A47"
+
+    # ==========================================================
+    # 升级飘字：每过一关中央弹出「升级！」
+    # ==========================================================
+    - name: 升级飘字
+      x: 0
+      y: 60
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 升级字, asset: assets/whack_a_mole/levelup.png }
+      scripts:
+        - - when_green_flag_clicked:
+          - { hide: null }
+        - - when_receive:
+              message: 游戏开始
+          - { hide: null }
+        - - when_receive:
+              message: 升级
+              comment: 过一关：中央弹出「升级！」停留 0.8 秒后消失
+          - { show: null }
+          - wait: 0.8
+          - { hide: null }
+
+    # ==========================================================
+    # 结算页：时间到的结算画面
+    # ==========================================================
+    - name: 结算页
+      x: 0
+      y: 0
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 结算造型, asset: assets/whack_a_mole/settlement.png }
+      scripts:
+        - - when_green_flag_clicked:
+          - { hide: null }
+        - - when_receive:
+              message: 游戏开始
+          - { hide: null }
+        - - when_receive:
+              message: 公布成绩
+          - { show: null }
+          - go_to_front_back: back
+        - - when_receive:
+              message: 回标题
+          - { hide: null }
+
+    # ==========================================================
+    # 再来一局按钮：结算页出现时可点（铁律7，复用开始游戏广播做整局重置）
+    # ==========================================================
+    - name: 再来一局
+      x: 0
+      y: -90
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 重开造型, asset: assets/whack_a_mole/btn_restart.png }
+      scripts:
+        - - when_green_flag_clicked:
+          - { hide: null }
+        - - when_receive:
+              message: 游戏开始
+          - { hide: null }
+        - - when_receive:
+              message: 公布成绩
+          - { show: null }
+          - go_to_front_back: front
+        - - when_receive:
+              message: 回标题
+          - { hide: null }
+        - - when_this_sprite_clicked:
+              comment: 点击按钮：重开（复用开始游戏广播做整局重置）
+          - broadcast: 开始游戏
+
+    # ==========================================================
+    # 返回首页按钮（铁律7：结算页必须有返回首页）
+    # 注：title_screen 会自动生成「开始按钮」，但点击后它会永久隐藏；
+    #     这里用「首页开始」在标题/返回时把它重新显示出来。
+    # ==========================================================
+    - name: 首页开始
+      x: 0
+      y: -110
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 按钮, asset: assets/whack_a_mole/btn_start.png }
+      scripts:
+        - - when_green_flag_clicked:
+          - { show: null }
+        - - when_receive:
+              message: 游戏开始
+          - { hide: null }
+        - - when_receive:
+              message: 回标题
+          - { show: null }
+        - - when_this_sprite_clicked:
+          - broadcast: 开始游戏
+
+    - name: 返回首页
+      x: 0
+      y: -135
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 返回造型, asset: assets/whack_a_mole/btn_home.png }
+      scripts:
+        - - when_green_flag_clicked:
+          - { hide: null }
+        - - when_receive:
+              message: 游戏开始
+          - { hide: null }
+        - - when_receive:
+              message: 公布成绩
+          - { show: null }
+          - go_to_front_back: front
+        - - when_receive:
+              message: 回标题
+          - { hide: null }
+        - - when_this_sprite_clicked:
+              comment: 返回首页：切回标题并复位游戏态（地鼠随游戏态≠1 自行删除）
+          - broadcast: 回标题
+
+    # ==========================================================
+    # 署名卡（防搬 · 合规署名）：首页与结算页显示，游戏中隐藏（铁律3）
+    # ==========================================================
+    - name: 署名
+      x: 0
+      y: -165
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 署名造型, asset: assets/whack_a_mole/byline.png }
+      scripts:
+        - - when_green_flag_clicked:
+          - { show: null }
+        - - when_receive:
+              message: 游戏开始
+          - { hide: null }
+        - - when_receive:
+              message: 公布成绩
+          - { show: null }
+        - - when_receive:
+              message: 回标题
+          - { show: null }
+
+# ============================================================
+# 手感层（声明式，构建器自动展开为真实积木：挤压拉伸/白闪/震屏）
+# 质量焊死在编译期：骨架自带，AI 生成的作品跳不过去。键名用 trigger（别用 on）。
+# ============================================================
+juice:
+  - sprite: 锤子
+    trigger: 命中
+    squash: 16
+    shake: 5
+  - sprite: 地鼠
+    trigger: 命中
+    squash: 20
+    flash: 30
+  - sprite: 升级飘字
+    trigger: 升级
+    squash: 25
+    flash: 30
+  - sprite: 结算页
+    trigger: 公布成绩
+    squash: 20
+    flash: 40
+  - sprite: 再来一局
+    trigger: 公布成绩
+    squash: 15

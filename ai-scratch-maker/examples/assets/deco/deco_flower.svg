@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFEDB3"/>
+    <stop offset="1" stop-color="#FAF19B"/>
+  </linearGradient>
+  <ellipse cx="60" cy="100" rx="26" ry="6" fill="#4F4A47" opacity="0.14"/>
+  <ellipse cx="60" cy="36" rx="17" ry="20" fill="#876C26"/>
+  <ellipse cx="80.9232" cy="51.2016" rx="17" ry="20" fill="#876C26"/>
+  <ellipse cx="72.9313" cy="75.7984" rx="17" ry="20" fill="#876C26"/>
+  <ellipse cx="47.0687" cy="75.7984" rx="17" ry="20" fill="#876C26"/>
+  <ellipse cx="39.0768" cy="51.2016" rx="17" ry="20" fill="#876C26"/>
+  <ellipse cx="60" cy="37" rx="14" ry="17" fill="url(#body)"/>
+  <ellipse cx="79.9722" cy="51.5106" rx="14" ry="17" fill="url(#body)"/>
+  <ellipse cx="72.3435" cy="74.9894" rx="14" ry="17" fill="url(#body)"/>
+  <ellipse cx="47.6565" cy="74.9894" rx="14" ry="17" fill="url(#body)"/>
+  <ellipse cx="40.0278" cy="51.5106" rx="14" ry="17" fill="url(#body)"/>
+  <circle cx="60" cy="58" r="15" fill="#C6FF2A"/>
+  <circle cx="60" cy="58" r="11" fill="#FFCF4D"/>
+  <ellipse cx="54" cy="51" rx="5" ry="4" fill="#FFFFFF" opacity="0.6"/>
+</svg>

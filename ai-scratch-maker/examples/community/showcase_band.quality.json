@@ -1,0 +1,12 @@
+{
+  "label": "游戏 / 互动作品（默认档）",
+  "min_costumes": 20,
+  "min_sounds": 8,
+  "min_sprites": 4,
+  "min_bytes": 150000,
+  "min_scenes": 2,
+  "min_blocks": 150,
+  "profile": "game",
+  "_hint": "按题材逐项调整 min_*；不确定就用当前值。交付时 --spec 指向本文件。",
+  "genre": "music"
+}

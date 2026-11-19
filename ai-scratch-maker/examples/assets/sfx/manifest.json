@@ -1,0 +1,214 @@
+{
+  "levels": {
+    "ui": -18,
+    "fx": -9,
+    "ev": -3,
+    "amb": -15
+  },
+  "level_desc": {
+    "ui": "界面微反馈（最频繁，必须最轻）",
+    "fx": "游戏内即时反馈（频繁）",
+    "ev": "事件强调（偶尔，可以响）",
+    "amb": "环境铺底（持续，不可抢戏）"
+  },
+  "sounds": [
+    {
+      "name": "ui_hover",
+      "group": "ui",
+      "file": "ui_hover.wav",
+      "dur": 0.045,
+      "peak": 0.1259,
+      "peak_db": -18.0,
+      "use": "鼠标悬停在按钮上（最高频，必须最轻）"
+    },
+    {
+      "name": "ui_click",
+      "group": "ui",
+      "file": "ui_click.wav",
+      "dur": 0.06,
+      "peak": 0.1259,
+      "peak_db": -18.0,
+      "use": "按下按钮（任何主要操作）"
+    },
+    {
+      "name": "ui_back",
+      "group": "ui",
+      "file": "ui_back.wav",
+      "dur": 0.07,
+      "peak": 0.1259,
+      "peak_db": -18.0,
+      "use": "返回 / 取消 / 关闭"
+    },
+    {
+      "name": "ui_toggle_on",
+      "group": "ui",
+      "file": "ui_toggle_on.wav",
+      "dur": 0.08,
+      "peak": 0.1259,
+      "peak_db": -18.0,
+      "use": "开关打开"
+    },
+    {
+      "name": "ui_toggle_off",
+      "group": "ui",
+      "file": "ui_toggle_off.wav",
+      "dur": 0.08,
+      "peak": 0.1259,
+      "peak_db": -18.0,
+      "use": "开关关闭"
+    },
+    {
+      "name": "ui_error",
+      "group": "ui",
+      "file": "ui_error.wav",
+      "dur": 0.19,
+      "peak": 0.1259,
+      "peak_db": -18.0,
+      "use": "不可用操作 / 输入错误"
+    },
+    {
+      "name": "fx_coin",
+      "group": "fx",
+      "file": "fx_coin.wav",
+      "dur": 0.18,
+      "peak": 0.3548,
+      "peak_db": -9.0,
+      "use": "拾取金币 / 加一分"
+    },
+    {
+      "name": "fx_jump",
+      "group": "fx",
+      "file": "fx_jump.wav",
+      "dur": 0.16,
+      "peak": 0.3548,
+      "peak_db": -9.0,
+      "use": "起跳"
+    },
+    {
+      "name": "fx_land",
+      "group": "fx",
+      "file": "fx_land.wav",
+      "dur": 0.12,
+      "peak": 0.3548,
+      "peak_db": -9.0,
+      "use": "落地"
+    },
+    {
+      "name": "fx_hit",
+      "group": "fx",
+      "file": "fx_hit.wav",
+      "dur": 0.2,
+      "peak": 0.3548,
+      "peak_db": -9.0,
+      "use": "受击 / 造成伤害"
+    },
+    {
+      "name": "fx_pickup",
+      "group": "fx",
+      "file": "fx_pickup.wav",
+      "dur": 0.16,
+      "peak": 0.3548,
+      "peak_db": -9.0,
+      "use": "获得道具 / 拾取"
+    },
+    {
+      "name": "fx_swipe",
+      "group": "fx",
+      "file": "fx_swipe.wav",
+      "dur": 0.14,
+      "peak": 0.3548,
+      "peak_db": -9.0,
+      "use": "挥砍 / 冲刺"
+    },
+    {
+      "name": "fx_pop",
+      "group": "fx",
+      "file": "fx_pop.wav",
+      "dur": 0.1,
+      "peak": 0.3548,
+      "peak_db": -9.0,
+      "use": "UI 元素弹出（也可用于泡泡/果实）"
+    },
+    {
+      "name": "fx_heal",
+      "group": "fx",
+      "file": "fx_heal.wav",
+      "dur": 0.36,
+      "peak": 0.3548,
+      "peak_db": -9.0,
+      "use": "治疗 / 恢复"
+    },
+    {
+      "name": "ev_open",
+      "group": "ev",
+      "file": "ev_open.wav",
+      "dur": 0.48,
+      "peak": 0.7079,
+      "peak_db": -3.0,
+      "use": "开门 / 启动机械"
+    },
+    {
+      "name": "ev_close",
+      "group": "ev",
+      "file": "ev_close.wav",
+      "dur": 0.5,
+      "peak": 0.7079,
+      "peak_db": -3.0,
+      "use": "关门 / 停机"
+    },
+    {
+      "name": "ev_levelup",
+      "group": "ev",
+      "file": "ev_levelup.wav",
+      "dur": 0.58,
+      "peak": 0.7079,
+      "peak_db": -3.0,
+      "use": "升级 / 解锁"
+    },
+    {
+      "name": "ev_win",
+      "group": "ev",
+      "file": "ev_win.wav",
+      "dur": 1.08,
+      "peak": 0.7079,
+      "peak_db": -3.0,
+      "use": "胜利 / 通关"
+    },
+    {
+      "name": "ev_lose",
+      "group": "ev",
+      "file": "ev_lose.wav",
+      "dur": 0.9,
+      "peak": 0.7079,
+      "peak_db": -3.0,
+      "use": "失败 / 死亡"
+    },
+    {
+      "name": "ev_alarm",
+      "group": "ev",
+      "file": "ev_alarm.wav",
+      "dur": 0.7,
+      "peak": 0.7079,
+      "peak_db": -3.0,
+      "use": "警报 / 倒计时告急"
+    },
+    {
+      "name": "amb_rain",
+      "group": "amb",
+      "file": "amb_rain.wav",
+      "dur": 2.0,
+      "peak": 0.1778,
+      "peak_db": -15.0,
+      "use": "雨天环境（循环）"
+    },
+    {
+      "name": "amb_wind",
+      "group": "amb",
+      "file": "amb_wind.wav",
+      "dur": 2.0,
+      "peak": 0.1778,
+      "peak_db": -15.0,
+      "use": "风声环境（循环）"
+    }
+  ]
+}

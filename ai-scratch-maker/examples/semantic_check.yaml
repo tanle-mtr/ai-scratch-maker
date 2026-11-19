@@ -1,0 +1,294 @@
+project:
+  name: 语义探针
+  stage:
+    backdrops:
+    - name: 背景1
+      asset: assets/backdrop1.svg
+    variables:
+      基数: 10
+      t01: 0
+      t02: 0
+      t03: 0
+      t04: 0
+      t05: 0
+      t06: 0
+      t07: 0
+      t08: 0
+      t09: 0
+      t10: 0
+      t11: 0
+      t12: 0
+      t13: 0
+      t14: 0
+      t15: 0
+      t16: 0
+      t17: 0
+      t18: 0
+      t19: 0
+      t20: 0
+      t21: 0
+      t22: 0
+      c01: 0
+      c02: 0
+      c03: 0
+      c04: 0
+      c05: 0
+      t23: 0
+      t24: 0
+      t25: 0
+      t26: 0
+    lists:
+      测试列表: []
+    scripts:
+    - - when_green_flag_clicked: null
+      - set_variable:
+          var: t01
+          value:
+            add:
+            - 2
+            - 3
+      - set_variable:
+          var: t02
+          value:
+            subtract:
+            - 10
+            - 4
+      - set_variable:
+          var: t03
+          value:
+            multiply:
+            - 3
+            - 4
+      - set_variable:
+          var: t04
+          value:
+            divide:
+            - 12
+            - 4
+      - set_variable:
+          var: t05
+          value:
+            mod:
+            - 17
+            - 5
+      - set_variable:
+          var: t06
+          value:
+            round:
+            - 3.6
+      - set_variable:
+          var: t07
+          value:
+            mathop:
+              op: abs
+              num: -7
+      - set_variable:
+          var: t08
+          value:
+            mathop:
+              op: sqrt
+              num: 9
+      - set_variable:
+          var: t09
+          value:
+            add:
+            - 1
+            - add:
+              - 2
+              - 3
+      - set_variable:
+          var: t10
+          value:
+            subtract:
+            - 10
+            - subtract:
+              - 3
+              - 1
+      - set_variable:
+          var: t11
+          value:
+            equals:
+            - 5
+            - 5
+      - set_variable:
+          var: t12
+          value:
+            lt:
+            - 3
+            - 5
+      - set_variable:
+          var: t13
+          value:
+            gt:
+            - 3
+            - 5
+      - set_variable:
+          var: t14
+          value:
+            equals:
+            - '5'
+            - 5
+      - set_variable:
+          var: t15
+          value:
+            and:
+            - equals:
+              - 1
+              - 1
+            - equals:
+              - 2
+              - 2
+      - set_variable:
+          var: t16
+          value:
+            or:
+            - equals:
+              - 1
+              - 2
+            - equals:
+              - 3
+              - 3
+      - set_variable:
+          var: t17
+          value:
+            not:
+              operand:
+                equals:
+                - 1
+                - 2
+      - set_variable:
+          var: t18
+          value:
+            join:
+            - ab
+            - cd
+      - set_variable:
+          var: t19
+          value:
+            letter_of:
+            - 2
+            - abc
+      - set_variable:
+          var: t20
+          value:
+            length_of:
+            - hello
+      - set_variable:
+          var: t21
+          value:
+            contains:
+            - hello
+            - ell
+      - set_variable:
+          var: t22
+          value:
+            add:
+            - var: 基数
+            - 7
+      # --- N 元 and/or 自动嵌套（铁律 IR 坑：Scratch 只有 2 输入槽，须手/自动嵌套）---
+      - set_variable:
+          var: t23
+          value:
+            and:
+            - equals:
+              - 1
+              - 1
+            - equals:
+              - 2
+              - 2
+            - equals:
+              - 3
+              - 3
+      - set_variable:
+          var: t24
+          value:
+            or:
+            - equals:
+              - 1
+              - 2
+            - equals:
+              - 3
+              - 3
+            - equals:
+              - 4
+              - 5
+      - set_variable:
+          var: t25
+          value:
+            and:
+            - equals:
+              - 1
+              - 1
+            - equals:
+              - 2
+              - 3
+            - equals:
+              - 4
+              - 4
+      # --- 嵌套 join（join 只有 2 输入槽，3 段拼接须嵌套）---
+      - set_variable:
+          var: t26
+          value:
+            join:
+            - join:
+              - a
+              - b
+            - c
+      - set_variable:
+          var: c01
+          value: 0
+      - repeat:
+          times: 3
+          do:
+          - change_variable:
+              var: c01
+              value: 2
+      - set_variable:
+          var: c02
+          value: 0
+      - if_else:
+          cond:
+            equals:
+            - 1
+            - 1
+          do:
+          - set_variable:
+              var: c02
+              value: 11
+          else:
+          - set_variable:
+              var: c02
+              value: 22
+      - set_variable:
+          var: c03
+          value: 0
+      - if_else:
+          cond:
+            equals:
+            - 1
+            - 2
+          do:
+          - set_variable:
+              var: c03
+              value: 11
+          else:
+          - set_variable:
+              var: c03
+              value: 33
+      - add_to_list:
+          item: apple
+          list: 测试列表
+      - add_to_list:
+          item: banana
+          list: 测试列表
+      - set_variable:
+          var: c04
+          value:
+            item_of_list:
+              index: 2
+              list: 测试列表
+      - set_variable:
+          var: c05
+          value:
+            length_of_list:
+              list: 测试列表

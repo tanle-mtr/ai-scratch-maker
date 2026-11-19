@@ -1,0 +1,3764 @@
+project:
+  name: 五款代表作音游复刻引擎（Phigros / PJSK / Milthm / 跳舞的线 / 滚动的天空）
+  stage:
+    backdrops:
+    - name: 舞台
+      asset: assets/uikit/bg_menu.svg
+    variables:
+      结果: ''
+      帧计数: 0
+      自动帧: 1
+      模式: 1
+      songTime: 0
+      输入时刻: 0
+      有效时刻: 0
+      目标时刻: 0
+      误差: 0
+      绝对误差: 0
+      帧长ms: 33
+      校准ms: 0
+      窗1: 80
+      窗2: 180
+      窗3: 220
+      窗4: 220
+      窗5: 220
+      权1: 100
+      权2: 65
+      权3: 0
+      权4: 0
+      权5: 0
+      权6: 0
+      断连阈值: 3
+      档位数: 4
+      候选窗口: 300
+      档1名: Perfect
+      档2名: Good
+      档3名: Bad
+      档4名: '-'
+      档5名: '-'
+      档6名: Miss
+      档位: 0
+      档名词: ''
+      本档权重: 0
+      临时: 0
+      体类型: 1
+      线X: 0
+      线Y: 0
+      线角: 0
+      圈X: 0
+      圈Y: 0
+      圈半径: 100
+      全屏判定: 0
+      不透明度: 255
+      切向坐标: 0
+      法向坐标: 0
+      距离平方: 0
+      半径平方: 0
+      半宽: 50
+      宽度单位: 1
+      输入X: 0
+      输入Y: 0
+      输入格: 0
+      输入列: 0
+      输入动作: 1
+      输入方向: 0
+      音符方向: 0
+      音符数: 0
+      最近索引: 0
+      最近误差: 0
+      扫描指针: 1
+      音符类型: 0
+      音符参数: 0
+      音符时长: 0
+      音符线号: 0
+      i: 0
+      j: 0
+      临时时刻: 0
+      尾索引: 0
+      分数: 0
+      裸分: 0
+      连击: 0
+      最大连击: 0
+      准确率: 0
+      评级: ''
+      满分总分: 0
+      档1数: 0
+      档2数: 0
+      档3数: 0
+      档4数: 0
+      档5数: 0
+      档Miss数: 0
+      生命: 1000
+      生命扣减: 0
+      bpm: 100
+      Tms: 18.75
+      timeT: 0
+      事件起: 0
+      事件止: 0
+      事件起值: 0
+      事件终值: 0
+      事件数: 0
+      事件插值: 0
+      闪电HP: 3
+      闪电Exact: 0
+      闪电Miss: 0
+      Ξ数: 0
+      活跃雨丝: 0
+      屏上手指: 0
+      闪电溢出: 0
+      当前行: 0
+      每行ms: 500
+      当前列: 2
+      连续列: 2.0
+      地板: 1
+      障碍: 0
+      跳板: 0
+      收集: 0
+      当前段: 0
+      转角时刻: 0
+      转向窗口: 100
+      检查点: 0
+      失败数: 0
+      完成度: 0
+      腾空: 0
+      跳高: 0
+      跳远: 0
+      格宽: 60
+      行收集数: 0
+    lists:
+      谱时刻:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      谱类型:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      谱位置:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      谱线号:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      谱时长:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      谱方向:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      谱参数:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      已判定:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      事件线:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      事件型:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      事件起表:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      事件止表:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      事件起值表:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      事件终值表:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      转角时刻:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      已转:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      段检查点:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      行地板:
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      行障碍:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      行跳板:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      行收集:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      行障碍列:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      行地板列:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+    scripts:
+    - - when_green_flag_clicked: null
+      - set_variable:
+          var: 自动帧
+          value: 1
+      - set_variable:
+          var: 结果
+          value: 五款音游复刻引擎：Phigros/PJSK/Milthm/跳舞的线/滚动的天空
+      - show: null
+      - forever:
+          do:
+          - if:
+              cond:
+                equals:
+                - var: 自动帧
+                - 1
+              do:
+              - change_variable:
+                  var: 帧计数
+                  by: 1
+              - broadcast:
+                  message: 帧
+          - wait:
+              secs: 0.02
+    - - when_receive:
+          message: 重置
+      - set_variable:
+          var: 分数
+          value: 0
+      - set_variable:
+          var: 裸分
+          value: 0
+      - set_variable:
+          var: 连击
+          value: 0
+      - set_variable:
+          var: 最大连击
+          value: 0
+      - set_variable:
+          var: 准确率
+          value: 0
+      - set_variable:
+          var: 评级
+          value: ''
+      - set_variable:
+          var: songTime
+          value: 0
+      - set_variable:
+          var: 档1数
+          value: 0
+      - set_variable:
+          var: 档2数
+          value: 0
+      - set_variable:
+          var: 档3数
+          value: 0
+      - set_variable:
+          var: 档4数
+          value: 0
+      - set_variable:
+          var: 档5数
+          value: 0
+      - set_variable:
+          var: 档Miss数
+          value: 0
+      - set_variable:
+          var: 扫描指针
+          value: 1
+      - set_variable:
+          var: 档位
+          value: 0
+      - set_variable:
+          var: 全屏判定
+          value: 0
+      - set_variable:
+          var: 候选窗口
+          value: 300
+      - set_variable:
+          var: 活跃雨丝
+          value: 0
+      - set_variable:
+          var: 屏上手指
+          value: 0
+      - set_variable:
+          var: 检查点
+          value: 0
+      - set_variable:
+          var: 失败数
+          value: 0
+      - set_variable:
+          var: 完成度
+          value: 0
+      - set_variable:
+          var: 腾空
+          value: 0
+      - set_variable:
+          var: Ξ数
+          value: 0
+      - set_variable:
+          var: 闪电HP
+          value: 3
+      - set_variable:
+          var: 闪电Exact
+          value: 0
+      - set_variable:
+          var: 闪电Miss
+          value: 0
+      - set_variable:
+          var: 结果
+          value: 已重置
+  sprites:
+  - name: 裁判
+    x: 0
+    y: 0
+    costumes:
+    - name: dot
+      asset: assets/dot.svg
+    variables: {}
+    scripts:
+    - - when_receive:
+          message: 设模式
+      - if:
+          cond:
+            equals:
+            - var: 模式
+            - 1
+          do:
+          - set_variable:
+              var: 窗1
+              value: 80
+          - set_variable:
+              var: 窗2
+              value: 180
+          - set_variable:
+              var: 窗3
+              value: 220
+          - set_variable:
+              var: 窗4
+              value: 220
+          - set_variable:
+              var: 窗5
+              value: 220
+          - set_variable:
+              var: 权1
+              value: 100
+          - set_variable:
+              var: 权2
+              value: 65
+          - set_variable:
+              var: 权3
+              value: 0
+          - set_variable:
+              var: 权4
+              value: 0
+          - set_variable:
+              var: 权5
+              value: 0
+          - set_variable:
+              var: 权6
+              value: 0
+          - set_variable:
+              var: 断连阈值
+              value: 3
+          - set_variable:
+              var: 档1名
+              value: Perfect
+          - set_variable:
+              var: 档2名
+              value: Good
+          - set_variable:
+              var: 档3名
+              value: Bad
+          - set_variable:
+              var: 档4名
+              value: '-'
+          - set_variable:
+              var: 档5名
+              value: '-'
+          - set_variable:
+              var: 档6名
+              value: Miss
+          - set_variable:
+              var: 体类型
+              value: 1
+          - set_variable:
+              var: 生命
+              value: 0
+          - set_variable:
+              var: 候选窗口
+              value: 300
+      - if:
+          cond:
+            equals:
+            - var: 模式
+            - 2
+          do:
+          - set_variable:
+              var: 窗1
+              value: 41.7
+          - set_variable:
+              var: 窗2
+              value: 83.3
+          - set_variable:
+              var: 窗3
+              value: 108.3
+          - set_variable:
+              var: 窗4
+              value: 125
+          - set_variable:
+              var: 窗5
+              value: 125
+          - set_variable:
+              var: 权1
+              value: 100
+          - set_variable:
+              var: 权2
+              value: 70
+          - set_variable:
+              var: 权3
+              value: 50
+          - set_variable:
+              var: 权4
+              value: 0
+          - set_variable:
+              var: 权5
+              value: 0
+          - set_variable:
+              var: 权6
+              value: 0
+          - set_variable:
+              var: 断连阈值
+              value: 3
+          - set_variable:
+              var: 档1名
+              value: PERFECT
+          - set_variable:
+              var: 档2名
+              value: GREAT
+          - set_variable:
+              var: 档3名
+              value: GOOD
+          - set_variable:
+              var: 档4名
+              value: BAD
+          - set_variable:
+              var: 档5名
+              value: '-'
+          - set_variable:
+              var: 档6名
+              value: MISS
+          - set_variable:
+              var: 体类型
+              value: 1
+          - set_variable:
+              var: 生命
+              value: 1000
+          - set_variable:
+              var: 候选窗口
+              value: 200
+      - if:
+          cond:
+            equals:
+            - var: 模式
+            - 3
+          do:
+          - set_variable:
+              var: 窗1
+              value: 35
+          - set_variable:
+              var: 窗2
+              value: 70
+          - set_variable:
+              var: 窗3
+              value: 105
+          - set_variable:
+              var: 窗4
+              value: 140
+          - set_variable:
+              var: 窗5
+              value: 155
+          - set_variable:
+              var: 权1
+              value: 100
+          - set_variable:
+              var: 权2
+              value: 100
+          - set_variable:
+              var: 权3
+              value: 60
+          - set_variable:
+              var: 权4
+              value: 30
+          - set_variable:
+              var: 权5
+              value: 15
+          - set_variable:
+              var: 权6
+              value: 0
+          - set_variable:
+              var: 断连阈值
+              value: 5
+          - set_variable:
+              var: 档1名
+              value: Exact
+          - set_variable:
+              var: 档2名
+              value: Perfect
+          - set_variable:
+              var: 档3名
+              value: Great
+          - set_variable:
+              var: 档4名
+              value: Good
+          - set_variable:
+              var: 档5名
+              value: Bad
+          - set_variable:
+              var: 档6名
+              value: Miss
+          - set_variable:
+              var: 体类型
+              value: 2
+          - set_variable:
+              var: 生命
+              value: 0
+          - set_variable:
+              var: 候选窗口
+              value: 200
+      - if:
+          cond:
+            equals:
+            - var: 模式
+            - 4
+          do:
+          - set_variable:
+              var: 窗1
+              value: 100
+          - set_variable:
+              var: 窗2
+              value: 100
+          - set_variable:
+              var: 窗3
+              value: 100
+          - set_variable:
+              var: 窗4
+              value: 100
+          - set_variable:
+              var: 窗5
+              value: 100
+          - set_variable:
+              var: 权1
+              value: 100
+          - set_variable:
+              var: 权2
+              value: 0
+          - set_variable:
+              var: 权3
+              value: 0
+          - set_variable:
+              var: 权4
+              value: 0
+          - set_variable:
+              var: 权5
+              value: 0
+          - set_variable:
+              var: 权6
+              value: 0
+          - set_variable:
+              var: 断连阈值
+              value: 6
+          - set_variable:
+              var: 档1名
+              value: 通过
+          - set_variable:
+              var: 档2名
+              value: '-'
+          - set_variable:
+              var: 档3名
+              value: '-'
+          - set_variable:
+              var: 档4名
+              value: '-'
+          - set_variable:
+              var: 档5名
+              value: '-'
+          - set_variable:
+              var: 档6名
+              value: 失败
+          - set_variable:
+              var: 体类型
+              value: 4
+          - set_variable:
+              var: 生命
+              value: 0
+          - set_variable:
+              var: 候选窗口
+              value: 200
+      - if:
+          cond:
+            equals:
+            - var: 模式
+            - 5
+          do:
+          - set_variable:
+              var: 窗1
+              value: 100
+          - set_variable:
+              var: 窗2
+              value: 100
+          - set_variable:
+              var: 窗3
+              value: 100
+          - set_variable:
+              var: 窗4
+              value: 100
+          - set_variable:
+              var: 窗5
+              value: 100
+          - set_variable:
+              var: 权1
+              value: 100
+          - set_variable:
+              var: 权2
+              value: 0
+          - set_variable:
+              var: 权3
+              value: 0
+          - set_variable:
+              var: 权4
+              value: 0
+          - set_variable:
+              var: 权5
+              value: 0
+          - set_variable:
+              var: 权6
+              value: 0
+          - set_variable:
+              var: 断连阈值
+              value: 6
+          - set_variable:
+              var: 档1名
+              value: 通过
+          - set_variable:
+              var: 档2名
+              value: '-'
+          - set_variable:
+              var: 档3名
+              value: '-'
+          - set_variable:
+              var: 档4名
+              value: '-'
+          - set_variable:
+              var: 档5名
+              value: '-'
+          - set_variable:
+              var: 档6名
+              value: 失败
+          - set_variable:
+              var: 体类型
+              value: 3
+          - set_variable:
+              var: 生命
+              value: 0
+          - set_variable:
+              var: 候选窗口
+              value: 200
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a:
+                                    join:
+                                      a:
+                                        join:
+                                          a:
+                                            join:
+                                              a:
+                                                join:
+                                                  a:
+                                                    join:
+                                                      a:
+                                                        join:
+                                                          a:
+                                                            join:
+                                                              a: '模式 '
+                                                              b:
+                                                                var: 模式
+                                                          b: ' 窗口 '
+                                                      b:
+                                                        var: 窗1
+                                                  b: /
+                                              b:
+                                                var: 窗2
+                                          b: /
+                                      b:
+                                        var: 窗3
+                                  b: /
+                              b:
+                                var: 窗4
+                          b: /
+                      b:
+                        var: 窗5
+                  b: ' 断连阈值 '
+              b:
+                var: 断连阈值
+    - - when_receive:
+          message: 官谱换算
+      - set_variable:
+          var: Tms
+          value:
+            divide:
+            - 1875
+            - var: bpm
+      - set_variable:
+          var: 目标时刻
+          value:
+            round:
+            - multiply:
+              - var: timeT
+              - var: Tms
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a:
+                                    join:
+                                      a:
+                                        join:
+                                          a: 'bpm '
+                                          b:
+                                            var: bpm
+                                      b: ' / T='
+                                  b:
+                                    var: Tms
+                              b: 'ms / timeT '
+                          b:
+                            var: timeT
+                      b: ' → '
+                  b:
+                    var: 目标时刻
+              b: ms
+    - - when_receive:
+          message: 判定线求值
+      - set_variable:
+          var: 事件插值
+          value: 0
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times:
+            var: 事件数
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - set_variable:
+              var: 事件起
+              value:
+                item_of_list:
+                  list: 事件起表
+                  index:
+                    var: i
+          - set_variable:
+              var: 事件止
+              value:
+                item_of_list:
+                  list: 事件止表
+                  index:
+                    var: i
+          - set_variable:
+              var: 事件起值
+              value:
+                item_of_list:
+                  list: 事件起值表
+                  index:
+                    var: i
+          - set_variable:
+              var: 事件终值
+              value:
+                item_of_list:
+                  list: 事件终值表
+                  index:
+                    var: i
+          - if:
+              cond:
+                not:
+                  operand:
+                    equals:
+                    - greater_than:
+                      - var: songTime
+                      - var: 事件起
+                    - true
+              do:
+              - set_variable:
+                  var: 事件插值
+                  value:
+                    var: 事件起值
+              else:
+              - if:
+                  cond:
+                    not:
+                      operand:
+                        equals:
+                        - less_than:
+                          - var: songTime
+                          - var: 事件止
+                        - true
+                  do:
+                  - set_variable:
+                      var: 事件插值
+                      value:
+                        var: 事件终值
+                  else:
+                  - set_variable:
+                      var: 事件插值
+                      value:
+                        add:
+                        - var: 事件起值
+                        - multiply:
+                          - subtract:
+                            - var: 事件终值
+                            - var: 事件起值
+                          - divide:
+                            - subtract:
+                              - var: songTime
+                              - var: 事件起
+                            - subtract:
+                              - var: 事件止
+                              - var: 事件起
+          - if:
+              cond:
+                equals:
+                - item_of_list:
+                    list: 事件型
+                    index:
+                      var: i
+                - 1
+              do:
+              - set_variable:
+                  var: 线X
+                  value:
+                    var: 事件插值
+          - if:
+              cond:
+                equals:
+                - item_of_list:
+                    list: 事件型
+                    index:
+                      var: i
+                - 2
+              do:
+              - set_variable:
+                  var: 线Y
+                  value:
+                    var: 事件插值
+          - if:
+              cond:
+                equals:
+                - item_of_list:
+                    list: 事件型
+                    index:
+                      var: i
+                - 3
+              do:
+              - set_variable:
+                  var: 线角
+                  value:
+                    var: 事件插值
+          - if:
+              cond:
+                equals:
+                - item_of_list:
+                    list: 事件型
+                    index:
+                      var: i
+                - 4
+              do:
+              - set_variable:
+                  var: 不透明度
+                  value:
+                    var: 事件插值
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a:
+                                    join:
+                                      a: 线 X
+                                      b:
+                                        var: 线X
+                                  b: ' Y'
+                              b:
+                                var: 线Y
+                          b: ' 角'
+                      b:
+                        var: 线角
+                  b: ' 透明度'
+              b:
+                var: 不透明度
+    - - when_receive:
+          message: P判一击
+      - set_variable:
+          var: 有效时刻
+          value:
+            multiply:
+            - round:
+              - divide:
+                - subtract:
+                  - var: 输入时刻
+                  - var: 校准ms
+                - var: 帧长ms
+            - var: 帧长ms
+      - set_variable:
+          var: 切向坐标
+          value:
+            add:
+            - multiply:
+              - subtract:
+                - var: 输入X
+                - var: 线X
+              - mathop:
+                  operator: cos
+                  num:
+                    var: 线角
+            - multiply:
+              - subtract:
+                - var: 输入Y
+                - var: 线Y
+              - mathop:
+                  operator: sin
+                  num:
+                    var: 线角
+      - set_variable:
+          var: 最近索引
+          value: 0
+      - set_variable:
+          var: 最近误差
+          value: 999999
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times:
+            var: 音符数
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - set_variable:
+              var: 临时
+              value:
+                mathop:
+                  operator: abs
+                  num:
+                    subtract:
+                    - var: 有效时刻
+                    - item_of_list:
+                        list: 谱时刻
+                        index:
+                          var: i
+          - if:
+              cond:
+                and:
+                - equals:
+                  - item_of_list:
+                      list: 已判定
+                      index:
+                        var: i
+                  - 0
+                - and:
+                  - not:
+                      operand:
+                        equals:
+                        - greater_than:
+                          - mathop:
+                              operator: abs
+                              num:
+                                subtract:
+                                - var: 切向坐标
+                                - item_of_list:
+                                    list: 谱位置
+                                    index:
+                                      var: i
+                          - var: 半宽
+                        - true
+                  - and:
+                    - not:
+                        operand:
+                          equals:
+                          - greater_than:
+                            - var: 临时
+                            - var: 候选窗口
+                          - true
+                    - less_than:
+                      - var: 临时
+                      - var: 最近误差
+              do:
+              - set_variable:
+                  var: 最近误差
+                  value:
+                    var: 临时
+              - set_variable:
+                  var: 最近索引
+                  value:
+                    var: i
+      - if:
+          cond:
+            equals:
+            - var: 最近索引
+            - 0
+          do:
+          - set_variable:
+              var: 档位
+              value: 0
+          - set_variable:
+              var: 档名词
+              value: 空击
+          - set_variable:
+              var: 结果
+              value: 切向未命中任何音符
+          else:
+          - set_variable:
+              var: 音符类型
+              value:
+                item_of_list:
+                  list: 谱类型
+                  index:
+                    var: 最近索引
+          - set_variable:
+              var: 目标时刻
+              value:
+                item_of_list:
+                  list: 谱时刻
+                  index:
+                    var: 最近索引
+          - set_variable:
+              var: 误差
+              value:
+                subtract:
+                - var: 有效时刻
+                - var: 目标时刻
+          - set_variable:
+              var: 绝对误差
+              value:
+                mathop:
+                  operator: abs
+                  num:
+                    var: 误差
+          - if:
+              cond:
+                or:
+                - equals:
+                  - var: 音符类型
+                  - 2
+                - equals:
+                  - var: 音符类型
+                  - 4
+              do:
+              - if:
+                  cond:
+                    not:
+                      operand:
+                        equals:
+                        - greater_than:
+                          - var: 绝对误差
+                          - var: 窗1
+                        - true
+                  do:
+                  - set_variable:
+                      var: 档位
+                      value: 1
+                  - set_variable:
+                      var: 档名词
+                      value: Perfect
+                  - set_variable:
+                      var: 本档权重
+                      value: 100
+                  else:
+                  - set_variable:
+                      var: 档位
+                      value: 6
+                  - set_variable:
+                      var: 档名词
+                      value: Miss
+                  - set_variable:
+                      var: 本档权重
+                      value: 0
+              else:
+              - if:
+                  cond:
+                    not:
+                      operand:
+                        equals:
+                        - greater_than:
+                          - var: 绝对误差
+                          - var: 窗1
+                        - true
+                  do:
+                  - set_variable:
+                      var: 档位
+                      value: 1
+                  - set_variable:
+                      var: 档名词
+                      value:
+                        var: 档1名
+                  - set_variable:
+                      var: 本档权重
+                      value:
+                        var: 权1
+                  else:
+                  - if:
+                      cond:
+                        not:
+                          operand:
+                            equals:
+                            - greater_than:
+                              - var: 绝对误差
+                              - var: 窗2
+                            - true
+                      do:
+                      - set_variable:
+                          var: 档位
+                          value: 2
+                      - set_variable:
+                          var: 档名词
+                          value:
+                            var: 档2名
+                      - set_variable:
+                          var: 本档权重
+                          value:
+                            var: 权2
+                      else:
+                      - if:
+                          cond:
+                            not:
+                              operand:
+                                equals:
+                                - greater_than:
+                                  - var: 绝对误差
+                                  - var: 窗3
+                                - true
+                          do:
+                          - set_variable:
+                              var: 档位
+                              value: 3
+                          - set_variable:
+                              var: 档名词
+                              value:
+                                var: 档3名
+                          - set_variable:
+                              var: 本档权重
+                              value:
+                                var: 权3
+                          else:
+                          - if:
+                              cond:
+                                not:
+                                  operand:
+                                    equals:
+                                    - greater_than:
+                                      - var: 绝对误差
+                                      - var: 窗4
+                                    - true
+                              do:
+                              - set_variable:
+                                  var: 档位
+                                  value: 4
+                              - set_variable:
+                                  var: 档名词
+                                  value:
+                                    var: 档4名
+                              - set_variable:
+                                  var: 本档权重
+                                  value:
+                                    var: 权4
+                              else:
+                              - if:
+                                  cond:
+                                    not:
+                                      operand:
+                                        equals:
+                                        - greater_than:
+                                          - var: 绝对误差
+                                          - var: 窗5
+                                        - true
+                                  do:
+                                  - set_variable:
+                                      var: 档位
+                                      value: 5
+                                  - set_variable:
+                                      var: 档名词
+                                      value:
+                                        var: 档5名
+                                  - set_variable:
+                                      var: 本档权重
+                                      value:
+                                        var: 权5
+                                  else:
+                                  - set_variable:
+                                      var: 档位
+                                      value: 6
+                                  - set_variable:
+                                      var: 档名词
+                                      value:
+                                        var: 档6名
+                                  - set_variable:
+                                      var: 本档权重
+                                      value:
+                                        var: 权6
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 音符类型
+                      - 3
+                    - equals:
+                      - var: 档位
+                      - 3
+                  do:
+                  - set_variable:
+                      var: 档位
+                      value: 6
+                  - set_variable:
+                      var: 档名词
+                      value: Miss
+                  - set_variable:
+                      var: 本档权重
+                      value: 0
+          - replace_item_of_list:
+              list: 已判定
+              index:
+                var: 最近索引
+              item:
+                var: 档位
+          - change_variable:
+              var: 裸分
+              by:
+                var: 本档权重
+          - change_variable:
+              var: 分数
+              by:
+                var: 本档权重
+          - if:
+              cond:
+                equals:
+                - var: 档位
+                - 1
+              do:
+              - change_variable:
+                  var: 档1数
+                  by: 1
+          - if:
+              cond:
+                equals:
+                - var: 档位
+                - 2
+              do:
+              - change_variable:
+                  var: 档2数
+                  by: 1
+          - if:
+              cond:
+                equals:
+                - var: 档位
+                - 3
+              do:
+              - change_variable:
+                  var: 档3数
+                  by: 1
+          - if:
+              cond:
+                equals:
+                - var: 档位
+                - 4
+              do:
+              - change_variable:
+                  var: 档4数
+                  by: 1
+          - if:
+              cond:
+                equals:
+                - var: 档位
+                - 5
+              do:
+              - change_variable:
+                  var: 档5数
+                  by: 1
+          - if:
+              cond:
+                equals:
+                - var: 档位
+                - 6
+              do:
+              - change_variable:
+                  var: 档Miss数
+                  by: 1
+          - if:
+              cond:
+                not:
+                  operand:
+                    equals:
+                    - less_than:
+                      - var: 档位
+                      - var: 断连阈值
+                    - true
+              do:
+              - set_variable:
+                  var: 连击
+                  value: 0
+              else:
+              - change_variable:
+                  var: 连击
+                  by: 1
+              - if:
+                  cond:
+                    greater_than:
+                    - var: 连击
+                    - var: 最大连击
+                  do:
+                  - set_variable:
+                      var: 最大连击
+                      value:
+                        var: 连击
+          - set_variable:
+              var: 生命扣减
+              value: 0
+          - if:
+              cond:
+                and:
+                - equals:
+                  - var: 模式
+                  - 2
+                - equals:
+                  - var: 档位
+                  - 4
+              do:
+              - set_variable:
+                  var: 生命扣减
+                  value: 50
+          - if:
+              cond:
+                and:
+                - equals:
+                  - var: 模式
+                  - 2
+                - equals:
+                  - var: 档位
+                  - 6
+              do:
+              - set_variable:
+                  var: 生命扣减
+                  value: 80
+          - set_variable:
+              var: 生命
+              value:
+                subtract:
+                - var: 生命
+                - var: 生命扣减
+          - set_variable:
+              var: 结果
+              value:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a: 'Phigros '
+                                  b:
+                                    var: 档名词
+                              b: ' 误差 '
+                          b:
+                            var: 误差
+                      b: 'ms 切向 '
+                  b:
+                    var: 切向坐标
+    - - when_receive:
+          message: S判一击
+      - set_variable:
+          var: 有效时刻
+          value:
+            multiply:
+            - round:
+              - divide:
+                - subtract:
+                  - var: 输入时刻
+                  - var: 校准ms
+                - var: 帧长ms
+            - var: 帧长ms
+      - set_variable:
+          var: 最近索引
+          value: 0
+      - set_variable:
+          var: 最近误差
+          value: 999999
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times:
+            var: 音符数
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - set_variable:
+              var: 临时
+              value:
+                mathop:
+                  operator: abs
+                  num:
+                    subtract:
+                    - var: 有效时刻
+                    - item_of_list:
+                        list: 谱时刻
+                        index:
+                          var: i
+          - if:
+              cond:
+                and:
+                - equals:
+                  - item_of_list:
+                      list: 已判定
+                      index:
+                        var: i
+                  - 0
+                - and:
+                  - not:
+                      operand:
+                        equals:
+                        - less_than:
+                          - var: 输入格
+                          - item_of_list:
+                              list: 谱位置
+                              index:
+                                var: i
+                        - true
+                  - and:
+                    - less_than:
+                      - var: 输入格
+                      - add:
+                        - item_of_list:
+                            list: 谱位置
+                            index:
+                              var: i
+                        - item_of_list:
+                            list: 谱参数
+                            index:
+                              var: i
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - greater_than:
+                              - var: 临时
+                              - var: 候选窗口
+                            - true
+                      - less_than:
+                        - var: 临时
+                        - var: 最近误差
+              do:
+              - set_variable:
+                  var: 最近误差
+                  value:
+                    var: 临时
+              - set_variable:
+                  var: 最近索引
+                  value:
+                    var: i
+      - if:
+          cond:
+            equals:
+            - var: 最近索引
+            - 0
+          do:
+          - set_variable:
+              var: 档位
+              value: 0
+          - set_variable:
+              var: 档名词
+              value: 空击
+          - set_variable:
+              var: 结果
+              value: 该格无候选音符
+          else:
+          - set_variable:
+              var: 音符类型
+              value:
+                item_of_list:
+                  list: 谱类型
+                  index:
+                    var: 最近索引
+          - set_variable:
+              var: 音符方向
+              value:
+                item_of_list:
+                  list: 谱方向
+                  index:
+                    var: 最近索引
+          - set_variable:
+              var: 目标时刻
+              value:
+                item_of_list:
+                  list: 谱时刻
+                  index:
+                    var: 最近索引
+          - set_variable:
+              var: 误差
+              value:
+                subtract:
+                - var: 有效时刻
+                - var: 目标时刻
+          - set_variable:
+              var: 绝对误差
+              value:
+                mathop:
+                  operator: abs
+                  num:
+                    var: 误差
+          - if:
+              cond:
+                and:
+                - equals:
+                  - var: 音符类型
+                  - 3
+                - not:
+                    operand:
+                      equals:
+                      - var: 输入方向
+                      - var: 音符方向
+              do:
+              - set_variable:
+                  var: 绝对误差
+                  value: 9999
+          - if:
+              cond:
+                equals:
+                - var: 音符类型
+                - 4
+              do:
+              - set_variable:
+                  var: 档位
+                  value: 1
+              - set_variable:
+                  var: 档名词
+                  value: PERFECT
+              - set_variable:
+                  var: 本档权重
+                  value: 100
+              else:
+              - if:
+                  cond:
+                    not:
+                      operand:
+                        equals:
+                        - greater_than:
+                          - var: 绝对误差
+                          - var: 窗1
+                        - true
+                  do:
+                  - set_variable:
+                      var: 档位
+                      value: 1
+                  - set_variable:
+                      var: 档名词
+                      value:
+                        var: 档1名
+                  - set_variable:
+                      var: 本档权重
+                      value:
+                        var: 权1
+                  else:
+                  - if:
+                      cond:
+                        not:
+                          operand:
+                            equals:
+                            - greater_than:
+                              - var: 绝对误差
+                              - var: 窗2
+                            - true
+                      do:
+                      - set_variable:
+                          var: 档位
+                          value: 2
+                      - set_variable:
+                          var: 档名词
+                          value:
+                            var: 档2名
+                      - set_variable:
+                          var: 本档权重
+                          value:
+                            var: 权2
+                      else:
+                      - if:
+                          cond:
+                            not:
+                              operand:
+                                equals:
+                                - greater_than:
+                                  - var: 绝对误差
+                                  - var: 窗3
+                                - true
+                          do:
+                          - set_variable:
+                              var: 档位
+                              value: 3
+                          - set_variable:
+                              var: 档名词
+                              value:
+                                var: 档3名
+                          - set_variable:
+                              var: 本档权重
+                              value:
+                                var: 权3
+                          else:
+                          - if:
+                              cond:
+                                not:
+                                  operand:
+                                    equals:
+                                    - greater_than:
+                                      - var: 绝对误差
+                                      - var: 窗4
+                                    - true
+                              do:
+                              - set_variable:
+                                  var: 档位
+                                  value: 4
+                              - set_variable:
+                                  var: 档名词
+                                  value:
+                                    var: 档4名
+                              - set_variable:
+                                  var: 本档权重
+                                  value:
+                                    var: 权4
+                              else:
+                              - if:
+                                  cond:
+                                    not:
+                                      operand:
+                                        equals:
+                                        - greater_than:
+                                          - var: 绝对误差
+                                          - var: 窗5
+                                        - true
+                                  do:
+                                  - set_variable:
+                                      var: 档位
+                                      value: 5
+                                  - set_variable:
+                                      var: 档名词
+                                      value:
+                                        var: 档5名
+                                  - set_variable:
+                                      var: 本档权重
+                                      value:
+                                        var: 权5
+                                  else:
+                                  - set_variable:
+                                      var: 档位
+                                      value: 6
+                                  - set_variable:
+                                      var: 档名词
+                                      value:
+                                        var: 档6名
+                                  - set_variable:
+                                      var: 本档权重
+                                      value:
+                                        var: 权6
+          - replace_item_of_list:
+              list: 已判定
+              index:
+                var: 最近索引
+              item:
+                var: 档位
+          - change_variable:
+              var: 裸分
+              by:
+                var: 本档权重
+          - change_variable:
+              var: 分数
+              by:
+                var: 本档权重
+          - if:
+              cond:
+                equals:
+                - var: 档位
+                - 1
+              do:
+              - change_variable:
+                  var: 档1数
+                  by: 1
+          - if:
+              cond:
+                equals:
+                - var: 档位
+                - 2
+              do:
+              - change_variable:
+                  var: 档2数
+                  by: 1
+          - if:
+              cond:
+                equals:
+                - var: 档位
+                - 3
+              do:
+              - change_variable:
+                  var: 档3数
+                  by: 1
+          - if:
+              cond:
+                equals:
+                - var: 档位
+                - 4
+              do:
+              - change_variable:
+                  var: 档4数
+                  by: 1
+          - if:
+              cond:
+                equals:
+                - var: 档位
+                - 5
+              do:
+              - change_variable:
+                  var: 档5数
+                  by: 1
+          - if:
+              cond:
+                equals:
+                - var: 档位
+                - 6
+              do:
+              - change_variable:
+                  var: 档Miss数
+                  by: 1
+          - if:
+              cond:
+                not:
+                  operand:
+                    equals:
+                    - less_than:
+                      - var: 档位
+                      - var: 断连阈值
+                    - true
+              do:
+              - set_variable:
+                  var: 连击
+                  value: 0
+              else:
+              - change_variable:
+                  var: 连击
+                  by: 1
+              - if:
+                  cond:
+                    greater_than:
+                    - var: 连击
+                    - var: 最大连击
+                  do:
+                  - set_variable:
+                      var: 最大连击
+                      value:
+                        var: 连击
+          - set_variable:
+              var: 生命扣减
+              value: 0
+          - if:
+              cond:
+                and:
+                - equals:
+                  - var: 模式
+                  - 2
+                - equals:
+                  - var: 档位
+                  - 4
+              do:
+              - set_variable:
+                  var: 生命扣减
+                  value: 50
+          - if:
+              cond:
+                and:
+                - equals:
+                  - var: 模式
+                  - 2
+                - equals:
+                  - var: 档位
+                  - 6
+              do:
+              - set_variable:
+                  var: 生命扣减
+                  value: 80
+          - set_variable:
+              var: 生命
+              value:
+                subtract:
+                - var: 生命
+                - var: 生命扣减
+          - if:
+              cond:
+                equals:
+                - var: 音符类型
+                - 2
+              do:
+              - replace_item_of_list:
+                  list: 已判定
+                  index:
+                    var: 最近索引
+                  item: 5
+          - set_variable:
+              var: 结果
+              value:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a:
+                                    join:
+                                      a:
+                                        join:
+                                          a: 'PJSK '
+                                          b:
+                                            var: 档名词
+                                      b: ' 格 '
+                                  b:
+                                    var: 输入格
+                              b: ' Life '
+                          b:
+                            var: 生命
+                      b: ' 连击 '
+                  b:
+                    var: 连击
+    - - when_receive:
+          message: S尾判
+      - set_variable:
+          var: 尾索引
+          value: 0
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times:
+            var: 音符数
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - if:
+              cond:
+                equals:
+                - item_of_list:
+                    list: 已判定
+                    index:
+                      var: i
+                - 5
+              do:
+              - set_variable:
+                  var: 尾索引
+                  value:
+                    var: i
+      - if:
+          cond:
+            equals:
+            - var: 尾索引
+            - 0
+          do:
+          - set_variable:
+              var: 结果
+              value: 没有等待尾判的 Hold
+          else:
+          - set_variable:
+              var: 目标时刻
+              value:
+                add:
+                - item_of_list:
+                    list: 谱时刻
+                    index:
+                      var: 尾索引
+                - item_of_list:
+                    list: 谱时长
+                    index:
+                      var: 尾索引
+          - set_variable:
+              var: 误差
+              value:
+                subtract:
+                - var: 输入时刻
+                - var: 目标时刻
+          - set_variable:
+              var: 绝对误差
+              value:
+                mathop:
+                  operator: abs
+                  num:
+                    var: 误差
+          - if:
+              cond:
+                not:
+                  operand:
+                    equals:
+                    - greater_than:
+                      - var: 绝对误差
+                      - var: 窗1
+                    - true
+              do:
+              - set_variable:
+                  var: 档位
+                  value: 1
+              - set_variable:
+                  var: 档名词
+                  value:
+                    var: 档1名
+              - set_variable:
+                  var: 本档权重
+                  value:
+                    var: 权1
+              else:
+              - if:
+                  cond:
+                    not:
+                      operand:
+                        equals:
+                        - greater_than:
+                          - var: 绝对误差
+                          - var: 窗2
+                        - true
+                  do:
+                  - set_variable:
+                      var: 档位
+                      value: 2
+                  - set_variable:
+                      var: 档名词
+                      value:
+                        var: 档2名
+                  - set_variable:
+                      var: 本档权重
+                      value:
+                        var: 权2
+                  else:
+                  - if:
+                      cond:
+                        not:
+                          operand:
+                            equals:
+                            - greater_than:
+                              - var: 绝对误差
+                              - var: 窗3
+                            - true
+                      do:
+                      - set_variable:
+                          var: 档位
+                          value: 3
+                      - set_variable:
+                          var: 档名词
+                          value:
+                            var: 档3名
+                      - set_variable:
+                          var: 本档权重
+                          value:
+                            var: 权3
+                      else:
+                      - if:
+                          cond:
+                            not:
+                              operand:
+                                equals:
+                                - greater_than:
+                                  - var: 绝对误差
+                                  - var: 窗4
+                                - true
+                          do:
+                          - set_variable:
+                              var: 档位
+                              value: 4
+                          - set_variable:
+                              var: 档名词
+                              value:
+                                var: 档4名
+                          - set_variable:
+                              var: 本档权重
+                              value:
+                                var: 权4
+                          else:
+                          - if:
+                              cond:
+                                not:
+                                  operand:
+                                    equals:
+                                    - greater_than:
+                                      - var: 绝对误差
+                                      - var: 窗5
+                                    - true
+                              do:
+                              - set_variable:
+                                  var: 档位
+                                  value: 5
+                              - set_variable:
+                                  var: 档名词
+                                  value:
+                                    var: 档5名
+                              - set_variable:
+                                  var: 本档权重
+                                  value:
+                                    var: 权5
+                              else:
+                              - set_variable:
+                                  var: 档位
+                                  value: 6
+                              - set_variable:
+                                  var: 档名词
+                                  value:
+                                    var: 档6名
+                              - set_variable:
+                                  var: 本档权重
+                                  value:
+                                    var: 权6
+          - replace_item_of_list:
+              list: 已判定
+              index:
+                var: 尾索引
+              item:
+                var: 档位
+          - change_variable:
+              var: 裸分
+              by:
+                var: 本档权重
+          - change_variable:
+              var: 分数
+              by:
+                var: 本档权重
+          - if:
+              cond:
+                equals:
+                - var: 档位
+                - 1
+              do:
+              - change_variable:
+                  var: 档1数
+                  by: 1
+          - if:
+              cond:
+                equals:
+                - var: 档位
+                - 2
+              do:
+              - change_variable:
+                  var: 档2数
+                  by: 1
+          - if:
+              cond:
+                equals:
+                - var: 档位
+                - 3
+              do:
+              - change_variable:
+                  var: 档3数
+                  by: 1
+          - if:
+              cond:
+                equals:
+                - var: 档位
+                - 4
+              do:
+              - change_variable:
+                  var: 档4数
+                  by: 1
+          - if:
+              cond:
+                equals:
+                - var: 档位
+                - 5
+              do:
+              - change_variable:
+                  var: 档5数
+                  by: 1
+          - if:
+              cond:
+                equals:
+                - var: 档位
+                - 6
+              do:
+              - change_variable:
+                  var: 档Miss数
+                  by: 1
+          - if:
+              cond:
+                not:
+                  operand:
+                    equals:
+                    - less_than:
+                      - var: 档位
+                      - var: 断连阈值
+                    - true
+              do:
+              - set_variable:
+                  var: 连击
+                  value: 0
+              else:
+              - change_variable:
+                  var: 连击
+                  by: 1
+              - if:
+                  cond:
+                    greater_than:
+                    - var: 连击
+                    - var: 最大连击
+                  do:
+                  - set_variable:
+                      var: 最大连击
+                      value:
+                        var: 连击
+          - set_variable:
+              var: 生命扣减
+              value: 0
+          - if:
+              cond:
+                and:
+                - equals:
+                  - var: 模式
+                  - 2
+                - equals:
+                  - var: 档位
+                  - 4
+              do:
+              - set_variable:
+                  var: 生命扣减
+                  value: 50
+          - if:
+              cond:
+                and:
+                - equals:
+                  - var: 模式
+                  - 2
+                - equals:
+                  - var: 档位
+                  - 6
+              do:
+              - set_variable:
+                  var: 生命扣减
+                  value: 80
+          - set_variable:
+              var: 生命
+              value:
+                subtract:
+                - var: 生命
+                - var: 生命扣减
+          - set_variable:
+              var: 结果
+              value:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a: 'Hold 尾判 '
+                              b:
+                                var: 档名词
+                          b: ' 误差 '
+                      b:
+                        var: 误差
+                  b: ms
+    - - when_receive:
+          message: M判一击
+      - set_variable:
+          var: 有效时刻
+          value:
+            multiply:
+            - round:
+              - divide:
+                - subtract:
+                  - var: 输入时刻
+                  - var: 校准ms
+                - var: 帧长ms
+            - var: 帧长ms
+      - set_variable:
+          var: 距离平方
+          value:
+            add:
+            - multiply:
+              - subtract:
+                - var: 输入X
+                - var: 圈X
+              - subtract:
+                - var: 输入X
+                - var: 圈X
+            - multiply:
+              - subtract:
+                - var: 输入Y
+                - var: 圈Y
+              - subtract:
+                - var: 输入Y
+                - var: 圈Y
+      - set_variable:
+          var: 半径平方
+          value:
+            multiply:
+            - var: 圈半径
+            - var: 圈半径
+      - if:
+          cond:
+            or:
+            - not:
+                operand:
+                  equals:
+                  - greater_than:
+                    - var: 距离平方
+                    - var: 半径平方
+                  - true
+            - equals:
+              - var: 全屏判定
+              - 1
+          do:
+          - set_variable:
+              var: 临时
+              value: 1
+          else:
+          - set_variable:
+              var: 临时
+              value: 0
+      - set_variable:
+          var: 最近索引
+          value: 0
+      - set_variable:
+          var: 最近误差
+          value: 999999
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times:
+            var: 音符数
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - set_variable:
+              var: 临时时刻
+              value:
+                mathop:
+                  operator: abs
+                  num:
+                    subtract:
+                    - var: 有效时刻
+                    - item_of_list:
+                        list: 谱时刻
+                        index:
+                          var: i
+          - if:
+              cond:
+                and:
+                - equals:
+                  - item_of_list:
+                      list: 已判定
+                      index:
+                        var: i
+                  - 0
+                - and:
+                  - equals:
+                    - var: 临时
+                    - 1
+                  - and:
+                    - not:
+                        operand:
+                          equals:
+                          - greater_than:
+                            - var: 临时时刻
+                            - var: 候选窗口
+                          - true
+                    - less_than:
+                      - var: 临时时刻
+                      - var: 最近误差
+              do:
+              - set_variable:
+                  var: 最近误差
+                  value:
+                    var: 临时时刻
+              - set_variable:
+                  var: 最近索引
+                  value:
+                    var: i
+      - if:
+          cond:
+            equals:
+            - var: 最近索引
+            - 0
+          do:
+          - set_variable:
+              var: 档位
+              value: 0
+          - set_variable:
+              var: 档名词
+              value: 空击
+          - set_variable:
+              var: 结果
+              value: 圈外，未命中
+          else:
+          - set_variable:
+              var: 音符类型
+              value:
+                item_of_list:
+                  list: 谱类型
+                  index:
+                    var: 最近索引
+          - if:
+              cond:
+                equals:
+                - var: 音符类型
+                - 4
+              do:
+              - set_variable:
+                  var: 档位
+                  value: 0
+              - set_variable:
+                  var: 档名词
+                  value: 闪电待后判
+              - set_variable:
+                  var: 结果
+                  value: 闪电最后判定，交给 M闪电
+              else:
+              - set_variable:
+                  var: 目标时刻
+                  value:
+                    item_of_list:
+                      list: 谱时刻
+                      index:
+                        var: 最近索引
+              - set_variable:
+                  var: 误差
+                  value:
+                    subtract:
+                    - var: 有效时刻
+                    - var: 目标时刻
+              - set_variable:
+                  var: 绝对误差
+                  value:
+                    mathop:
+                      operator: abs
+                      num:
+                        var: 误差
+              - if:
+                  cond:
+                    not:
+                      operand:
+                        equals:
+                        - greater_than:
+                          - var: 绝对误差
+                          - var: 窗1
+                        - true
+                  do:
+                  - set_variable:
+                      var: 档位
+                      value: 1
+                  - set_variable:
+                      var: 档名词
+                      value:
+                        var: 档1名
+                  - set_variable:
+                      var: 本档权重
+                      value:
+                        var: 权1
+                  else:
+                  - if:
+                      cond:
+                        not:
+                          operand:
+                            equals:
+                            - greater_than:
+                              - var: 绝对误差
+                              - var: 窗2
+                            - true
+                      do:
+                      - set_variable:
+                          var: 档位
+                          value: 2
+                      - set_variable:
+                          var: 档名词
+                          value:
+                            var: 档2名
+                      - set_variable:
+                          var: 本档权重
+                          value:
+                            var: 权2
+                      else:
+                      - if:
+                          cond:
+                            not:
+                              operand:
+                                equals:
+                                - greater_than:
+                                  - var: 绝对误差
+                                  - var: 窗3
+                                - true
+                          do:
+                          - set_variable:
+                              var: 档位
+                              value: 3
+                          - set_variable:
+                              var: 档名词
+                              value:
+                                var: 档3名
+                          - set_variable:
+                              var: 本档权重
+                              value:
+                                var: 权3
+                          else:
+                          - if:
+                              cond:
+                                not:
+                                  operand:
+                                    equals:
+                                    - greater_than:
+                                      - var: 绝对误差
+                                      - var: 窗4
+                                    - true
+                              do:
+                              - set_variable:
+                                  var: 档位
+                                  value: 4
+                              - set_variable:
+                                  var: 档名词
+                                  value:
+                                    var: 档4名
+                              - set_variable:
+                                  var: 本档权重
+                                  value:
+                                    var: 权4
+                              else:
+                              - if:
+                                  cond:
+                                    not:
+                                      operand:
+                                        equals:
+                                        - greater_than:
+                                          - var: 绝对误差
+                                          - var: 窗5
+                                        - true
+                                  do:
+                                  - set_variable:
+                                      var: 档位
+                                      value: 5
+                                  - set_variable:
+                                      var: 档名词
+                                      value:
+                                        var: 档5名
+                                  - set_variable:
+                                      var: 本档权重
+                                      value:
+                                        var: 权5
+                                  else:
+                                  - set_variable:
+                                      var: 档位
+                                      value: 6
+                                  - set_variable:
+                                      var: 档名词
+                                      value:
+                                        var: 档6名
+                                  - set_variable:
+                                      var: 本档权重
+                                      value:
+                                        var: 权6
+              - replace_item_of_list:
+                  list: 已判定
+                  index:
+                    var: 最近索引
+                  item:
+                    var: 档位
+              - change_variable:
+                  var: 裸分
+                  by:
+                    var: 本档权重
+              - change_variable:
+                  var: 分数
+                  by:
+                    var: 本档权重
+              - if:
+                  cond:
+                    equals:
+                    - var: 档位
+                    - 1
+                  do:
+                  - change_variable:
+                      var: 档1数
+                      by: 1
+              - if:
+                  cond:
+                    equals:
+                    - var: 档位
+                    - 2
+                  do:
+                  - change_variable:
+                      var: 档2数
+                      by: 1
+              - if:
+                  cond:
+                    equals:
+                    - var: 档位
+                    - 3
+                  do:
+                  - change_variable:
+                      var: 档3数
+                      by: 1
+              - if:
+                  cond:
+                    equals:
+                    - var: 档位
+                    - 4
+                  do:
+                  - change_variable:
+                      var: 档4数
+                      by: 1
+              - if:
+                  cond:
+                    equals:
+                    - var: 档位
+                    - 5
+                  do:
+                  - change_variable:
+                      var: 档5数
+                      by: 1
+              - if:
+                  cond:
+                    equals:
+                    - var: 档位
+                    - 6
+                  do:
+                  - change_variable:
+                      var: 档Miss数
+                      by: 1
+              - if:
+                  cond:
+                    not:
+                      operand:
+                        equals:
+                        - less_than:
+                          - var: 档位
+                          - var: 断连阈值
+                        - true
+                  do:
+                  - set_variable:
+                      var: 连击
+                      value: 0
+                  else:
+                  - change_variable:
+                      var: 连击
+                      by: 1
+                  - if:
+                      cond:
+                        greater_than:
+                        - var: 连击
+                        - var: 最大连击
+                      do:
+                      - set_variable:
+                          var: 最大连击
+                          value:
+                            var: 连击
+              - set_variable:
+                  var: 生命扣减
+                  value: 0
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 模式
+                      - 2
+                    - equals:
+                      - var: 档位
+                      - 4
+                  do:
+                  - set_variable:
+                      var: 生命扣减
+                      value: 50
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 模式
+                      - 2
+                    - equals:
+                      - var: 档位
+                      - 6
+                  do:
+                  - set_variable:
+                      var: 生命扣减
+                      value: 80
+              - set_variable:
+                  var: 生命
+                  value:
+                    subtract:
+                    - var: 生命
+                    - var: 生命扣减
+              - change_variable:
+                  var: Ξ数
+                  by: 1
+              - if:
+                  cond:
+                    equals:
+                    - var: 音符类型
+                    - 2
+                  do:
+                  - set_variable:
+                      var: 全屏判定
+                      value: 1
+                  - change_variable:
+                      var: 活跃雨丝
+                      by: 1
+                  - change_variable:
+                      var: 屏上手指
+                      by: 1
+              - set_variable:
+                  var: 结果
+                  value:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a:
+                                    join:
+                                      a: 'Milthm '
+                                      b:
+                                        var: 档名词
+                                  b: ' 误差 '
+                              b:
+                                var: 误差
+                          b: 'ms 距离² '
+                      b:
+                        var: 距离平方
+    - - when_receive:
+          message: M闪电
+      - set_variable:
+          var: 档位
+          value: 0
+      - if:
+          cond:
+            not:
+              operand:
+                equals:
+                - greater_than:
+                  - mathop:
+                      operator: abs
+                      num:
+                        subtract:
+                        - var: 输入时刻
+                        - var: 目标时刻
+                  - var: 窗2
+                - true
+          do:
+          - set_variable:
+              var: 档位
+              value: 1
+          - change_variable:
+              var: 闪电Exact
+              by: 1
+          - set_variable:
+              var: 结果
+              value: Lightning Exact
+          else:
+          - set_variable:
+              var: 档位
+              value: 6
+          - change_variable:
+              var: 闪电Miss
+              by: 1
+          - set_variable:
+              var: 闪电溢出
+              value: 0
+          - if:
+              cond:
+                not:
+                  operand:
+                    equals:
+                    - greater_than:
+                      - var: 闪电HP
+                      - 0
+                    - true
+              do:
+              - set_variable:
+                  var: 闪电溢出
+                  value: 1
+          - set_variable:
+              var: 闪电HP
+              value:
+                subtract:
+                - var: 闪电HP
+                - 1
+          - set_variable:
+              var: 结果
+              value:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a: 'Lightning Miss / HP '
+                          b:
+                            var: 闪电HP
+                      b: ' / 溢出 '
+                  b:
+                    var: 闪电溢出
+    - - when_receive:
+          message: 水面反射
+      - if:
+          cond:
+            and:
+            - greater_than:
+              - var: 活跃雨丝
+              - 0
+            - less_than:
+              - var: 屏上手指
+              - 1
+          do:
+          - change_variable:
+              var: 档Miss数
+              by:
+                var: 活跃雨丝
+          - set_variable:
+              var: 连击
+              value: 0
+          - set_variable:
+              var: 结果
+              value: 有雨丝接触判定圈却没有手指 → Miss
+          else:
+          - if:
+              cond:
+                greater_than:
+                - var: 活跃雨丝
+                - 0
+              do:
+              - set_variable:
+                  var: 全屏判定
+                  value: 1
+              - set_variable:
+                  var: 结果
+                  value: 水面反射生效：全屏判定、允许换手
+              else:
+              - set_variable:
+                  var: 全屏判定
+                  value: 0
+              - set_variable:
+                  var: 结果
+                  value: 无活跃雨丝：继续按住不产生判定，也不惩罚
+    - - when_receive:
+          message: D一步
+      - set_variable:
+          var: 当前段
+          value:
+            var: 扫描指针
+      - if:
+          cond:
+            greater_than:
+            - var: 当前段
+            - length_of_list:
+                list: 转角时刻
+          do:
+          - set_variable:
+              var: 结果
+              value: 已抵达终点
+          else:
+          - set_variable:
+              var: 转角时刻
+              value:
+                item_of_list:
+                  list: 转角时刻
+                  index:
+                    var: 当前段
+          - set_variable:
+              var: 误差
+              value:
+                subtract:
+                - var: 输入时刻
+                - var: 转角时刻
+          - set_variable:
+              var: 绝对误差
+              value:
+                mathop:
+                  operator: abs
+                  num:
+                    var: 误差
+          - if:
+              cond:
+                and:
+                - equals:
+                  - item_of_list:
+                      list: 已转
+                      index:
+                        var: 当前段
+                  - 0
+                - not:
+                    operand:
+                      equals:
+                      - greater_than:
+                        - var: 绝对误差
+                        - var: 转向窗口
+                      - true
+              do:
+              - replace_item_of_list:
+                  list: 已转
+                  index:
+                    var: 当前段
+                  item: 1
+              - change_variable:
+                  var: 扫描指针
+                  by: 1
+              - change_variable:
+                  var: 完成度
+                  by: 1
+              - if:
+                  cond:
+                    equals:
+                    - item_of_list:
+                        list: 段检查点
+                        index:
+                          var: 当前段
+                    - 1
+                  do:
+                  - set_variable:
+                      var: 检查点
+                      value:
+                        var: 当前段
+              - set_variable:
+                  var: 档位
+                  value: 1
+              - set_variable:
+                  var: 档名词
+                  value: 转向成功
+              - set_variable:
+                  var: 结果
+                  value:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a: 转向成功 第
+                                  b:
+                                    var: 当前段
+                              b: ' 转角 / 误差 '
+                          b:
+                            var: 误差
+                      b: ms
+              else:
+              - change_variable:
+                  var: 失败数
+                  by: 1
+              - set_variable:
+                  var: 扫描指针
+                  value:
+                    add:
+                    - var: 检查点
+                    - 1
+              - set_variable:
+                  var: 档位
+                  value: 6
+              - set_variable:
+                  var: 档名词
+                  value: 撞墙
+              - set_variable:
+                  var: 结果
+                  value:
+                    join:
+                      a: '失败 → 回检查点 '
+                      b:
+                        var: 检查点
+    - - when_receive:
+          message: R一步
+      - set_variable:
+          var: 当前行
+          value:
+            add:
+            - round:
+              - divide:
+                - var: songTime
+                - var: 每行ms
+            - 1
+      - set_variable:
+          var: 当前列
+          value:
+            round:
+            - var: 连续列
+      - set_variable:
+          var: 地板
+          value:
+            item_of_list:
+              list: 行地板
+              index:
+                var: 当前行
+      - set_variable:
+          var: 障碍
+          value:
+            item_of_list:
+              list: 行障碍
+              index:
+                var: 当前行
+      - set_variable:
+          var: 跳板
+          value:
+            item_of_list:
+              list: 行跳板
+              index:
+                var: 当前行
+      - set_variable:
+          var: 收集
+          value:
+            item_of_list:
+              list: 行收集
+              index:
+                var: 当前行
+      - set_variable:
+          var: 临时
+          value: 0
+      - if:
+          cond:
+            and:
+            - greater_than:
+              - var: 障碍
+              - 0
+            - equals:
+              - var: 当前列
+              - item_of_list:
+                  list: 行障碍列
+                  index:
+                    var: 当前行
+          do:
+          - set_variable:
+              var: 临时
+              value: 2
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 地板
+              - 0
+            - equals:
+              - var: 当前列
+              - item_of_list:
+                  list: 行地板列
+                  index:
+                    var: 当前行
+          do:
+          - set_variable:
+              var: 临时
+              value: 1
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 临时
+              - 2
+            - equals:
+              - var: 地板
+              - 0
+          do:
+          - set_variable:
+              var: 临时
+              value: 0
+      - if:
+          cond:
+            equals:
+            - var: 临时
+            - 0
+          do:
+          - set_variable:
+              var: 档位
+              value: 1
+          - set_variable:
+              var: 档名词
+              value: 通过
+          - change_variable:
+              var: 完成度
+              by: 1
+          - if:
+              cond:
+                equals:
+                - var: 收集
+                - 1
+              do:
+              - change_variable:
+                  var: 行收集数
+                  by: 1
+          - if:
+              cond:
+                equals:
+                - var: 跳板
+                - 1
+              do:
+              - set_variable:
+                  var: 腾空
+                  value: 1
+              - set_variable:
+                  var: 跳高
+                  value: 3
+              - set_variable:
+                  var: 跳远
+                  value: 4
+          - set_variable:
+              var: 结果
+              value:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a: 通过 行
+                                  b:
+                                    var: 当前行
+                              b: ' 列'
+                          b:
+                            var: 当前列
+                      b: ' 完成度 '
+                  b:
+                    var: 完成度
+          else:
+          - set_variable:
+              var: 档位
+              value: 6
+          - set_variable:
+              var: 档名词
+              value: 失败
+          - change_variable:
+              var: 失败数
+              by: 1
+          - set_variable:
+              var: 结果
+              value:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a: 失败 行
+                                  b:
+                                    var: 当前行
+                              b: ' 列'
+                          b:
+                            var: 当前列
+                      b: ' 原因 '
+                  b:
+                    var: 临时
+    - - when_receive:
+          message: 结算
+      - set_variable:
+          var: 满分总分
+          value:
+            multiply:
+            - 100
+            - var: 音符数
+      - if:
+          cond:
+            equals:
+            - var: 满分总分
+            - 0
+          do:
+          - set_variable:
+              var: 准确率
+              value: 0
+          else:
+          - set_variable:
+              var: 准确率
+              value:
+                round:
+                - multiply:
+                  - divide:
+                    - var: 裸分
+                    - var: 满分总分
+                  - 100
+      - if:
+          cond:
+            and:
+            - not:
+                operand:
+                  equals:
+                  - less_than:
+                    - var: 准确率
+                    - 98
+                  - true
+            - equals:
+              - var: 档Miss数
+              - 0
+          do:
+          - set_variable:
+              var: 评级
+              value: S
+          else:
+          - if:
+              cond:
+                not:
+                  operand:
+                    equals:
+                    - less_than:
+                      - var: 准确率
+                      - 90
+                    - true
+              do:
+              - set_variable:
+                  var: 评级
+                  value: A
+              else:
+              - if:
+                  cond:
+                    not:
+                      operand:
+                        equals:
+                        - less_than:
+                          - var: 准确率
+                          - 75
+                        - true
+                  do:
+                  - set_variable:
+                      var: 评级
+                      value: B
+                  else:
+                  - if:
+                      cond:
+                        not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 准确率
+                              - 60
+                            - true
+                      do:
+                      - set_variable:
+                          var: 评级
+                          value: C
+                      else:
+                      - set_variable:
+                          var: 评级
+                          value: F
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a:
+                                    join:
+                                      a:
+                                        join:
+                                          a:
+                                            join:
+                                              a: '准确率 '
+                                              b:
+                                                var: 准确率
+                                          b: '% 评级 '
+                                      b:
+                                        var: 评级
+                                  b: ' 连击 '
+                              b:
+                                var: 最大连击
+                          b: ' Miss '
+                      b:
+                        var: 档Miss数
+                  b: ' 完成度 '
+              b:
+                var: 完成度
+    - - when_green_flag_clicked: null
+      - hide: null
+  - name: 显示板
+    x: -226
+    y: 166
+    costumes:
+    - name: dot
+      asset: assets/dot.svg
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - goto_xy:
+          x: -226
+          y: 166
+      - set_size:
+          value: 60
+      - show: null
+    - - when_receive:
+          message: 帧
+      - looks_say:
+          MESSAGE:
+            var: 结果

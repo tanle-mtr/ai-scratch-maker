@@ -1,0 +1,105 @@
+project:
+  name: 伪3D透视示例
+  stage:
+    backdrops:
+    - name: 背景1
+      asset: assets/backdrop1.svg
+    variables:
+      obj_x: 50
+      obj_y: 30
+      obj_z: 200
+      K: 100
+      speed: 4
+      passed: 0
+      obj_sx: 0
+      obj_sy: 0
+      obj_ssize: 0
+    scripts: []
+  sprites:
+  - name: 球
+    x: 0
+    y: 0
+    size: 100
+    costumes:
+    - name: dot
+      asset: assets/dot.svg
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - set_variable:
+          var: obj_x
+          value: 50
+      - set_variable:
+          var: obj_y
+          value: 30
+      - set_variable:
+          var: obj_z
+          value: 200
+      - set_variable:
+          var: K
+          value: 100
+      - set_variable:
+          var: speed
+          value: 4
+      - set_variable:
+          var: passed
+          value: 0
+      - broadcast:
+          message: 跑投影
+    - - when_receive:
+          message: 跑投影
+      - forever:
+          do:
+          - set_variable:
+              var: obj_z
+              value:
+                subtract:
+                - var: obj_z
+                - var: speed
+          - if:
+              cond:
+                less_than:
+                - var: obj_z
+                - 20
+              do:
+              - set_variable:
+                  var: passed
+                  value: 1
+              - set_variable:
+                  var: obj_z
+                  value: 200
+          - set_variable:
+              var: obj_sx
+              value:
+                divide:
+                - multiply:
+                  - var: obj_x
+                  - var: K
+                - var: obj_z
+          - set_variable:
+              var: obj_sy
+              value:
+                divide:
+                - multiply:
+                  - var: obj_y
+                  - var: K
+                - var: obj_z
+          - set_variable:
+              var: obj_ssize
+              value:
+                divide:
+                - multiply:
+                  - 40
+                  - var: K
+                - var: obj_z
+          - set_x:
+              x:
+                var: obj_sx
+          - set_y:
+              y:
+                var: obj_sy
+          - set_size:
+              value:
+                var: obj_ssize
+          - wait:
+              secs: 0.02

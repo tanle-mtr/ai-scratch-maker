@@ -1,0 +1,938 @@
+project:
+  name: 瓦片相机·滚动地图示教
+  extensions:
+  - pen
+  stage:
+    name: 舞台
+    backdrops:
+    - name: 背景1
+      asset: assets/backdrop1.svg
+    variables:
+      地图宽: 24
+      地图高: 16
+      视野宽: 12
+      视野高: 9
+      瓦片: 40
+      玩家格X: 12
+      玩家格Y: 8
+      相机X: 0
+      相机Y: 0
+      相机X测试: 0
+      相机Y测试: 0
+      相机X测试2: 0
+      相机Y测试2: 0
+      可见瓦片数: 0
+      列序: 0
+      行序: 0
+      世界格X: 0
+      世界格Y: 0
+      瓦片值: 0
+      屏幕X: 0
+      屏幕Y: 0
+    lists:
+      地图:
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 1
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 1
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 1
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 1
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 1
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 1
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 1
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 1
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 1
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 1
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 1
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+    broadcasts:
+      开始: 开始
+      刷新: 刷新
+    scripts:
+    - - when_green_flag_clicked: null
+      - set_variable:
+          var: 玩家格X
+          value: 12
+      - set_variable:
+          var: 玩家格Y
+          value: 8
+      - set_variable:
+          var: 相机X
+          value: 0
+      - set_variable:
+          var: 相机Y
+          value: 0
+      - broadcast:
+          message: 开始
+  sprites:
+  - name: 玩家
+    costumes:
+    - name: 点
+      asset: assets/dot.svg
+    procedures:
+    - name: 更新相机
+      args: []
+      warp: true
+      script:
+      - set_variable:
+          var: 相机X
+          value:
+            subtract:
+            - var: 玩家格X
+            - 6
+      - set_variable:
+          var: 相机Y
+          value:
+            subtract:
+            - var: 玩家格Y
+            - 4
+      - if:
+          cond:
+            less_than:
+            - var: 相机X
+            - 0
+          do:
+          - set_variable:
+              var: 相机X
+              value: 0
+      - if:
+          cond:
+            greater_than:
+            - var: 相机X
+            - 12
+          do:
+          - set_variable:
+              var: 相机X
+              value: 12
+      - if:
+          cond:
+            less_than:
+            - var: 相机Y
+            - 0
+          do:
+          - set_variable:
+              var: 相机Y
+              value: 0
+      - if:
+          cond:
+            greater_than:
+            - var: 相机Y
+            - 7
+          do:
+          - set_variable:
+              var: 相机Y
+              value: 7
+    scripts:
+    - - when_receive:
+          message: 开始
+      - hide: null
+      - set_variable:
+          var: 玩家格X
+          value: 23
+      - set_variable:
+          var: 玩家格Y
+          value: 15
+      - call:
+          proc: 更新相机
+          args: []
+      - set_variable:
+          var: 相机X测试
+          value:
+            var: 相机X
+      - set_variable:
+          var: 相机Y测试
+          value:
+            var: 相机Y
+      - set_variable:
+          var: 玩家格X
+          value: 0
+      - set_variable:
+          var: 玩家格Y
+          value: 0
+      - call:
+          proc: 更新相机
+          args: []
+      - set_variable:
+          var: 相机X测试2
+          value:
+            var: 相机X
+      - set_variable:
+          var: 相机Y测试2
+          value:
+            var: 相机Y
+      - set_variable:
+          var: 玩家格X
+          value: 12
+      - set_variable:
+          var: 玩家格Y
+          value: 8
+      - call:
+          proc: 更新相机
+          args: []
+      - forever:
+          do:
+          - if:
+              cond:
+                key_pressed:
+                  key: left
+              do:
+              - set_variable:
+                  var: 世界格X
+                  value:
+                    add:
+                    - var: 玩家格X
+                    - -1
+              - set_variable:
+                  var: 世界格Y
+                  value:
+                    add:
+                    - var: 玩家格Y
+                    - 0
+              - if:
+                  cond:
+                    and:
+                    - greater_than:
+                      - var: 世界格X
+                      - 0
+                    - and:
+                      - less_than:
+                        - var: 世界格X
+                        - 23
+                      - and:
+                        - greater_than:
+                          - var: 世界格Y
+                          - 0
+                        - less_than:
+                          - var: 世界格Y
+                          - 15
+                  do:
+                  - set_variable:
+                      var: 瓦片值
+                      value:
+                        item_of_list:
+                          index:
+                            add:
+                            - add:
+                              - multiply:
+                                - var: 世界格Y
+                                - 24
+                              - var: 世界格X
+                            - 1
+                          list: 地图
+                  - if:
+                      cond:
+                        equals:
+                        - var: 瓦片值
+                        - 0
+                      do:
+                      - set_variable:
+                          var: 玩家格X
+                          value:
+                            var: 世界格X
+                      - set_variable:
+                          var: 玩家格Y
+                          value:
+                            var: 世界格Y
+          - if:
+              cond:
+                key_pressed:
+                  key: right
+              do:
+              - set_variable:
+                  var: 世界格X
+                  value:
+                    add:
+                    - var: 玩家格X
+                    - 1
+              - set_variable:
+                  var: 世界格Y
+                  value:
+                    add:
+                    - var: 玩家格Y
+                    - 0
+              - if:
+                  cond:
+                    and:
+                    - greater_than:
+                      - var: 世界格X
+                      - 0
+                    - and:
+                      - less_than:
+                        - var: 世界格X
+                        - 23
+                      - and:
+                        - greater_than:
+                          - var: 世界格Y
+                          - 0
+                        - less_than:
+                          - var: 世界格Y
+                          - 15
+                  do:
+                  - set_variable:
+                      var: 瓦片值
+                      value:
+                        item_of_list:
+                          index:
+                            add:
+                            - add:
+                              - multiply:
+                                - var: 世界格Y
+                                - 24
+                              - var: 世界格X
+                            - 1
+                          list: 地图
+                  - if:
+                      cond:
+                        equals:
+                        - var: 瓦片值
+                        - 0
+                      do:
+                      - set_variable:
+                          var: 玩家格X
+                          value:
+                            var: 世界格X
+                      - set_variable:
+                          var: 玩家格Y
+                          value:
+                            var: 世界格Y
+          - if:
+              cond:
+                key_pressed:
+                  key: up
+              do:
+              - set_variable:
+                  var: 世界格X
+                  value:
+                    add:
+                    - var: 玩家格X
+                    - 0
+              - set_variable:
+                  var: 世界格Y
+                  value:
+                    add:
+                    - var: 玩家格Y
+                    - 1
+              - if:
+                  cond:
+                    and:
+                    - greater_than:
+                      - var: 世界格X
+                      - 0
+                    - and:
+                      - less_than:
+                        - var: 世界格X
+                        - 23
+                      - and:
+                        - greater_than:
+                          - var: 世界格Y
+                          - 0
+                        - less_than:
+                          - var: 世界格Y
+                          - 15
+                  do:
+                  - set_variable:
+                      var: 瓦片值
+                      value:
+                        item_of_list:
+                          index:
+                            add:
+                            - add:
+                              - multiply:
+                                - var: 世界格Y
+                                - 24
+                              - var: 世界格X
+                            - 1
+                          list: 地图
+                  - if:
+                      cond:
+                        equals:
+                        - var: 瓦片值
+                        - 0
+                      do:
+                      - set_variable:
+                          var: 玩家格X
+                          value:
+                            var: 世界格X
+                      - set_variable:
+                          var: 玩家格Y
+                          value:
+                            var: 世界格Y
+          - if:
+              cond:
+                key_pressed:
+                  key: down
+              do:
+              - set_variable:
+                  var: 世界格X
+                  value:
+                    add:
+                    - var: 玩家格X
+                    - 0
+              - set_variable:
+                  var: 世界格Y
+                  value:
+                    add:
+                    - var: 玩家格Y
+                    - -1
+              - if:
+                  cond:
+                    and:
+                    - greater_than:
+                      - var: 世界格X
+                      - 0
+                    - and:
+                      - less_than:
+                        - var: 世界格X
+                        - 23
+                      - and:
+                        - greater_than:
+                          - var: 世界格Y
+                          - 0
+                        - less_than:
+                          - var: 世界格Y
+                          - 15
+                  do:
+                  - set_variable:
+                      var: 瓦片值
+                      value:
+                        item_of_list:
+                          index:
+                            add:
+                            - add:
+                              - multiply:
+                                - var: 世界格Y
+                                - 24
+                              - var: 世界格X
+                            - 1
+                          list: 地图
+                  - if:
+                      cond:
+                        equals:
+                        - var: 瓦片值
+                        - 0
+                      do:
+                      - set_variable:
+                          var: 玩家格X
+                          value:
+                            var: 世界格X
+                      - set_variable:
+                          var: 玩家格Y
+                          value:
+                            var: 世界格Y
+          - call:
+              proc: 更新相机
+              args: []
+          - broadcast:
+              message: 刷新
+          - say:
+              text:
+                join:
+                - join:
+                  - '格 '
+                  - var: 玩家格X
+                - join:
+                  - ', 相机 '
+                  - var: 相机X
+              secs: 0
+  - name: 渲染
+    costumes:
+    - name: 点
+      asset: assets/dot.svg
+    scripts:
+    - - when_receive:
+          message: 刷新
+      - hide: null
+      - pen_clear: null
+      - pen_up: null
+      - set_variable:
+          var: 可见瓦片数
+          value: 0
+      - set_variable:
+          var: 行序
+          value: 0
+      - repeat:
+          times:
+            var: 视野高
+          do:
+          - change_variable:
+              var: 行序
+              value: 1
+          - set_variable:
+              var: 列序
+              value: 0
+          - repeat:
+              times:
+                var: 视野宽
+              do:
+              - change_variable:
+                  var: 列序
+                  value: 1
+              - set_variable:
+                  var: 世界格X
+                  value:
+                    add:
+                    - var: 相机X
+                    - var: 列序
+              - set_variable:
+                  var: 世界格Y
+                  value:
+                    add:
+                    - var: 相机Y
+                    - var: 行序
+              - set_variable:
+                  var: 屏幕X
+                  value:
+                    multiply:
+                    - subtract:
+                      - var: 列序
+                      - 6
+                    - 40
+              - set_variable:
+                  var: 屏幕Y
+                  value:
+                    multiply:
+                    - subtract:
+                      - var: 行序
+                      - 4
+                    - 40
+              - set_variable:
+                  var: 瓦片值
+                  value:
+                    item_of_list:
+                      index:
+                        add:
+                        - add:
+                          - multiply:
+                            - var: 世界格Y
+                            - 24
+                          - var: 世界格X
+                        - 1
+                      list: 地图
+              - change_variable:
+                  var: 可见瓦片数
+                  value: 1
+              - if:
+                  cond:
+                    equals:
+                    - var: 瓦片值
+                    - 1
+                  do:
+                  - set_pen_color:
+                      COLOR: 40
+                  - goto_xy:
+                      x:
+                        subtract:
+                        - var: 屏幕X
+                        - 20.0
+                      y:
+                        add:
+                        - var: 屏幕Y
+                        - 20.0
+                  - pen_down: null
+                  - goto_xy:
+                      x:
+                        add:
+                        - var: 屏幕X
+                        - 20.0
+                      y:
+                        add:
+                        - var: 屏幕Y
+                        - 20.0
+                  - goto_xy:
+                      x:
+                        add:
+                        - var: 屏幕X
+                        - 20.0
+                      y:
+                        subtract:
+                        - var: 屏幕Y
+                        - 20.0
+                  - goto_xy:
+                      x:
+                        subtract:
+                        - var: 屏幕X
+                        - 20.0
+                      y:
+                        subtract:
+                        - var: 屏幕Y
+                        - 20.0
+                  - goto_xy:
+                      x:
+                        subtract:
+                        - var: 屏幕X
+                        - 20.0
+                      y:
+                        add:
+                        - var: 屏幕Y
+                        - 20.0
+                  - pen_up: null

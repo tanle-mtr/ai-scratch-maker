@@ -1,0 +1,368 @@
+project:
+  name: 乐器编曲台（简谱转乐器演奏）
+  stage:
+    backdrops:
+    - name: 舞台
+      asset: assets/music/game_bg.png
+    variables:
+      乐器: 1
+      低音乐器: 6
+      八度: 4
+      节拍: 0.25
+      音符数: 0
+      状态: 就绪
+      i: 0
+      v: 0
+      偏移: 0
+      音高: 0
+      帧计数: 0
+      自动帧: 1
+      得分: 0
+    lists:
+      简谱:
+      - 1
+      - 1
+      - 5
+      - 5
+      - 6
+      - 6
+      - 5
+      - 4
+      - 4
+      - 3
+      - 3
+      - 2
+      - 2
+      - 1
+      偏移表:
+      - 0
+      - 2
+      - 4
+      - 5
+      - 7
+      - 9
+      - 11
+      音高表:
+      - 0
+    sounds:
+      - {name: 点击音, asset: assets/sfx/ui_click.wav}
+      - {name: 完成音, asset: assets/sfx/ev_win.wav}
+      - {name: 环境音, asset: assets/sfx/amb_wind.wav}
+    monitors:
+      - {var: 得分, x: 200, y: 8}
+    scripts:
+    - - when_green_flag_clicked: null
+      - set_variable:
+          var: 自动帧
+          value: 1
+      - set_variable:
+          var: 乐器
+          value: 1
+      - set_variable:
+          var: 八度
+          value: 4
+      - set_variable:
+          var: 节拍
+          value: 0.25
+      - set_variable:
+          var: 状态
+          value: 乐器编曲台：简谱 → 音高 → 演奏
+      - show: null
+      - play_sound: {sound: 环境音}
+      - forever:
+          do:
+          - if:
+              cond:
+                equals:
+                - var: 自动帧
+                - 1
+              do:
+              - change_variable:
+                  var: 帧计数
+                  by: 1
+              - broadcast:
+                  message: 帧
+          - wait:
+              secs: 0.02
+    - - when_receive:
+          message: 重置
+      - set_variable:
+          var: 状态
+          value: 已重置
+    - - when_receive:
+          message: 播点击音
+      - play_sound: {sound: 点击音}
+    - - when_receive:
+          message: 播完成音
+      - play_sound: {sound: 完成音}
+      - change_variable:
+          var: 得分
+          by: 1
+  sprites:
+  - name: 编曲台
+    x: 0
+    y: 0
+    costumes:
+    - name: dot
+      asset: assets/dot.svg
+    variables: {}
+    scripts:
+    - - when_receive:
+          message: 解析简谱
+      - set_variable:
+          var: 音符数
+          value:
+            length_of_list:
+              list: 简谱
+      - delete_all_of_list:
+          list: 音高表
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times:
+            var: 音符数
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - set_variable:
+              var: v
+              value:
+                item_of_list:
+                  list: 简谱
+                  index:
+                    var: i
+          - if:
+              cond:
+                equals:
+                - var: v
+                - 0
+              do:
+              - add_to_list:
+                  list: 音高表
+                  item: 0
+              else:
+              - set_variable:
+                  var: 偏移
+                  value:
+                    item_of_list:
+                      list: 偏移表
+                      index:
+                        var: v
+              - set_variable:
+                  var: 音高
+                  value:
+                    add:
+                    - add:
+                      - 60
+                      - var: 偏移
+                    - multiply:
+                      - 12
+                      - subtract:
+                        - var: 八度
+                        - 4
+              - add_to_list:
+                  list: 音高表
+                  item:
+                    var: 音高
+      - set_variable:
+          var: 状态
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a: '已解析 '
+                              b:
+                                var: 音符数
+                          b: ' 个音，乐器 '
+                      b:
+                        var: 乐器
+                  b: ' 八度 '
+              b:
+                var: 八度
+    - - when_receive:
+          message: 换乐器
+      - music_set_instrument:
+          INSTRUMENT:
+            var: 乐器
+      - set_variable:
+          var: 状态
+          value:
+            join:
+              a: '乐器已切到 '
+              b:
+                var: 乐器
+    - - when_receive:
+          message: 演奏旋律
+      - music_set_tempo:
+          TEMPO: 120
+      - music_set_instrument:
+          INSTRUMENT:
+            var: 乐器
+      - set_variable:
+          var: 音符数
+          value:
+            length_of_list:
+              list: 音高表
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times:
+            var: 音符数
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - set_variable:
+              var: 音高
+              value:
+                item_of_list:
+                  list: 音高表
+                  index:
+                    var: i
+          - if:
+              cond:
+                equals:
+                - var: 音高
+                - 0
+              do:
+              - music_rest_for_beats:
+                  BEATS:
+                    var: 节拍
+              - music_play_note_for_beats:
+                  NOTE:
+                    var: 音高
+                  BEATS:
+                    var: 节拍
+      - set_variable:
+          var: 状态
+          value: 旋律演奏完
+      - broadcast:
+          message: 播完成音
+    - - when_green_flag_clicked: null
+      - hide: null
+  - name: 低音声部
+    x: 0
+    y: 0
+    costumes:
+    - name: dot
+      asset: assets/dot.svg
+    variables: {}
+    scripts:
+    - - when_receive:
+          message: 演奏低音
+      - music_set_tempo:
+          TEMPO: 120
+      - music_set_instrument:
+          INSTRUMENT:
+            var: 低音乐器
+      - set_variable:
+          var: 音符数
+          value:
+            length_of_list:
+              list: 音高表
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times:
+            var: 音符数
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - set_variable:
+              var: 音高
+              value:
+                item_of_list:
+                  list: 音高表
+                  index:
+                    var: i
+          - if:
+              cond:
+                greater_than:
+                - var: 音高
+                - 12
+              do:
+              - music_play_note_for_beats:
+                  NOTE:
+                    subtract:
+                    - var: 音高
+                    - 12
+                  BEATS:
+                    multiply:
+                    - var: 节拍
+                    - 2
+    - - when_green_flag_clicked: null
+      - hide: null
+  - name: 显示板
+    x: -226
+    y: 166
+    costumes:
+    - name: dot
+      asset: assets/dot.svg
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - goto_xy:
+          x: -226
+          y: 166
+      - set_size:
+          value: 56
+      - show: null
+    - - when_receive:
+          message: 帧
+      - looks_say:
+          MESSAGE:
+            var: 状态
+  - name: 演奏者
+    x: 0
+    y: -30
+    size: 90
+    rotationStyle: left-right
+    costumes:
+      - {name: 指挥, asset: assets/music/conductor.png}
+      - {name: 演奏, asset: assets/music/conductor.png}
+    variables: {}
+    scripts:
+      - - when_green_flag_clicked: null
+        - show: null
+        - goto_xy:
+            x: 0
+            y: -30
+        - broadcast:
+            message: 解析简谱
+        - forever:
+            do:
+              - glide_xy: {secs: 0.4, x: 0, y: -50}
+              - glide_xy: {secs: 0.4, x: 0, y: -30}
+      - - when_this_sprite_clicked: null
+        - set_variable:
+            var: 乐器
+            value: {random: [1, 21]}
+        - broadcast:
+            message: 换乐器
+        - broadcast:
+            message: 解析简谱
+        - broadcast:
+            message: 演奏旋律
+        - broadcast:
+            message: 演奏低音
+        - broadcast:
+            message: 播点击音
+      - - when_receive:
+            message: 演奏旋律
+        - switch_costume:
+            costume: 演奏
+      - - when_receive:
+            message: 播完成音
+        - switch_costume:
+            costume: 指挥

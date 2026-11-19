@@ -1,0 +1,389 @@
+project:
+  name: 四题测验
+  title_screen:
+    backdrop: assets/quiz/ui_title.svg
+    button:
+      asset: assets/quiz/ui_btn.svg
+      x: 0
+      y: -110
+    game_backdrop: 答题
+    broadcast: 开始答题
+  stage:
+    backdrops:
+    - name: 答题
+      asset: assets/backdrop1.svg
+    sounds:
+    - name: 选项音
+      asset: assets/sfx/ui_click.wav
+    - name: 答对音
+      asset: assets/sfx/ev_win.wav
+    - name: 答错音
+      asset: assets/sfx/ev_lose.wav
+    variables:
+      game_state: 0
+      题号: 1
+      题目总数: 4
+      当前选项: 0
+      已答: 0
+      分数: 0
+      答对数: 0
+      连对: 0
+      最高连对: 0
+      缓动: 0
+    lists:
+      正确答案:
+      - 2
+      - 3
+      - 1
+      - 4
+      题板名:
+      - 题1
+      - 题2
+      - 题3
+      - 题4
+      题目文本:
+      - 1+1=?
+      - 2+3=?
+      - 5-2=?
+      - 4×2=?
+    scripts:
+    - - when_receive:
+          message: 开始答题
+      - broadcast:
+          message: 重置
+    - - when_receive:
+          message: 重置
+      - set_variable:
+          var: 题号
+          value: 1
+      - set_variable:
+          var: 分数
+          value: 0
+      - set_variable:
+          var: 答对数
+          value: 0
+      - set_variable:
+          var: 连对
+          value: 0
+      - set_variable:
+          var: 最高连对
+          value: 0
+      - set_variable:
+          var: 当前选项
+          value: 0
+      - broadcast:
+          message: 出题
+    - - when_receive:
+          message: 开始答题
+      - play_sound: { sound: 选项音 }
+    - - when_receive:
+          message: 答对了
+      - play_sound: { sound: 答对音 }
+    - - when_receive:
+          message: 答错了
+      - play_sound: { sound: 答错音 }
+    - - when_receive:
+          message: 出题
+      - set_variable:
+          var: game_state
+          value: 1
+      - set_variable:
+          var: 已答
+          value: 0
+      - set_variable:
+          var: 当前选项
+          value: 0
+    - - when_receive:
+          message: 提交答案
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 已答
+              - 0
+            - equals:
+              - var: game_state
+              - 1
+          do:
+          - set_variable:
+              var: 已答
+              value: 1
+          - set_variable:
+              var: game_state
+              value: 2
+          - if_else:
+              cond:
+                equals:
+                - var: 当前选项
+                - item_of_list:
+                    index:
+                      var: 题号
+                    list: 正确答案
+              do:
+              - change_variable:
+                  var: 分数
+                  by: 10
+              - change_variable:
+                  var: 答对数
+                  by: 1
+              - change_variable:
+                  var: 连对
+                  by: 1
+              - if:
+                  cond:
+                    gt:
+                    - var: 连对
+                    - var: 最高连对
+                  do:
+                  - set_variable:
+                      var: 最高连对
+                      value:
+                        var: 连对
+              - broadcast:
+                  message: 答对了
+              else:
+              - set_variable:
+                  var: 连对
+                  value: 0
+              - broadcast:
+                  message: 答错了
+          - wait: 1.0
+          - broadcast:
+              message: 下一题
+    - - when_receive:
+          message: 下一题
+      - change_variable:
+          var: 题号
+          by: 1
+      - if_else:
+          cond:
+            gt:
+            - var: 题号
+            - var: 题目总数
+          do:
+          - set_variable:
+              var: game_state
+              value: 3
+          - broadcast:
+              message: 结算
+          else:
+          - broadcast:
+              message: 出题
+  sprites:
+  - name: 题板
+    x: 0
+    y: 65
+    costumes:
+    - name: 题卡
+      asset: assets/quiz/q_card.svg
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+    - - when_receive:
+          message: 出题
+      - show: null
+      - glide_xy: { secs: 0.25, x: 0, y: 65 }
+      - say:
+          text:
+            item_of_list:
+              index:
+                var: 题号
+              list: 题目文本
+    - - when_receive:
+          message: 结算
+      - hide: null
+  - name: 反馈牌
+    x: 0
+    y: -10
+    costumes:
+    - name: 对
+      asset: assets/quiz/ui_right.svg
+    - name: 错
+      asset: assets/quiz/ui_wrong.svg
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+    - - when_receive:
+          message: 答对了
+      - switch_costume:
+          costume: 对
+      - show: null
+    - - when_receive:
+          message: 答错了
+      - switch_costume:
+          costume: 错
+      - show: null
+    - - when_receive:
+          message: 出题
+      - hide: null
+  - name: 结算牌
+    x: 0
+    y: 30
+    costumes:
+    - name: 结束
+      asset: assets/quiz/final.png
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+    - - when_receive:
+          message: 结算
+      - show: null
+    - - when_receive:
+          message: 重置
+      - hide: null
+  - name: 选项A
+    x: -165
+    y: -95
+    costumes:
+    - name: A
+      asset: assets/quiz/ui_btn.svg
+    - name: A按下
+      asset: assets/quiz/ui_btn_pressed.svg
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+    - - when_receive:
+          message: 开始答题
+      - show: null
+      - say: { text: "A" }
+    - - when_receive:
+          message: 结算
+      - hide: null
+    - - when_this_sprite_clicked: null
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 已答
+              - 0
+            - equals:
+              - var: game_state
+              - 1
+          do:
+          - switch_costume:
+              costume: A按下
+          - set_variable:
+              var: 当前选项
+              value: 1
+          - broadcast:
+              message: 提交答案
+          - wait: 0.15
+          - switch_costume:
+              costume: A
+  - name: 选项B
+    x: -55
+    y: -95
+    costumes:
+    - name: B
+      asset: assets/quiz/ui_btn.svg
+    - name: B按下
+      asset: assets/quiz/ui_btn_pressed.svg
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+    - - when_receive:
+          message: 开始答题
+      - show: null
+      - say: { text: "B" }
+    - - when_receive:
+          message: 结算
+      - hide: null
+    - - when_this_sprite_clicked: null
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 已答
+              - 0
+            - equals:
+              - var: game_state
+              - 1
+          do:
+          - switch_costume:
+              costume: B按下
+          - set_variable:
+              var: 当前选项
+              value: 2
+          - broadcast:
+              message: 提交答案
+          - wait: 0.15
+          - switch_costume:
+              costume: B
+  - name: 选项C
+    x: 55
+    y: -95
+    costumes:
+    - name: C
+      asset: assets/quiz/ui_btn.svg
+    - name: C按下
+      asset: assets/quiz/ui_btn_pressed.svg
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+    - - when_receive:
+          message: 开始答题
+      - show: null
+      - say: { text: "C" }
+    - - when_receive:
+          message: 结算
+      - hide: null
+    - - when_this_sprite_clicked: null
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 已答
+              - 0
+            - equals:
+              - var: game_state
+              - 1
+          do:
+          - switch_costume:
+              costume: C按下
+          - set_variable:
+              var: 当前选项
+              value: 3
+          - broadcast:
+              message: 提交答案
+          - wait: 0.15
+          - switch_costume:
+              costume: C
+  - name: 选项D
+    x: 165
+    y: -95
+    costumes:
+    - name: D
+      asset: assets/quiz/ui_btn.svg
+    - name: D按下
+      asset: assets/quiz/ui_btn_pressed.svg
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+    - - when_receive:
+          message: 开始答题
+      - show: null
+      - say: { text: "D" }
+    - - when_receive:
+          message: 结算
+      - hide: null
+    - - when_this_sprite_clicked: null
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 已答
+              - 0
+            - equals:
+              - var: game_state
+              - 1
+          do:
+          - switch_costume:
+              costume: D按下
+          - set_variable:
+              var: 当前选项
+              value: 4
+          - broadcast:
+              message: 提交答案
+          - wait: 0.15
+          - switch_costume:
+              costume: D

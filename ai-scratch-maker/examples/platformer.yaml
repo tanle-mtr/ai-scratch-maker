@@ -1,0 +1,1045 @@
+project:
+  name: 平台跳跃示例
+  stage:
+    backdrops:
+    - name: 背景1
+      asset: assets/platformer/game_bg.png
+    sounds:
+    - name: 点击音
+      asset: assets/sfx/ui_click.wav
+    - name: 跳跃音
+      asset: assets/sfx/fx_jump.wav
+    - name: 落地音
+      asset: assets/sfx/fx_land.wav
+    - name: 金币音
+      asset: assets/sfx/fx_coin.wav
+    - name: 胜利音
+      asset: assets/sfx/ev_win.wav
+    - name: 失败音
+      asset: assets/sfx/ev_lose.wav
+    - name: 背景乐
+      asset: assets/sfx/amb_wind.wav
+    variables:
+      玩家x: -200
+      玩家y: 40
+      vx: 0
+      vy: 0
+      上帧y: 0
+      在地面: 0
+      离地计时: 9
+      输入_左: 0
+      输入_右: 0
+      输入_跳: 0
+      使用键盘: 1
+      自动帧: 1
+      i: 0
+      平台数: 4
+      金币总数: 3
+      玩家半宽: 14
+      玩家半高: 18
+      移动速度: 6
+      重力: 1.2
+      最大下落: 18
+      跳跃力度: 16
+      镜头x: -260
+      关卡左: -260
+      关卡右: 640
+      半屏宽: 160
+      屏宽: 320
+      得分: 0
+      命数: 3
+      金币数: 0
+      允许操作: 1
+      出生x: -200
+      出生y: 40
+      方向键: 0
+      已画: 0
+      跳缓冲: 0
+      震屏: 0
+      was_ground: 0
+      prev_jump: 0
+      拉伸: 100
+    lists:
+      平台x:
+      - -60
+      - -20
+      - 140
+      - 380
+      平台y:
+      - -140
+      - -90
+      - -40
+      - 20
+      平台宽:
+      - 700
+      - 40
+      - 180
+      - 160
+      平台高:
+      - 40
+      - 60
+      - 30
+      - 30
+      金币x:
+      - -150
+      - 140
+      - 380
+      金币y:
+      - -80
+      - 20
+      - 130
+      金币活:
+      - 1
+      - 1
+      - 1
+    scripts:
+    - - when_green_flag_clicked: null
+      - set_variable:
+          var: 得分
+          value: 0
+      - set_variable:
+          var: 命数
+          value: 3
+      - set_variable:
+          var: 金币数
+          value: 0
+      - set_variable:
+          var: 使用键盘
+          value: 1
+      - set_variable:
+          var: 自动帧
+          value: 1
+      - set_variable:
+          var: 平台数
+          value:
+            length_of_list:
+              list: 平台x
+      - set_variable:
+          var: 金币总数
+          value:
+            length_of_list:
+              list: 金币x
+      - &id001
+        set_variable:
+          var: 玩家x
+          value:
+            var: 出生x
+      - &id002
+        set_variable:
+          var: 玩家y
+          value:
+            var: 出生y
+      - &id003
+        set_variable:
+          var: vx
+          value: 0
+      - &id004
+        set_variable:
+          var: vy
+          value: 0
+      - &id005
+        set_variable:
+          var: 在地面
+          value: 0
+      - &id006
+        set_variable:
+          var: 离地计时
+          value: 9
+      - &id007
+        set_variable:
+          var: 输入_左
+          value: 0
+      - &id008
+        set_variable:
+          var: 输入_右
+          value: 0
+      - &id009
+        set_variable:
+          var: 输入_跳
+          value: 0
+      - &id010
+        set_variable:
+          var: 允许操作
+          value: 1
+      - &id011
+        set_variable:
+          var: 已画
+          value: 0
+      - &id012
+        set_variable:
+          var: __k
+          value: 0
+      - &id013
+        repeat:
+          times:
+            var: 金币总数
+          do:
+          - change_variable:
+              var: __k
+              by: 1
+          - replace_item_of_list:
+              list: 金币活
+              index:
+                var: __k
+              item: 1
+      - &id014
+        broadcast:
+          message: 重画场景
+      - &id015
+        broadcast:
+          message: 清金币
+      - &id016
+        broadcast:
+          message: 生成金币
+      - forever:
+          do:
+          - if:
+              cond:
+                equals:
+                - var: 自动帧
+                - 1
+              do:
+              - broadcast:
+                  message: 帧
+          - wait:
+              secs: 0.02
+    - - when_receive:
+          message: 重置
+      - *id001
+      - *id002
+      - *id003
+      - *id004
+      - *id005
+      - *id006
+      - *id007
+      - *id008
+      - *id009
+      - *id010
+      - *id011
+      - *id012
+      - *id013
+      - *id014
+      - *id015
+      - *id016
+      - set_variable:
+          var: 跳缓冲
+          value: 0
+      - set_variable:
+          var: 震屏
+          value: 0
+      - set_variable:
+          var: was_ground
+          value: 0
+      - set_variable:
+          var: prev_jump
+          value: 0
+      - set_variable:
+          var: 拉伸
+          value: 100
+    - - when_receive:
+          message: 暂停
+      - set_variable:
+          var: 自动帧
+          value: 0
+    - - when_receive:
+          message: 继续
+      - set_variable:
+          var: 自动帧
+          value: 1
+  sprites:
+  - name: 玩家
+    x: 0
+    y: 0
+    costumes:
+    - name: idle
+      asset: assets/platformer/hero_idle.png
+    - name: walk1
+      asset: assets/platformer/hero_walk.png
+    - name: walk2
+      asset: assets/platformer/hero_walk.png
+    - name: jump
+      asset: assets/platformer/hero_jump.png
+    variables:
+      是克隆: 0
+      状态: 待机
+    animations:
+      var: 状态
+      fps: 12
+      states:
+        待机: [idle]
+        走:   [walk1, walk2]
+        跳:   [jump]
+    scripts:
+    - - when_receive:
+          message: 帧
+      - if:
+          cond:
+            equals:
+            - var: 使用键盘
+            - 1
+          do:
+          - if:
+              cond:
+                key_pressed:
+                  key: left arrow
+              do:
+              - set_variable:
+                  var: 输入_左
+                  value: 1
+              else:
+              - set_variable:
+                  var: 输入_左
+                  value: 0
+          - if:
+              cond:
+                key_pressed:
+                  key: right arrow
+              do:
+              - set_variable:
+                  var: 输入_右
+                  value: 1
+              else:
+              - set_variable:
+                  var: 输入_右
+                  value: 0
+          - if:
+              cond:
+                key_pressed:
+                  key: space
+              do:
+              - set_variable:
+                  var: 输入_跳
+                  value: 1
+              else:
+              - set_variable:
+                  var: 输入_跳
+                  value: 0
+    - - when_receive:
+          message: 帧
+      - if:
+          cond:
+            equals:
+            - var: 允许操作
+            - 0
+          do:
+          - stop:
+              option: this script
+      - set_variable:
+          var: 方向键
+          value:
+            subtract:
+            - var: 输入_右
+            - var: 输入_左
+      - set_variable:
+          var: vx
+          value:
+            multiply:
+            - var: 方向键
+            - var: 移动速度
+      - set_variable:
+          var: vy
+          value:
+            subtract:
+            - var: vy
+            - var: 重力
+      - if:
+          cond:
+            less_than:
+            - var: vy
+            - subtract:
+              - 0
+              - var: 最大下落
+          do:
+          - set_variable:
+              var: vy
+              value:
+                subtract:
+                - 0
+                - var: 最大下落
+      - set_variable:
+          var: 上帧y
+          value:
+            var: 玩家y
+      - change_variable:
+          var: 玩家x
+          by:
+            var: vx
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times:
+            var: 平台数
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - if:
+              cond:
+                and:
+                - and:
+                  - less_than:
+                    - mathop:
+                        operator: abs
+                        num:
+                          subtract:
+                          - var: 玩家x
+                          - item_of_list:
+                              list: 平台x
+                              index:
+                                var: i
+                    - add:
+                      - var: 玩家半宽
+                      - divide:
+                        - item_of_list:
+                            list: 平台宽
+                            index:
+                              var: i
+                        - 2
+                  - less_than:
+                    - mathop:
+                        operator: abs
+                        num:
+                          subtract:
+                          - var: 玩家y
+                          - item_of_list:
+                              list: 平台y
+                              index:
+                                var: i
+                    - add:
+                      - var: 玩家半高
+                      - divide:
+                        - item_of_list:
+                            list: 平台高
+                            index:
+                              var: i
+                        - 2
+                - not:
+                    operand:
+                      equals:
+                      - var: vx
+                      - 0
+              do:
+              - set_variable:
+                  var: 玩家x
+                  value:
+                    subtract:
+                    - var: 玩家x
+                    - var: vx
+      - set_variable:
+          var: 在地面
+          value: 0
+      - change_variable:
+          var: 玩家y
+          by:
+            var: vy
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times:
+            var: 平台数
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - if:
+              cond:
+                and:
+                - and:
+                  - less_than:
+                    - mathop:
+                        operator: abs
+                        num:
+                          subtract:
+                          - var: 玩家x
+                          - item_of_list:
+                              list: 平台x
+                              index:
+                                var: i
+                    - add:
+                      - var: 玩家半宽
+                      - divide:
+                        - item_of_list:
+                            list: 平台宽
+                            index:
+                              var: i
+                        - 2
+                  - less_than:
+                    - mathop:
+                        operator: abs
+                        num:
+                          subtract:
+                          - var: 玩家y
+                          - item_of_list:
+                              list: 平台y
+                              index:
+                                var: i
+                    - add:
+                      - var: 玩家半高
+                      - divide:
+                        - item_of_list:
+                            list: 平台高
+                            index:
+                              var: i
+                        - 2
+                - not:
+                    operand:
+                      equals:
+                      - greater_than:
+                        - var: vy
+                        - 0
+                      - true
+              do:
+              - set_variable:
+                  var: 玩家y
+                  value:
+                    add:
+                    - add:
+                      - item_of_list:
+                          list: 平台y
+                          index:
+                            var: i
+                      - divide:
+                        - item_of_list:
+                            list: 平台高
+                            index:
+                              var: i
+                        - 2
+                    - var: 玩家半高
+              - set_variable:
+                  var: vy
+                  value: 0
+              - set_variable:
+                  var: 在地面
+                  value: 1
+          - if:
+              cond:
+                and:
+                - and:
+                  - less_than:
+                    - mathop:
+                        operator: abs
+                        num:
+                          subtract:
+                          - var: 玩家x
+                          - item_of_list:
+                              list: 平台x
+                              index:
+                                var: i
+                    - add:
+                      - var: 玩家半宽
+                      - divide:
+                        - item_of_list:
+                            list: 平台宽
+                            index:
+                              var: i
+                        - 2
+                  - less_than:
+                    - mathop:
+                        operator: abs
+                        num:
+                          subtract:
+                          - var: 玩家y
+                          - item_of_list:
+                              list: 平台y
+                              index:
+                                var: i
+                    - add:
+                      - var: 玩家半高
+                      - divide:
+                        - item_of_list:
+                            list: 平台高
+                            index:
+                              var: i
+                        - 2
+                - greater_than:
+                  - var: vy
+                  - 0
+              do:
+              - set_variable:
+                  var: 玩家y
+                  value:
+                    subtract:
+                    - subtract:
+                      - item_of_list:
+                          list: 平台y
+                          index:
+                            var: i
+                      - divide:
+                        - item_of_list:
+                            list: 平台高
+                            index:
+                              var: i
+                        - 2
+                    - var: 玩家半高
+              - set_variable:
+                  var: vy
+                  value: 0
+      - if:
+          cond:
+            equals:
+            - var: 在地面
+            - 1
+          do:
+          - set_variable:
+              var: 离地计时
+              value: 0
+          else:
+          - change_variable:
+              var: 离地计时
+              by: 1
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: was_ground
+              - 0
+            - equals:
+              - var: 在地面
+              - 1
+          do:
+          - set_variable:
+              var: 拉伸
+              value: 70
+          - set_variable:
+              var: 震屏
+              value: 2
+      - set_variable:
+          var: was_ground
+          value:
+            var: 在地面
+      - if:
+          cond:
+            not:
+              operand:
+                equals:
+                - var: 在地面
+                - 1
+          do:
+          - set_variable:
+              var: 状态
+              value: 跳
+          else:
+          - if:
+              cond:
+                not:
+                  operand:
+                    equals:
+                    - var: 方向键
+                    - 0
+              do:
+              - set_variable:
+                  var: 状态
+                  value: 走
+              else:
+              - set_variable:
+                  var: 状态
+                  value: 待机
+      - if:
+          cond:
+            equals:
+            - var: 输入_跳
+            - 1
+          do:
+          - set_variable:
+              var: 跳缓冲
+              value: 6
+          else:
+          - change_variable:
+              var: 跳缓冲
+              by: -1
+      - if:
+          cond:
+            and:
+            - or:
+              - equals:
+                - var: 在地面
+                - 1
+              - less_than:
+                - var: 离地计时
+                - 4
+            - greater_than:
+              - var: 跳缓冲
+              - 0
+          do:
+          - set_variable:
+              var: vy
+              value:
+                var: 跳跃力度
+          - set_variable:
+              var: 在地面
+              value: 0
+          - set_variable:
+              var: 离地计时
+              value: 9
+          - set_variable:
+              var: 跳缓冲
+              value: 0
+          - play_sound: {sound: 跳跃音}
+          - set_variable:
+              var: 拉伸
+              value: 130
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: prev_jump
+              - 1
+            - and:
+              - equals:
+                - var: 输入_跳
+                - 0
+              - greater_than:
+                - var: vy
+                - 4
+          do:
+          - set_variable:
+              var: vy
+              value:
+                multiply:
+                - var: vy
+                - 0.4
+      - set_variable:
+          var: prev_jump
+          value:
+            var: 输入_跳
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times:
+            var: 金币总数
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - if:
+              cond:
+                and:
+                - equals:
+                  - item_of_list:
+                      list: 金币活
+                      index:
+                        var: i
+                  - 1
+                - and:
+                  - less_than:
+                    - mathop:
+                        operator: abs
+                        num:
+                          subtract:
+                          - var: 玩家x
+                          - item_of_list:
+                              list: 金币x
+                              index:
+                                var: i
+                    - 24
+                  - less_than:
+                    - mathop:
+                        operator: abs
+                        num:
+                          subtract:
+                          - var: 玩家y
+                          - item_of_list:
+                              list: 金币y
+                              index:
+                                var: i
+                    - 28
+              do:
+              - replace_item_of_list:
+                  list: 金币活
+                  index:
+                    var: i
+                  item: 0
+              - change_variable:
+                  var: 得分
+                  by: 10
+              - change_variable:
+                  var: 金币数
+                  by: 1
+              - play_sound: {sound: 金币音}
+      - if:
+          cond:
+            less_than:
+            - var: 玩家y
+            - -260
+          do:
+          - change_variable:
+              var: 命数
+              by: -1
+          - play_sound: {sound: 失败音}
+          - set_variable:
+              var: 玩家x
+              value:
+                var: 出生x
+          - set_variable:
+              var: 玩家y
+              value:
+                var: 出生y
+          - set_variable:
+              var: vx
+              value: 0
+          - set_variable:
+              var: vy
+              value: 0
+      - set_variable:
+          var: 镜头x
+          value:
+            subtract:
+            - var: 玩家x
+            - var: 半屏宽
+      - if:
+          cond:
+            less_than:
+            - var: 镜头x
+            - var: 关卡左
+          do:
+          - set_variable:
+              var: 镜头x
+              value:
+                var: 关卡左
+      - if:
+          cond:
+            greater_than:
+            - var: 镜头x
+            - subtract:
+              - var: 关卡右
+              - var: 屏宽
+          do:
+          - set_variable:
+              var: 镜头x
+              value:
+                subtract:
+                - var: 关卡右
+                - var: 屏宽
+      - set_variable:
+          var: 拉伸
+          value:
+            add:
+            - var: 拉伸
+            - multiply:
+              - subtract:
+                - 100
+                - var: 拉伸
+              - 0.3
+      - set_size:
+          value:
+            var: 拉伸
+      - set_variable:
+          var: 震屏
+          value:
+            multiply:
+            - var: 震屏
+            - 0.7
+      - goto_xy:
+          x:
+            add:
+            - subtract:
+              - var: 玩家x
+              - var: 镜头x
+            - random:
+                from:
+                  multiply:
+                  - var: 震屏
+                  - -1
+                to:
+                  var: 震屏
+          y:
+            add:
+            - var: 玩家y
+            - random:
+                from:
+                  multiply:
+                  - var: 震屏
+                  - -1
+                to:
+                  var: 震屏
+    - - when_green_flag_clicked: null
+      - show: null
+      - set_size:
+          value: 100
+      - set_variable:
+          var: 是克隆
+          value: 0
+  - name: 地面
+    x: 0
+    y: 0
+    costumes:
+    - name: dot
+      asset: assets/dot.svg
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+      - set_pen_size:
+          size: 1
+    - - when_receive:
+          message: 帧
+      - if:
+          cond:
+            equals:
+            - var: 已画
+            - 0
+          do:
+          - pen_clear: null
+          - set_variable:
+              var: 已画
+              value: 1
+          - set_variable:
+              var: i
+              value: 0
+          - repeat:
+              times:
+                var: 平台数
+              do:
+              - change_variable:
+                  var: i
+                  by: 1
+              - set_pen_size:
+                  size:
+                    item_of_list:
+                      list: 平台高
+                      index:
+                        var: i
+              - set_pen_color:
+                  COLOR: '#3A8E7D'
+              - pen_up: null
+              - goto_xy:
+                  x:
+                    subtract:
+                    - subtract:
+                      - item_of_list:
+                          list: 平台x
+                          index:
+                            var: i
+                      - divide:
+                        - item_of_list:
+                            list: 平台宽
+                            index:
+                              var: i
+                        - 2
+                    - var: 镜头x
+                  y:
+                    item_of_list:
+                      list: 平台y
+                      index:
+                        var: i
+              - pen_down: null
+              - goto_xy:
+                  x:
+                    subtract:
+                    - add:
+                      - item_of_list:
+                          list: 平台x
+                          index:
+                            var: i
+                      - divide:
+                        - item_of_list:
+                            list: 平台宽
+                            index:
+                              var: i
+                        - 2
+                    - var: 镜头x
+                  y:
+                    item_of_list:
+                      list: 平台y
+                      index:
+                        var: i
+              - pen_up: null
+    - - when_receive:
+          message: 重画场景
+      - set_variable:
+          var: 已画
+          value: 0
+  - name: 金币
+    x: 0
+    y: 0
+    costumes:
+    - name: dot
+      asset: assets/platformer/coin.png
+    variables:
+      是克隆: 0
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+      - set_variable:
+          var: 是克隆
+          value: 0
+    - - when_receive:
+          message: 生成金币
+      - if:
+          cond:
+            equals:
+            - var: 是克隆
+            - 0
+          do:
+          - set_variable:
+              var: i
+              value: 0
+          - repeat:
+              times:
+                var: 金币总数
+              do:
+              - change_variable:
+                  var: i
+                  by: 1
+              - create_clone_of:
+                  clone: _myself_
+    - - when_receive:
+          message: 清金币
+      - if:
+          cond:
+            equals:
+            - var: 是克隆
+            - 1
+          do:
+          - delete_this_clone: null
+    - - when_start_as_clone: null
+      - set_variable:
+          var: 是克隆
+          value: 1
+      - goto_xy:
+          x:
+            subtract:
+            - item_of_list:
+                list: 金币x
+                index:
+                  var: i
+            - var: 镜头x
+          y:
+            item_of_list:
+              list: 金币y
+              index:
+                var: i
+      - set_size:
+          value: 60
+      - show: null
+      - if:
+          cond:
+            equals:
+            - item_of_list:
+                list: 金币活
+                index:
+                  var: i
+            - 0
+          do:
+          - delete_this_clone: null
+    - - when_receive:
+          message: 帧
+      - if:
+          cond:
+            equals:
+            - var: 是克隆
+            - 1
+          do:
+          - if:
+              cond:
+                equals:
+                - item_of_list:
+                    list: 金币活
+                    index:
+                      var: i
+                - 0
+              do:
+              - delete_this_clone: null

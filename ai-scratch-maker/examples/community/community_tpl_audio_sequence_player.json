@@ -1,0 +1,169 @@
+{
+  "project": {
+    "name": "音频序列播放器（6 段）",
+    "stage": {
+      "backdrops": [
+        {
+          "asset": "community:3AwJJ66J/backdrop1"
+        }
+      ],
+      "scripts": []
+    },
+    "sprites": [
+      {
+        "name": "播放器",
+        "x": 0,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:3AwJJ66J/0!!",
+            "name": "画面1"
+          },
+          {
+            "asset": "community:3AwJJ66J/1!!",
+            "name": "画面2"
+          },
+          {
+            "asset": "community:3AwJJ66J/4!!",
+            "name": "画面3"
+          },
+          {
+            "asset": "community:3AwJJ66J/9!!",
+            "name": "画面4"
+          },
+          {
+            "asset": "community:3AwJJ66J/11!!",
+            "name": "画面5"
+          },
+          {
+            "asset": "community:3AwJJ66J/12!!",
+            "name": "画面6"
+          }
+        ],
+        "sounds": [
+          {
+            "asset": "community:2SwJJ66J/pop",
+            "name": "片段1"
+          },
+          {
+            "asset": "community:3AwJJ66J/FF17",
+            "name": "片段2"
+          },
+          {
+            "asset": "community:3AwJJ66J/FF9-2 (Drums)",
+            "name": "片段3"
+          },
+          {
+            "asset": "community:3AwJJ66J/FF16",
+            "name": "片段4"
+          },
+          {
+            "asset": "community:3AwJJ66J/FF25",
+            "name": "片段5"
+          },
+          {
+            "asset": "community:3AwJJ66J/FF19",
+            "name": "片段6"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_green_flag_clicked": null
+            },
+            {
+              "switch_costume": {
+                "costume": "画面1"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "片段1"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "switch_costume": {
+                "costume": "画面2"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "片段2"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "switch_costume": {
+                "costume": "画面3"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "片段3"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "switch_costume": {
+                "costume": "画面4"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "片段4"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "switch_costume": {
+                "costume": "画面5"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "片段5"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "switch_costume": {
+                "costume": "画面6"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "片段6"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            }
+          ]
+        ]
+      }
+    ]
+  }
+}

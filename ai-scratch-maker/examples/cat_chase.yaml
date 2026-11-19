@@ -1,0 +1,52 @@
+project:
+  name: 小猫散步
+  extensions:
+    - pen
+  stage:
+    backdrops:
+      - name: 草地
+        asset: assets/backdrop1.svg
+    scripts:
+      - - when_green_flag_clicked:
+        - broadcast: 出发
+  sprites:
+    - name: Cat
+      x: 0
+      y: 0
+      size: 100
+      direction: 90
+      # 猫是左右对称的正面造型：单造型 + left-right 即可（保持站立，不会朝上走就倒过来）
+      rotationStyle: left-right
+      costumes:
+        - name: cat1
+          asset: assets/cat.svg
+      sounds:
+        - name: beep
+          asset: assets/beep.wav
+      variables:
+        score: 0
+      scripts:
+        - - when_green_flag_clicked:
+          - pen_down:
+          - set_variable:
+              var: score
+              value: 0
+          - repeat:
+              times: 50
+              do:
+                - move_steps: 10
+                - turn_left:
+                    degrees:
+                      random: [-15, 15]
+                - if:
+                    cond:
+                      mousedown:
+                    do:
+                      - change_variable:
+                          var: score
+                          by: 1
+          - pen_up:
+        - - when_receive: 出发
+          - say:
+              text: 出发啦！
+              secs: 2

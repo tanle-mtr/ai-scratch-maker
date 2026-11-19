@@ -1,0 +1,824 @@
+project:
+  name: 猫抓老鼠（大地图版）
+
+  # ============================================================
+  # 首页（标题页）：点「开始游戏」才进正题（游戏类作品硬性要求）
+  # ============================================================
+  title_screen:
+    backdrop: assets/cat_mouse/title_bg.png
+    button:
+      asset: assets/cat_mouse/btn_start.png
+      x: 0
+      y: -110
+    game_backdrop: 客厅
+    broadcast: 开始游戏
+
+  stage:
+    backdrops:
+      - { name: 客厅, asset: assets/cat_mouse/bigmap.png }   # 滚动世界由「地图」精灵负责，这里只是占位背景
+    sounds:
+      - { name: 追逐, asset: assets/cat_mouse/bgm_chase.wav }
+    # 全局变量：状态机 + 开关 + 相机 + 共享世界坐标（跨角色读取必须全局）
+    variables:
+      分数: 0
+      剩余时间: 30
+      game_state: 0          # 0=标题  1=游戏中  2=结束（状态机）
+      小地图开: 1            # 小地图开关（M 切换）
+      音效开: 1              # 音效开关（S 切换）
+      抓住中: 0
+      逃跑中: 0
+      camera_x: 0            # 相机（屏幕中心对应的世界坐标）
+      camera_y: 0
+      上次M: 0               # 边沿检测用
+      上次S: 0
+      上次F: 0               # 灯光开关边沿检测
+      上次H: 0               # 帮助面板边沿检测
+      灯光开: 1              # 视野阴影（手电筒）开关，F 键切换
+      面板开: 0              # 帮助弹窗是否打开（0=关 1=开）
+      cat_wx: 0              # 猫的世界坐标（地图/标记都要读，故全局）
+      cat_wy: 0
+      mouse_wx: 0            # 鼠的世界坐标（标记要读，故全局）
+      mouse_wy: 0
+    scripts:
+      # 绿旗：回到标题态，重置开关/相机，循环播放 BGM（受音效开关控制）
+      - - when_green_flag_clicked:
+            comment: 绿旗：回到标题态，重置开关/相机，循环 BGM（音效关时静音）
+        - set_variable: { var: game_state, value: 0 }
+        - set_variable: { var: 小地图开, value: 1 }
+        - set_variable: { var: 音效开, value: 1 }
+        - set_variable: { var: camera_x, value: 0 }
+        - set_variable: { var: camera_y, value: 0 }
+        - set_variable: { var: 上次M, value: 0 }
+        - set_variable: { var: 上次S, value: 0 }
+        - set_variable: { var: 上次F, value: 0 }
+        - set_variable: { var: 上次H, value: 0 }
+        - set_variable: { var: 灯光开, value: 1 }
+        - set_variable: { var: 面板开, value: 0 }
+        - forever:
+            do:
+              - if:
+                  cond: { equals: { a: {var: 音效开}, b: 1 } }
+                  do:
+                    - play_sound_until_done: { sound: 追逐 }
+                else:
+                  - wait: 0.2
+
+      # 点开始：进入游戏态，重置分数与倒计时，广播「游戏开始」
+      - - when_receive:
+            message: 开始游戏
+            comment: 点开始按钮 -> 进入游戏中态，重置并广播「游戏开始」
+        - set_variable: { var: game_state, value: 1 }
+        - set_variable: { var: 分数, value: 0 }
+        - set_variable: { var: 剩余时间, value: 30 }
+        - set_variable: { var: 抓住中, value: 0 }
+        - set_variable: { var: 逃跑中, value: 0 }
+        - broadcast: 游戏开始
+
+      # 倒计时：每秒减 1，归零就结束（game_state≠1 时停止计数）
+      - - when_receive:
+            message: 游戏开始
+            comment: 倒计时：每秒减 1，归零或结束态都停
+        - repeat:
+            times: 30
+            do:
+              - wait: 1
+              - if:
+                  cond:
+                    and:
+                      - equals: { a: {var: game_state}, b: 1 }
+                      - greater_than: { a: {var: 剩余时间}, b: 1 }
+                  do:
+                    - change_variable: { var: 剩余时间, by: -1 }
+              - if:
+                  cond: { less_than: { a: {var: 剩余时间}, b: 1 } }
+                  do:
+                    - broadcast: 游戏结束
+
+      # 结束：切结算态、公布成绩、3 秒后停止全部
+      - - when_receive:
+            message: 游戏结束
+            comment: 结算：切到结束态，公布成绩，3 秒后停止全部脚本
+        - set_variable: { var: game_state, value: 2 }
+        - wait: 0.2
+        - broadcast: 公布成绩
+        - wait: 3
+        - stop: { stop_option: all }
+
+      # 开关：小地图开关（M）/ 音效开关（S）/ 灯光开关（F），用边沿检测翻转 0/1
+      - - when_receive:
+            message: 游戏开始
+            comment: 开关检测：M 切小地图、S 切音效、F 切灯光（边沿触发，避免按住连发）
+        - forever:
+            do:
+              - if:
+                  cond: { key_pressed: { key: m } }
+                  do:
+                    - if:
+                        cond: { equals: { a: {var: 上次M}, b: 0 } }
+                        do:
+                          - set_variable: { var: 小地图开, value: { subtract: [1, {var: 小地图开}] } }
+                          - set_variable: { var: 上次M, value: 1 }
+                  else:
+                    - set_variable: { var: 上次M, value: 0 }
+              - if:
+                  cond: { key_pressed: { key: s } }
+                  do:
+                    - if:
+                        cond: { equals: { a: {var: 上次S}, b: 0 } }
+                        do:
+                          - set_variable: { var: 音效开, value: { subtract: [1, {var: 音效开}] } }
+                          - set_variable: { var: 上次S, value: 1 }
+                  else:
+                    - set_variable: { var: 上次S, value: 0 }
+              - if:
+                  cond: { key_pressed: { key: f } }
+                  do:
+                    - if:
+                        cond: { equals: { a: {var: 上次F}, b: 0 } }
+                        do:
+                          - set_variable: { var: 灯光开, value: { subtract: [1, {var: 灯光开}] } }
+                          - set_variable: { var: 上次F, value: 1 }
+                  else:
+                    - set_variable: { var: 上次F, value: 0 }
+              # H 键开/关帮助面板（再次按 H 也可关；也可点右上角的 ×）
+              - if:
+                  cond: { key_pressed: { key: h } }
+                  do:
+                    - if:
+                        cond: { equals: { a: {var: 上次H}, b: 0 } }
+                        do:
+                          - if:
+                              cond: { equals: { a: {var: 面板开}, b: 0 } }
+                              do:
+                                - broadcast: 打开帮助
+                              else:
+                                - broadcast: 关闭帮助
+                          - set_variable: { var: 上次H, value: 1 }
+                  else:
+                    - set_variable: { var: 上次H, value: 0 }
+
+      # 面板状态：广播开/关都要同步 面板开（关面板也可以点遮罩或右上角 ×）
+      - - when_receive:
+            message: 打开帮助
+            comment: 面板开 = 1（游戏内暂停由各角色读这个变量）
+        - set_variable: { var: 面板开, value: 1 }
+      - - when_receive:
+            message: 关闭帮助
+            comment: 面板开 = 0
+        - set_variable: { var: 面板开, value: 0 }
+
+  sprites:
+    # ==========================================================
+    # 地图（滚动世界）：比舞台大，靠「相机变量 + 反向移动」滚动
+    # ==========================================================
+    - name: 地图
+      x: 0
+      y: 0
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 世界, asset: assets/cat_mouse/bigmap.png }
+      variables:
+        目标x: 0
+        目标y: 0
+      scripts:
+        - - when_green_flag_clicked:
+            comment: 首页先隐藏地图，相机归零
+          - hide: null
+          - set_variable: { var: camera_x, value: 0 }
+          - set_variable: { var: camera_y, value: 0 }
+        - - when_receive:
+              message: 游戏开始
+              comment: 相机平滑跟随猫：目标=夹紧(cat_wx±240, cat_wy±180)，再缓动
+          - show: null
+          - forever:
+              do:
+                - set_variable: { var: 目标x, value: {var: cat_wx} }
+                - if: { cond: { greater_than: { a: {var: cat_wx}, b: 240 } }, do: [ { set_variable: {var: 目标x, value: 240} } ] }
+                - if: { cond: { less_than: { a: {var: cat_wx}, b: -240 } }, do: [ { set_variable: {var: 目标x, value: -240} } ] }
+                - set_variable: { var: 目标y, value: {var: cat_wy} }
+                - if: { cond: { greater_than: { a: {var: cat_wy}, b: 180 } }, do: [ { set_variable: {var: 目标y, value: 180} } ] }
+                - if: { cond: { less_than: { a: {var: cat_wy}, b: -180 } }, do: [ { set_variable: {var: 目标y, value: -180} } ] }
+                - set_variable: { var: camera_x, value: { add: [ {var: camera_x}, { multiply: [ {subtract: [{var: 目标x}, {var: camera_x}]}, 0.15 ] } ] } }
+                - set_variable: { var: camera_y, value: { add: [ {var: camera_y}, { multiply: [ {subtract: [{var: 目标y}, {var: camera_y}]}, 0.15 ] } ] } }
+                - goto_xy: { x: { subtract: [0, {var: camera_x}] }, y: { subtract: [0, {var: camera_y}] } }
+
+    # ==========================================================
+    # 家具（独立障碍角色）
+    # ⚠️ **画在地图图片里的家具没有碰撞箱** —— 地图只是一张位图，
+    #    Scratch 的碰撞检测只发生在「角色」之间（碰到 [某角色]?），
+    #    所以想让家具挡路，它必须是一个**独立的角色**。
+    # 每件家具存自己的世界坐标，每帧渲染到 (世界 - 相机)，跟着地图一起滚动。
+    # ==========================================================
+    - name: 沙发
+      x: -270
+      y: 190
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 沙发, asset: assets/cat_mouse/沙发.png }
+      variables:
+        wx: -270
+        wy: 190
+      scripts:
+        - - when_green_flag_clicked:
+            comment: 首页隐藏家具
+          - hide: null
+        - - when_receive:
+              message: 游戏开始
+              comment: 障碍也要跟着相机滚动，否则碰撞判定会错位
+          - show: null
+          - forever:
+              do:
+                - goto_xy: { x: { subtract: [{var: wx}, {var: camera_x}] },
+                             y: { subtract: [{var: wy}, {var: camera_y}] } }
+
+    - name: 柜子
+      x: 250
+      y: 165
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 柜子, asset: assets/cat_mouse/柜子.png }
+      variables:
+        wx: 250
+        wy: 165
+      scripts:
+        - - when_green_flag_clicked:
+          - hide: null
+        - - when_receive:
+              message: 游戏开始
+          - show: null
+          - forever:
+              do:
+                - goto_xy: { x: { subtract: [{var: wx}, {var: camera_x}] },
+                             y: { subtract: [{var: wy}, {var: camera_y}] } }
+
+    - name: 书桌
+      x: -220
+      y: -175
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 书桌, asset: assets/cat_mouse/书桌.png }
+      variables:
+        wx: -220
+        wy: -175
+      scripts:
+        - - when_green_flag_clicked:
+          - hide: null
+        - - when_receive:
+              message: 游戏开始
+          - show: null
+          - forever:
+              do:
+                - goto_xy: { x: { subtract: [{var: wx}, {var: camera_x}] },
+                             y: { subtract: [{var: wy}, {var: camera_y}] } }
+
+    - name: 地毯
+      x: 220
+      y: -180
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 地毯, asset: assets/cat_mouse/地毯.png }
+      variables:
+        wx: 220
+        wy: -180
+      scripts:
+        - - when_green_flag_clicked:
+          - hide: null
+        - - when_receive:
+              message: 游戏开始
+          - show: null
+          - forever:
+              do:
+                - goto_xy: { x: { subtract: [{var: wx}, {var: camera_x}] },
+                             y: { subtract: [{var: wy}, {var: camera_y}] } }
+
+    # ==========================================================
+    # 猫（玩家）：平滑移动 = 速度 + 摩擦 + 对角线归一化
+    # ==========================================================
+    - name: 猫
+      x: 0
+      y: 0
+      size: 32                    # 268×300 原图 @32% → 屏幕 86×96（占屏高 27%）
+      direction: 90
+      rotationStyle: left-right  # 保持站立，不会朝上走就倒过来；朝左自动水平镜像
+      costumes:
+        - { name: 猫, asset: assets/cat_mouse/cat.png }
+      sounds:
+        - { name: 抓到, asset: assets/cat_mouse/catch.wav }
+        - { name: 结束, asset: assets/cat_mouse/gameover.wav }
+      variables:
+        cat_vx: 0
+        cat_vy: 0
+        cat_ox: 0              # 碰撞前的旧位置（撞到就退回这里）
+        cat_oy: 0
+      scripts:
+        - - when_green_flag_clicked:
+            comment: 首页隐藏；世界坐标/速度归零
+          - hide: null
+          - set_variable: { var: cat_wx, value: 0 }
+          - set_variable: { var: cat_wy, value: 0 }
+          - set_variable: { var: cat_vx, value: 0 }
+          - set_variable: { var: cat_vy, value: 0 }
+        - - when_receive:
+              message: 游戏开始
+              comment: 平滑移动：速度+摩擦，对角线归一化，世界坐标更新，渲染=世界-相机
+          - show: null
+          - set_variable: { var: cat_wx, value: 0 }
+          - set_variable: { var: cat_wy, value: 0 }
+          - set_variable: { var: cat_vx, value: 0 }
+          - set_variable: { var: cat_vy, value: 0 }
+          - forever:
+              do:
+                # 面板打开时（帮助弹窗）冻结操作：把「面板开 = 0」并进每个按键判断
+                - if: { cond: { and: [ { equals: { a: {var: 面板开}, b: 0 } }, { key_pressed: { key: up arrow } } ] }, do: [ { change_variable: { var: cat_vy, by: 0.8 } } ] }
+                - if: { cond: { and: [ { equals: { a: {var: 面板开}, b: 0 } }, { key_pressed: { key: down arrow } } ] }, do: [ { change_variable: { var: cat_vy, by: -0.8 } } ] }
+                - if: { cond: { and: [ { equals: { a: {var: 面板开}, b: 0 } }, { key_pressed: { key: left arrow } } ] }, do: [ { change_variable: { var: cat_vx, by: -0.8 } } ] }
+                - if: { cond: { and: [ { equals: { a: {var: 面板开}, b: 0 } }, { key_pressed: { key: right arrow } } ] }, do: [ { change_variable: { var: cat_vx, by: 0.8 } } ] }
+                - set_variable: { var: cat_vx, value: { multiply: [ {var: cat_vx}, 0.85 ] } }
+                - set_variable: { var: cat_vy, value: { multiply: [ {var: cat_vy}, 0.85 ] } }
+                - if:
+                    cond:
+                      and:
+                        - greater_than: { a: { mathop: { operator: abs, num: {var: cat_vx} } }, b: 0.1 }
+                        - greater_than: { a: { mathop: { operator: abs, num: {var: cat_vy} } }, b: 0.1 }
+                    do:
+                      - set_variable: { var: cat_vx, value: { multiply: [ {var: cat_vx}, 0.707 ] } }
+                      - set_variable: { var: cat_vy, value: { multiply: [ {var: cat_vy}, 0.707 ] } }
+                # —— 分轴碰撞：先走 X，撞到家具就把 X 退回并清零 vx ——
+                #    这样贴着墙走时，Y 轴仍能动（沿墙滑动），不会「卡死在墙角」。
+                # ⚠️ 关键顺序：**先摆到新位置再做碰撞判定**。
+                #    Scratch 的「碰到 [家具]?」比较的是角色的**屏幕坐标**，
+                #    如果先改世界坐标、最后才 goto_xy，判定用的还是上一帧的旧位置 → 会漏判。
+                #    （这正是 Scratch 社区标准写法「先 move，再判断，撞了就退回」的原理。）
+                - set_variable: { var: cat_ox, value: {var: cat_wx} }
+                - set_variable: { var: cat_wx, value: { add: [ {var: cat_wx}, {var: cat_vx} ] } }
+                - goto_xy: { x: { subtract: [ {var: cat_wx}, {var: camera_x} ] }, y: { subtract: [ {var: cat_wy}, {var: camera_y} ] } }
+                - if:
+                    cond:
+                      or:
+                        - or:
+                            - touching: { object: 沙发 }
+                            - touching: { object: 柜子 }
+                        - or:
+                            - touching: { object: 书桌 }
+                            - touching: { object: 地毯 }
+                    do:
+                      - set_variable: { var: cat_wx, value: {var: cat_ox} }
+                      - set_variable: { var: cat_vx, value: 0 }
+                      - goto_xy: { x: { subtract: [ {var: cat_wx}, {var: camera_x} ] }, y: { subtract: [ {var: cat_wy}, {var: camera_y} ] } }
+                # —— 再走 Y，同理 ——
+                - set_variable: { var: cat_oy, value: {var: cat_wy} }
+                - set_variable: { var: cat_wy, value: { add: [ {var: cat_wy}, {var: cat_vy} ] } }
+                - goto_xy: { x: { subtract: [ {var: cat_wx}, {var: camera_x} ] }, y: { subtract: [ {var: cat_wy}, {var: camera_y} ] } }
+                - if:
+                    cond:
+                      or:
+                        - or:
+                            - touching: { object: 沙发 }
+                            - touching: { object: 柜子 }
+                        - or:
+                            - touching: { object: 书桌 }
+                            - touching: { object: 地毯 }
+                    do:
+                      - set_variable: { var: cat_wy, value: {var: cat_oy} }
+                      - set_variable: { var: cat_vy, value: 0 }
+                      - goto_xy: { x: { subtract: [ {var: cat_wx}, {var: camera_x} ] }, y: { subtract: [ {var: cat_wy}, {var: camera_y} ] } }
+                # 边界夹紧（世界 960×720 -> ±470, ±350）
+                - if: { cond: { greater_than: { a: {var: cat_wx}, b: 470 } }, do: [ { set_variable: {var: cat_wx, value: 470} }, { set_variable: {var: cat_vx, value: 0} } ] }
+                - if: { cond: { less_than: { a: {var: cat_wx}, b: -470 } }, do: [ { set_variable: {var: cat_wx, value: -470} }, { set_variable: {var: cat_vx, value: 0} } ] }
+                - if: { cond: { greater_than: { a: {var: cat_wy}, b: 350 } }, do: [ { set_variable: {var: cat_wy, value: 350} }, { set_variable: {var: cat_vy, value: 0} } ] }
+                - if: { cond: { less_than: { a: {var: cat_wy}, b: -350 } }, do: [ { set_variable: {var: cat_wy, value: -350} }, { set_variable: {var: cat_vy, value: 0} } ] }
+                # 朝向（只决定左右翻转；vx 近似 0 时保持原朝向）
+                - if: { cond: { greater_than: { a: {var: cat_vx}, b: 0.05 } }, do: [ { point_in_direction: { direction: 90 } } ] }
+                - if: { cond: { less_than: { a: {var: cat_vx}, b: -0.05 } }, do: [ { point_in_direction: { direction: -90 } } ] }
+                # 渲染到屏幕 = 世界 - 相机
+                - goto_xy: { x: { subtract: [ {var: cat_wx}, {var: camera_x} ] }, y: { subtract: [ {var: cat_wy}, {var: camera_y} ] } }
+        - - when_receive:
+              message: 游戏开始
+              comment: 抓老鼠：碰到且不在冷却就加分，广播「抓到啦」
+          - forever:
+              do:
+                - if:
+                    cond:
+                      and:
+                        - touching: { object: 老鼠 }
+                        - equals: { a: { var: 抓住中 }, b: 0 }
+                    do:
+                      - set_variable: { var: 抓住中, value: 1 }
+                      - change_variable: { var: 分数, by: 1 }
+                      - play_sound: { sound: 抓到 }
+                      - broadcast: 抓到啦
+                      - wait: 0.3
+                      - set_variable: { var: 抓住中, value: 0 }
+        - - when_receive:
+              message: 公布成绩
+              comment: 结算音效
+          - play_sound: { sound: 结束 }
+
+    # ==========================================================
+    # 老鼠（目标）：安全出生 + 平滑逃跑 AI（缓动速度 + 单位向量逃离）
+    # ==========================================================
+    - name: 老鼠
+      x: 0
+      y: 0
+      size: 22                    # 185×240 原图 @22% → 屏幕 41×53（占屏高 15%）
+      rotationStyle: left-right
+      costumes:
+        - { name: 鼠, asset: assets/cat_mouse/mouse.png }
+      sounds:
+        - { name: 逃跑, asset: assets/cat_mouse/hurry.wav }
+      variables:
+        mouse_speed: 3
+        mouse_dir: 0
+        speed_target: 3
+        mlen: 0
+        mdx: 0
+        mdy: 0
+        mouse_ox: 0           # 碰撞前的旧位置
+        mouse_oy: 0
+      scripts:
+        - - when_green_flag_clicked:
+            comment: 首页隐藏；世界坐标/速度归零
+          - hide: null
+          - set_variable: { var: mouse_wx, value: 0 }
+          - set_variable: { var: mouse_wy, value: 0 }
+          - set_variable: { var: mouse_speed, value: 3 }
+          - set_variable: { var: speed_target, value: 3 }
+        - - when_receive:
+              message: 游戏开始
+              comment: 安全出生 + 平滑逃跑 AI（缓动速度 + 单位向量逃离）
+          - show: null
+          - set_variable: { var: mouse_speed, value: 3 }
+          - set_variable: { var: speed_target, value: 3 }
+          - safe_spawn: { avoid: 猫, min_distance: 150 }
+          - set_variable: { var: mouse_wx, value: { add: [ {x_position}, {var: camera_x} ] } }
+          - set_variable: { var: mouse_wy, value: { add: [ {y_position}, {var: camera_y} ] } }
+          - forever:
+              do:
+                - if:
+                    cond: { less_than: { a: { distance_to: { object: 猫 } }, b: 90 } }
+                    do:
+                      - set_variable: { var: speed_target, value: 8 }
+                      - if:
+                          cond: { equals: { a: {var: 逃跑中}, b: 0 } }
+                          do:
+                            - set_variable: { var: 逃跑中, value: 1 }
+                            - play_sound: { sound: 逃跑 }
+                            - broadcast: 老鼠要跑了
+                      # 逃离单位向量 = (鼠-猫) / 长度
+                      - set_variable: { var: mdx, value: { subtract: [ {var: mouse_wx}, {var: cat_wx} ] } }
+                      - set_variable: { var: mdy, value: { subtract: [ {var: mouse_wy}, {var: cat_wy} ] } }
+                      - set_variable: { var: mlen, value: { mathop: { operator: sqrt, num: { add: [ { multiply: [ {var: mdx}, {var: mdx} ] }, { multiply: [ {var: mdy}, {var: mdy} ] } ] } } } }
+                      - if: { cond: { less_than: { a: {var: mlen}, b: 1 } }, do: [ { set_variable: { var: mlen, value: 1 } } ] }
+                      - set_variable: { var: mouse_wx, value: { add: [ {var: mouse_wx}, { multiply: [ { divide: [ {var: mdx}, {var: mlen} ] }, {var: mouse_speed} ] } ] } }
+                      - set_variable: { var: mouse_wy, value: { add: [ {var: mouse_wy}, { multiply: [ { divide: [ {var: mdy}, {var: mlen} ] }, {var: mouse_speed} ] } ] } }
+                      - if: { cond: { greater_than: { a: {var: mdx}, b: 0 } }, do: [ { point_in_direction: { direction: 90 } } ] }
+                      - if: { cond: { less_than: { a: {var: mdx}, b: 0 } }, do: [ { point_in_direction: { direction: -90 } } ] }
+                    else:
+                      - set_variable: { var: speed_target, value: 3 }
+                      - set_variable: { var: 逃跑中, value: 0 }
+                      - if: { cond: { less_than: { a: { random: { from: 0, to: 1 } }, b: 0.02 } }, do: [ { set_variable: { var: mouse_dir, value: { random: { from: 0, to: 359 } } } } ] }
+                      - set_variable: { var: mouse_wx, value: { add: [ {var: mouse_wx}, { multiply: [ { mathop: { operator: sin, num: {var: mouse_dir} } }, {var: mouse_speed} ] } ] } }
+                      - set_variable: { var: mouse_wy, value: { add: [ {var: mouse_wy}, { multiply: [ { mathop: { operator: cos, num: {var: mouse_dir} } }, {var: mouse_speed} ] } ] } }
+                      - if: { cond: { greater_than: { a: { mathop: { operator: sin, num: {var: mouse_dir} } }, b: 0 } }, do: [ { point_in_direction: { direction: 90 } } ] }
+                      - if: { cond: { less_than: { a: { mathop: { operator: sin, num: {var: mouse_dir} } }, b: 0 } }, do: [ { point_in_direction: { direction: -90 } } ] }
+                # 速度缓动（平滑）：mouse_speed 朝 speed_target 渐变
+                - set_variable: { var: mouse_speed, value: { add: [ {var: mouse_speed}, { multiply: [ { subtract: [ {var: speed_target}, {var: mouse_speed} ] }, 0.1 ] } ] } }
+                # —— 家具碰撞：老鼠也不能穿墙（撞到就退回原位，等随机游走换方向）——
+                #    同样必须**先把新位置摆到屏幕上**再做判定（判定用的是屏幕坐标）。
+                - set_variable: { var: mouse_ox, value: {var: mouse_wx} }
+                - set_variable: { var: mouse_oy, value: {var: mouse_wy} }
+                - goto_xy: { x: { subtract: [ {var: mouse_wx}, {var: camera_x} ] }, y: { subtract: [ {var: mouse_wy}, {var: camera_y} ] } }
+                - if:
+                    cond:
+                      or:
+                        - or:
+                            - touching: { object: 沙发 }
+                            - touching: { object: 柜子 }
+                        - or:
+                            - touching: { object: 书桌 }
+                            - touching: { object: 地毯 }
+                    do:
+                      - set_variable: { var: mouse_wx, value: {var: mouse_ox} }
+                      - set_variable: { var: mouse_wy, value: {var: mouse_oy} }
+                      - set_variable: { var: mouse_dir, value: { random: { from: 0, to: 359 } } }
+                # 边界夹紧
+                - if: { cond: { greater_than: { a: {var: mouse_wx}, b: 470 } }, do: [ { set_variable: {var: mouse_wx, value: 470} } ] }
+                - if: { cond: { less_than: { a: {var: mouse_wx}, b: -470 } }, do: [ { set_variable: {var: mouse_wx, value: -470} } ] }
+                - if: { cond: { greater_than: { a: {var: mouse_wy}, b: 350 } }, do: [ { set_variable: {var: mouse_wy, value: 350} } ] }
+                - if: { cond: { less_than: { a: {var: mouse_wy}, b: -350 } }, do: [ { set_variable: {var: mouse_wy, value: -350} } ] }
+                # 渲染到屏幕 = 世界 - 相机
+                - goto_xy: { x: { subtract: [ {var: mouse_wx}, {var: camera_x} ] }, y: { subtract: [ {var: mouse_wy}, {var: camera_y} ] } }
+        - - when_receive:
+              message: 抓到啦
+              comment: 被抓：藏起来 0.6 秒，再换到离猫远的位置出现
+          - hide: null
+          - wait: 0.6
+          - safe_spawn: { avoid: 猫, min_distance: 150 }
+          - set_variable: { var: mouse_wx, value: { add: [ {x_position}, {var: camera_x} ] } }
+          - set_variable: { var: mouse_wy, value: { add: [ {y_position}, {var: camera_y} ] } }
+          - show: null
+
+    # ==========================================================
+    # 视野阴影（手电筒）：整屏黑幕 + 中央透明洞，洞跟着猫走
+    # ⚠️ 关键：Scratch 限制「精灵可视尺寸 ≤ 舞台 150%」，
+    #    所以必须「先切到极小造型 → 设 size 250% → 再切回黑幕造型」。
+    # ⚠️ 层级：本角色靠 sprites 数组顺序压在猫/鼠之上、UI 之下，
+    #    不用 go to front（否则会把小地图、数字一起盖黑）。
+    # ==========================================================
+    - name: 黑暗
+      x: 0
+      y: 0
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 暗, asset: assets/cat_mouse/dark_overlay.png }   # 480x360 黑幕，中间是透明洞
+        - { name: 点, asset: assets/cat_mouse/cat_dot.png }        # 极小造型，用来绕开 150% 上限
+      scripts:
+        - - when_green_flag_clicked:
+            comment: 首页隐藏；先切小造型设 size 250%，再切回黑幕
+          - hide: null
+          - switch_costume: { costume: 点 }
+          - set_size: { value: 250 }
+          - switch_costume: { costume: 暗 }
+          - set_effect: { effect: GHOST, value: 12 }      # 留一点点房间轮廓
+        - - when_receive:
+              message: 游戏开始
+              comment: 透明洞跟着猫（猫的屏幕坐标 = 世界 - 相机）
+          - forever:
+              do:
+                - goto_xy:
+                    x: { of: { object: 猫, property: x position } }
+                    y: { of: { object: 猫, property: y position } }
+                - if: { cond: { equals: { a: {var: 灯光开}, b: 1 } }, do: [ { show: null } ], else: [ { hide: null } ] }
+
+    # ==========================================================
+    # 火花：克隆粒子系统（抓到老鼠时爆一簇火花）
+    # ⚠️ vx / vy / 是否克隆 必须是「角色级私有变量」，
+    #    这样每个克隆体才各有一份；写成全局变量会让所有克隆抢同一个值。
+    # ==========================================================
+    - name: 火花
+      x: 0
+      y: 0
+      size: 45
+      costumes:
+        - { name: 点, asset: assets/cat_mouse/cat_dot.png }
+      variables:
+        vx: 0
+        vy: 0
+        是否克隆: 0
+      scripts:
+        - - when_green_flag_clicked:
+            comment: 本体只是「粒子工厂」，要藏起来
+          - hide: null
+          - set_variable: { var: 是否克隆, value: 0 }
+        - - when_start_as_clone: { clone: _myself_ }
+            comment: 每个克隆一份私有速度
+          - show: null
+          - set_variable: { var: 是否克隆, value: 1 }
+          - set_variable: { var: vx, value: { random: { from: -4, to: 4 } } }
+          - set_variable: { var: vy, value: { random: { from: -4, to: 4 } } }
+          - repeat: 16
+            do:
+              - change_effect: { effect: GHOST, value: 6 }      # 渐隐
+              - change_x: { dx: { var: vx } }
+              - change_y: { dy: { var: vy } }
+              # ⚠️ 阻尼用「乘」不用「减」：减法会让速度一路减到负无穷（粒子反向加速）
+              - set_variable: { var: vx, value: { multiply: [ {var: vx}, 0.92 ] } }
+              - set_variable: { var: vy, value: { multiply: [ {var: vy}, 0.92 ] } }
+          - delete_this_clone: null
+        - - when_receive:
+              message: 抓到啦
+              comment: 在老鼠被抓的位置生成一簇火花
+          - goto_xy:
+              x: { of: { object: 老鼠, property: x position } }
+              y: { of: { object: 老鼠, property: y position } }
+          - repeat: 10
+            do:
+              - create_clone_of: { clone: 火花 }
+
+    - name: 聊天框
+      x: 0
+      y: -142
+      size: 100
+      chat_box:
+        assets: assets/cat_mouse/chat
+        lines: 4
+      scripts:
+        - - when_green_flag_clicked:
+            comment: 首页阶段隐藏聊天框
+          - hide: null
+        - - when_receive:
+            message: 游戏开始
+            comment: 开场提示
+          - chat_say: { line: 1, secs: 2.5 }
+        - - when_receive:
+            message: 抓到啦
+            comment: 抓到老鼠时提示
+          - chat_say: { line: 2, secs: 1.5 }
+        - - when_receive:
+            message: 老鼠要跑了
+            comment: 老鼠逃跑时提示
+          - chat_say: { line: 3, secs: 1.5 }
+        - - when_receive:
+            message: 公布成绩
+            comment: 结束时提示
+          - chat_say: { line: 4, secs: 2.5 }
+
+    # ==========================================================
+    # 分数显示（用角色展示，带文字标签说明这是「分数」）
+    # ==========================================================
+    - name: 分数显示
+      x: -80
+      y: 150
+      size: 110
+      digit_display:
+        variable: 分数
+        assets: assets/cat_mouse
+        digits: 2
+        label: 分数
+        label_side: left
+        label_size: 100
+        label_font: 30
+
+    # ==========================================================
+    # 倒计时显示（用角色展示，带文字标签说明这是「时间」）
+    # ==========================================================
+    - name: 时间显示
+      x: 120
+      y: 150
+      size: 110
+      digit_display:
+        variable: 剩余时间
+        assets: assets/cat_mouse
+        digits: 2
+        label: 时间
+        label_side: left
+        label_size: 100
+        label_font: 30
+
+    # ==========================================================
+    # 小地图：缩小世界底图，始终置顶；按 M 可开关
+    # ==========================================================
+    - name: 小地图
+      x: 195
+      y: 150
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 小地图底, asset: assets/cat_mouse/mini_map.png }
+      scripts:
+        - - when_green_flag_clicked:
+            comment: 首页隐藏小地图
+          - hide: null
+        - - when_receive:
+              message: 游戏开始
+              comment: 小地图始终置顶；按 M 可开关
+          - forever:
+              do:
+                - go_to_front_back: front
+                - if: { cond: { equals: { a: {var: 小地图开}, b: 1 } }, do: [ { show: null } ], else: [ { hide: null } ] }
+
+    # ==========================================================
+    # 小地图标记：猫（橙）/ 鼠（灰），按世界坐标映射到底图上
+    # 公式：标记 = 底图中心 + ((世界+半幅)*比例 - 半底图)
+    #      = (135 + (cat_wx+480)*0.125, 105 + (cat_wy+360)*0.125)
+    # ==========================================================
+    - name: 猫标记
+      x: 195
+      y: 150
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 点, asset: assets/cat_mouse/cat_dot.png }
+      scripts:
+        - - when_green_flag_clicked:
+            comment: 首页隐藏标记
+          - hide: null
+        - - when_receive:
+              message: 游戏开始
+              comment: 猫在世界中的位置
+          - forever:
+              do:
+                - go_to_front_back: front
+                - if: { cond: { equals: { a: {var: 小地图开}, b: 1 } }, do: [ { show: null } ], else: [ { hide: null } ] }
+                - set_x: { x: { add: [ 135, { multiply: [ { add: [ {var: cat_wx}, 480 ] }, 0.125 ] } ] } }
+                - set_y: { y: { add: [ 105, { multiply: [ { add: [ {var: cat_wy}, 360 ] }, 0.125 ] } ] } }
+
+    - name: 鼠标记
+      x: 195
+      y: 150
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 点, asset: assets/cat_mouse/mouse_dot.png }
+      scripts:
+        - - when_green_flag_clicked:
+            comment: 首页隐藏标记
+          - hide: null
+        - - when_receive:
+              message: 游戏开始
+              comment: 鼠在世界中的位置
+          - forever:
+              do:
+                - go_to_front_back: front
+                - if: { cond: { equals: { a: {var: 小地图开}, b: 1 } }, do: [ { show: null } ], else: [ { hide: null } ] }
+                - set_x: { x: { add: [ 135, { multiply: [ { add: [ {var: mouse_wx}, 480 ] }, 0.125 ] } ] } }
+                - set_y: { y: { add: [ 105, { multiply: [ { add: [ {var: mouse_wy}, 360 ] }, 0.125 ] } ] } }
+
+    # ==========================================================
+    # 署名卡（防搬 · 合规署名）：首页显示，进入游戏后隐藏
+    # 说明：Scratch 官方规定作品一律 CC BY-SA、**不能禁止改编**，
+    #    所以「防搬」= 明确署名 + 致谢清单 + 官方改编署名链，
+    #    而不是写「禁止改编」（那样反而会被官方警告）。
+    # ==========================================================
+    - name: 署名
+      x: 0
+      y: -162
+      size: 100
+      costumes:
+        - { name: 署名, asset: assets/cat_mouse/byline.png }
+      scripts:
+        - - when_green_flag_clicked:
+            comment: 首页显示署名
+          - show: null
+        - - when_receive:
+              message: 游戏开始
+            comment: 进入游戏后隐藏
+          - hide: null
+
+    # ==========================================================
+    # 弹窗遮罩：半透明黑板，用来**拦截穿透点击**
+    # （Scratch 里点上层精灵，下层精灵也会收到点击；
+    #   没有遮罩时，点右上角「×」会顺手点中底下的老鼠）
+    # ==========================================================
+    - name: 弹窗遮罩
+      x: 0
+      y: 0
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 遮罩, asset: assets/cat_mouse/ui_mask.png }
+      scripts:
+        - - when_green_flag_clicked:
+          - hide: null
+        - - when_receive:
+              message: 打开帮助
+            comment: 打开时盖住游戏区
+          - show: null
+          - go_to_front_back: front
+        - - when_receive:
+              message: 关闭帮助
+          - hide: null
+        - - when_this_sprite_clicked:
+            comment: 点遮罩空白处也能关掉弹窗
+          - broadcast: 关闭帮助
+
+    # ==========================================================
+    # 帮助面板：打开时移到最上层
+    # ==========================================================
+    - name: 帮助面板
+      x: 0
+      y: 0
+      size: 100
+      costumes:
+        - { name: 面板, asset: assets/cat_mouse/help_panel.png }
+      scripts:
+        - - when_green_flag_clicked:
+          - hide: null
+        - - when_receive:
+              message: 打开帮助
+            comment: 每次打开都要置顶，否则会被后开的窗口盖住
+          - show: null
+          - go_to_front_back: front
+        - - when_receive:
+              message: 关闭帮助
+          - hide: null
+
+    # ==========================================================
+    # 关闭按钮（×）：**当关闭被点击** 的标准用法
+    # 点它 → 广播「关闭帮助」→ 面板/遮罩一起收起
+    # ==========================================================
+    - name: 关闭按钮
+      x: 152
+      y: 72
+      size: 100
+      costumes:
+        - { name: 叉, asset: assets/cat_mouse/btn_close.png }
+      scripts:
+        - - when_green_flag_clicked:
+          - hide: null
+        - - when_receive:
+              message: 打开帮助
+          - show: null
+          - go_to_front_back: front
+        - - when_receive:
+              message: 关闭帮助
+          - hide: null
+        - - when_this_sprite_clicked:
+            comment: 「当关闭被点击」——点击 × 关闭帮助面板
+          - broadcast: 关闭帮助

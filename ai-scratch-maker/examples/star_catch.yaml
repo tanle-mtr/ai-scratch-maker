@@ -1,0 +1,426 @@
+# 由 scripts/new_project.py --genre catch 生成，骨架源: examples/fruit_basket.yaml
+# 该骨架已通过八层结构校验 / 深网行为断言 / 质量门禁；请只改玩法差异与素材。
+# 素材替换清单见 examples/star_catch.assets.md；规格表见 examples/star_catch.quality.json
+# 配色遵守 §198 18 色板，所有颜色字面量 6 位 HEX（铁律8/13）。
+project:
+  name: 星空拾贝
+  title_screen:
+    backdrop: assets/star_catch/title_bg.png
+    button:
+      asset: assets/ui/btn_start.png
+      x: 0
+      y: -110
+    game_backdrop: 游戏场景
+    broadcast: 开始游戏
+
+  stage:
+    backdrops:
+      - {name: 游戏场景, asset: assets/star_catch/game_bg.png}
+    sounds:
+      - {name: 背景乐, asset: "assets/bgm_calm.wav"}
+      - {name: 接住音, asset: "assets/sfx/fx_pickup.wav"}
+      - {name: 升级音, asset: "assets/sfx/ev_levelup.wav"}
+      - {name: 胜利音, asset: "assets/sfx/ev_win.wav"}
+      - {name: 失败音, asset: "assets/sfx/ev_lose.wav"}
+      - {name: 告警音, asset: "assets/sfx/ev_alarm.wav"}
+      - {name: 点击音, asset: "assets/sfx/ui_click.wav"}
+      - {name: 失误音, asset: "assets/sfx/fx_hit.wav"}
+    variables:
+      分数: 0
+      生命: 3
+      关卡: 1
+      过关目标: 10        # 当前关需接住的数量（每关 +10）
+      游戏状态: 0          # 0=标题 1=游戏中 2=结束
+      下落速度: 4
+      音效开: 1
+      低血告警: 0          # 生命=1 时只响一次告警，避免循环刷屏
+    monitors:
+      - {var: 分数, x: 8, y: 8}
+      - {var: 生命, x: 130, y: 8}
+      - {var: 关卡, x: 250, y: 8}
+    scripts:
+      # 绿旗：回标题态，并复位低血告警
+      - - when_green_flag_clicked:
+            comment: 绿旗初始化：回到标题态
+        - set_variable: {var: 游戏状态, value: 0}
+        - set_variable: {var: 低血告警, value: 0}
+      # 开始 / 再来一局：重置并进入游戏态
+      - - when_receive:
+            message: 开始游戏
+            comment: 开始/重开：重置分数/生命/关卡/速度，进入游戏态
+        - set_variable: {var: 分数, value: 0}
+        - set_variable: {var: 生命, value: 3}
+        - set_variable: {var: 关卡, value: 1}
+        - set_variable: {var: 过关目标, value: 10}
+        - set_variable: {var: 下落速度, value: 4}
+        - set_variable: {var: 游戏状态, value: 1}
+        - set_variable: {var: 低血告警, value: 0}
+        - play_sound: {sound: 点击音}
+      # BGM：游戏中循环播放（绿旗常驻，按游戏态开关）
+      - - when_green_flag_clicked:
+            comment: BGM 常驻循环，仅游戏中播放
+        - forever:
+            do:
+              - if:
+                  cond: {equals: {a: {var: 游戏状态}, b: 1}}
+                  do:
+                    - if:
+                        cond: {equals: {a: {var: 音效开}, b: 1}}
+                        do:
+                          - play_sound_until_done: {sound: 背景乐}
+                else:
+                  - wait: 0.2
+      # 过关：放升级音 + 通知飘字（关卡递进逻辑在水果克隆体内做，避免重复触发）
+      - - when_receive:
+            message: 过关
+            comment: 过一关：升级音 + 飘字
+        - if:
+            cond: {equals: {a: {var: 音效开}, b: 1}}
+            do:
+              - play_sound: {sound: 升级音}
+        - broadcast: 显示过关
+      # 通关：胜利音
+      - - when_receive:
+            message: 通关
+            comment: 通关：胜利音
+        - if:
+            cond: {equals: {a: {var: 音效开}, b: 1}}
+            do:
+              - play_sound: {sound: 胜利音}
+      # 游戏失败：失败音
+      - - when_receive:
+            message: 游戏失败
+            comment: 游戏失败：失败音
+        - if:
+            cond: {equals: {a: {var: 音效开}, b: 1}}
+            do:
+              - play_sound: {sound: 失败音}
+      # 低血告警：生命降到 1 时响一次告警音
+      - - when_green_flag_clicked:
+            comment: 低血告警：生命=1 时只响一次，避免刷屏
+        - forever:
+            do:
+              - if:
+                  cond:
+                    and:
+                      - {equals: {a: {var: 游戏状态}, b: 1}}
+                      - and:
+                          - {equals: {a: {var: 生命}, b: 1}}
+                          - {equals: {a: {var: 低血告警}, b: 0}}
+                  do:
+                    - if:
+                        cond: {equals: {a: {var: 音效开}, b: 1}}
+                        do:
+                          - play_sound: {sound: 告警音}
+                    - set_variable: {var: 低血告警, value: 1}
+
+  sprites:
+    # ============================================================
+    # 挡板（篮子）：方向键 / 鼠标控制，底部左右移动
+    # ============================================================
+    - name: 挡板
+      x: 0
+      y: -150
+      size: 100
+      rotationStyle: left-right
+      costumes:
+        - {name: 篮子, asset: assets/ui/basket.png}
+      scripts:
+        - - when_green_flag_clicked:
+              comment: 标题态隐藏挡板
+          - {hide: null}
+        - - when_receive:
+              message: 开始游戏
+              comment: 进入游戏：显示并归位到底部中间
+          - {show: null}
+          - set_x: {x: 0}
+          - set_y: {y: -150}
+        - - when_green_flag_clicked:
+              comment: 常驻控制：方向键移动 / 无按键时跟随鼠标，并夹在屏幕内
+          - forever:
+              do:
+                - if_else:
+                    cond:
+                      or:
+                        - {key_pressed: {key: left_arrow}}
+                        - {key_pressed: {key: right_arrow}}
+                    do:
+                      - if:
+                          cond: {key_pressed: {key: left_arrow}}
+                          do:
+                            - change_x: {dx: -14}
+                      - if:
+                          cond: {key_pressed: {key: right_arrow}}
+                          do:
+                            - change_x: {dx: 14}
+                    else:
+                      - set_x: {x: {mouse_x}}
+                - if:
+                    cond: {greater_than: {a: {x_position}, b: 220}}
+                    do:
+                      - set_x: {x: 220}
+                - if:
+                    cond: {less_than: {a: {x_position}, b: -220}}
+                    do:
+                      - set_x: {x: -220}
+
+    # ============================================================
+    # 水果：克隆体从顶部随机下落，接住计分、漏接扣血
+    # ============================================================
+    - name: 水果
+      x: 0
+      y: 200
+      size: 70
+      rotationStyle: don't rotate
+      costumes:
+        - {name: 星贝1, asset: assets/star_catch/star.png}
+        - {name: 星贝2, asset: assets/star_catch/shell.png}
+        - {name: 星贝3, asset: assets/star_catch/star.png}
+        - {name: 星贝4, asset: assets/star_catch/shell.png}
+        - {name: 星贝5, asset: assets/star_catch/star.png}
+        - {name: 星贝6, asset: assets/star_catch/shell.png}
+        - {name: 星贝7, asset: assets/star_catch/star.png}
+        - {name: 星贝8, asset: assets/star_catch/shell.png}
+      sounds:
+        - {name: 接住音, asset: "assets/sfx/fx_pickup.wav"}
+      scripts:
+        - - when_green_flag_clicked:
+              comment: 原始角色隐藏，只让克隆体出现；同时启动常驻生成器
+          - {hide: null}
+          - forever:
+              do:
+                - if:
+                    cond: {equals: {a: {var: 游戏状态}, b: 1}}
+                    do:
+                      - wait: {secs: {random: [0.5, 1.1]}}
+                      - create_clone_of: {clone: _myself_}
+        - - when_start_as_clone:
+              comment: 克隆体：随机造型、顶部随机 x 出现，持续下落
+          - repeat:
+              times: {random: [0, 7]}
+              do:
+                - {next_costume: null}
+          - set_x: {x: {random: [-220, 220]}}
+          - set_y: {y: 180}
+          - {show: null}
+          - forever:
+              do:
+                - if:
+                    cond: {equals: {a: {var: 游戏状态}, b: 2}}
+                    do:
+                      - {delete_this_clone: null}
+                - change_y: {dy: {subtract: [0, {var: 下落速度}]}}
+                - if:
+                    cond: {touching: {object: 挡板}}
+                    do:
+                      - change_variable: {var: 分数, by: 1}
+                      - if:
+                          cond: {equals: {a: {var: 音效开}, b: 1}}
+                          do:
+                            - play_sound: {sound: 接住音}
+                      - broadcast: 加分
+                      - if:
+                          cond: {equals: {a: {var: 分数}, b: {var: 过关目标}}}
+                          do:
+                            - change_variable: {var: 关卡, by: 1}
+                            - change_variable: {var: 过关目标, by: 10}
+                            - change_variable: {var: 下落速度, by: 1.2}
+                            - if_else:
+                                cond: {greater_than: {a: {var: 关卡}, b: 5}}
+                                do:
+                                  - set_variable: {var: 游戏状态, value: 2}
+                                  - broadcast: 通关
+                                else:
+                                  - broadcast: 过关
+                      - {delete_this_clone: null}
+                - if:
+                    cond: {less_than: {a: {y_position}, b: -185}}
+                    do:
+                      - change_variable: {var: 生命, by: -1}
+                      - if:
+                          cond: {equals: {a: {var: 音效开}, b: 1}}
+                          do:
+                            - play_sound: {sound: 失误音}
+                      - if:
+                          cond: {less_than: {a: {var: 生命}, b: 1}}
+                          do:
+                            - set_variable: {var: 游戏状态, value: 2}
+                            - broadcast: 游戏失败
+                      - {delete_this_clone: null}
+
+    # ============================================================
+    # 结算页：胜利 / 失败 两种画面
+    # ============================================================
+    - name: 结算页
+      x: 0
+      y: 30
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - {name: 胜利页, asset: assets/ui/win.png}
+        - {name: 失败页, asset: assets/ui/lose.png}
+      scripts:
+        - - when_green_flag_clicked:
+              comment: 默认隐藏结算页
+          - {hide: null}
+        - - when_receive:
+              message: 开始游戏
+          - {hide: null}
+        - - when_receive:
+              message: 通关
+          - switch_costume: {costume: 胜利页}
+          - {show: null}
+        - - when_receive:
+              message: 游戏失败
+          - switch_costume: {costume: 失败页}
+          - {show: null}
+
+    # ============================================================
+    # 再来一局按钮：结算页出现时可点 / 按空格重开（铁律7）
+    # ============================================================
+    - name: 再来一局
+      x: 0
+      y: -110
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - {name: 按钮, asset: assets/ui/btn_restart.png}
+      scripts:
+        - - when_green_flag_clicked:
+          - {hide: null}
+        - - when_receive:
+              message: 开始游戏
+          - {hide: null}
+        - - when_receive:
+              message: 通关
+          - {show: null}
+        - - when_receive:
+              message: 游戏失败
+          - {show: null}
+        - - when_this_sprite_clicked:
+              comment: 点击按钮：重开（复用开始游戏广播做整局重置）
+          - broadcast: 开始游戏
+        - - when_key_pressed: {key: space}
+          - if:
+              cond: {equals: {a: {var: 游戏状态}, b: 2}}
+              do:
+                - broadcast: 开始游戏
+
+    # ============================================================
+    # +1 飘字：接到水果时从顶部中央飘出 "+1"
+    # ============================================================
+    - name: 加分散字
+      x: 0
+      y: 90
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - {name: 加一, asset: assets/ui/plus1.png}
+      scripts:
+        - - when_green_flag_clicked:
+          - {hide: null}
+        - - when_receive:
+              message: 开始游戏
+          - {hide: null}
+        - - when_receive:
+              message: 加分
+              comment: 接到水果：在随机水平位飘出 +1 并缓慢上移后消失
+          - set_x: {x: {random: [-140, 140]}}
+          - set_y: {y: 90}
+          - {show: null}
+          - repeat:
+              times: 12
+              do:
+                - change_y: {dy: 4}
+                - wait: 0.04
+          - {hide: null}
+
+    # ============================================================
+    # 过关飘字：每过一关中央弹出"过关！"
+    # ============================================================
+    - name: 过关飘字
+      x: 0
+      y: 50
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - {name: 过关字, asset: assets/ui/levelup.png}
+      scripts:
+        - - when_green_flag_clicked:
+          - {hide: null}
+        - - when_receive:
+              message: 开始游戏
+          - {hide: null}
+        - - when_receive:
+              message: 显示过关
+              comment: 过一关：中央弹出"过关！"停留 0.8 秒后消失
+          - {show: null}
+          - wait: 0.8
+          - {hide: null}
+
+    # ============================================================
+    # 背景装饰：游戏中缓慢漂浮的装饰图标，纯氛围
+    # ============================================================
+    - name: 背景装饰
+      x: -160
+      y: 60
+      size: 60
+      rotationStyle: don't rotate
+      costumes:
+        - {name: 装饰1, asset: "assets/deco/deco_star.svg"}
+        - {name: 装饰2, asset: "assets/deco/deco_cloud.svg"}
+        - {name: 装饰3, asset: "assets/deco/deco_leaf.svg"}
+        - {name: 装饰4, asset: "assets/deco/deco_flower.svg"}
+      scripts:
+        - - when_green_flag_clicked:
+          - {hide: null}
+        - - when_receive:
+              message: 开始游戏
+              comment: 进入游戏：随机位置出现，循环切换造型并轻微漂浮
+          - {show: null}
+          - set_x: {x: {random: [-200, 200]}}
+          - set_y: {y: {random: [-80, 120]}}
+          - forever:
+              do:
+                - {next_costume: null}
+                - change_x: {dx: {random: [-1, 1]}}
+                - change_y: {dy: {random: [-1, 1]}}
+                - if:
+                    cond: {greater_than: {a: {x_position}, b: 220}}
+                    do:
+                      - set_x: {x: -220}
+                - if:
+                    cond: {less_than: {a: {x_position}, b: -220}}
+                    do:
+                      - set_x: {x: 220}
+                - if:
+                    cond: {greater_than: {a: {y_position}, b: 160}}
+                    do:
+                      - set_y: {y: -120}
+                - if:
+                    cond: {less_than: {a: {y_position}, b: -120}}
+                    do:
+                      - set_y: {y: 160}
+                - wait: 0.3
+
+# ============================================================
+# 手感层（声明式，构建器自动展开为真实积木：挤压拉伸/白闪/震屏）
+# 质量焊死在编译期：骨架自带，AI 生成的作品跳不过去。
+# 注意键名用 trigger（别用 on，YAML 1.1 把 on 当布尔 True）。
+# ============================================================
+juice:
+  - sprite: 挡板          # 接到星贝时篮子弹一下 + 轻微震屏
+    trigger: 加分
+    squash: 18
+    shake: 4
+  - sprite: 加分散字       # "+1" 弹出时放大 + 白闪
+    trigger: 加分
+    squash: 30
+    flash: 30
+  - sprite: 结算页         # 通关页弹出时放大 + 白闪
+    trigger: 通关
+    squash: 20
+    flash: 40
+  - sprite: 再来一局       # 结算按钮弹一下
+    trigger: 通关
+    squash: 15

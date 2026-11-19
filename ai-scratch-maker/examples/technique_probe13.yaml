@@ -1,0 +1,700 @@
+project:
+  name: 阴影光追·可见性多边形示教
+  extensions:
+  - pen
+  stage:
+    name: 舞台
+    backdrops:
+    - name: 背景1
+      asset: assets/backdrop1.svg
+    variables:
+      玩家X: 0
+      玩家Y: 0
+      墙数: 3
+      点数: 6
+      最大距离: 3000
+      最近距离: 0
+      序号: 1
+      墙序号: 1
+      AX: 0
+      AY: 0
+      BX: 0
+      BY: 0
+      EX: 0
+      EY: 0
+      AOx: 0
+      AOy: 0
+      分母: 0
+      t: 0
+      u: 0
+      dx: 0
+      dy: 0
+      len: 0
+      ux: 0
+      uy: 0
+      rx: 0
+      ry: 0
+      rx2: 0
+      ry2: 0
+      c: 1
+      s: 0
+      d1: 0
+      d2: 0
+      d3: 0
+      dmin: 0
+      可见点X: 0
+      可见点Y: 0
+      实体X: 0
+      实体Y: 0
+      实体距: 0
+      实体在阴影: 0
+      实体1在阴影: 0
+      实体2在阴影: 0
+      实体3在阴影: 0
+      阴影标记: 0
+    lists:
+      墙AX:
+      - 100
+      - -100
+      - -40
+      墙AY:
+      - -60
+      - -60
+      - 140
+      墙BX:
+      - 100
+      - -100
+      - 40
+      墙BY:
+      - 60
+      - 60
+      - 140
+      角点X:
+      - -100
+      - 100
+      - 100
+      - -40
+      - 40
+      - -100
+      角点Y:
+      - -60
+      - -60
+      - 60
+      - 140
+      - 140
+      - 60
+      顶点X:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      顶点Y:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+    scripts:
+    - - when_green_flag_clicked: null
+      - pen_clear: null
+      - set_variable:
+          var: 玩家X
+          value: 0
+      - set_variable:
+          var: 玩家Y
+          value: 0
+      - broadcast:
+          message: 开始
+  sprites:
+  - name: 光追
+    costumes:
+    - name: 点
+      asset: assets/dot.svg
+    procedures:
+    - name: 投射方向 %n %n
+      args:
+      - 方向X
+      - 方向Y
+      warp: true
+      script:
+      - set_variable:
+          var: 最近距离
+          value:
+            var: 最大距离
+      - set_variable:
+          var: 墙序号
+          value: 1
+      - repeat:
+          times:
+            var: 墙数
+          do:
+          - set_variable:
+              var: AX
+              value:
+                item_of_list:
+                  index:
+                    var: 墙序号
+                  list: 墙AX
+          - set_variable:
+              var: AY
+              value:
+                item_of_list:
+                  index:
+                    var: 墙序号
+                  list: 墙AY
+          - set_variable:
+              var: BX
+              value:
+                item_of_list:
+                  index:
+                    var: 墙序号
+                  list: 墙BX
+          - set_variable:
+              var: BY
+              value:
+                item_of_list:
+                  index:
+                    var: 墙序号
+                  list: 墙BY
+          - set_variable:
+              var: EX
+              value:
+                subtract:
+                - var: BX
+                - var: AX
+          - set_variable:
+              var: EY
+              value:
+                subtract:
+                - var: BY
+                - var: AY
+          - set_variable:
+              var: 分母
+              value:
+                subtract:
+                - multiply:
+                  - var: 方向X
+                  - var: EY
+                - multiply:
+                  - var: 方向Y
+                  - var: EX
+          - if:
+              cond:
+                greater_than:
+                - mathop:
+                    op: abs
+                    num:
+                      var: 分母
+                - 0.0001
+              do:
+              - set_variable:
+                  var: AOx
+                  value:
+                    subtract:
+                    - var: AX
+                    - var: 玩家X
+              - set_variable:
+                  var: AOy
+                  value:
+                    subtract:
+                    - var: AY
+                    - var: 玩家Y
+              - set_variable:
+                  var: t
+                  value:
+                    divide:
+                    - subtract:
+                      - multiply:
+                        - var: AOx
+                        - var: EY
+                      - multiply:
+                        - var: AOy
+                        - var: EX
+                    - var: 分母
+              - set_variable:
+                  var: u
+                  value:
+                    divide:
+                    - subtract:
+                      - multiply:
+                        - var: AOx
+                        - var: 方向Y
+                      - multiply:
+                        - var: AOy
+                        - var: 方向X
+                    - var: 分母
+              - if:
+                  cond:
+                    and:
+                    - greater_than:
+                      - var: t
+                      - 0
+                    - and:
+                      - not:
+                          operand:
+                            less_than:
+                            - var: u
+                            - 0
+                      - not:
+                          operand:
+                            greater_than:
+                            - var: u
+                            - 1
+                  do:
+                  - if:
+                      cond:
+                        less_than:
+                        - var: t
+                        - var: 最近距离
+                      do:
+                      - set_variable:
+                          var: 最近距离
+                          value:
+                            var: t
+          - change_variable:
+              var: 墙序号
+              value: 1
+    - name: 算顶点 %n %n
+      args:
+      - 点X
+      - 点Y
+      warp: true
+      script:
+      - set_variable:
+          var: dx
+          value:
+            subtract:
+            - var: 点X
+            - var: 玩家X
+      - set_variable:
+          var: dy
+          value:
+            subtract:
+            - var: 点Y
+            - var: 玩家Y
+      - set_variable:
+          var: len
+          value:
+            mathop:
+              op: sqrt
+              num:
+                add:
+                - multiply:
+                  - var: dx
+                  - var: dx
+                - multiply:
+                  - var: dy
+                  - var: dy
+      - set_variable:
+          var: ux
+          value:
+            divide:
+            - var: dx
+            - var: len
+      - set_variable:
+          var: uy
+          value:
+            divide:
+            - var: dy
+            - var: len
+      - set_variable:
+          var: c
+          value:
+            mathop:
+              op: cos
+              num: 0.5
+      - set_variable:
+          var: s
+          value:
+            mathop:
+              op: sin
+              num: 0.5
+      - set_variable:
+          var: rx
+          value:
+            add:
+            - multiply:
+              - var: ux
+              - var: c
+            - multiply:
+              - var: uy
+              - var: s
+      - set_variable:
+          var: ry
+          value:
+            add:
+            - multiply:
+              - var: uy
+              - var: c
+            - multiply:
+              - multiply:
+                - var: ux
+                - var: s
+              - -1
+      - call:
+          proc: 投射方向 %n %n
+          args:
+          - var: rx
+          - var: ry
+      - set_variable:
+          var: d1
+          value:
+            var: 最近距离
+      - call:
+          proc: 投射方向 %n %n
+          args:
+          - var: ux
+          - var: uy
+      - set_variable:
+          var: d2
+          value:
+            var: 最近距离
+      - set_variable:
+          var: rx2
+          value:
+            subtract:
+            - multiply:
+              - var: ux
+              - var: c
+            - multiply:
+              - var: uy
+              - var: s
+      - set_variable:
+          var: ry2
+          value:
+            add:
+            - multiply:
+              - var: ux
+              - var: s
+            - multiply:
+              - var: uy
+              - var: c
+      - call:
+          proc: 投射方向 %n %n
+          args:
+          - var: rx2
+          - var: ry2
+      - set_variable:
+          var: d3
+          value:
+            var: 最近距离
+      - set_variable:
+          var: dmin
+          value:
+            var: d1
+      - if:
+          cond:
+            less_than:
+            - var: d2
+            - var: dmin
+          do:
+          - set_variable:
+              var: dmin
+              value:
+                var: d2
+      - if:
+          cond:
+            less_than:
+            - var: d3
+            - var: dmin
+          do:
+          - set_variable:
+              var: dmin
+              value:
+                var: d3
+      - set_variable:
+          var: 可见点X
+          value:
+            add:
+            - var: 玩家X
+            - multiply:
+              - var: ux
+              - var: dmin
+      - set_variable:
+          var: 可见点Y
+          value:
+            add:
+            - var: 玩家Y
+            - multiply:
+              - var: uy
+              - var: dmin
+    - name: 实体判定 %n %n
+      args:
+      - 实体X
+      - 实体Y
+      warp: true
+      script:
+      - set_variable:
+          var: dx
+          value:
+            subtract:
+            - var: 实体X
+            - var: 玩家X
+      - set_variable:
+          var: dy
+          value:
+            subtract:
+            - var: 实体Y
+            - var: 玩家Y
+      - set_variable:
+          var: 实体距
+          value:
+            mathop:
+              op: sqrt
+              num:
+                add:
+                - multiply:
+                  - var: dx
+                  - var: dx
+                - multiply:
+                  - var: dy
+                  - var: dy
+      - set_variable:
+          var: ux
+          value:
+            divide:
+            - var: dx
+            - var: 实体距
+      - set_variable:
+          var: uy
+          value:
+            divide:
+            - var: dy
+            - var: 实体距
+      - call:
+          proc: 投射方向 %n %n
+          args:
+          - var: ux
+          - var: uy
+      - if_else:
+          cond:
+            less_than:
+            - var: 最近距离
+            - var: 实体距
+          do:
+          - set_variable:
+              var: 实体在阴影
+              value: 1
+          else:
+          - set_variable:
+              var: 实体在阴影
+              value: 0
+    scripts:
+    - - when_receive:
+          message: 开始
+      - hide: null
+      - pen_clear: null
+      - set_variable:
+          var: 序号
+          value: 1
+      - repeat:
+          times:
+            var: 点数
+          do:
+          - call:
+              proc: 算顶点 %n %n
+              args:
+              - item_of_list:
+                  index:
+                    var: 序号
+                  list: 角点X
+              - item_of_list:
+                  index:
+                    var: 序号
+                  list: 角点Y
+          - replace_item_of_list:
+              index:
+                var: 序号
+              list: 顶点X
+              item:
+                var: 可见点X
+          - replace_item_of_list:
+              index:
+                var: 序号
+              list: 顶点Y
+              item:
+                var: 可见点Y
+          - change_variable:
+              var: 序号
+              value: 1
+      - set_pen_color:
+          COLOR: 120
+      - goto_xy:
+          x:
+            var: 玩家X
+          y:
+            var: 玩家Y
+      - pen_down: null
+      - set_variable:
+          var: 序号
+          value: 1
+      - repeat:
+          times:
+            var: 点数
+          do:
+          - goto_xy:
+              x:
+                item_of_list:
+                  index:
+                    var: 序号
+                  list: 顶点X
+              y:
+                item_of_list:
+                  index:
+                    var: 序号
+                  list: 顶点Y
+          - change_variable:
+              var: 序号
+              value: 1
+      - goto_xy:
+          x:
+            var: 玩家X
+          y:
+            var: 玩家Y
+      - pen_up: null
+      - set_pen_color:
+          COLOR: 0
+      - set_variable:
+          var: 序号
+          value: 1
+      - repeat:
+          times:
+            var: 墙数
+          do:
+          - goto_xy:
+              x:
+                item_of_list:
+                  index:
+                    var: 序号
+                  list: 墙AX
+              y:
+                item_of_list:
+                  index:
+                    var: 序号
+                  list: 墙AY
+          - pen_down: null
+          - goto_xy:
+              x:
+                item_of_list:
+                  index:
+                    var: 序号
+                  list: 墙BX
+              y:
+                item_of_list:
+                  index:
+                    var: 序号
+                  list: 墙BY
+          - pen_up: null
+          - change_variable:
+              var: 序号
+              value: 1
+      - call:
+          proc: 实体判定 %n %n
+          args:
+          - 170
+          - 0
+      - set_variable:
+          var: 实体1在阴影
+          value:
+            var: 实体在阴影
+      - call:
+          proc: 实体判定 %n %n
+          args:
+          - 0
+          - 200
+      - set_variable:
+          var: 实体2在阴影
+          value:
+            var: 实体在阴影
+      - call:
+          proc: 实体判定 %n %n
+          args:
+          - 150
+          - 170
+      - set_variable:
+          var: 实体3在阴影
+          value:
+            var: 实体在阴影
+      - set_variable:
+          var: 序号
+          value: 1
+      - repeat:
+          times: 3
+          do:
+          - if:
+              cond:
+                equals:
+                - var: 序号
+                - 1
+              do:
+              - set_variable:
+                  var: 实体X
+                  value: 170
+              - set_variable:
+                  var: 实体Y
+                  value: 0
+              - set_variable:
+                  var: 阴影标记
+                  value:
+                    var: 实体1在阴影
+          - if:
+              cond:
+                equals:
+                - var: 序号
+                - 2
+              do:
+              - set_variable:
+                  var: 实体X
+                  value: 0
+              - set_variable:
+                  var: 实体Y
+                  value: 200
+              - set_variable:
+                  var: 阴影标记
+                  value:
+                    var: 实体2在阴影
+          - if:
+              cond:
+                equals:
+                - var: 序号
+                - 3
+              do:
+              - set_variable:
+                  var: 实体X
+                  value: 150
+              - set_variable:
+                  var: 实体Y
+                  value: 170
+              - set_variable:
+                  var: 阴影标记
+                  value:
+                    var: 实体3在阴影
+          - if_else:
+              cond:
+                equals:
+                - var: 阴影标记
+                - 1
+              do:
+              - set_pen_color:
+                  COLOR: 0
+              else:
+              - set_pen_color:
+                  COLOR: 100
+          - goto_xy:
+              x:
+                var: 实体X
+              y:
+                var: 实体Y
+          - pen_down: null
+          - goto_xy:
+              x:
+                var: 玩家X
+              y:
+                var: 玩家Y
+          - pen_up: null
+          - change_variable:
+              var: 序号
+              value: 1

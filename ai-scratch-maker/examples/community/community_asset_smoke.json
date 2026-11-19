@@ -1,0 +1,35 @@
+{
+  "project": {
+    "name": "社区素材包冒烟测试",
+    "stage": {
+      "backdrops": [
+        {"asset": "community:pGeJJ66J/办公室"}
+      ],
+      "scripts": [
+        [
+          {"when_green_flag_clicked": null},
+          {"broadcast": "开始"}
+        ]
+      ]
+    },
+    "sprites": [
+      {
+        "name": "体力果",
+        "x": 0,
+        "y": 0,
+        "costumes": [
+          {"asset": "community:2SwJJ66J/体力果"}
+        ],
+        "sounds": [
+          {"asset": "community:2SwJJ66J/pop"}
+        ],
+        "scripts": [
+          [
+            {"when_receive": "开始"},
+            {"play_sound": {"sound": "pop"}}
+          ]
+        ]
+      }
+    ]
+  }
+}

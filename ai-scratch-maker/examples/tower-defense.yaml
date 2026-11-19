@@ -1,0 +1,371 @@
+project:
+  name: 塔防示例
+  stage:
+    backdrops:
+    - name: 战场
+      asset: assets/td/bg.svg
+    variables:
+      金: 200
+      生命: 10
+      分数: 0
+      波次: 0
+      场上敌人数量: 0
+      敌计数器: 0
+      __spawn: 0
+      塔x: -120
+      塔y: 60
+      目标x: 0
+      目标y: 0
+      目标编号: 0
+      游戏结束: 0
+      __k: 0
+    lists:
+      敌x:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      敌y:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      敌hp:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      敌活:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      路径X:
+      - -200
+      - -190
+      - -180
+      - -170
+      - -160
+      - -150
+      - -140
+      - -130
+      - -120
+      - -110
+      - -100
+      - -90
+      - -80
+      - -70
+      - -60
+      - -50
+      - -40
+      - -30
+      - -20
+      - -10
+      - 0
+      - 10
+      - 20
+      - 30
+      - 40
+      - 50
+      - 60
+      - 70
+      - 80
+      - 90
+      - 100
+      - 110
+      - 120
+      - 130
+      - 140
+      - 150
+      - 160
+      - 170
+      - 180
+      - 190
+      路径Y:
+      - 120
+      - 114
+      - 108
+      - 102
+      - 96
+      - 90
+      - 84
+      - 78
+      - 72
+      - 66
+      - 60
+      - 54
+      - 48
+      - 42
+      - 36
+      - 30
+      - 24
+      - 18
+      - 12
+      - 6
+      - 0
+      - 6
+      - 12
+      - 18
+      - 24
+      - 30
+      - 36
+      - 42
+      - 48
+      - 54
+      - 60
+      - 66
+      - 72
+      - 78
+      - 84
+      - 90
+      - 96
+      - 102
+      - 108
+      - 114
+    scripts:
+    - - when_green_flag_clicked: null
+      - set_variable: { var: 金, value: 200 }
+      - set_variable: { var: 生命, value: 10 }
+      - set_variable: { var: 分数, value: 0 }
+      - set_variable: { var: 波次, value: 0 }
+      - set_variable: { var: 敌计数器, value: 0 }
+      - set_variable: { var: __spawn, value: 0 }
+      - set_variable: { var: 塔x, value: -120 }
+      - set_variable: { var: 塔y, value: 60 }
+      - set_variable: { var: 目标x, value: 0 }
+      - set_variable: { var: 目标y, value: 0 }
+      - set_variable: { var: 目标编号, value: 0 }
+      - set_variable: { var: 游戏结束, value: 0 }
+      - set_variable: { var: __k, value: 0 }
+      - repeat:
+          times: 12
+          do:
+          - change_variable: { var: __k, by: 1 }
+          - replace_item_of_list: { list: 敌活, index: { var: __k }, item: 0 }
+    - - when_green_flag_clicked: null
+      - forever:
+          do:
+          - change_variable: { var: __spawn, by: 1 }
+          - if:
+              cond: { gt: [ { var: __spawn }, 120 ] }
+              do:
+              - set_variable: { var: __spawn, value: 0 }
+              - change_variable: { var: 波次, by: 1 }
+              - broadcast: { message: 出波 }
+          - wait: { secs: 0.02 }
+    - - when_green_flag_clicked: null
+      - forever:
+          do:
+          - if:
+              cond: { lt: [ { var: 生命 }, 1 ] }
+              do:
+              - set_variable: { var: 游戏结束, value: 1 }
+          - wait: { secs: 0.02 }
+  sprites:
+  - name: 敌人A
+    x: 0
+    y: 0
+    costumes:
+    - name: 敌方
+      asset: assets/td/enemy.svg
+    variables:
+      是克隆: 0
+      编号: 0
+      hp: 30
+      路径序号: 0
+      ex: 0
+      ey: 0
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+    - - when_receive: { message: 出波 }
+      - if:
+          cond: { and: [ { equals: [ { var: 是克隆 }, 0 ] }, { lt: [ { var: 敌计数器 }, 12 ] } ] }
+          do: [ { change_variable: { var: 敌计数器, by: 1 } } ]
+      - if:
+          cond: { and: [ { equals: [ { var: 是克隆 }, 0 ] }, { lt: [ { var: 敌计数器 }, 12 ] } ] }
+          do: [ { create_clone_of: { clone: _myself_ } } ]
+    - - when_start_as_clone: null
+      - set_variable: { var: 是克隆, value: 1 }
+      - set_variable: { var: 编号, value: { var: 敌计数器 } }
+      - set_variable: { var: hp, value: 30 }
+      - replace_item_of_list: { list: 敌x, index: { var: 编号 }, item: { item_of_list: { list: 路径X, index: 1 } } }
+      - replace_item_of_list: { list: 敌y, index: { var: 编号 }, item: { item_of_list: { list: 路径Y, index: 1 } } }
+      - replace_item_of_list: { list: 敌hp, index: { var: 编号 }, item: 30 }
+      - replace_item_of_list: { list: 敌活, index: { var: 编号 }, item: 1 }
+      - goto_xy: { x: { item_of_list: { list: 路径X, index: 1 } }, y: { item_of_list: { list: 路径Y, index: 1 } } }
+      - show: null
+    - - when_start_as_clone: null
+      - forever:
+          do:
+          - change_variable: { var: 路径序号, by: 1 }
+          - set_variable: { var: ex, value: { item_of_list: { list: 路径X, index: { var: 路径序号 } } } }
+          - set_variable: { var: ey, value: { item_of_list: { list: 路径Y, index: { var: 路径序号 } } } }
+          - goto_xy: { x: { var: ex }, y: { var: ey } }
+          - replace_item_of_list: { list: 敌x, index: { var: 编号 }, item: { var: ex } }
+          - replace_item_of_list: { list: 敌y, index: { var: 编号 }, item: { var: ey } }
+          - if:
+              cond: { gt: [ { var: 路径序号 }, { length_of_list: { list: 路径X } } ] }
+              do:
+              - change_variable: { var: 生命, by: -1 }
+              - replace_item_of_list: { list: 敌活, index: { var: 编号 }, item: 0 }
+              - delete_this_clone: null
+          - if:
+              cond: { lt: [ { item_of_list: { list: 敌hp, index: { var: 编号 } } }, 1 ] }
+              do:
+              - replace_item_of_list: { list: 敌活, index: { var: 编号 }, item: 0 }
+              - delete_this_clone: null
+          - wait: { secs: 0.02 }
+  - name: 防御塔
+    x: -120
+    y: 60
+    costumes:
+    - name: 塔
+      asset: assets/td/tower.svg
+    variables:
+      是克隆: 0
+      冷却: 0
+      范围: 150
+      __k: 0
+      最近: 0
+    scripts:
+    - - when_green_flag_clicked: null
+      - goto_xy: { x: -120, y: 60 }
+      - show: null
+    - - when_green_flag_clicked: null
+      - forever:
+          do:
+          - if: { cond: { gt: [ { var: 冷却 }, 0 ] }, do: [ { change_variable: { var: 冷却, by: -1 } } ] }
+          - if:
+              cond: { equals: [ { var: 冷却 }, 0 ] }
+              do:
+              - set_variable: { var: __k, value: 0 }
+              - set_variable: { var: 最近, value: 0 }
+              - repeat:
+                  times: 12
+                  do:
+                  - change_variable: { var: __k, by: 1 }
+                  - if:
+                      cond:
+                        and:
+                          - equals: [ { item_of_list: { list: 敌活, index: { var: __k } } }, 1 ]
+                          - lt:
+                              - mathop:
+                                  operator: abs
+                                  num: { subtract: [ { var: 塔x }, { item_of_list: { list: 敌x, index: { var: __k } } } ] }
+                              - { var: 范围 }
+                      do: [ { set_variable: { var: 最近, value: { var: __k } } } ]
+              - if:
+                  cond: { gt: [ { var: 最近 }, 0 ] }
+                  do:
+                  - set_variable: { var: 目标x, value: { item_of_list: { list: 敌x, index: { var: 最近 } } } }
+                  - set_variable: { var: 目标y, value: { item_of_list: { list: 敌y, index: { var: 最近 } } } }
+                  - set_variable: { var: 目标编号, value: { var: 最近 } }
+                  - create_clone_of: { clone: 子弹 }
+                  - set_variable: { var: 冷却, value: 15 }
+          - wait: { secs: 0.02 }
+  - name: 子弹
+    x: 0
+    y: 0
+    costumes:
+    - name: 弹
+      asset: assets/td/bullet.svg
+    variables:
+      是克隆: 0
+      bx: 0
+      by: 0
+      vx: 0
+      vy: 0
+      速度: 8
+      dx: 0
+      dy: 0
+      len: 1
+      伤害: 10
+      __k: 0
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+    - - when_start_as_clone: null
+      - set_variable: { var: 是克隆, value: 1 }
+      - set_variable: { var: bx, value: { var: 塔x } }
+      - set_variable: { var: by, value: { var: 塔y } }
+      - set_variable: { var: dx, value: { subtract: [ { var: 目标x }, { var: 塔x } ] } }
+      - set_variable: { var: dy, value: { subtract: [ { var: 目标y }, { var: 塔y } ] } }
+      - set_variable:
+          var: len
+          value:
+            mathop:
+              operator: sqrt
+              num: { add: [ { multiply: [ { var: dx }, { var: dx } ] }, { multiply: [ { var: dy }, { var: dy } ] } ] }
+      - if: { cond: { lt: [ { var: len }, 1 ] }, do: [ { set_variable: { var: len, value: 1 } } ] }
+      - set_variable: { var: vx, value: { multiply: [ { divide: [ { var: dx }, { var: len } ] }, { var: 速度 } ] } }
+      - set_variable: { var: vy, value: { multiply: [ { divide: [ { var: dy }, { var: len } ] }, { var: 速度 } ] } }
+      - goto_xy: { x: { var: bx }, y: { var: by } }
+      - show: null
+    - - when_start_as_clone: null
+      - forever:
+          do:
+          - change_variable: { var: bx, by: { var: vx } }
+          - change_variable: { var: by, by: { var: vy } }
+          - goto_xy: { x: { var: bx }, y: { var: by } }
+          - set_variable: { var: __k, value: 0 }
+          - repeat:
+              times: 12
+              do:
+              - change_variable: { var: __k, by: 1 }
+              - if:
+                  cond:
+                    and:
+                      - equals: [ { item_of_list: { list: 敌活, index: { var: __k } } }, 1 ]
+                      - and:
+                          - lt:
+                              - mathop:
+                                  operator: abs
+                                  num: { subtract: [ { var: bx }, { item_of_list: { list: 敌x, index: { var: __k } } } ] }
+                              - 18
+                          - lt:
+                              - mathop:
+                                  operator: abs
+                                  num: { subtract: [ { var: by }, { item_of_list: { list: 敌y, index: { var: __k } } } ] }
+                              - 18
+                  do:
+                  - replace_item_of_list:
+                      list: 敌hp
+                      index: { var: __k }
+                      item: { subtract: [ { item_of_list: { list: 敌hp, index: { var: __k } } }, { var: 伤害 } ] }
+                  - delete_this_clone: null
+          - if: { cond: { gt: [ { mathop: { operator: abs, num: { var: bx } } }, 260 ] }, do: [ { delete_this_clone: null } ] }
+          - if: { cond: { gt: [ { mathop: { operator: abs, num: { var: by } } }, 200 ] }, do: [ { delete_this_clone: null } ] }
+          - wait: { secs: 0.02 }

@@ -1,0 +1,10 @@
+interface:
+  display_name: "AI Scratch Maker"
+  short_description: "让 AI 设计并生成合法的 Scratch 3.0 作品（.sb3 文件）"
+  default_prompt: >
+    使用 $ai-scratch-maker：先和用户确认玩法，再用 YAML/JSON 写一份中间表示（IR）描述
+    角色、舞台与积木脚本；需要素材时生成图片（背景/角色）与音频（音效/音乐）；最后用
+    build_sb3.py 编译并 validate_sb3.py 校验，交付可被 Scratch 打开的 .sb3 文件。
+
+policy:
+  allow_implicit_invocation: true

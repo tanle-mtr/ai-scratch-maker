@@ -1,0 +1,15 @@
+{
+  "min_costumes": 20,
+  "min_sounds": 8,
+  "min_sprites": 4,
+  "min_bytes": 150000,
+  "min_scenes": 2,
+  "min_blocks": 150,
+  "label": "星空拾贝（由 new_project.py 生成，带生图素材硬闸）",
+  "profile": "game",
+  "genre": "game",
+  "require_bitmap": true,
+  "min_bitmap_assets": 3,
+  "_scaffold": "new_project.py --genre catch",
+  "_hint": "require_bitmap=true 时，关键造型/背景必须是真正被 project.json 引用的位图；纯程序化 SVG 一律 FAIL。这是为了让新作品默认具备生图质感，不为指标好看去堆无引用的孤儿素材。"
+}

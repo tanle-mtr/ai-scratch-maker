@@ -1,0 +1,116 @@
+{
+  "project": {
+    "name": "Cat Walk",
+    "extensions": [
+      "pen"
+    ],
+    "stage": {
+      "backdrops": [
+        {
+          "name": "grass",
+          "asset": "assets/backdrop1.svg"
+        }
+      ],
+      "scripts": [
+        [
+          {
+            "when_green_flag_clicked": null
+          },
+          {
+            "broadcast": "start"
+          }
+        ]
+      ]
+    },
+    "sprites": [
+      {
+        "name": "Cat",
+        "x": 0,
+        "y": 0,
+        "size": 100,
+        "direction": 90,
+        "costumes": [
+          {
+            "name": "cat1",
+            "asset": "assets/cat.svg"
+          }
+        ],
+        "sounds": [
+          {
+            "name": "beep",
+            "asset": "assets/beep.wav"
+          }
+        ],
+        "variables": {
+          "score": 0
+        },
+        "scripts": [
+          [
+            {
+              "when_green_flag_clicked": null
+            },
+            {
+              "pen_down": null
+            },
+            {
+              "set_variable": {
+                "var": "score",
+                "value": 0
+              }
+            },
+            {
+              "repeat": {
+                "times": 50,
+                "do": [
+                  {
+                    "move_steps": 10
+                  },
+                  {
+                    "turn_left": {
+                      "degrees": {
+                        "random": [
+                          -15,
+                          15
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "if": {
+                      "cond": {
+                        "mousedown": null
+                      },
+                      "do": [
+                        {
+                          "change_variable": {
+                            "var": "score",
+                            "by": 1
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "pen_up": null
+            }
+          ],
+          [
+            {
+              "when_receive": "start"
+            },
+            {
+              "say": {
+                "text": "Go!",
+                "secs": 2
+              }
+            }
+          ]
+        ],
+        "rotationStyle": "left-right"
+      }
+    ]
+  }
+}

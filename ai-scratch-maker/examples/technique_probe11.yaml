@@ -1,0 +1,522 @@
+project:
+  name: 第九册示教 probe11
+  stage:
+    name: 舞台
+    backdrops:
+    - name: 背景1
+      asset: assets/backdrop1.svg
+    variables:
+      开关数量: 4
+      ID计数器: 0
+      目标ID: 2
+      YVelocity: 0
+      Gravity: 0.6
+      地面Y: -120
+      允许跳: 1
+      序号: 1
+      玩家X: 0
+      玩家Y: 0
+      实体X: 80
+      实体Y: 30
+      实体在阴影: 0
+      最近角差: 999
+      最近墙距: 999
+      实体角: 0
+      实体距: 0
+      dX: 0
+      dY: 0
+      角差: 0
+      墙距: 0
+      阴影已算: 0
+      画笔方向: 0
+      角度: 0
+    lists:
+      开关状态:
+      - 1
+      - 0
+      - 1
+      - 0
+      墙角X:
+      - 100
+      - -100
+      - 100
+      - -100
+      墙角Y:
+      - 100
+      - 100
+      - -100
+      - -100
+      与玩家夹角:
+      - 0
+      - 0
+      - 0
+      - 0
+    broadcasts:
+      切换: 切换
+    procedures:
+    - name: 算角度 %n %n
+      args:
+      - 入Y
+      - 入X
+      warp: true
+      script:
+      - if:
+          cond:
+            greater_than:
+            - var: 入X
+            - 0
+          do:
+          - set_variable:
+              var: 角度
+              value:
+                mathop:
+                  op: atan
+                  num:
+                    divide:
+                    - var: 入Y
+                    - var: 入X
+      - if:
+          cond:
+            less_than:
+            - var: 入X
+            - 0
+          do:
+          - set_variable:
+              var: 角度
+              value:
+                mathop:
+                  op: atan
+                  num:
+                    divide:
+                    - var: 入Y
+                    - var: 入X
+          - if:
+              cond:
+                less_than:
+                - var: 入Y
+                - 0
+              do:
+              - set_variable:
+                  var: 角度
+                  value:
+                    subtract:
+                    - var: 角度
+                    - 180
+          - if:
+              cond:
+                greater_than:
+                - var: 入Y
+                - 0
+              do:
+              - set_variable:
+                  var: 角度
+                  value:
+                    add:
+                    - var: 角度
+                    - 180
+          - if:
+              cond:
+                equals:
+                - var: 入Y
+                - 0
+              do:
+              - set_variable:
+                  var: 角度
+                  value: 180
+      - if:
+          cond:
+            equals:
+            - var: 入X
+            - 0
+          do:
+          - if:
+              cond:
+                greater_than:
+                - var: 入Y
+                - 0
+              do:
+              - set_variable:
+                  var: 角度
+                  value: 90
+          - if:
+              cond:
+                less_than:
+                - var: 入Y
+                - 0
+              do:
+              - set_variable:
+                  var: 角度
+                  value: -90
+          - if:
+              cond:
+                equals:
+                - var: 入Y
+                - 0
+              do:
+              - set_variable:
+                  var: 角度
+                  value: 0
+    scripts:
+    - - when_green_flag_clicked: null
+      - set_variable:
+          var: ID计数器
+          value: 0
+      - repeat:
+          times:
+            var: 开关数量
+          do:
+          - change_variable:
+              var: ID计数器
+              value: 1
+          - create_clone_of:
+              clone: 开关
+      - set_variable:
+          var: 序号
+          value: 1
+      - repeat:
+          times:
+            length_of_list:
+              list: 墙角X
+          do:
+          - set_variable:
+              var: dX
+              value:
+                subtract:
+                - item_of_list:
+                    index:
+                      var: 序号
+                    list: 墙角X
+                - var: 玩家X
+          - set_variable:
+              var: dY
+              value:
+                subtract:
+                - item_of_list:
+                    index:
+                      var: 序号
+                    list: 墙角Y
+                - var: 玩家Y
+          - call:
+              proc: 算角度 %n %n
+              args:
+              - var: dY
+              - var: dX
+          - replace_item_of_list:
+              index:
+                var: 序号
+              list: 与玩家夹角
+              item:
+                var: 角度
+          - change_variable:
+              var: 序号
+              value: 1
+      - call:
+          proc: 算角度 %n %n
+          args:
+          - subtract:
+            - var: 实体Y
+            - var: 玩家Y
+          - subtract:
+            - var: 实体X
+            - var: 玩家X
+      - set_variable:
+          var: 实体角
+          value:
+            var: 角度
+      - set_variable:
+          var: 实体距
+          value:
+            mathop:
+              op: sqrt
+              num:
+                add:
+                - multiply:
+                  - subtract:
+                    - &id001
+                      var: 实体X
+                    - &id002
+                      var: 玩家X
+                  - subtract:
+                    - *id001
+                    - *id002
+                - multiply:
+                  - subtract:
+                    - &id003
+                      var: 实体Y
+                    - &id004
+                      var: 玩家Y
+                  - subtract:
+                    - *id003
+                    - *id004
+      - set_variable:
+          var: 序号
+          value: 1
+      - set_variable:
+          var: 最近角差
+          value: 999
+      - set_variable:
+          var: 最近墙距
+          value: 999
+      - repeat:
+          times:
+            length_of_list:
+              list: 墙角X
+          do:
+          - set_variable:
+              var: 角差
+              value:
+                mathop:
+                  op: abs
+                  num:
+                    subtract:
+                    - var: 实体角
+                    - item_of_list:
+                        index:
+                          var: 序号
+                        list: 与玩家夹角
+          - if:
+              cond:
+                greater_than:
+                - var: 角差
+                - 180
+              do:
+              - set_variable:
+                  var: 角差
+                  value:
+                    subtract:
+                    - 360
+                    - var: 角差
+          - set_variable:
+              var: 墙距
+              value:
+                mathop:
+                  op: sqrt
+                  num:
+                    add:
+                    - multiply:
+                      - subtract:
+                        - &id005
+                          item_of_list:
+                            index:
+                              var: 序号
+                            list: 墙角X
+                        - &id006
+                          var: 玩家X
+                      - subtract:
+                        - *id005
+                        - *id006
+                    - multiply:
+                      - subtract:
+                        - &id007
+                          item_of_list:
+                            index:
+                              var: 序号
+                            list: 墙角Y
+                        - &id008
+                          var: 玩家Y
+                      - subtract:
+                        - *id007
+                        - *id008
+          - if:
+              cond:
+                less_than:
+                - var: 角差
+                - var: 最近角差
+              do:
+              - set_variable:
+                  var: 最近角差
+                  value:
+                    var: 角差
+              - set_variable:
+                  var: 最近墙距
+                  value:
+                    var: 墙距
+          - change_variable:
+              var: 序号
+              value: 1
+      - if_else:
+          cond:
+            less_than:
+            - var: 最近墙距
+            - var: 实体距
+          do:
+          - set_variable:
+              var: 实体在阴影
+              value: 1
+          else:
+          - set_variable:
+              var: 实体在阴影
+              value: 0
+      - set_variable:
+          var: 阴影已算
+          value: 1
+      - repeat:
+          times: 6
+          do:
+          - create_clone_of:
+              clone: 加载
+          - wait:
+              secs: 0.13
+    - - when_green_flag_clicked: null
+      - forever:
+          do:
+          - set_variable:
+              var: YVelocity
+              value:
+                subtract:
+                - var: YVelocity
+                - var: Gravity
+          - change_variable:
+              var: 玩家Y
+              value:
+                var: YVelocity
+          - if:
+              cond:
+                less_than:
+                - var: 玩家Y
+                - var: 地面Y
+              do:
+              - set_variable:
+                  var: 玩家Y
+                  value:
+                    var: 地面Y
+              - set_variable:
+                  var: YVelocity
+                  value: 0
+              - set_variable:
+                  var: 允许跳
+                  value: 1
+          - if:
+              cond:
+                and:
+                - equals:
+                  - var: 允许跳
+                  - 1
+                - greater_than:
+                  - var: 玩家Y
+                  - var: 地面Y
+              do:
+              - set_variable:
+                  var: YVelocity
+                  value: 12
+              - set_variable:
+                  var: 允许跳
+                  value: 0
+    - - when_receive:
+          message: 切换
+      - replace_item_of_list:
+          index:
+            var: 目标ID
+          list: 开关状态
+          item:
+            subtract:
+            - 1
+            - item_of_list:
+                index:
+                  var: 目标ID
+                list: 开关状态
+  sprites:
+  - name: 开关
+    x: 0
+    y: 100
+    costumes:
+    - name: 框
+      asset: assets/dot.svg
+    variables:
+      ID: 0
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+    - - when_start_as_clone: null
+      - set_variable:
+          var: ID
+          value:
+            var: ID计数器
+      - show: null
+      - if_else:
+          cond:
+            equals:
+            - item_of_list:
+                index:
+                  var: ID
+                list: 开关状态
+            - 1
+          do:
+          - set_effect:
+              effect: COLOR
+              value: 0
+          else:
+          - set_effect:
+              effect: COLOR
+              value: 100
+    - - when_receive:
+          message: 切换
+      - if:
+          cond:
+            equals:
+            - var: ID
+            - var: 目标ID
+          do:
+          - if_else:
+              cond:
+                equals:
+                - item_of_list:
+                    index:
+                      var: ID
+                    list: 开关状态
+                - 1
+              do:
+              - set_effect:
+                  effect: COLOR
+                  value: 100
+              else:
+              - set_effect:
+                  effect: COLOR
+                  value: 0
+  - name: 玩家
+    x: 0
+    y: 0
+    costumes:
+    - name: 点
+      asset: assets/dot.svg
+    scripts:
+    - - when_green_flag_clicked: null
+      - set_variable:
+          var: 玩家Y
+          value: 0
+      - set_variable:
+          var: YVelocity
+          value: 0
+      - set_variable:
+          var: 允许跳
+          value: 1
+      - forever:
+          do:
+          - set_y:
+              y:
+                var: 玩家Y
+  - name: 加载
+    x: 0
+    y: -120
+    costumes:
+    - name: 点
+      asset: assets/dot.svg
+    variables:
+      旋转: 25
+    scripts:
+    - - when_start_as_clone: null
+      - show: null
+      - pen_clear: null
+      - pen_down: null
+      - set_pen_size:
+          size: 8
+      - repeat:
+          times: 12
+          do:
+          - turn_right:
+              degrees:
+                var: 旋转
+          - move_steps:
+              steps: 3
+      - pen_up: null
+      - delete_this_clone: null

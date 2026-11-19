@@ -1,0 +1,333 @@
+{
+  "project": {
+    "name": "数字方块乐队（6 声部）",
+    "stage": {
+      "backdrops": [
+        {
+          "asset": "community:NGwJJ66J/backdrop11"
+        }
+      ],
+      "scripts": [
+        [
+          {
+            "when_green_flag_clicked": null
+          },
+          {
+            "broadcast_and_wait": {
+              "message": "音符1"
+            }
+          },
+          {
+            "broadcast_and_wait": {
+              "message": "音符2"
+            }
+          },
+          {
+            "broadcast_and_wait": {
+              "message": "音符3"
+            }
+          },
+          {
+            "broadcast_and_wait": {
+              "message": "音符4"
+            }
+          },
+          {
+            "broadcast_and_wait": {
+              "message": "音符5"
+            }
+          },
+          {
+            "broadcast_and_wait": {
+              "message": "音符6"
+            }
+          }
+        ]
+      ]
+    },
+    "sprites": [
+      {
+        "name": "方块1",
+        "x": -180,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:NGwJJ66J/Flash",
+            "name": "方块1"
+          }
+        ],
+        "sounds": [
+          {
+            "asset": "community:NGwJJ66J/pop#2",
+            "name": "声1"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "音符1"
+              }
+            },
+            {
+              "show": null
+            },
+            {
+              "switch_costume": {
+                "costume": "方块1"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "声1"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "hide": null
+            }
+          ]
+        ]
+      },
+      {
+        "name": "方块2",
+        "x": -140,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:NGwJJ66J/costume1#3",
+            "name": "方块2"
+          }
+        ],
+        "sounds": [
+          {
+            "asset": "community:WbwJJ66J/喵",
+            "name": "声2"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "音符2"
+              }
+            },
+            {
+              "show": null
+            },
+            {
+              "switch_costume": {
+                "costume": "方块2"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "声2"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "hide": null
+            }
+          ]
+        ]
+      },
+      {
+        "name": "方块3",
+        "x": -100,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:NGwJJ66J/costume3#2",
+            "name": "方块3"
+          }
+        ],
+        "sounds": [
+          {
+            "asset": "community:2SwJJ66J/pop",
+            "name": "声3"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "音符3"
+              }
+            },
+            {
+              "show": null
+            },
+            {
+              "switch_costume": {
+                "costume": "方块3"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "声3"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "hide": null
+            }
+          ]
+        ]
+      },
+      {
+        "name": "方块4",
+        "x": -60,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:NGwJJ66J/costume1#5",
+            "name": "方块4"
+          }
+        ],
+        "sounds": [
+          {
+            "asset": "community:NGwJJ66J/pop",
+            "name": "声4"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "音符4"
+              }
+            },
+            {
+              "show": null
+            },
+            {
+              "switch_costume": {
+                "costume": "方块4"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "声4"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "hide": null
+            }
+          ]
+        ]
+      },
+      {
+        "name": "方块5",
+        "x": -20,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:NGwJJ66J/costume2#2",
+            "name": "方块5"
+          }
+        ],
+        "sounds": [
+          {
+            "asset": "community:NGwJJ66J/Lightning",
+            "name": "声5"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "音符5"
+              }
+            },
+            {
+              "show": null
+            },
+            {
+              "switch_costume": {
+                "costume": "方块5"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "声5"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "hide": null
+            }
+          ]
+        ]
+      },
+      {
+        "name": "方块6",
+        "x": 20,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:NGwJJ66J/costume8#2",
+            "name": "方块6"
+          }
+        ],
+        "sounds": [
+          {
+            "asset": "community:NGwJJ66J/explbomb",
+            "name": "声6"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "音符6"
+              }
+            },
+            {
+              "show": null
+            },
+            {
+              "switch_costume": {
+                "costume": "方块6"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "声6"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "hide": null
+            }
+          ]
+        ]
+      }
+    ]
+  }
+}

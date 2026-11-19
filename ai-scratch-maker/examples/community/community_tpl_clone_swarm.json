@@ -1,0 +1,121 @@
+{
+  "project": {
+    "name": "克隆海生存骨架（6 实体）",
+    "stage": {
+      "backdrops": [
+        {
+          "asset": "community:3AwJJ66J/backdrop1"
+        }
+      ],
+      "scripts": [
+        [
+          {
+            "when_green_flag_clicked": null
+          },
+          {
+            "create_clone_of": {
+              "clone": "_myself_"
+            }
+          },
+          {
+            "create_clone_of": {
+              "clone": "_myself_"
+            }
+          },
+          {
+            "create_clone_of": {
+              "clone": "_myself_"
+            }
+          },
+          {
+            "create_clone_of": {
+              "clone": "_myself_"
+            }
+          },
+          {
+            "create_clone_of": {
+              "clone": "_myself_"
+            }
+          },
+          {
+            "create_clone_of": {
+              "clone": "_myself_"
+            }
+          }
+        ]
+      ],
+      "lists": {
+        "实体X": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "实体Y": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "sprites": [
+      {
+        "name": "实体母体",
+        "x": 0,
+        "y": 0,
+        "variables": {
+          "是克隆": 0
+        },
+        "costumes": [
+          {
+            "asset": "community:jmIo666J/造型2#3",
+            "name": "实体"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_start_as_clone": null
+            },
+            {
+              "set_variable": {
+                "var": "是克隆",
+                "value": 1
+              }
+            },
+            {
+              "goto_xy": {
+                "x": 0,
+                "y": 0
+              }
+            },
+            {
+              "show": null
+            },
+            {
+              "forever": {
+                "do": [
+                  {
+                    "change_x": {
+                      "dx": 1
+                    }
+                  },
+                  {
+                    "wait": {
+                      "secs": 0.05
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        ]
+      }
+    ]
+  }
+}

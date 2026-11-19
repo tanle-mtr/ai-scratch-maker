@@ -1,0 +1,246 @@
+project:
+  name: 石头剪刀布大作战
+  stage:
+    backdrops:
+      - {name: 对战舞台, asset: assets/rps/game_bg.png}
+    variables:
+      玩家选择: 0        # 0=未出 1=石头 2=布 3=剪刀
+      电脑选择: 0
+      玩家得分: 0
+      电脑得分: 0
+      平局: 0
+      回合: 0
+      状态: 0           # 0=对战中 1=已结束
+      锁定: 0           # 1=本回合展示中，禁止再点
+      本局结果: 0       # 1=玩家得分 2=电脑得分 3=平
+    sounds:
+      - {name: 点击音, asset: assets/sfx/ui_click.wav}
+      - {name: 胜利音, asset: assets/sfx/ev_win.wav}
+      - {name: 失败音, asset: assets/sfx/ev_lose.wav}
+      - {name: 命中音, asset: assets/sfx/fx_hit.wav}
+    monitors:
+      - {var: 玩家得分, x: 24, y: 8}
+      - {var: 电脑得分, x: 360, y: 8}
+      - {var: 回合, x: 200, y: 8}
+    scripts:
+      - - when_green_flag_clicked: null
+        - broadcast: 重置
+      # 裁判：本回合判定
+      - - when_receive: 判定
+        - if_else:
+            cond: {equals: {a: {var: 玩家选择}, b: {var: 电脑选择}}}
+            do:
+              - change_variable: {var: 平局, by: 1}
+              - set_variable: {var: 本局结果, value: 3}
+            else:
+              - if_else:
+                  cond: {equals: {a: {var: 玩家选择}, b: 1}}
+                  do:
+                    - if_else:
+                        cond: {equals: {a: {var: 电脑选择}, b: 3}}
+                        do:
+                          - change_variable: {var: 玩家得分, by: 1}
+                          - set_variable: {var: 本局结果, value: 1}
+                        else:
+                          - change_variable: {var: 电脑得分, by: 1}
+                          - set_variable: {var: 本局结果, value: 2}
+                  else:
+                    - if_else:
+                        cond: {equals: {a: {var: 玩家选择}, b: 2}}
+                        do:
+                          - if_else:
+                              cond: {equals: {a: {var: 电脑选择}, b: 1}}
+                              do:
+                                - change_variable: {var: 玩家得分, by: 1}
+                                - set_variable: {var: 本局结果, value: 1}
+                              else:
+                                - change_variable: {var: 电脑得分, by: 1}
+                                - set_variable: {var: 本局结果, value: 2}
+                        else:
+                          - if_else:
+                              cond: {equals: {a: {var: 电脑选择}, b: 2}}
+                              do:
+                                - change_variable: {var: 玩家得分, by: 1}
+                                - set_variable: {var: 本局结果, value: 1}
+                              else:
+                                - change_variable: {var: 电脑得分, by: 1}
+                                - set_variable: {var: 本局结果, value: 2}
+        - broadcast: 显示结果
+        - wait: 1.2
+        - change_variable: {var: 回合, by: 1}
+        - if_else:
+            cond: {greater_than: {a: {var: 玩家得分}, b: 2}}
+            do: [ {broadcast: 胜利} ]
+            else:
+              - if_else:
+                  cond: {greater_than: {a: {var: 电脑得分}, b: 2}}
+                  do: [ {broadcast: 失败} ]
+                  else: [ {set_variable: {var: 锁定, value: 0}} ]
+      # 结束 / 重置
+      - - when_receive: 胜利
+        - set_variable: {var: 状态, value: 1}
+        - play_sound: {sound: 胜利音}
+      - - when_receive: 失败
+        - set_variable: {var: 状态, value: 1}
+        - play_sound: {sound: 失败音}
+      - - when_receive: 重置
+        - set_variable: {var: 玩家选择, value: 0}
+        - set_variable: {var: 电脑选择, value: 0}
+        - set_variable: {var: 玩家得分, value: 0}
+        - set_variable: {var: 电脑得分, value: 0}
+        - set_variable: {var: 平局, value: 0}
+        - set_variable: {var: 回合, value: 0}
+        - set_variable: {var: 状态, value: 0}
+        - set_variable: {var: 锁定, value: 0}
+        - set_variable: {var: 本局结果, value: 0}
+  sprites:
+    # 三个出拳按钮
+    - name: 石头按钮
+      x: -130
+      y: -110
+      size: 90
+      rotationStyle: left-right
+      costumes:
+        - {name: 石头, asset: assets/rps/btn_rock.svg}
+      scripts:
+        - - when_this_sprite_clicked: null
+          - if:
+              cond: {equals: {a: {var: 状态}, b: 0}}
+              do:
+                - set_variable: {var: 玩家选择, value: 1}
+                - set_variable: {var: 锁定, value: 1}
+                - play_sound: {sound: 点击音}
+                - broadcast: 出拳
+    - name: 剪刀按钮
+      x: 0
+      y: -110
+      size: 90
+      rotationStyle: left-right
+      costumes:
+        - {name: 剪刀, asset: assets/rps/btn_scissors.svg}
+      scripts:
+        - - when_this_sprite_clicked: null
+          - if:
+              cond: {equals: {a: {var: 状态}, b: 0}}
+              do:
+                - set_variable: {var: 玩家选择, value: 3}
+                - set_variable: {var: 锁定, value: 1}
+                - play_sound: {sound: 点击音}
+                - broadcast: 出拳
+    - name: 布按钮
+      x: 130
+      y: -110
+      size: 90
+      rotationStyle: left-right
+      costumes:
+        - {name: 布, asset: assets/rps/btn_paper.svg}
+      scripts:
+        - - when_this_sprite_clicked: null
+          - if:
+              cond: {equals: {a: {var: 状态}, b: 0}}
+              do:
+                - set_variable: {var: 玩家选择, value: 2}
+                - set_variable: {var: 锁定, value: 1}
+                - play_sound: {sound: 点击音}
+                - broadcast: 出拳
+    # 玩家手（展示玩家出拳，三造型切换=动画）
+    - name: 玩家手
+      x: -130
+      y: 55
+      size: 110
+      rotationStyle: left-right
+      costumes:
+        - {name: 石头, asset: assets/rps/rock.png}
+        - {name: 布, asset: assets/rps/paper.png}
+        - {name: 剪刀, asset: assets/rps/scissors.png}
+      scripts:
+        - - when_receive: 出拳
+          - if_else:
+              cond: {equals: {a: {var: 玩家选择}, b: 1}}
+              do: [ {switch_costume: {costume: 石头}} ]
+              else:
+                - if_else:
+                    cond: {equals: {a: {var: 玩家选择}, b: 2}}
+                    do: [ {switch_costume: {costume: 布}} ]
+                    else: [ {switch_costume: {costume: 剪刀}} ]
+          - broadcast: 电脑出拳
+        - - when_receive: 重置
+          - switch_costume: {costume: 石头}
+    # 电脑手
+    - name: 电脑手
+      x: 130
+      y: 55
+      size: 110
+      rotationStyle: left-right
+      costumes:
+        - {name: 石头, asset: assets/rps/rock.png}
+        - {name: 布, asset: assets/rps/paper.png}
+        - {name: 剪刀, asset: assets/rps/scissors.png}
+      scripts:
+        - - when_receive: 电脑出拳
+          - set_variable: {var: 电脑选择, value: {random: [1, 3]}}
+          - if_else:
+              cond: {equals: {a: {var: 电脑选择}, b: 1}}
+              do: [ {switch_costume: {costume: 石头}} ]
+              else:
+                - if_else:
+                    cond: {equals: {a: {var: 电脑选择}, b: 2}}
+                    do: [ {switch_costume: {costume: 布}} ]
+                    else: [ {switch_costume: {costume: 剪刀}} ]
+          - broadcast: 判定
+        - - when_receive: 重置
+          - switch_costume: {costume: 石头}
+    # 本局结果展示（造型切换，不用 say 气泡，铁律2）
+    - name: 结果展示
+      x: 0
+      y: 0
+      size: 130
+      visible: false
+      rotationStyle: left-right
+      costumes:
+        - {name: 胜, asset: assets/rps/res_win.svg}
+        - {name: 负, asset: assets/rps/res_lose.svg}
+        - {name: 平, asset: assets/rps/res_draw.svg}
+      scripts:
+        - - when_receive: 显示结果
+          - if_else:
+              cond: {equals: {a: {var: 本局结果}, b: 1}}
+              do:
+                - switch_costume: {costume: 胜}
+                - show: null
+                - play_sound: {sound: 命中音}
+              else:
+                - if_else:
+                    cond: {equals: {a: {var: 本局结果}, b: 2}}
+                    do:
+                      - switch_costume: {costume: 负}
+                      - show: null
+                      - play_sound: {sound: 失败音}
+                    else:
+                      - switch_costume: {costume: 平}
+                      - show: null
+                      - play_sound: {sound: 点击音}
+          - wait: 1.0
+          - hide: null
+        - - when_receive: 重置
+          - hide: null
+    # 再来一局按钮（结算页返回/重开，铁律7）
+    - name: 再来一局按钮
+      x: 0
+      y: -40
+      size: 90
+      visible: false
+      rotationStyle: left-right
+      costumes:
+        - {name: 重来, asset: assets/rps/btn_restart.svg}
+      scripts:
+        - - when_receive: 胜利
+          - show: null
+        - - when_receive: 失败
+          - show: null
+        - - when_this_sprite_clicked: null
+          - if:
+              cond: {equals: {a: {var: 状态}, b: 1}}
+              do: [ {broadcast: 重置} ]
+        - - when_receive: 重置
+          - hide: null

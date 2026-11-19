@@ -1,0 +1,670 @@
+# ══════════════════════════════════════════════════════════════════════
+# technique_probe9 —— 第七册《游戏手感与交互》§75–§82 示教工程
+#
+#   §75 拖尾系统      —— 画笔拖尾（彩带主角）+ 克隆残影（带寿命与回收）
+#   §76 背景音乐      —— BGM 状态机 + 淡入淡出 + 程序化旋律（音乐扩展）
+#   §77 多角色选项菜单 —— 每个选项一个角色按钮（**不用「询问」积木**）
+#   §78 克隆的正确用法 —— 三阶段生命周期 + 私有标志位 + 克隆预算计数
+#   §79 受击反馈      —— 闪白 + 击退 + 顿帧
+#   §80 演出与转场    —— 缓动滑入（divide 指数逼近）
+#   §81 节奏输入判定  —— 时间窗 Perfect / Good / Miss
+#   §82 广播解耦      —— 事件广播 + 全局变量中转
+#
+# ⚠️ 本文件由 scripts/gen_probe9.py 生成（用 yaml.dump 保证语法正确）。
+# ══════════════════════════════════════════════════════════════════════
+project:
+  name: 手感与交互示例
+  extensions:
+  - pen
+  - music
+  stage:
+    backdrops:
+    - name: 底
+      asset: assets/backdrop1.svg
+    variables:
+      当前BGM: 0
+      目标音量: 0
+      当前音量: 0
+      菜单层级: 0
+      当前选项: 1
+      选项总数: 3
+      已选难度: 1
+      当前按钮序号: 0
+      克隆计数: 0
+      顿帧: 0
+      判定误差: 999
+      连击: 0
+      最大连击: 0
+    lists:
+      菜单选项:
+      - 开始游戏
+      - 难度设置
+      - 音效说明
+      难度名称:
+      - 简单
+      - 普通
+      - 困难
+    scripts:
+    - - when_receive:
+          message: 菜单点击
+      - if:
+          cond:
+            equals:
+            - var: 当前选项
+            - 1
+          do:
+          - broadcast:
+              message: 打开难度菜单
+      - if:
+          cond:
+            equals:
+            - var: 当前选项
+            - 2
+          do:
+          - broadcast:
+              message: 开始游戏
+      - if:
+          cond:
+            equals:
+            - var: 当前选项
+            - 3
+          do:
+          - broadcast:
+              message: 音效说明
+    - - when_key_pressed:
+          key: right arrow
+      - change_variable:
+          var: 当前选项
+          by: 1
+      - if:
+          cond:
+            greater_than:
+            - var: 当前选项
+            - var: 选项总数
+          do:
+          - set_variable:
+              var: 当前选项
+              value: 1
+    - - when_key_pressed:
+          key: left arrow
+      - change_variable:
+          var: 当前选项
+          by: -1
+      - if:
+          cond:
+            less_than:
+            - var: 当前选项
+            - 1
+          do:
+          - set_variable:
+              var: 当前选项
+              value:
+                var: 选项总数
+    - - when_key_pressed:
+          key: space
+      - broadcast:
+          message: 菜单点击
+    - - when_receive:
+          message: 打开主菜单
+      - set_variable:
+          var: 菜单层级
+          value: 0
+      - set_variable:
+          var: 当前选项
+          value: 1
+      - broadcast:
+          message: 音乐淡出
+    - - when_receive:
+          message: 打开难度菜单
+      - set_variable:
+          var: 菜单层级
+          value: 1
+      - set_variable:
+          var: 当前选项
+          value: 2
+      - broadcast:
+          message: 音乐淡出
+    - - when_receive:
+          message: 开始游戏
+      - set_variable:
+          var: 菜单层级
+          value: 2
+      - broadcast:
+          message: 播放追逐
+      - broadcast:
+          message: 角色登场
+    - - when_receive:
+          message: 受到攻击
+      - set_variable:
+          var: 顿帧
+          value: 6
+      - broadcast:
+          message: 顿帧开始
+    - - when_receive:
+          message: 判定请求
+      - set_variable:
+          var: 判定误差
+          value: 0.12
+      - if:
+          cond:
+            less_than:
+            - var: 判定误差
+            - 0.1
+          do:
+          - broadcast:
+              message: 判定Perfect
+      - if:
+          cond:
+            and:
+            - greater_than:
+              - var: 判定误差
+              - 0.1
+            - less_than:
+              - var: 判定误差
+              - 0.25
+          do:
+          - broadcast:
+              message: 判定Good
+      - if:
+          cond:
+            greater_than:
+            - var: 判定误差
+            - 0.25
+          do:
+          - broadcast:
+              message: 判定Miss
+    - - when_receive:
+          message: 判定Perfect
+      - change_variable:
+          var: 连击
+          by: 1
+      - if:
+          cond:
+            greater_than:
+            - var: 连击
+            - var: 最大连击
+          do:
+          - set_variable:
+              var: 最大连击
+              value:
+                var: 连击
+    - - when_receive:
+          message: 判定Miss
+      - set_variable:
+          var: 连击
+          value: 0
+    - - when_receive:
+          message: 敌人死亡
+      - change_variable:
+          var: 克隆计数
+          by: -1
+      - broadcast:
+          message: 分数增加
+  sprites:
+  - name: 彩带主角
+    x: -120
+    y: -120
+    size: 70
+    rotationStyle: left-right
+    variables:
+      笔粗: 5
+    costumes:
+    - name: 点
+      asset: assets/dot.svg
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+      - set_pen_size:
+          size: 5
+      - set_pen_hue:
+          hue: 60
+      - pen_down: null
+      - forever:
+          do:
+          - move_steps:
+              steps: 3
+          - turn_right: 2
+          - change_pen_hue:
+              hue: 1
+          - if:
+              cond:
+                greater_than:
+                - sensing_of:
+                    object: _myself_
+                    property: x position
+                - 200
+              do:
+              - goto_xy:
+                  x: -200
+                  y:
+                    random:
+                    - -140
+                    - 140
+  - name: 残影主角
+    x: 120
+    y: -120
+    size: 60
+    rotationStyle: left-right
+    variables:
+      是克隆: 0
+      残影寿命: 14
+      残影间隔: 0.06
+      移动速度: 4
+    costumes:
+    - name: 点
+      asset: assets/dot.svg
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+      - set_variable:
+          var: 是克隆
+          value: 0
+      - set_variable:
+          var: 残影间隔
+          value: 0.06
+      - forever:
+          do:
+          - move_steps:
+              steps:
+                var: 移动速度
+          - turn_right: 3
+          - wait:
+              secs:
+                var: 残影间隔
+          - create_clone_of:
+              clone: _myself_
+    - - when_start_as_clone: null
+      - set_variable:
+          var: 是克隆
+          value: 1
+      - set_variable:
+          var: 残影寿命
+          value: 14
+      - show: null
+      - set_ghost:
+          ghost: 35
+    - - when_start_as_clone: null
+      - repeat:
+          times:
+            var: 残影寿命
+          do:
+          - change_effect:
+              effect: GHOST
+              value: 5
+          - change_size:
+              value: -1
+      - delete_this_clone: null
+    - - when_key_pressed:
+          key: space
+      - if:
+          cond:
+            equals:
+            - var: 是克隆
+            - 0
+          do:
+          - create_clone_of:
+              clone: _myself_
+  - name: 克隆监控
+    x: 200
+    y: 150
+    size: 30
+    variables:
+      存活克隆: 0
+    costumes:
+    - name: 点
+      asset: assets/dot.svg
+    scripts:
+    - - when_receive:
+          message: 生成克隆
+      - change_variable:
+          var: 克隆计数
+          by: 1
+    - - when_receive:
+          message: 克隆销毁
+      - change_variable:
+          var: 克隆计数
+          by: -1
+    - - when_green_flag_clicked: null
+      - forever:
+          do:
+          - if:
+              cond:
+                greater_than:
+                - var: 克隆计数
+                - 200
+              do:
+              - broadcast:
+                  message: 克隆过多
+          - wait:
+              secs: 0.5
+  - name: 音乐控制
+    x: -200
+    y: 150
+    size: 30
+    variables:
+      循环中: 0
+    costumes:
+    - name: 点
+      asset: assets/dot.svg
+    sounds:
+    - name: 平静
+      asset: assets/bgm_calm.wav
+    - name: 追逐
+      asset: assets/bgm_chase.wav
+    - name: 点击
+      asset: assets/sfx_click.wav
+    scripts:
+    - - when_green_flag_clicked: null
+      - set_variable:
+          var: 目标音量
+          value: 0
+      - set_variable:
+          var: 当前音量
+          value: 0
+      - set_volume:
+          value: 0
+    - - when_receive:
+          message: 播放平静
+      - set_variable:
+          var: 当前BGM
+          value: 1
+      - set_variable:
+          var: 目标音量
+          value: 70
+      - start_sound:
+          sound: 平静
+      - set_variable:
+          var: 循环中
+          value: 1
+    - - when_receive:
+          message: 播放追逐
+      - set_variable:
+          var: 当前BGM
+          value: 2
+      - set_variable:
+          var: 目标音量
+          value: 70
+      - start_sound:
+          sound: 追逐
+      - set_variable:
+          var: 循环中
+          value: 1
+    - - when_receive:
+          message: 音乐淡出
+      - set_variable:
+          var: 目标音量
+          value: 0
+    - - when_green_flag_clicked: null
+      - forever:
+          do:
+          - if:
+              cond:
+                less_than:
+                - var: 当前音量
+                - var: 目标音量
+              do:
+              - change_variable:
+                  var: 当前音量
+                  by: 3
+          - if:
+              cond:
+                greater_than:
+                - var: 当前音量
+                - var: 目标音量
+              do:
+              - change_variable:
+                  var: 当前音量
+                  by: -3
+          - set_volume:
+              value:
+                var: 当前音量
+          - if:
+              cond:
+                less_than:
+                - var: 当前音量
+                - 1
+              do:
+              - stop_all_sounds: null
+    - - when_receive:
+          message: 程序化旋律
+      - set_tempo:
+          tempo: 110
+      - set_instrument:
+          instrument: 1
+      - repeat:
+          times: 8
+          do:
+          - play_note:
+              note: 60
+              beats: 0.5
+          - play_note:
+              note: 64
+              beats: 0.5
+          - play_note:
+              note: 67
+              beats: 1
+    - - when_receive:
+          message: 播放点击音
+      - start_sound:
+          sound: 点击
+  - name: 按钮一
+    x: -120
+    y: 60
+    size: 90
+    variables:
+      选项序号: 1
+    costumes:
+    - name: 普通
+      asset: assets/btnA.svg
+    scripts:
+    - - event_whenthisspriteclicked: null
+      - broadcast:
+          message: 菜单点击
+      - start_sound:
+          sound: 点击
+    - - when_green_flag_clicked: null
+      - forever:
+          do:
+          - if:
+              cond:
+                touching_mouse_pointer:
+                  object: _mouse_
+              do:
+              - change_size:
+                  value: 12
+          - if:
+              cond:
+                not:
+                  operand:
+                    touching_mouse_pointer:
+                      object: _mouse_
+              do:
+              - change_size:
+                  value: -12
+  - name: 按钮二
+    x: 0
+    y: 60
+    size: 90
+    variables:
+      选项序号: 2
+    costumes:
+    - name: 普通
+      asset: assets/btnB.svg
+    scripts:
+    - - event_whenthisspriteclicked: null
+      - broadcast:
+          message: 菜单点击
+      - start_sound:
+          sound: 点击
+    - - when_green_flag_clicked: null
+      - forever:
+          do:
+          - if:
+              cond:
+                touching_mouse_pointer:
+                  object: _mouse_
+              do:
+              - change_size:
+                  value: 12
+          - if:
+              cond:
+                not:
+                  operand:
+                    touching_mouse_pointer:
+                      object: _mouse_
+              do:
+              - change_size:
+                  value: -12
+  - name: 按钮三
+    x: 120
+    y: 60
+    size: 90
+    variables:
+      选项序号: 3
+    costumes:
+    - name: 普通
+      asset: assets/btnA.svg
+    scripts:
+    - - event_whenthisspriteclicked: null
+      - broadcast:
+          message: 菜单点击
+      - start_sound:
+          sound: 点击
+    - - when_green_flag_clicked: null
+      - forever:
+          do:
+          - if:
+              cond:
+                touching_mouse_pointer:
+                  object: _mouse_
+              do:
+              - change_size:
+                  value: 12
+          - if:
+              cond:
+                not:
+                  operand:
+                    touching_mouse_pointer:
+                      object: _mouse_
+              do:
+              - change_size:
+                  value: -12
+  - name: 登场角色
+    x: 300
+    y: -180
+    size: 80
+    variables:
+      目标X: 0
+      目标Y: 0
+      当前位置X: 300
+      当前位置Y: -180
+    costumes:
+    - name: 点
+      asset: assets/dot.svg
+    scripts:
+    - - when_receive:
+          message: 角色登场
+      - set_variable:
+          var: 目标X
+          value: 0
+      - set_variable:
+          var: 目标Y
+          value: 0
+      - show: null
+      - forever:
+          do:
+          - set_variable:
+              var: 当前位置X
+              value:
+                add:
+                - var: 当前位置X
+                - divide:
+                  - subtract:
+                    - var: 目标X
+                    - var: 当前位置X
+                  - 8
+          - set_variable:
+              var: 当前位置Y
+              value:
+                add:
+                - var: 当前位置Y
+                - divide:
+                  - subtract:
+                    - var: 目标Y
+                    - var: 当前位置Y
+                  - 8
+          - goto_xy:
+              x:
+                var: 当前位置X
+              y:
+                var: 当前位置Y
+          - if:
+              cond:
+                less_than:
+                - subtract:
+                  - var: 目标X
+                  - var: 当前位置X
+                - 2
+              do:
+              - stop:
+                  stop: this script
+  - name: 受击目标
+    x: -200
+    y: -150
+    size: 70
+    variables:
+      血量: 3
+    costumes:
+    - name: 点
+      asset: assets/dot.svg
+    sounds:
+    - name: 受击
+      asset: assets/sfx_hit.wav
+    scripts:
+    - - when_receive:
+          message: 受到攻击
+      - change_variable:
+          var: 血量
+          by: -1
+      - change_effect:
+          effect: COLOR
+          value: 50
+      - wait:
+          secs: 0.08
+      - change_effect:
+          effect: COLOR
+          value: -50
+      - move_steps:
+          steps: -10
+      - if:
+          cond:
+            less_than:
+            - var: 血量
+            - 1
+          do:
+          - broadcast:
+              message: 敌人死亡
+  - name: 顿帧角色
+    x: 200
+    y: -150
+    size: 50
+    costumes:
+    - name: 点
+      asset: assets/dot.svg
+    scripts:
+    - - when_green_flag_clicked: null
+      - forever:
+          do:
+          - if:
+              cond:
+                equals:
+                - var: 顿帧
+                - 0
+              do:
+              - move_steps:
+                  steps: 2
+              - turn_right: 2
+              else:
+              - change_variable:
+                  var: 顿帧
+                  by: -1

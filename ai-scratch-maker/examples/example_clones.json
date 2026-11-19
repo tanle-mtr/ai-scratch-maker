@@ -1,0 +1,79 @@
+{
+  "project": {
+    "name": "克隆示例",
+    "stage": {
+      "backdrops": [
+        {
+          "name": "草地",
+          "asset": "assets/backdrop1.svg"
+        }
+      ],
+      "scripts": []
+    },
+    "sprites": [
+      {
+        "name": "Cat",
+        "x": 0,
+        "y": 0,
+        "costumes": [
+          {
+            "name": "cat1",
+            "asset": "assets/cat.svg"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_green_flag_clicked": null
+            },
+            {
+              "hide": null
+            },
+            {
+              "repeat": {
+                "times": 3,
+                "do": [
+                  {
+                    "create_clone": {
+                      "clone": "_myself_"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "when_start_as_clone": null
+            },
+            {
+              "show": null
+            },
+            {
+              "go_to_front_back": {
+                "front_back": "front"
+              }
+            },
+            {
+              "repeat": {
+                "times": 30,
+                "do": [
+                  {
+                    "move_steps": 6
+                  },
+                  {
+                    "turn_right": 11
+                  }
+                ]
+              }
+            },
+            {
+              "delete_this_clone": null
+            }
+          ]
+        ],
+        "rotationStyle": "left-right"
+      }
+    ]
+  }
+}

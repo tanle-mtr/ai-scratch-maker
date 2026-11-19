@@ -1,0 +1,2606 @@
+project:
+  name: 五子棋示例
+  stage:
+    backdrops:
+    - name: 背景1
+      asset: assets/backdrop1.svg
+    variables:
+      轮到: 1
+      胜者: 0
+      局结束: 0
+      行: 0
+      列: 0
+      idx: 0
+      连数: 0
+      检查行: 0
+      检查列: 0
+      继续: 1
+    lists:
+      棋盘:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+    scripts:
+    - - when_green_flag_clicked: null
+      - set_variable:
+          var: 轮到
+          value: 1
+      - set_variable:
+          var: 胜者
+          value: 0
+      - set_variable:
+          var: 局结束
+          value: 0
+      - set_variable:
+          var: 行
+          value: 0
+      - set_variable:
+          var: 列
+          value: 0
+      - set_variable:
+          var: 连数
+          value: 0
+      - set_variable:
+          var: __k
+          value: 0
+      - repeat:
+          times: 81
+          do:
+          - change_variable:
+              var: __k
+              by: 1
+          - replace_item_of_list:
+              list: 棋盘
+              index:
+                var: __k
+              item: 0
+    - - when_receive:
+          message: 落子
+      - if:
+          cond:
+            equals:
+            - var: 局结束
+            - 0
+          do:
+          - set_variable:
+              var: idx
+              value:
+                add:
+                - add:
+                  - multiply:
+                    - var: 行
+                    - 9
+                  - var: 列
+                - 1
+          - if:
+              cond:
+                equals:
+                - item_of_list:
+                    list: 棋盘
+                    index:
+                      var: idx
+                - 0
+              do:
+              - replace_item_of_list:
+                  list: 棋盘
+                  index:
+                    var: idx
+                  item:
+                    var: 轮到
+              - set_variable:
+                  var: 连数
+                  value: 1
+              - set_variable:
+                  var: 检查行
+                  value:
+                    var: 行
+              - set_variable:
+                  var: 检查列
+                  value:
+                    var: 列
+              - set_variable:
+                  var: 继续
+                  value: 1
+              - set_variable:
+                  var: 检查列
+                  value:
+                    add:
+                    - var: 检查列
+                    - 1
+              - set_variable:
+                  var: 检查行
+                  value:
+                    add:
+                    - var: 检查行
+                    - 0
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查列
+                  value:
+                    add:
+                    - var: 检查列
+                    - 1
+              - set_variable:
+                  var: 检查行
+                  value:
+                    add:
+                    - var: 检查行
+                    - 0
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查列
+                  value:
+                    add:
+                    - var: 检查列
+                    - 1
+              - set_variable:
+                  var: 检查行
+                  value:
+                    add:
+                    - var: 检查行
+                    - 0
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查列
+                  value:
+                    add:
+                    - var: 检查列
+                    - 1
+              - set_variable:
+                  var: 检查行
+                  value:
+                    add:
+                    - var: 检查行
+                    - 0
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查行
+                  value:
+                    var: 行
+              - set_variable:
+                  var: 检查列
+                  value:
+                    var: 列
+              - set_variable:
+                  var: 继续
+                  value: 1
+              - set_variable:
+                  var: 检查列
+                  value:
+                    subtract:
+                    - var: 检查列
+                    - 1
+              - set_variable:
+                  var: 检查行
+                  value:
+                    subtract:
+                    - var: 检查行
+                    - 0
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查列
+                  value:
+                    subtract:
+                    - var: 检查列
+                    - 1
+              - set_variable:
+                  var: 检查行
+                  value:
+                    subtract:
+                    - var: 检查行
+                    - 0
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查列
+                  value:
+                    subtract:
+                    - var: 检查列
+                    - 1
+              - set_variable:
+                  var: 检查行
+                  value:
+                    subtract:
+                    - var: 检查行
+                    - 0
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查列
+                  value:
+                    subtract:
+                    - var: 检查列
+                    - 1
+              - set_variable:
+                  var: 检查行
+                  value:
+                    subtract:
+                    - var: 检查行
+                    - 0
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查行
+                  value:
+                    var: 行
+              - set_variable:
+                  var: 检查列
+                  value:
+                    var: 列
+              - set_variable:
+                  var: 继续
+                  value: 1
+              - set_variable:
+                  var: 检查列
+                  value:
+                    add:
+                    - var: 检查列
+                    - 0
+              - set_variable:
+                  var: 检查行
+                  value:
+                    add:
+                    - var: 检查行
+                    - 1
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查列
+                  value:
+                    add:
+                    - var: 检查列
+                    - 0
+              - set_variable:
+                  var: 检查行
+                  value:
+                    add:
+                    - var: 检查行
+                    - 1
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查列
+                  value:
+                    add:
+                    - var: 检查列
+                    - 0
+              - set_variable:
+                  var: 检查行
+                  value:
+                    add:
+                    - var: 检查行
+                    - 1
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查列
+                  value:
+                    add:
+                    - var: 检查列
+                    - 0
+              - set_variable:
+                  var: 检查行
+                  value:
+                    add:
+                    - var: 检查行
+                    - 1
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查行
+                  value:
+                    var: 行
+              - set_variable:
+                  var: 检查列
+                  value:
+                    var: 列
+              - set_variable:
+                  var: 继续
+                  value: 1
+              - set_variable:
+                  var: 检查列
+                  value:
+                    subtract:
+                    - var: 检查列
+                    - 0
+              - set_variable:
+                  var: 检查行
+                  value:
+                    subtract:
+                    - var: 检查行
+                    - 1
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查列
+                  value:
+                    subtract:
+                    - var: 检查列
+                    - 0
+              - set_variable:
+                  var: 检查行
+                  value:
+                    subtract:
+                    - var: 检查行
+                    - 1
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查列
+                  value:
+                    subtract:
+                    - var: 检查列
+                    - 0
+              - set_variable:
+                  var: 检查行
+                  value:
+                    subtract:
+                    - var: 检查行
+                    - 1
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查列
+                  value:
+                    subtract:
+                    - var: 检查列
+                    - 0
+              - set_variable:
+                  var: 检查行
+                  value:
+                    subtract:
+                    - var: 检查行
+                    - 1
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查行
+                  value:
+                    var: 行
+              - set_variable:
+                  var: 检查列
+                  value:
+                    var: 列
+              - set_variable:
+                  var: 继续
+                  value: 1
+              - set_variable:
+                  var: 检查列
+                  value:
+                    add:
+                    - var: 检查列
+                    - 1
+              - set_variable:
+                  var: 检查行
+                  value:
+                    add:
+                    - var: 检查行
+                    - 1
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查列
+                  value:
+                    add:
+                    - var: 检查列
+                    - 1
+              - set_variable:
+                  var: 检查行
+                  value:
+                    add:
+                    - var: 检查行
+                    - 1
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查列
+                  value:
+                    add:
+                    - var: 检查列
+                    - 1
+              - set_variable:
+                  var: 检查行
+                  value:
+                    add:
+                    - var: 检查行
+                    - 1
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查列
+                  value:
+                    add:
+                    - var: 检查列
+                    - 1
+              - set_variable:
+                  var: 检查行
+                  value:
+                    add:
+                    - var: 检查行
+                    - 1
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查行
+                  value:
+                    var: 行
+              - set_variable:
+                  var: 检查列
+                  value:
+                    var: 列
+              - set_variable:
+                  var: 继续
+                  value: 1
+              - set_variable:
+                  var: 检查列
+                  value:
+                    subtract:
+                    - var: 检查列
+                    - 1
+              - set_variable:
+                  var: 检查行
+                  value:
+                    subtract:
+                    - var: 检查行
+                    - 1
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查列
+                  value:
+                    subtract:
+                    - var: 检查列
+                    - 1
+              - set_variable:
+                  var: 检查行
+                  value:
+                    subtract:
+                    - var: 检查行
+                    - 1
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查列
+                  value:
+                    subtract:
+                    - var: 检查列
+                    - 1
+              - set_variable:
+                  var: 检查行
+                  value:
+                    subtract:
+                    - var: 检查行
+                    - 1
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查列
+                  value:
+                    subtract:
+                    - var: 检查列
+                    - 1
+              - set_variable:
+                  var: 检查行
+                  value:
+                    subtract:
+                    - var: 检查行
+                    - 1
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查行
+                  value:
+                    var: 行
+              - set_variable:
+                  var: 检查列
+                  value:
+                    var: 列
+              - set_variable:
+                  var: 继续
+                  value: 1
+              - set_variable:
+                  var: 检查列
+                  value:
+                    add:
+                    - var: 检查列
+                    - 1
+              - set_variable:
+                  var: 检查行
+                  value:
+                    add:
+                    - var: 检查行
+                    - -1
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查列
+                  value:
+                    add:
+                    - var: 检查列
+                    - 1
+              - set_variable:
+                  var: 检查行
+                  value:
+                    add:
+                    - var: 检查行
+                    - -1
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查列
+                  value:
+                    add:
+                    - var: 检查列
+                    - 1
+              - set_variable:
+                  var: 检查行
+                  value:
+                    add:
+                    - var: 检查行
+                    - -1
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查列
+                  value:
+                    add:
+                    - var: 检查列
+                    - 1
+              - set_variable:
+                  var: 检查行
+                  value:
+                    add:
+                    - var: 检查行
+                    - -1
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查行
+                  value:
+                    var: 行
+              - set_variable:
+                  var: 检查列
+                  value:
+                    var: 列
+              - set_variable:
+                  var: 继续
+                  value: 1
+              - set_variable:
+                  var: 检查列
+                  value:
+                    subtract:
+                    - var: 检查列
+                    - 1
+              - set_variable:
+                  var: 检查行
+                  value:
+                    subtract:
+                    - var: 检查行
+                    - -1
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查列
+                  value:
+                    subtract:
+                    - var: 检查列
+                    - 1
+              - set_variable:
+                  var: 检查行
+                  value:
+                    subtract:
+                    - var: 检查行
+                    - -1
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查列
+                  value:
+                    subtract:
+                    - var: 检查列
+                    - 1
+              - set_variable:
+                  var: 检查行
+                  value:
+                    subtract:
+                    - var: 检查行
+                    - -1
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - set_variable:
+                  var: 检查列
+                  value:
+                    subtract:
+                    - var: 检查列
+                    - 1
+              - set_variable:
+                  var: 检查行
+                  value:
+                    subtract:
+                    - var: 检查行
+                    - -1
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 继续
+                      - 1
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 检查行
+                              - 0
+                            - true
+                      - and:
+                        - not:
+                            operand:
+                              equals:
+                              - greater_than:
+                                - var: 检查行
+                                - 8
+                              - true
+                        - and:
+                          - not:
+                              operand:
+                                equals:
+                                - less_than:
+                                  - var: 检查列
+                                  - 0
+                                - true
+                          - and:
+                            - not:
+                                operand:
+                                  equals:
+                                  - greater_than:
+                                    - var: 检查列
+                                    - 8
+                                  - true
+                            - equals:
+                              - item_of_list:
+                                  list: 棋盘
+                                  index:
+                                    add:
+                                    - add:
+                                      - multiply:
+                                        - var: 检查行
+                                        - 9
+                                      - var: 检查列
+                                    - 1
+                              - var: 轮到
+                  do:
+                  - change_variable:
+                      var: 连数
+                      by: 1
+                  else:
+                  - set_variable:
+                      var: 继续
+                      value: 0
+              - if:
+                  cond:
+                    not:
+                      operand:
+                        equals:
+                        - less_than:
+                          - var: 连数
+                          - 5
+                        - true
+                  do:
+                  - set_variable:
+                      var: 胜者
+                      value:
+                        var: 轮到
+                  - set_variable:
+                      var: 局结束
+                      value: 1
+              - set_variable:
+                  var: 轮到
+                  value:
+                    subtract:
+                    - 3
+                    - var: 轮到
+    - - when_receive:
+          message: 重开
+      - set_variable:
+          var: 轮到
+          value: 1
+      - set_variable:
+          var: 胜者
+          value: 0
+      - set_variable:
+          var: 局结束
+          value: 0
+      - set_variable:
+          var: __k
+          value: 0
+      - repeat:
+          times: 81
+          do:
+          - change_variable:
+              var: __k
+              by: 1
+          - replace_item_of_list:
+              list: 棋盘
+              index:
+                var: __k
+              item: 0
+  sprites:
+  - name: 棋子
+    x: 0
+    y: 0
+    costumes:
+    - name: dot
+      asset: assets/dot.svg
+    variables:
+      是克隆: 0
+      格行: 0
+      格列: 0
+      自身值: 0
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+    - - when_receive:
+          message: 落子
+      - if:
+          cond:
+            equals:
+            - var: 是克隆
+            - 0
+          do:
+          - create_clone_of:
+              clone: _myself_
+    - - when_receive:
+          message: 重开
+      - if:
+          cond:
+            equals:
+            - var: 是克隆
+            - 1
+          do:
+          - delete_this_clone: null
+    - - when_start_as_clone: null
+      - set_variable:
+          var: 是克隆
+          value: 1
+      - set_variable:
+          var: 格行
+          value:
+            var: 行
+      - set_variable:
+          var: 格列
+          value:
+            var: 列
+      - set_variable:
+          var: 自身值
+          value:
+            item_of_list:
+              list: 棋盘
+              index:
+                add:
+                - add:
+                  - multiply:
+                    - var: 格行
+                    - 9
+                  - var: 格列
+                - 1
+      - show: null

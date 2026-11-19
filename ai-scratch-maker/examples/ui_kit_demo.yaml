@@ -1,0 +1,634 @@
+project:
+  name: UI Kit 演示（矢量素材 + 四状态按钮 + 弹窗 + 进度条）
+  stage:
+    backdrops:
+    - name: 菜单背景
+      asset: assets/uikit/bg_menu.svg
+    variables:
+      弹窗: 0
+      血量: 100
+      档: 100
+      自动帧: 1
+      帧计数: 0
+    lists: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - set_variable:
+          var: 自动帧
+          value: 1
+      - set_variable:
+          var: 弹窗
+          value: 0
+      - set_variable:
+          var: 血量
+          value: 100
+      - set_variable:
+          var: 档
+          value: 100
+      - set_variable:
+          var: 帧计数
+          value: 0
+      - show: null
+      - forever:
+          do:
+          - if:
+              cond:
+                equals:
+                - var: 自动帧
+                - 1
+              do:
+              - change_variable:
+                  var: 帧计数
+                  by: 1
+              - broadcast:
+                  message: 帧
+          - wait:
+              secs: 0.02
+    - - when_receive:
+          message: 开设置
+      - set_variable:
+          var: 弹窗
+          value: 1
+      - sound_play:
+          SOUND_MENU: ev_open
+    - - when_receive:
+          message: 关设置
+      - set_variable:
+          var: 弹窗
+          value: 0
+      - sound_play:
+          SOUND_MENU: ev_close
+    - - when_receive:
+          message: 重开
+      - set_variable:
+          var: 血量
+          value: 100
+    sounds:
+    - name: ev_open
+      asset: assets/audio/ev_open.wav
+    - name: ev_close
+      asset: assets/audio/ev_close.wav
+  sprites:
+  - name: 血条
+    x: -168
+    y: 158
+    costumes:
+    - name: bar_hp_100
+      asset: assets/uikit/bar_hp_100.svg
+    - name: bar_hp_010
+      asset: assets/uikit/bar_hp_010.svg
+    - name: bar_hp_020
+      asset: assets/uikit/bar_hp_020.svg
+    - name: bar_hp_030
+      asset: assets/uikit/bar_hp_030.svg
+    - name: bar_hp_040
+      asset: assets/uikit/bar_hp_040.svg
+    - name: bar_hp_050
+      asset: assets/uikit/bar_hp_050.svg
+    - name: bar_hp_060
+      asset: assets/uikit/bar_hp_060.svg
+    - name: bar_hp_070
+      asset: assets/uikit/bar_hp_070.svg
+    - name: bar_hp_080
+      asset: assets/uikit/bar_hp_080.svg
+    - name: bar_hp_090
+      asset: assets/uikit/bar_hp_090.svg
+    - name: bar_hp_000
+      asset: assets/uikit/bar_hp_000.svg
+    size: 70
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - show: null
+      - looks_switchcostumeto:
+          COSTUME: bar_hp_100
+    - - when_receive:
+          message: 帧
+      - if:
+          cond:
+            equals:
+            - var: 弹窗
+            - 0
+          do:
+          - change_variable:
+              var: 血量
+              by: -0.5
+      - if:
+          cond:
+            less_than:
+            - var: 血量
+            - 5
+          do:
+          - set_variable:
+              var: 血量
+              value: 100
+      - set_variable:
+          var: 档
+          value:
+            multiply:
+            - round:
+              - divide:
+                - var: 血量
+                - 10
+            - 10
+      - if:
+          cond:
+            not:
+              operand:
+                equals:
+                - less_than:
+                  - var: 档
+                  - 100
+                - true
+          do:
+          - looks_switchcostumeto:
+              COSTUME: bar_hp_100
+          else:
+          - looks_switchcostumeto:
+              COSTUME:
+                join:
+                  a: bar_hp_0
+                  b:
+                    var: 档
+    - - when_receive:
+          message: 重开
+      - set_variable:
+          var: 血量
+          value: 100
+  - name: 星级
+    x: -168
+    y: 126
+    size: 70
+    costumes:
+    - name: stars
+      asset: assets/uikit/badge_stars.svg
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - show: null
+  - name: 缎带
+    x: 0
+    y: 112
+    costumes:
+    - name: ribbon
+      asset: assets/uikit/decor_ribbon.svg
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - show: null
+  - name: 标题文字
+    x: 0
+    y: 112
+    costumes:
+    - name: title
+      asset: assets/uikit/text_开始游戏_30_d.png
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - show: null
+  - name: 主按钮
+    x: 0
+    y: 20
+    costumes:
+    - name: primary_normal_l
+      asset: assets/uikit/btn_primary_normal_l.svg
+    - name: primary_hover_l
+      asset: assets/uikit/btn_primary_hover_l.svg
+    - name: primary_pressed_l
+      asset: assets/uikit/btn_primary_pressed_l.svg
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - show: null
+      - looks_switchcostumeto:
+          COSTUME: primary_normal_l
+    - - when_receive:
+          message: 帧
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 弹窗
+              - 0
+            - and:
+              - touching:
+                  object: _mouse_
+              - sensing_mousedown: null
+          do:
+          - looks_switchcostumeto:
+              COSTUME: primary_pressed_l
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 弹窗
+              - 0
+            - and:
+              - touching:
+                  object: _mouse_
+              - not:
+                  operand:
+                    equals:
+                    - sensing_mousedown: null
+                    - true
+          do:
+          - looks_switchcostumeto:
+              COSTUME: primary_hover_l
+      - if:
+          cond:
+            or:
+            - equals:
+              - var: 弹窗
+              - 1
+            - not:
+                operand:
+                  equals:
+                  - touching:
+                      object: _mouse_
+                  - true
+          do:
+          - looks_switchcostumeto:
+              COSTUME: primary_normal_l
+    - - when_this_sprite_clicked: null
+      - if:
+          cond:
+            equals:
+            - var: 弹窗
+            - 0
+          do:
+          - sound_play:
+              SOUND_MENU: ui_click
+          - broadcast:
+              message: 重开
+    sounds:
+    - name: ui_click
+      asset: assets/audio/ui_click.wav
+  - name: 主按钮文字
+    x: 0
+    y: 20
+    costumes:
+    - name: t
+      asset: assets/uikit/text_开始游戏_20_d.png
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - show: null
+  - name: 设置按钮
+    x: -100
+    y: -60
+    costumes:
+    - name: secondary_normal_m
+      asset: assets/uikit/btn_secondary_normal_m.svg
+    - name: secondary_hover_m
+      asset: assets/uikit/btn_secondary_hover_m.svg
+    - name: secondary_pressed_m
+      asset: assets/uikit/btn_secondary_pressed_m.svg
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - show: null
+      - looks_switchcostumeto:
+          COSTUME: secondary_normal_m
+    - - when_receive:
+          message: 帧
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 弹窗
+              - 0
+            - and:
+              - touching:
+                  object: _mouse_
+              - sensing_mousedown: null
+          do:
+          - looks_switchcostumeto:
+              COSTUME: secondary_pressed_m
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 弹窗
+              - 0
+            - and:
+              - touching:
+                  object: _mouse_
+              - not:
+                  operand:
+                    equals:
+                    - sensing_mousedown: null
+                    - true
+          do:
+          - looks_switchcostumeto:
+              COSTUME: secondary_hover_m
+      - if:
+          cond:
+            or:
+            - equals:
+              - var: 弹窗
+              - 1
+            - not:
+                operand:
+                  equals:
+                  - touching:
+                      object: _mouse_
+                  - true
+          do:
+          - looks_switchcostumeto:
+              COSTUME: secondary_normal_m
+    - - when_this_sprite_clicked: null
+      - if:
+          cond:
+            equals:
+            - var: 弹窗
+            - 0
+          do:
+          - sound_play:
+              SOUND_MENU: ui_click
+          - broadcast:
+              message: 开设置
+    sounds:
+    - name: ui_click
+      asset: assets/audio/ui_click.wav
+  - name: 设置按钮文字
+    x: -100
+    y: -60
+    costumes:
+    - name: t
+      asset: assets/uikit/text_设置_17_d.png
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - show: null
+  - name: 退出按钮
+    x: 100
+    y: -60
+    costumes:
+    - name: ghost_normal_m
+      asset: assets/uikit/btn_ghost_normal_m.svg
+    - name: ghost_hover_m
+      asset: assets/uikit/btn_ghost_hover_m.svg
+    - name: ghost_pressed_m
+      asset: assets/uikit/btn_ghost_pressed_m.svg
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - show: null
+      - looks_switchcostumeto:
+          COSTUME: ghost_normal_m
+    - - when_receive:
+          message: 帧
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 弹窗
+              - 0
+            - and:
+              - touching:
+                  object: _mouse_
+              - sensing_mousedown: null
+          do:
+          - looks_switchcostumeto:
+              COSTUME: ghost_pressed_m
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 弹窗
+              - 0
+            - and:
+              - touching:
+                  object: _mouse_
+              - not:
+                  operand:
+                    equals:
+                    - sensing_mousedown: null
+                    - true
+          do:
+          - looks_switchcostumeto:
+              COSTUME: ghost_hover_m
+      - if:
+          cond:
+            or:
+            - equals:
+              - var: 弹窗
+              - 1
+            - not:
+                operand:
+                  equals:
+                  - touching:
+                      object: _mouse_
+                  - true
+          do:
+          - looks_switchcostumeto:
+              COSTUME: ghost_normal_m
+    - - when_this_sprite_clicked: null
+      - if:
+          cond:
+            equals:
+            - var: 弹窗
+            - 0
+          do:
+          - sound_play:
+              SOUND_MENU: ui_click
+          - broadcast:
+              message: 关设置
+    sounds:
+    - name: ui_click
+      asset: assets/audio/ui_click.wav
+  - name: 退出按钮文字
+    x: 100
+    y: -60
+    costumes:
+    - name: t
+      asset: assets/uikit/text_退出_17_l.png
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - show: null
+  - name: 提示条
+    x: 0
+    y: -132
+    costumes:
+    - name: tip
+      asset: assets/uikit/panel_tip.svg
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - show: null
+  - name: 提示文字
+    x: 0
+    y: -132
+    costumes:
+    - name: t
+      asset: assets/uikit/text_恭喜通关_22_d.png
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - show: null
+  - name: 遮罩
+    x: 0
+    y: 0
+    costumes:
+    - name: mask
+      asset: assets/uikit/decor_mask.svg
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+    - - when_receive:
+          message: 开设置
+      - show: null
+    - - when_receive:
+          message: 关设置
+      - hide: null
+  - name: 设置窗
+    x: 0
+    y: 0
+    costumes:
+    - name: dialog
+      asset: assets/uikit/panel_dialog.svg
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+    - - when_receive:
+          message: 开设置
+      - show: null
+    - - when_receive:
+          message: 关设置
+      - hide: null
+  - name: 窗标题
+    x: 0
+    y: 76
+    costumes:
+    - name: t
+      asset: assets/uikit/text_设置_28_l.png
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+    - - when_receive:
+          message: 开设置
+      - show: null
+    - - when_receive:
+          message: 关设置
+      - hide: null
+  - name: 关闭键
+    x: 188
+    y: 112
+    costumes:
+    - name: close
+      asset: assets/uikit/ctrl_close.svg
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+    - - when_receive:
+          message: 开设置
+      - show: null
+    - - when_receive:
+          message: 关设置
+      - hide: null
+    - - when_this_sprite_clicked: null
+      - broadcast:
+          message: 关设置
+    sounds:
+    - name: ui_click
+      asset: assets/audio/ui_click.wav
+  - name: 窗内按钮
+    x: 0
+    y: -74
+    costumes:
+    - name: ok_normal_s
+      asset: assets/uikit/btn_primary_normal_s.svg
+    - name: ok_hover_s
+      asset: assets/uikit/btn_primary_hover_s.svg
+    - name: ok_pressed_s
+      asset: assets/uikit/btn_primary_pressed_s.svg
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+    - - when_receive:
+          message: 开设置
+      - show: null
+    - - when_receive:
+          message: 关设置
+      - hide: null
+    - - when_receive:
+          message: 帧
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 弹窗
+              - 1
+            - and:
+              - touching:
+                  object: _mouse_
+              - sensing_mousedown: null
+          do:
+          - looks_switchcostumeto:
+              COSTUME: ok_pressed_s
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 弹窗
+              - 1
+            - and:
+              - touching:
+                  object: _mouse_
+              - not:
+                  operand:
+                    equals:
+                    - sensing_mousedown: null
+                    - true
+          do:
+          - looks_switchcostumeto:
+              COSTUME: ok_hover_s
+      - if:
+          cond:
+            or:
+            - equals:
+              - var: 弹窗
+              - 0
+            - not:
+                operand:
+                  equals:
+                  - touching:
+                      object: _mouse_
+                  - true
+          do:
+          - looks_switchcostumeto:
+              COSTUME: ok_normal_s
+    - - when_this_sprite_clicked: null
+      - if:
+          cond:
+            equals:
+            - var: 弹窗
+            - 1
+          do:
+          - broadcast:
+              message: 关设置
+    sounds:
+    - name: ui_click
+      asset: assets/audio/ui_click.wav
+  - name: 窗内按钮文字
+    x: 0
+    y: -74
+    costumes:
+    - name: t
+      asset: assets/uikit/text_继续_16_d.png
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+    - - when_receive:
+          message: 开设置
+      - show: null
+    - - when_receive:
+          message: 关设置
+      - hide: null

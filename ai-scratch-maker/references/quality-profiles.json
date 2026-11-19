@@ -1,0 +1,48 @@
+{
+  "_comment": "作品规格表门槛。数值来自 11 个真实社区作品与 45 个 skill 示例的对比实测；可按题材用 quality_gate.py --init 生成后逐项覆盖。",
+  "_min_bytes_note": "min_bytes 只作【防构建空壳下限】，不是质量指标：早期按社区作品体积设的 1MB/8MB 是「社区素材整库内嵌污染」时代的虚高值，干净构建（build_sb3.py --ir）后作品通常只有 200KB~6MB，矢量优先作品更小。统一 150000 字节（≈146KB）可拦住资产丢失/空壳，同时给最小的干净构建（quiz 226KB、match3 229KB）留约 35% 余量。资产密度由 A 层其余 5 项计数保证，素材是否合适由 D 层 suitable_assets 判定。",
+  "profiles": {
+    "demo": {
+      "label": "技术验证 / 单元测试（不要求资产密度）",
+      "min_costumes": 1,
+      "min_sounds": 0,
+      "min_sprites": 1,
+      "min_bytes": 0,
+      "min_scenes": 1,
+      "min_blocks": 1
+    },
+    "mini": {
+      "label": "小作品 / 课件片段 / 单个玩法演示",
+      "min_costumes": 6,
+      "min_sounds": 2,
+      "min_sprites": 2,
+      "min_bytes": 150000,
+      "min_scenes": 1,
+      "min_blocks": 40
+    },
+    "game": {
+      "label": "游戏 / 互动作品（默认档）",
+      "min_costumes": 20,
+      "min_sounds": 8,
+      "min_sprites": 4,
+      "min_bytes": 150000,
+      "min_scenes": 2,
+      "min_blocks": 150
+    },
+    "showcase": {
+      "label": "展示级大作（对标社区高质量作品）",
+      "min_costumes": 60,
+      "min_sounds": 20,
+      "min_sprites": 12,
+      "min_bytes": 150000,
+      "min_scenes": 4,
+      "min_blocks": 500
+    }
+  },
+  "reference_points": {
+    "skill_examples_median": "造型 2–4 / 音效 0 / 角色 1–3 / ~90 KB（demo 级）",
+    "cat_mouse": "造型 67 / 音效 4 / 角色 24 / 2.85 MB",
+    "FNAF": "29 角色 / 1005 积木 / 40 背景 / 9 MB",
+    "双阶乘": "1 角色 / 211 积木 / 45 音效 / 62 MB"
+  }
+}

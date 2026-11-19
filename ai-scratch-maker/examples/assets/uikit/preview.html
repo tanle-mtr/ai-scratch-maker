@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh"><head><meta charset="utf-8"><title>UI Kit 预览</title>
+<style>
+ html{zoom:.56}
+ @media (min-width:1200px){ html{zoom:1} }
+ body{margin:0;background:#2B2724;font:14px/1.65 "Microsoft YaHei",sans-serif;color:#EDE6DC}
+ .wrap{max-width:1060px;margin:0 auto;padding:30px 30px 60px}
+ h2{color:#FFCF4D;font-size:14px;letter-spacing:2px;margin:36px 0 6px;font-weight:600}
+ .hint{font-size:12px;color:#8E8478;margin:0 0 14px}
+ .scr{position:relative;width:960px;height:540px;border-radius:20px;overflow:hidden;
+      background:radial-gradient(115% 85% at 50% 0%, #3A8E7D 0%, #2F7365 52%, #262220 100%);
+      box-shadow:0 20px 55px rgba(0,0,0,.5)}
+ .abs{position:absolute}
+ .btn{position:absolute;display:flex;align-items:center;justify-content:center}
+ .btn .bg{position:absolute;left:0;top:0;width:100%;height:100%}
+ .btn .tx{position:relative}
+ .pnl{position:relative;display:flex;align-items:center;justify-content:center;
+      flex-direction:column;gap:10px}
+ .pnl .bg{position:absolute;left:0;top:0;width:100%;height:100%}
+ .pnl .tx,.pnl .row{position:relative}
+ .pnl .row{display:flex;gap:12px;align-items:center}
+ .ribbon{position:absolute;left:330px;top:46px;width:300px;height:64px;display:flex;
+         align-items:center;justify-content:center}
+ .ribbon .bg{position:absolute;left:0;top:0;width:100%;height:100%}
+ .ribbon .tx{position:relative;margin-top:-4px}
+ .matrix{display:grid;grid-template-columns:92px repeat(4,190px);gap:10px 16px;
+         align-items:center;margin-bottom:6px}
+ .matrix .st{font-size:11px;color:#8E8478;letter-spacing:1px}
+ .matrix .tag{font-size:12px;color:#FFCF4D;font-family:Consolas,monospace}
+ .matrix .v img{display:block}
+ .row{display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap}
+ .bar{text-align:center}
+ .bar img{display:block;margin-bottom:4px}
+ .bar em{font-style:normal;font-size:11px;color:#8E8478}
+ .ic{width:82px;text-align:center}
+ .ic img{width:40px;height:40px;display:block;margin:0 auto 4px}
+ .ic em{font-style:normal;font-size:10px;color:#8E8478}
+</style></head><body><div class="wrap">
+
+<h2>一、装进屏幕看（素材清单看不出质量，这一屏才看得出）</h2>
+<p class="hint">960×540 菜单屏：缎带标题 + 大主键 + 两次键 + 底部提示 + 左上 HUD + 角标</p>
+<div class="scr">
+  <img class="abs" src="decor_glow.svg" style="left:-40px;top:-60px;width:260px;opacity:.42">
+  <img class="abs" src="decor_spark.svg" style="left:760px;top:64px;width:20px">
+  <img class="abs" src="decor_spark.svg" style="left:128px;top:168px;width:13px;opacity:.7">
+  <img class="abs" src="decor_spark.svg" style="left:832px;top:352px;width:17px;opacity:.85">
+  <div class="ribbon"><img class="bg" src="decor_ribbon.svg">
+    <img class="tx" src="text_开始游戏_30_d.png"></div>
+  <div class="btn" style="width:260px;height:68px;left:350px;top:170px"><img class="bg" src="btn_primary_normal_l.svg"><img class="tx" src="text_开始游戏_20_d.png"></div>
+  <div class="btn" style="width:180px;height:56px;left:298px;top:270px"><img class="bg" src="btn_secondary_normal_m.svg"><img class="tx" src="text_设置_17_d.png"></div><div class="btn" style="width:180px;height:56px;left:490px;top:270px"><img class="bg" src="btn_ghost_normal_m.svg"><img class="tx" src="text_继续_17_l.png"></div>
+  <div class="abs" style="left:320px;top:392px">
+    <div class="pnl" style="width:320px;height:96px">
+      <img class="bg" src="panel_tip.svg">
+      <img class="tx" src="text_恭喜通关_22_d.png"></div>
+  </div>
+  <img class="abs" src="bar_hp_100.svg" style="left:34px;top:26px;width:156px">
+  <img class="abs" src="badge_stars.svg" style="left:34px;top:58px;width:104px">
+  <div class="abs" style="left:836px;top:28px;display:flex;gap:10px;align-items:center">
+    <img src="icon_play_light.svg" style="width:24px">
+    <img src="icon_settings_light.svg" style="width:24px">
+  </div>
+  <img class="abs" src="badge_new.svg" style="left:806px;top:118px;width:78px">
+</div>
+
+<h2>二、按钮 5 类型 × 4 状态</h2>
+<p class="hint">normal / hover（提亮+投影） / pressed（下沉+渐变反转） / disabled（去饱和+蒙版）</p>
+<div class="matrix"><span></span><span class="st">normal</span><span class="st">hover</span><span class="st">pressed</span><span class="st">disabled</span></div><div class="matrix"><span class="tag">primary</span><div class="v"><img src="btn_primary_normal_m.svg"></div><div class="v"><img src="btn_primary_hover_m.svg"></div><div class="v"><img src="btn_primary_pressed_m.svg"></div><div class="v"><img src="btn_primary_disabled_m.svg"></div></div><div class="matrix"><span class="tag">secondary</span><div class="v"><img src="btn_secondary_normal_m.svg"></div><div class="v"><img src="btn_secondary_hover_m.svg"></div><div class="v"><img src="btn_secondary_pressed_m.svg"></div><div class="v"><img src="btn_secondary_disabled_m.svg"></div></div><div class="matrix"><span class="tag">success</span><div class="v"><img src="btn_success_normal_m.svg"></div><div class="v"><img src="btn_success_hover_m.svg"></div><div class="v"><img src="btn_success_pressed_m.svg"></div><div class="v"><img src="btn_success_disabled_m.svg"></div></div><div class="matrix"><span class="tag">ghost</span><div class="v"><img src="btn_ghost_normal_m.svg"></div><div class="v"><img src="btn_ghost_hover_m.svg"></div><div class="v"><img src="btn_ghost_pressed_m.svg"></div><div class="v"><img src="btn_ghost_disabled_m.svg"></div></div><div class="matrix"><span class="tag">danger</span><div class="v"><img src="btn_danger_normal_m.svg"></div><div class="v"><img src="btn_danger_hover_m.svg"></div><div class="v"><img src="btn_danger_pressed_m.svg"></div><div class="v"><img src="btn_danger_disabled_m.svg"></div></div>
+
+<h2>三、面板成套尺寸（Scratch 没有九宫格，只能出固定尺寸）</h2>
+<p class="hint">tip 320×96 / card 360×200 / dialog 440×280（需配 decor_mask 压暗背景）</p>
+<div class="row">
+  <div class="pnl" style="width:320px;height:96px">
+    <img class="bg" src="panel_tip.svg"><img class="tx" src="text_恭喜通关_22_d.png"></div>
+  <div class="pnl" style="width:360px;height:200px">
+    <img class="bg" src="panel_card.svg"><img class="tx" src="text_游戏结束_28_d.png"></div>
+</div>
+<div class="row">
+  <div class="pnl" style="width:440px;height:280px">
+    <img class="bg" src="panel_dialog.svg">
+    <img class="tx" src="text_游戏结束_40_l.png">
+    <div class="row">
+      <div class="btn" style="width:120px;height:44px;"><img class="bg" src="btn_primary_normal_s.svg"><img class="tx" src="text_继续_17_l.png"></div>
+    </div>
+  </div>
+</div>
+
+<h2>四、进度条换档（不拉伸，圆角不变形）</h2>
+<p class="hint">10% / 40% / 70% / 100%，10 档各一张图</p>
+<div class="row"><div class="bar"><img src="bar_hp_100.svg"><em>100%</em></div><div class="bar"><img src="bar_hp_070.svg"><em>70%</em></div><div class="bar"><img src="bar_hp_040.svg"><em>40%</em></div><div class="bar"><img src="bar_hp_010.svg"><em>10%</em></div></div>
+
+<h2>五、图标（24 网格 / 线宽 2 / round；下面按 40px 显示，矢量不糊）</h2>
+<div class="row"><div class="ic"><img src="icon_close_light.svg"><em>close</em></div><div class="ic"><img src="icon_back_light.svg"><em>back</em></div><div class="ic"><img src="icon_next_light.svg"><em>next</em></div><div class="ic"><img src="icon_up_light.svg"><em>up</em></div><div class="ic"><img src="icon_down_light.svg"><em>down</em></div><div class="ic"><img src="icon_check_light.svg"><em>check</em></div><div class="ic"><img src="icon_plus_light.svg"><em>plus</em></div><div class="ic"><img src="icon_minus_light.svg"><em>minus</em></div><div class="ic"><img src="icon_menu_light.svg"><em>menu</em></div><div class="ic"><img src="icon_refresh_light.svg"><em>refresh</em></div><div class="ic"><img src="icon_sound_light.svg"><em>sound</em></div><div class="ic"><img src="icon_mute_light.svg"><em>mute</em></div><div class="ic"><img src="icon_lock_light.svg"><em>lock</em></div><div class="ic"><img src="icon_unlock_light.svg"><em>unlock</em></div><div class="ic"><img src="icon_clock_light.svg"><em>clock</em></div><div class="ic"><img src="icon_home_light.svg"><em>home</em></div><div class="ic"><img src="icon_user_light.svg"><em>user</em></div><div class="ic"><img src="icon_info_light.svg"><em>info</em></div><div class="ic"><img src="icon_map_light.svg"><em>map</em></div><div class="ic"><img src="icon_bag_light.svg"><em>bag</em></div><div class="ic"><img src="icon_sword_light.svg"><em>sword</em></div><div class="ic"><img src="icon_shield_light.svg"><em>shield</em></div><div class="ic"><img src="icon_heart_light.svg"><em>heart</em></div><div class="ic"><img src="icon_trophy_light.svg"><em>trophy</em></div><div class="ic"><img src="icon_settings_light.svg"><em>settings</em></div><div class="ic"><img src="icon_star_light.svg"><em>star</em></div><div class="ic"><img src="icon_coin_light.svg"><em>coin</em></div><div class="ic"><img src="icon_play_light.svg"><em>play</em></div><div class="ic"><img src="icon_pause_light.svg"><em>pause</em></div><div class="ic"><img src="icon_stop_light.svg"><em>stop</em></div></div>
+</div></body></html>

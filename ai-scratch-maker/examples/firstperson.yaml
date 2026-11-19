@@ -1,0 +1,189 @@
+project:
+  name: 第一人称迷宫示例
+  stage:
+    backdrops:
+    - name: 背景1
+      asset: assets/backdrop1.svg
+    variables:
+      px: 1
+      py: 1
+      pdir: 0
+      前方墙: 0
+      步长: 1
+      fx: 0
+      fy: 0
+    lists:
+      迷宫:
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 1
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+    scripts:
+    - - when_green_flag_clicked: null
+      - set_variable:
+          var: px
+          value: 1
+      - set_variable:
+          var: py
+          value: 1
+      - set_variable:
+          var: pdir
+          value: 0
+      - set_variable:
+          var: 前方墙
+          value: 0
+      - set_variable:
+          var: 步长
+          value: 1
+    - - when_receive:
+          message: 探测
+      - set_variable:
+          var: fx
+          value:
+            add:
+            - var: px
+            - round:
+              - mathop:
+                  operator: cos
+                  num:
+                    var: pdir
+      - set_variable:
+          var: fy
+          value:
+            add:
+            - var: py
+            - round:
+              - mathop:
+                  operator: sin
+                  num:
+                    var: pdir
+      - if:
+          cond:
+            or:
+            - less_than:
+              - var: fx
+              - 0
+            - or:
+              - greater_than:
+                - var: fx
+                - 4
+              - or:
+                - less_than:
+                  - var: fy
+                  - 0
+                - greater_than:
+                  - var: fy
+                  - 4
+          do:
+          - set_variable:
+              var: 前方墙
+              value: 1
+          else:
+          - set_variable:
+              var: 前方墙
+              value:
+                item_of_list:
+                  list: 迷宫
+                  index:
+                    add:
+                    - add:
+                      - multiply:
+                        - var: fy
+                        - 5
+                      - var: fx
+                    - 1
+    - - when_receive:
+          message: 前进
+      - if:
+          cond:
+            equals:
+            - var: 前方墙
+            - 0
+          do:
+          - set_variable:
+              var: px
+              value:
+                add:
+                - var: px
+                - round:
+                  - mathop:
+                      operator: cos
+                      num:
+                        var: pdir
+          - set_variable:
+              var: py
+              value:
+                add:
+                - var: py
+                - round:
+                  - mathop:
+                      operator: sin
+                      num:
+                        var: pdir
+    - - when_receive:
+          message: 左转
+      - set_variable:
+          var: pdir
+          value:
+            mod:
+            - add:
+              - var: pdir
+              - 90
+            - 360
+    - - when_receive:
+          message: 右转
+      - set_variable:
+          var: pdir
+          value:
+            mod:
+            - subtract:
+              - var: pdir
+              - 90
+            - 360
+    - - when_key_pressed:
+          key: up arrow
+      - broadcast:
+          message: 探测
+      - broadcast:
+          message: 前进
+    - - when_key_pressed:
+          key: left arrow
+      - broadcast:
+          message: 左转
+    - - when_key_pressed:
+          key: right arrow
+      - broadcast:
+          message: 右转
+  sprites:
+  - name: 玩家
+    x: 0
+    y: 0
+    costumes:
+    - name: dot
+      asset: assets/dot.svg
+    variables:
+      是克隆: 0
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null

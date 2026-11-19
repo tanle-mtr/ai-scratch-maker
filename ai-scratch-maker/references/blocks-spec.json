@@ -1,0 +1,3954 @@
+{
+  "meta": {
+    "generated": "2026-10-30",
+    "scratchVmVersion": "5.0.300",
+    "sources": [
+      "scratch-blocks/src/blocks/*.ts (形状/输入/字段/菜单)",
+      "scratch-vm/src/blocks/scratch3_*.js (运行时原语 + 输入类型)",
+      "scratch-vm/src/extensions/*/index.js (扩展积木)"
+    ],
+    "count": 183
+  },
+  "aliases": {
+    "when_green_flag_clicked": "event_whenflagclicked",
+    "whenflagclicked": "event_whenflagclicked",
+    "when_receive": "event_whenbroadcastreceived",
+    "whenbroadcastreceived": "event_whenbroadcastreceived",
+    "when_key_pressed": "event_whenkeypressed",
+    "whenkeypressed": "event_whenkeypressed",
+    "when_stage_clicked": "event_whenstageclicked",
+    "when_this_sprite_clicked": "event_whenthisspriteclicked",
+    "when_this_clicked": "event_whenthisspriteclicked",
+    "when_backdrop_switches_to": "event_whenbackdropswitchesto",
+    "when_greater_than": "event_whengreaterthan",
+    "broadcast": "event_broadcast",
+    "broadcast_and_wait": "event_broadcastandwait",
+    "move_steps": "motion_movesteps",
+    "movesteps": "motion_movesteps",
+    "turn_left": "motion_turnleft",
+    "turnleft": "motion_turnleft",
+    "turn_right": "motion_turnright",
+    "turnright": "motion_turnright",
+    "point_in_direction": "motion_pointindirection",
+    "point_towards": "motion_pointtowards",
+    "goto": "motion_goto",
+    "goto_xy": "motion_gotoxy",
+    "glide_to": "motion_glideto",
+    "glide_xy": "motion_glidesecstoxy",
+    "change_x": "motion_changexby",
+    "change_y": "motion_changeyby",
+    "set_x": "motion_setx",
+    "set_y": "motion_sety",
+    "if_on_edge_bounce": "motion_ifonedgebounce",
+    "set_rotation_style": "motion_setrotationstyle",
+    "x_position": "motion_xposition",
+    "y_position": "motion_yposition",
+    "direction": "motion_direction",
+    "say": "looks_sayforsecs",
+    "sayforsecs": "looks_sayforsecs",
+    "say_no_wait": "looks_say",
+    "think": "looks_thinkforsecs",
+    "thinkforsecs": "looks_thinkforsecs",
+    "think_no_wait": "looks_think",
+    "switch_costume": "looks_switchcostumeto",
+    "next_costume": "looks_nextcostume",
+    "switch_backdrop": "looks_switchbackdropto",
+    "next_backdrop": "looks_nextbackdrop",
+    "change_effect": "looks_changeeffectby",
+    "set_effect": "looks_seteffectto",
+    "clear_effects": "looks_cleargraphiceffects",
+    "change_size": "looks_changesizeby",
+    "set_size": "looks_setsizeto",
+    "go_to_front_back": "looks_gotofrontback",
+    "go_back_layers": "looks_goforwardbackwardlayers",
+    "show": "looks_show",
+    "hide": "looks_hide",
+    "costume_number_name": "looks_costumenumbername",
+    "backdrop_number_name": "looks_backdropnumbername",
+    "play_sound": "sound_play",
+    "play_sound_until_done": "sound_playuntildone",
+    "stop_all_sounds": "sound_stopallsounds",
+    "change_sound_effect": "sound_changeeffectby",
+    "set_sound_effect": "sound_seteffectto",
+    "clear_sound_effects": "sound_cleareffects",
+    "change_volume": "sound_changevolumeby",
+    "set_volume": "sound_setvolumeto",
+    "volume": "sound_volume",
+    "wait": "control_wait",
+    "wait_until": "control_wait_until",
+    "repeat": "control_repeat",
+    "repeat_until": "control_repeat_until",
+    "while": "control_while",
+    "forever": "control_forever",
+    "if": "control_if",
+    "if_else": "control_if_else",
+    "stop": "control_stop",
+    "when_start_as_clone": "control_start_as_clone",
+    "create_clone_of": "control_create_clone_of",
+    "create_clone": "control_create_clone_of",
+    "delete_this_clone": "control_delete_this_clone",
+    "touching": "sensing_touchingobject",
+    "touching_color": "sensing_touchingcolor",
+    "color_touching_color": "sensing_coloristouchingcolor",
+    "ask_and_wait": "sensing_askandwait",
+    "answer": "sensing_answer",
+    "key_pressed": "sensing_keypressed",
+    "distance_to": "sensing_distanceto",
+    "distance": "sensing_distanceto",
+    "mousedown": "sensing_mousedown",
+    "mouse_x": "sensing_mousex",
+    "mouse_y": "sensing_mousey",
+    "set_drag_mode": "sensing_setdragmode",
+    "timer": "sensing_timer",
+    "reset_timer": "sensing_resettimer",
+    "of": "sensing_of",
+    "current": "sensing_current",
+    "days_since_2000": "sensing_dayssince2000",
+    "username": "sensing_username",
+    "loudness": "sensing_loudness",
+    "add": "operator_add",
+    "subtract": "operator_subtract",
+    "multiply": "operator_multiply",
+    "divide": "operator_divide",
+    "random": "operator_random",
+    "greater_than": "operator_gt",
+    "less_than": "operator_lt",
+    "equals": "operator_equals",
+    "and": "operator_and",
+    "or": "operator_or",
+    "not": "operator_not",
+    "join": "operator_join",
+    "letter_of": "operator_letter_of",
+    "length_of": "operator_length",
+    "contains": "operator_contains",
+    "mod": "operator_mod",
+    "round": "operator_round",
+    "mathop": "operator_mathop",
+    "set_variable": "data_setvariableto",
+    "setvariableto": "data_setvariableto",
+    "change_variable": "data_changevariableby",
+    "changevariableby": "data_changevariableby",
+    "show_variable": "data_showvariable",
+    "hide_variable": "data_hidevariable",
+    "var": "data_variable",
+    "variable": "data_variable",
+    "add_to_list": "data_addtolist",
+    "delete_of_list": "data_deleteoflist",
+    "delete_all_of_list": "data_deletealloflist",
+    "insert_at_list": "data_insertatlist",
+    "replace_item_of_list": "data_replaceitemoflist",
+    "item_of_list": "data_itemoflist",
+    "item_num_of_list": "data_itemnumoflist",
+    "length_of_list": "data_lengthoflist",
+    "list_contains": "data_listcontainsitem",
+    "show_list": "data_showlist",
+    "hide_list": "data_hidelist",
+    "list": "data_listcontents",
+    "listcontents": "data_listcontents",
+    "pen_down": "pen_penDown",
+    "pendown": "pen_penDown",
+    "pen_up": "pen_penUp",
+    "penup": "pen_penUp",
+    "pen_stamp": "pen_stamp",
+    "pen_clear": "pen_clear",
+    "set_pen_size": "pen_setPenSizeTo",
+    "change_pen_size": "pen_changePenSizeBy",
+    "set_pen_color": "pen_setPenColorToColor",
+    "change_pen_hue": "pen_changePenHueBy",
+    "set_pen_hue": "pen_setPenHueToNumber",
+    "change_pen_shade": "pen_changePenShadeBy",
+    "set_pen_shade": "pen_setPenShadeToNumber",
+    "call": "procedures_call",
+    "call_proc": "procedures_call",
+    "looks_seteffect": "looks_seteffectto",
+    "looks_setsize": "looks_setsizeto",
+    "looks_gobacklayers": "looks_goforwardbackwardlayers",
+    "sound_seteffect": "sound_seteffectto",
+    "sound_setvolume": "sound_setvolumeto",
+    "control_forever": "control_forever",
+    "control_repeat": "control_repeat",
+    "control_if": "control_if",
+    "control_if_else": "control_if_else",
+    "control_wait": "control_wait",
+    "control_wait_until": "control_wait_until",
+    "control_repeat_until": "control_repeat_until",
+    "control_while": "control_while",
+    "control_for_each": "control_for_each",
+    "for_each": "control_for_each",
+    "control_start_as_clone": "control_start_as_clone",
+    "start_as_clone": "control_start_as_clone",
+    "control_create_clone_of": "control_create_clone_of",
+    "control_delete_this_clone": "control_delete_this_clone",
+    "control_get_counter": "control_get_counter",
+    "get_counter": "control_get_counter",
+    "control_incr_counter": "control_incr_counter",
+    "incr_counter": "control_incr_counter",
+    "control_clear_counter": "control_clear_counter",
+    "clear_counter": "control_clear_counter",
+    "control_all_at_once": "control_all_at_once",
+    "all_at_once": "control_all_at_once",
+    "data_variable": "data_variable",
+    "data_setvariableto": "data_setvariableto",
+    "data_changevariableby": "data_changevariableby",
+    "data_showvariable": "data_showvariable",
+    "showvariable": "data_showvariable",
+    "data_hidevariable": "data_hidevariable",
+    "hidevariable": "data_hidevariable",
+    "data_listcontents": "data_listcontents",
+    "data_addtolist": "data_addtolist",
+    "addtolist": "data_addtolist",
+    "data_deleteoflist": "data_deleteoflist",
+    "deleteoflist": "data_deleteoflist",
+    "data_deletealloflist": "data_deletealloflist",
+    "deletealloflist": "data_deletealloflist",
+    "data_insertatlist": "data_insertatlist",
+    "insertatlist": "data_insertatlist",
+    "data_replaceitemoflist": "data_replaceitemoflist",
+    "replaceitemoflist": "data_replaceitemoflist",
+    "data_itemoflist": "data_itemoflist",
+    "itemoflist": "data_itemoflist",
+    "data_itemnumoflist": "data_itemnumoflist",
+    "itemnumoflist": "data_itemnumoflist",
+    "data_lengthoflist": "data_lengthoflist",
+    "lengthoflist": "data_lengthoflist",
+    "data_listcontainsitem": "data_listcontainsitem",
+    "listcontainsitem": "data_listcontainsitem",
+    "data_showlist": "data_showlist",
+    "showlist": "data_showlist",
+    "data_hidelist": "data_hidelist",
+    "hidelist": "data_hidelist",
+    "event_whentouchingobject": "event_whentouchingobject",
+    "whentouchingobject": "event_whentouchingobject",
+    "event_whenflagclicked": "event_whenflagclicked",
+    "event_whenthisspriteclicked": "event_whenthisspriteclicked",
+    "whenthisspriteclicked": "event_whenthisspriteclicked",
+    "event_whenstageclicked": "event_whenstageclicked",
+    "whenstageclicked": "event_whenstageclicked",
+    "event_whenbroadcastreceived": "event_whenbroadcastreceived",
+    "event_whengreaterthan": "event_whengreaterthan",
+    "whengreaterthan": "event_whengreaterthan",
+    "event_broadcast": "event_broadcast",
+    "event_broadcastandwait": "event_broadcastandwait",
+    "broadcastandwait": "event_broadcastandwait",
+    "event_whenkeypressed": "event_whenkeypressed",
+    "looks_sayforsecs": "looks_sayforsecs",
+    "looks_say": "looks_say",
+    "looks_thinkforsecs": "looks_thinkforsecs",
+    "looks_think": "looks_think",
+    "looks_show": "looks_show",
+    "looks_hide": "looks_hide",
+    "looks_changeeffectby": "looks_changeeffectby",
+    "changeeffectby": "looks_changeeffectby",
+    "looks_seteffectto": "looks_seteffectto",
+    "seteffectto": "looks_seteffectto",
+    "looks_cleargraphiceffects": "looks_cleargraphiceffects",
+    "cleargraphiceffects": "looks_cleargraphiceffects",
+    "looks_changesizeby": "looks_changesizeby",
+    "changesizeby": "looks_changesizeby",
+    "looks_setsizeto": "looks_setsizeto",
+    "setsizeto": "looks_setsizeto",
+    "looks_size": "looks_size",
+    "size": "looks_size",
+    "looks_switchcostumeto": "looks_switchcostumeto",
+    "switchcostumeto": "looks_switchcostumeto",
+    "looks_nextcostume": "looks_nextcostume",
+    "nextcostume": "looks_nextcostume",
+    "looks_switchbackdropto": "looks_switchbackdropto",
+    "switchbackdropto": "looks_switchbackdropto",
+    "looks_gotofrontback": "looks_gotofrontback",
+    "gotofrontback": "looks_gotofrontback",
+    "looks_goforwardbackwardlayers": "looks_goforwardbackwardlayers",
+    "goforwardbackwardlayers": "looks_goforwardbackwardlayers",
+    "looks_backdropnumbername": "looks_backdropnumbername",
+    "backdropnumbername": "looks_backdropnumbername",
+    "looks_costumenumbername": "looks_costumenumbername",
+    "costumenumbername": "looks_costumenumbername",
+    "looks_switchbackdroptoandwait": "looks_switchbackdroptoandwait",
+    "switchbackdroptoandwait": "looks_switchbackdroptoandwait",
+    "looks_nextbackdrop": "looks_nextbackdrop",
+    "nextbackdrop": "looks_nextbackdrop",
+    "motion_movesteps": "motion_movesteps",
+    "motion_turnright": "motion_turnright",
+    "motion_turnleft": "motion_turnleft",
+    "motion_pointindirection": "motion_pointindirection",
+    "pointindirection": "motion_pointindirection",
+    "motion_pointtowards": "motion_pointtowards",
+    "pointtowards": "motion_pointtowards",
+    "motion_gotoxy": "motion_gotoxy",
+    "gotoxy": "motion_gotoxy",
+    "motion_goto": "motion_goto",
+    "motion_glidesecstoxy": "motion_glidesecstoxy",
+    "glidesecstoxy": "motion_glidesecstoxy",
+    "motion_glideto": "motion_glideto",
+    "glideto": "motion_glideto",
+    "motion_changexby": "motion_changexby",
+    "changexby": "motion_changexby",
+    "motion_setx": "motion_setx",
+    "setx": "motion_setx",
+    "motion_changeyby": "motion_changeyby",
+    "changeyby": "motion_changeyby",
+    "motion_sety": "motion_sety",
+    "sety": "motion_sety",
+    "motion_ifonedgebounce": "motion_ifonedgebounce",
+    "ifonedgebounce": "motion_ifonedgebounce",
+    "motion_setrotationstyle": "motion_setrotationstyle",
+    "setrotationstyle": "motion_setrotationstyle",
+    "motion_xposition": "motion_xposition",
+    "xposition": "motion_xposition",
+    "motion_yposition": "motion_yposition",
+    "yposition": "motion_yposition",
+    "motion_direction": "motion_direction",
+    "operator_add": "operator_add",
+    "operator_subtract": "operator_subtract",
+    "operator_multiply": "operator_multiply",
+    "operator_divide": "operator_divide",
+    "operator_random": "operator_random",
+    "operator_lt": "operator_lt",
+    "lt": "operator_lt",
+    "operator_equals": "operator_equals",
+    "operator_gt": "operator_gt",
+    "gt": "operator_gt",
+    "operator_and": "operator_and",
+    "operator_or": "operator_or",
+    "operator_not": "operator_not",
+    "operator_join": "operator_join",
+    "operator_letter_of": "operator_letter_of",
+    "operator_length": "operator_length",
+    "length": "operator_length",
+    "operator_contains": "operator_contains",
+    "operator_mod": "operator_mod",
+    "operator_round": "operator_round",
+    "operator_mathop": "operator_mathop",
+    "procedures_definition": "procedures_definition",
+    "procedures_call": "procedures_call",
+    "procedures_prototype": "procedures_prototype",
+    "procedures_declaration": "procedures_declaration",
+    "argument_reporter_boolean": "argument_reporter_boolean",
+    "argument_reporter_string_number": "argument_reporter_string_number",
+    "sensing_touchingobject": "sensing_touchingobject",
+    "touchingobject": "sensing_touchingobject",
+    "sensing_touchingcolor": "sensing_touchingcolor",
+    "touchingcolor": "sensing_touchingcolor",
+    "sensing_coloristouchingcolor": "sensing_coloristouchingcolor",
+    "coloristouchingcolor": "sensing_coloristouchingcolor",
+    "sensing_distanceto": "sensing_distanceto",
+    "distanceto": "sensing_distanceto",
+    "sensing_askandwait": "sensing_askandwait",
+    "askandwait": "sensing_askandwait",
+    "sensing_answer": "sensing_answer",
+    "sensing_keypressed": "sensing_keypressed",
+    "keypressed": "sensing_keypressed",
+    "sensing_mousedown": "sensing_mousedown",
+    "sensing_mousex": "sensing_mousex",
+    "mousex": "sensing_mousex",
+    "sensing_mousey": "sensing_mousey",
+    "mousey": "sensing_mousey",
+    "sensing_setdragmode": "sensing_setdragmode",
+    "setdragmode": "sensing_setdragmode",
+    "sensing_loudness": "sensing_loudness",
+    "sensing_loud": "sensing_loud",
+    "loud": "sensing_loud",
+    "sensing_timer": "sensing_timer",
+    "sensing_resettimer": "sensing_resettimer",
+    "resettimer": "sensing_resettimer",
+    "sensing_current": "sensing_current",
+    "sensing_dayssince2000": "sensing_dayssince2000",
+    "dayssince2000": "sensing_dayssince2000",
+    "sensing_username": "sensing_username",
+    "sound_play": "sound_play",
+    "play": "sound_play",
+    "sound_playuntildone": "sound_playuntildone",
+    "playuntildone": "sound_playuntildone",
+    "sound_stopallsounds": "sound_stopallsounds",
+    "stopallsounds": "sound_stopallsounds",
+    "sound_seteffectto": "sound_seteffectto",
+    "sound_changeeffectby": "sound_changeeffectby",
+    "sound_cleareffects": "sound_cleareffects",
+    "cleareffects": "sound_cleareffects",
+    "sound_changevolumeby": "sound_changevolumeby",
+    "changevolumeby": "sound_changevolumeby",
+    "sound_setvolumeto": "sound_setvolumeto",
+    "setvolumeto": "sound_setvolumeto",
+    "sound_volume": "sound_volume",
+    "music_playDrumForBeats": "music_playDrumForBeats",
+    "music_play_drum_for_beats": "music_playDrumForBeats",
+    "playDrumForBeats": "music_playDrumForBeats",
+    "music_midiPlayDrumForBeats": "music_midiPlayDrumForBeats",
+    "music_midi_play_drum_for_beats": "music_midiPlayDrumForBeats",
+    "midiPlayDrumForBeats": "music_midiPlayDrumForBeats",
+    "music_restForBeats": "music_restForBeats",
+    "music_rest_for_beats": "music_restForBeats",
+    "restForBeats": "music_restForBeats",
+    "music_playNoteForBeats": "music_playNoteForBeats",
+    "music_play_note_for_beats": "music_playNoteForBeats",
+    "playNoteForBeats": "music_playNoteForBeats",
+    "music_setInstrument": "music_setInstrument",
+    "music_set_instrument": "music_setInstrument",
+    "setInstrument": "music_setInstrument",
+    "music_midiSetInstrument": "music_midiSetInstrument",
+    "music_midi_set_instrument": "music_midiSetInstrument",
+    "midiSetInstrument": "music_midiSetInstrument",
+    "music_setTempo": "music_setTempo",
+    "music_set_tempo": "music_setTempo",
+    "setTempo": "music_setTempo",
+    "music_changeTempo": "music_changeTempo",
+    "music_change_tempo": "music_changeTempo",
+    "changeTempo": "music_changeTempo",
+    "music_getTempo": "music_getTempo",
+    "music_get_tempo": "music_getTempo",
+    "getTempo": "music_getTempo",
+    "clear": "pen_clear",
+    "stamp": "pen_stamp",
+    "pen_penDown": "pen_penDown",
+    "pen_pen_down": "pen_penDown",
+    "penDown": "pen_penDown",
+    "pen_penUp": "pen_penUp",
+    "pen_pen_up": "pen_penUp",
+    "penUp": "pen_penUp",
+    "pen_setPenColorToColor": "pen_setPenColorToColor",
+    "pen_set_pen_color_to_color": "pen_setPenColorToColor",
+    "setPenColorToColor": "pen_setPenColorToColor",
+    "pen_changePenColorParamBy": "pen_changePenColorParamBy",
+    "pen_change_pen_color_param_by": "pen_changePenColorParamBy",
+    "changePenColorParamBy": "pen_changePenColorParamBy",
+    "pen_setPenColorParamTo": "pen_setPenColorParamTo",
+    "pen_set_pen_color_param_to": "pen_setPenColorParamTo",
+    "setPenColorParamTo": "pen_setPenColorParamTo",
+    "pen_changePenSizeBy": "pen_changePenSizeBy",
+    "pen_change_pen_size_by": "pen_changePenSizeBy",
+    "changePenSizeBy": "pen_changePenSizeBy",
+    "pen_setPenSizeTo": "pen_setPenSizeTo",
+    "pen_set_pen_size_to": "pen_setPenSizeTo",
+    "setPenSizeTo": "pen_setPenSizeTo",
+    "pen_setPenShadeToNumber": "pen_setPenShadeToNumber",
+    "pen_set_pen_shade_to_number": "pen_setPenShadeToNumber",
+    "setPenShadeToNumber": "pen_setPenShadeToNumber",
+    "pen_changePenShadeBy": "pen_changePenShadeBy",
+    "pen_change_pen_shade_by": "pen_changePenShadeBy",
+    "changePenShadeBy": "pen_changePenShadeBy",
+    "pen_setPenHueToNumber": "pen_setPenHueToNumber",
+    "pen_set_pen_hue_to_number": "pen_setPenHueToNumber",
+    "setPenHueToNumber": "pen_setPenHueToNumber",
+    "pen_changePenHueBy": "pen_changePenHueBy",
+    "pen_change_pen_hue_by": "pen_changePenHueBy",
+    "changePenHueBy": "pen_changePenHueBy",
+    "speech2text_listenAndWait": "speech2text_listenAndWait",
+    "speech2text_listen_and_wait": "speech2text_listenAndWait",
+    "speech2text_whenIHearHat": "speech2text_whenIHearHat",
+    "speech2text_when_i_hear_hat": "speech2text_whenIHearHat",
+    "speech2text_getSpeech": "speech2text_getSpeech",
+    "speech2text_get_speech": "speech2text_getSpeech",
+    "text2speech_speakAndWait": "text2speech_speakAndWait",
+    "text2speech_speak_and_wait": "text2speech_speakAndWait",
+    "speakAndWait": "text2speech_speakAndWait",
+    "text2speech_setVoice": "text2speech_setVoice",
+    "text2speech_set_voice": "text2speech_setVoice",
+    "setVoice": "text2speech_setVoice",
+    "text2speech_setLanguage": "text2speech_setLanguage",
+    "text2speech_set_language": "text2speech_setLanguage",
+    "setLanguage": "text2speech_setLanguage",
+    "translate_getTranslate": "translate_getTranslate",
+    "translate_get_translate": "translate_getTranslate",
+    "getTranslate": "translate_getTranslate",
+    "translate_getViewerLanguage": "translate_getViewerLanguage",
+    "translate_get_viewer_language": "translate_getViewerLanguage",
+    "getViewerLanguage": "translate_getViewerLanguage",
+    "videoSensing_whenMotionGreaterThan": "videoSensing_whenMotionGreaterThan",
+    "video_sensing_when_motion_greater_than": "videoSensing_whenMotionGreaterThan",
+    "whenMotionGreaterThan": "videoSensing_whenMotionGreaterThan",
+    "videoSensing_videoOn": "videoSensing_videoOn",
+    "video_sensing_video_on": "videoSensing_videoOn",
+    "videoOn": "videoSensing_videoOn",
+    "videoSensing_videoToggle": "videoSensing_videoToggle",
+    "video_sensing_video_toggle": "videoSensing_videoToggle",
+    "videoToggle": "videoSensing_videoToggle",
+    "videoSensing_setVideoTransparency": "videoSensing_setVideoTransparency",
+    "video_sensing_set_video_transparency": "videoSensing_setVideoTransparency",
+    "setVideoTransparency": "videoSensing_setVideoTransparency",
+    "event_whenbackdropswitchesto": "event_whenbackdropswitchesto",
+    "whenbackdropswitchesto": "event_whenbackdropswitchesto",
+    "sensing_of": "sensing_of",
+    "control_stop": "control_stop",
+    "control_resettimer": "control_resettimer",
+    "userid": "sensing_userid",
+    "user_id": "sensing_userid",
+    "sensing_userid": "sensing_userid",
+    "backdrop_name": "sensing_backdropname",
+    "backdropname": "sensing_backdropname",
+    "sensing_backdropname": "sensing_backdropname",
+    "backdrop_num": "sensing_backdrops",
+    "backdrops": "sensing_backdrops",
+    "sensing_backdrops": "sensing_backdrops",
+    "set_ghost": "looks_setghostto",
+    "looks_setghostto": "looks_setghostto",
+    "setghostto": "looks_setghostto",
+    "go_to_front": "looks_gotofrontback",
+    "go_to_front_layer": "looks_gotofrontback",
+    "goto_front": "looks_gotofrontback",
+    "play_note": "music_playNoteForBeats",
+    "play_drum": "music_playDrumForBeats",
+    "rest": "music_restForBeats",
+    "set_instrument": "music_setInstrument",
+    "set_tempo": "music_setTempo",
+    "change_ghost_effect": "looks_changeeffectby",
+    "change_size_effect": "looks_changesizeby",
+    "start_sound": "sound_play",
+    "go_to_back": "looks_gotofrontback",
+    "ask": "sensing_askandwait",
+    "touching_mouse_pointer": "sensing_touchingobject"
+  },
+  "input_aliases": {
+    "control_if": {
+      "cond": "CONDITION",
+      "condition": "CONDITION"
+    },
+    "control_if_else": {
+      "cond": "CONDITION",
+      "condition": "CONDITION"
+    },
+    "control_repeat_until": {
+      "cond": "CONDITION",
+      "condition": "CONDITION"
+    },
+    "control_while": {
+      "cond": "CONDITION",
+      "condition": "CONDITION"
+    },
+    "control_wait_until": {
+      "cond": "CONDITION",
+      "condition": "CONDITION"
+    },
+    "control_repeat": {
+      "times": "TIMES"
+    },
+    "control_wait": {
+      "secs": "DURATION",
+      "duration": "DURATION"
+    },
+    "control_create_clone_of": {
+      "clone": "CLONE_OPTION"
+    },
+    "control_start_as_clone": {
+      "clone": "CLONE_OPTION"
+    },
+    "motion_movesteps": {
+      "steps": "STEPS"
+    },
+    "motion_gotoxy": {
+      "x": "X",
+      "y": "Y"
+    },
+    "motion_glidesecstoxy": {
+      "secs": "SECS",
+      "x": "X",
+      "y": "Y"
+    },
+    "motion_glideto": {
+      "secs": "SECS"
+    },
+    "motion_changexby": {
+      "dx": "DX"
+    },
+    "motion_changeyby": {
+      "dy": "DY"
+    },
+    "motion_setx": {
+      "x": "X"
+    },
+    "motion_sety": {
+      "y": "Y"
+    },
+    "motion_turnright": {
+      "degrees": "DEGREES"
+    },
+    "motion_turnleft": {
+      "degrees": "DEGREES"
+    },
+    "motion_pointindirection": {
+      "direction": "DIRECTION"
+    },
+    "looks_sayforsecs": {
+      "text": "MESSAGE",
+      "secs": "SECS",
+      "message": "MESSAGE"
+    },
+    "looks_say": {
+      "text": "MESSAGE",
+      "message": "MESSAGE"
+    },
+    "looks_thinkforsecs": {
+      "text": "MESSAGE",
+      "secs": "SECS",
+      "message": "MESSAGE"
+    },
+    "looks_think": {
+      "text": "MESSAGE",
+      "message": "MESSAGE"
+    },
+    "looks_seteffectto": {
+      "effect": "EFFECT",
+      "value": "VALUE"
+    },
+    "looks_changeeffectby": {
+      "effect": "EFFECT",
+      "value": "CHANGE"
+    },
+    "looks_changesizeby": {
+      "value": "CHANGE",
+      "size": "CHANGE",
+      "percent": "CHANGE",
+      "by": "CHANGE",
+      "change": "CHANGE"
+    },
+    "looks_setsizeto": {
+      "value": "SIZE"
+    },
+    "looks_gotofrontback": {
+      "front_back": "FRONT_BACK"
+    },
+    "looks_goforwardbackwardlayers": {
+      "forward_backward": "FORWARD_BACKWARD",
+      "layers": "NUM"
+    },
+    "looks_switchcostumeto": {
+      "costume": "COSTUME"
+    },
+    "looks_switchbackdropto": {
+      "backdrop": "BACKDROP"
+    },
+    "sound_play": {
+      "sound": "SOUND_MENU"
+    },
+    "sound_playuntildone": {
+      "sound": "SOUND_MENU"
+    },
+    "sound_seteffectto": {
+      "effect": "EFFECT",
+      "value": "VALUE"
+    },
+    "sound_changeeffectby": {
+      "effect": "EFFECT",
+      "value": "VALUE"
+    },
+    "sound_changevolumeby": {
+      "value": "VOLUME"
+    },
+    "sound_setvolumeto": {
+      "value": "VOLUME"
+    },
+    "sensing_askandwait": {
+      "question": "QUESTION"
+    },
+    "sensing_distanceto": {
+      "object": "DISTANCETOMENU"
+    },
+    "sensing_touchingobject": {
+      "object": "TOUCHINGOBJECTMENU"
+    },
+    "sensing_keypressed": {
+      "key": "KEY_OPTION"
+    },
+    "sensing_of": {
+      "object": "OBJECT",
+      "property": "PROPERTY"
+    },
+    "operator_add": {
+      "a": "NUM1",
+      "b": "NUM2"
+    },
+    "operator_subtract": {
+      "a": "NUM1",
+      "b": "NUM2"
+    },
+    "operator_multiply": {
+      "a": "NUM1",
+      "b": "NUM2"
+    },
+    "operator_divide": {
+      "a": "NUM1",
+      "b": "NUM2"
+    },
+    "operator_gt": {
+      "a": "OPERAND1",
+      "b": "OPERAND2"
+    },
+    "operator_lt": {
+      "a": "OPERAND1",
+      "b": "OPERAND2"
+    },
+    "operator_equals": {
+      "a": "OPERAND1",
+      "b": "OPERAND2"
+    },
+    "operator_and": {
+      "a": "OPERAND1",
+      "b": "OPERAND2"
+    },
+    "operator_or": {
+      "a": "OPERAND1",
+      "b": "OPERAND2"
+    },
+    "operator_not": {
+      "operand": "OPERAND"
+    },
+    "operator_join": {
+      "a": "STRING1",
+      "b": "STRING2"
+    },
+    "operator_letter_of": {
+      "letter": "LETTER",
+      "word": "STRING"
+    },
+    "operator_length": {
+      "string": "STRING"
+    },
+    "operator_contains": {
+      "a": "STRING1",
+      "b": "STRING2"
+    },
+    "operator_mod": {
+      "a": "NUM1",
+      "b": "NUM2"
+    },
+    "operator_random": {
+      "from": "FROM",
+      "to": "TO"
+    },
+    "operator_mathop": {
+      "n": "NUM",
+      "num": "NUM",
+      "value": "NUM",
+      "op": "OPERATOR"
+    },
+    "data_setvariableto": {
+      "value": "VALUE",
+      "to": "VALUE"
+    },
+    "data_changevariableby": {
+      "value": "VALUE",
+      "by": "VALUE"
+    },
+    "data_addtolist": {
+      "item": "ITEM"
+    },
+    "data_insertatlist": {
+      "item": "ITEM",
+      "index": "INDEX"
+    },
+    "data_replaceitemoflist": {
+      "item": "ITEM",
+      "index": "INDEX"
+    },
+    "data_deleteoflist": {
+      "index": "INDEX"
+    },
+    "data_itemoflist": {
+      "index": "INDEX"
+    },
+    "data_itemnumoflist": {
+      "item": "ITEM"
+    },
+    "data_listcontainsitem": {
+      "item": "ITEM"
+    },
+    "event_whenbroadcastreceived": {
+      "message": "BROADCAST_OPTION"
+    },
+    "event_broadcast": {
+      "message": "BROADCAST_INPUT"
+    },
+    "event_broadcastandwait": {
+      "message": "BROADCAST_INPUT"
+    },
+    "event_whenkeypressed": {
+      "key": "KEY_OPTION"
+    },
+    "event_whenbackdropswitchesto": {
+      "backdrop": "BACKDROP"
+    },
+    "music_playDrumForBeats": {
+      "drum": "DRUM",
+      "beats": "BEATS"
+    },
+    "music_playNoteForBeats": {
+      "note": "NOTE",
+      "beats": "BEATS"
+    },
+    "music_setInstrument": {
+      "instrument": "INSTRUMENT"
+    },
+    "text2speech_speakAndWait": {
+      "words": "WORDS"
+    },
+    "text2speech_setVoice": {
+      "voice": "VOICE"
+    },
+    "translate_getTranslate": {
+      "words": "WORDS",
+      "language": "LANGUAGE"
+    },
+    "pen_setPenSizeTo": {
+      "size": "SIZE"
+    },
+    "pen_changePenSizeBy": {
+      "size": "SIZE"
+    },
+    "pen_setPenColorToColor": {
+      "color": "COLOR"
+    },
+    "pen_setPenHueToNumber": {
+      "hue": "HUE"
+    },
+    "pen_changePenHueBy": {
+      "hue": "HUE"
+    },
+    "pen_setPenShadeToNumber": {
+      "shade": "SHADE"
+    },
+    "pen_changePenShadeBy": {
+      "shade": "SHADE"
+    },
+    "motion_pointtowards": {
+      "towards": "TOWARDS",
+      "TOWARDS": "TOWARDS"
+    },
+    "looks_costumenumbername": {
+      "number_name": "NUMBER_NAME",
+      "name_type": "NUMBER_NAME"
+    },
+    "looks_setghostto": {
+      "ghost": "GHOST"
+    },
+    "control_stop": {
+      "stop": "STOP_OPTION",
+      "option": "STOP_OPTION",
+      "value": "STOP_OPTION"
+    },
+    "music_setTempo": {
+      "tempo": "TEMPO"
+    },
+    "music_changeTempo": {
+      "tempo": "TEMPO"
+    },
+    "music_restForBeats": {
+      "beats": "BEATS"
+    },
+    "text2speech_setLanguage": {
+      "language": "LANGUAGE"
+    },
+    "videoSensing_videoToggle": {
+      "video_state": "VIDEO_STATE"
+    },
+    "videoSensing_setVideoTransparency": {
+      "transparency": "TRANSPARENCY"
+    },
+    "videoSensing_videoOn": {
+      "attribute": "ATTRIBUTE",
+      "subject": "SUBJECT"
+    },
+    "videoSensing_whenMotionGreaterThan": {
+      "reference": "REFERENCE",
+      "motion": "MOTION"
+    },
+    "speech2text_whenIHearHat": {
+      "phrase": "PHRASE"
+    }
+  },
+  "blocks": {
+    "control_forever": {
+      "opcode": "control_forever",
+      "category": "control",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "SUBSTACK": {
+          "type": "substack"
+        }
+      },
+      "fields": {},
+      "text": "forever",
+      "source": "scratch-blocks/src/blocks/control.ts"
+    },
+    "control_repeat": {
+      "opcode": "control_repeat",
+      "category": "control",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "TIMES": {
+          "type": "number"
+        },
+        "SUBSTACK": {
+          "type": "substack"
+        }
+      },
+      "fields": {},
+      "text": "repeat %1",
+      "source": "scratch-blocks/src/blocks/control.ts"
+    },
+    "control_if": {
+      "opcode": "control_if",
+      "category": "control",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "CONDITION": {
+          "type": "boolean"
+        },
+        "SUBSTACK": {
+          "type": "substack"
+        }
+      },
+      "fields": {},
+      "text": "if %1 then",
+      "source": "scratch-blocks/src/blocks/control.ts"
+    },
+    "control_if_else": {
+      "opcode": "control_if_else",
+      "category": "control",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "CONDITION": {
+          "type": "boolean"
+        },
+        "SUBSTACK": {
+          "type": "substack"
+        },
+        "SUBSTACK2": {
+          "type": "substack"
+        }
+      },
+      "fields": {},
+      "text": "if %1 then",
+      "source": "scratch-blocks/src/blocks/control.ts"
+    },
+    "control_wait": {
+      "opcode": "control_wait",
+      "category": "control",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "DURATION": {
+          "type": "number"
+        }
+      },
+      "fields": {},
+      "text": "wait %1 seconds",
+      "source": "scratch-blocks/src/blocks/control.ts"
+    },
+    "control_wait_until": {
+      "opcode": "control_wait_until",
+      "category": "control",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "CONDITION": {
+          "type": "boolean"
+        }
+      },
+      "fields": {},
+      "text": "wait until %1",
+      "source": "scratch-blocks/src/blocks/control.ts"
+    },
+    "control_repeat_until": {
+      "opcode": "control_repeat_until",
+      "category": "control",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "CONDITION": {
+          "type": "boolean"
+        },
+        "SUBSTACK": {
+          "type": "substack"
+        }
+      },
+      "fields": {},
+      "text": "repeat until %1",
+      "source": "scratch-blocks/src/blocks/control.ts"
+    },
+    "control_while": {
+      "opcode": "control_while",
+      "category": "control",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "CONDITION": {
+          "type": "boolean"
+        },
+        "SUBSTACK": {
+          "type": "substack"
+        }
+      },
+      "fields": {},
+      "text": "while %1",
+      "source": "scratch-blocks/src/blocks/control.ts"
+    },
+    "control_for_each": {
+      "opcode": "control_for_each",
+      "category": "control",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "VALUE": {
+          "type": "value"
+        },
+        "SUBSTACK": {
+          "type": "substack"
+        }
+      },
+      "fields": {
+        "VARIABLE": {
+          "type": "varfield"
+        }
+      },
+      "text": "for each %1 in %2",
+      "source": "scratch-blocks/src/blocks/control.ts"
+    },
+    "control_start_as_clone": {
+      "opcode": "control_start_as_clone",
+      "extension": null,
+      "inputs": {
+        "CLONE_OPTION": {
+          "type": "menu"
+        }
+      },
+      "fields": {},
+      "source": "manual (scratch-gui 动态生成)",
+      "category": "control",
+      "shape": "hat",
+      "menu_inputs": {
+        "CLONE_OPTION": "control_create_clone_of_menu"
+      }
+    },
+    "control_create_clone_of": {
+      "opcode": "control_create_clone_of",
+      "category": "control",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "CLONE_OPTION": {
+          "type": "menu"
+        }
+      },
+      "fields": {},
+      "text": "create clone of %1",
+      "menu_inputs": {
+        "CLONE_OPTION": "control_create_clone_of_menu"
+      },
+      "source": "scratch-blocks/src/blocks/control.ts"
+    },
+    "control_delete_this_clone": {
+      "opcode": "control_delete_this_clone",
+      "category": "control",
+      "shape": "command",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "delete this clone",
+      "source": "scratch-blocks/src/blocks/control.ts"
+    },
+    "control_get_counter": {
+      "opcode": "control_get_counter",
+      "category": "control",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "counter",
+      "source": "scratch-blocks/src/blocks/control.ts"
+    },
+    "control_incr_counter": {
+      "opcode": "control_incr_counter",
+      "category": "control",
+      "shape": "command",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "increment counter",
+      "source": "scratch-blocks/src/blocks/control.ts"
+    },
+    "control_clear_counter": {
+      "opcode": "control_clear_counter",
+      "category": "control",
+      "shape": "command",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "clear counter",
+      "source": "scratch-blocks/src/blocks/control.ts"
+    },
+    "control_all_at_once": {
+      "opcode": "control_all_at_once",
+      "category": "control",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "SUBSTACK": {
+          "type": "substack"
+        }
+      },
+      "fields": {},
+      "text": "all at once",
+      "source": "scratch-blocks/src/blocks/control.ts"
+    },
+    "data_variable": {
+      "opcode": "data_variable",
+      "category": "data",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "VARIABLE": {
+          "type": "varfield"
+        }
+      },
+      "text": "",
+      "source": "scratch-blocks/src/blocks/data.ts"
+    },
+    "data_setvariableto": {
+      "opcode": "data_setvariableto",
+      "category": "data",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "VALUE": {
+          "type": "value"
+        }
+      },
+      "fields": {
+        "VARIABLE": {
+          "type": "varfield"
+        }
+      },
+      "text": "set %1 to %2",
+      "source": "scratch-blocks/src/blocks/data.ts"
+    },
+    "data_changevariableby": {
+      "opcode": "data_changevariableby",
+      "category": "data",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "VALUE": {
+          "type": "number"
+        }
+      },
+      "fields": {
+        "VARIABLE": {
+          "type": "varfield"
+        }
+      },
+      "text": "change %1 by %2",
+      "source": "scratch-blocks/src/blocks/data.ts"
+    },
+    "data_showvariable": {
+      "opcode": "data_showvariable",
+      "category": "data",
+      "shape": "command",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "VARIABLE": {
+          "type": "varfield"
+        }
+      },
+      "text": "show variable %1",
+      "source": "scratch-blocks/src/blocks/data.ts"
+    },
+    "data_hidevariable": {
+      "opcode": "data_hidevariable",
+      "category": "data",
+      "shape": "command",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "VARIABLE": {
+          "type": "varfield"
+        }
+      },
+      "text": "hide variable %1",
+      "source": "scratch-blocks/src/blocks/data.ts"
+    },
+    "data_listcontents": {
+      "opcode": "data_listcontents",
+      "category": "data",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "LIST": {
+          "type": "listfield"
+        }
+      },
+      "text": "",
+      "source": "scratch-blocks/src/blocks/data.ts"
+    },
+    "data_addtolist": {
+      "opcode": "data_addtolist",
+      "category": "data",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "ITEM": {
+          "type": "text"
+        }
+      },
+      "fields": {
+        "LIST": {
+          "type": "listfield"
+        }
+      },
+      "text": "add %1 to %2",
+      "source": "scratch-blocks/src/blocks/data.ts"
+    },
+    "data_deleteoflist": {
+      "opcode": "data_deleteoflist",
+      "category": "data",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "INDEX": {
+          "type": "number"
+        }
+      },
+      "fields": {
+        "LIST": {
+          "type": "listfield"
+        }
+      },
+      "text": "delete %1 of %2",
+      "source": "scratch-blocks/src/blocks/data.ts"
+    },
+    "data_deletealloflist": {
+      "opcode": "data_deletealloflist",
+      "category": "data",
+      "shape": "command",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "LIST": {
+          "type": "listfield"
+        }
+      },
+      "text": "delete all of %1",
+      "source": "scratch-blocks/src/blocks/data.ts"
+    },
+    "data_insertatlist": {
+      "opcode": "data_insertatlist",
+      "category": "data",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "ITEM": {
+          "type": "value"
+        },
+        "INDEX": {
+          "type": "number"
+        }
+      },
+      "fields": {
+        "LIST": {
+          "type": "listfield"
+        }
+      },
+      "text": "insert %1 at %2 of %3",
+      "source": "scratch-blocks/src/blocks/data.ts"
+    },
+    "data_replaceitemoflist": {
+      "opcode": "data_replaceitemoflist",
+      "category": "data",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "INDEX": {
+          "type": "number"
+        },
+        "ITEM": {
+          "type": "value"
+        }
+      },
+      "fields": {
+        "LIST": {
+          "type": "listfield"
+        }
+      },
+      "text": "replace item %1 of %2 with %3",
+      "source": "scratch-blocks/src/blocks/data.ts"
+    },
+    "data_itemoflist": {
+      "opcode": "data_itemoflist",
+      "category": "data",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "INDEX": {
+          "type": "number"
+        }
+      },
+      "fields": {
+        "LIST": {
+          "type": "listfield"
+        }
+      },
+      "text": "item %1 of %2",
+      "source": "scratch-blocks/src/blocks/data.ts"
+    },
+    "data_itemnumoflist": {
+      "opcode": "data_itemnumoflist",
+      "category": "data",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "ITEM": {
+          "type": "value"
+        }
+      },
+      "fields": {
+        "LIST": {
+          "type": "listfield"
+        }
+      },
+      "text": "item # of %1 in %2",
+      "source": "scratch-blocks/src/blocks/data.ts"
+    },
+    "data_lengthoflist": {
+      "opcode": "data_lengthoflist",
+      "category": "data",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "LIST": {
+          "type": "listfield"
+        }
+      },
+      "text": "length of %1",
+      "source": "scratch-blocks/src/blocks/data.ts"
+    },
+    "data_listcontainsitem": {
+      "opcode": "data_listcontainsitem",
+      "category": "data",
+      "shape": "boolean",
+      "extension": null,
+      "inputs": {
+        "ITEM": {
+          "type": "text"
+        }
+      },
+      "fields": {
+        "LIST": {
+          "type": "listfield"
+        }
+      },
+      "text": "%1 contains %2?",
+      "source": "scratch-blocks/src/blocks/data.ts"
+    },
+    "data_showlist": {
+      "opcode": "data_showlist",
+      "category": "data",
+      "shape": "command",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "LIST": {
+          "type": "listfield"
+        }
+      },
+      "text": "show list %1",
+      "source": "scratch-blocks/src/blocks/data.ts"
+    },
+    "data_hidelist": {
+      "opcode": "data_hidelist",
+      "category": "data",
+      "shape": "command",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "LIST": {
+          "type": "listfield"
+        }
+      },
+      "text": "hide list %1",
+      "source": "scratch-blocks/src/blocks/data.ts"
+    },
+    "event_whentouchingobject": {
+      "opcode": "event_whentouchingobject",
+      "category": "events",
+      "shape": "hat",
+      "extension": null,
+      "inputs": {
+        "TOUCHINGOBJECTMENU": {
+          "type": "menu"
+        }
+      },
+      "fields": {},
+      "text": "when this sprite touches %1",
+      "source": "scratch-blocks/src/blocks/event.ts"
+    },
+    "event_touchingobjectmenu": {
+      "opcode": "event_touchingobjectmenu",
+      "category": "events",
+      "shape": "menu-source",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "TOUCHINGOBJECTMENU": {
+          "type": "menu",
+          "options": []
+        }
+      },
+      "source": "scratch-blocks (下拉影子积木)"
+    },
+    "event_whenflagclicked": {
+      "opcode": "event_whenflagclicked",
+      "category": "events",
+      "shape": "hat",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "when %1 clicked",
+      "source": "scratch-blocks/src/blocks/event.ts"
+    },
+    "event_whenthisspriteclicked": {
+      "opcode": "event_whenthisspriteclicked",
+      "category": "events",
+      "shape": "hat",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "when this sprite clicked",
+      "source": "scratch-blocks/src/blocks/event.ts"
+    },
+    "event_whenstageclicked": {
+      "opcode": "event_whenstageclicked",
+      "category": "events",
+      "shape": "hat",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "when stage clicked",
+      "source": "scratch-blocks/src/blocks/event.ts"
+    },
+    "event_whenbroadcastreceived": {
+      "opcode": "event_whenbroadcastreceived",
+      "category": "events",
+      "shape": "hat",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "BROADCAST_OPTION": {
+          "type": "broadcast"
+        }
+      },
+      "text": "when I receive %1",
+      "source": "scratch-blocks/src/blocks/event.ts"
+    },
+    "event_whengreaterthan": {
+      "opcode": "event_whengreaterthan",
+      "category": "events",
+      "shape": "hat",
+      "extension": null,
+      "inputs": {
+        "VALUE": {
+          "type": "number"
+        }
+      },
+      "fields": {
+        "WHENGREATERTHANMENU": {
+          "type": "menu",
+          "options": [
+            [
+              "EVENT_WHENGREATERTHAN_LOUDNESS",
+              "LOUDNESS"
+            ],
+            [
+              "EVENT_WHENGREATERTHAN_TIMER",
+              "TIMER"
+            ]
+          ]
+        }
+      },
+      "text": "when %1 > %2",
+      "source": "scratch-blocks/src/blocks/event.ts"
+    },
+    "event_broadcast_menu": {
+      "opcode": "event_broadcast_menu",
+      "category": "events",
+      "shape": "menu-source",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "BROADCAST_OPTION": {
+          "type": "menu",
+          "options": []
+        }
+      },
+      "source": "scratch-blocks (下拉影子积木)"
+    },
+    "event_broadcast": {
+      "opcode": "event_broadcast",
+      "category": "events",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "BROADCAST_INPUT": {
+          "type": "broadcast"
+        }
+      },
+      "fields": {},
+      "text": "broadcast %1",
+      "source": "scratch-blocks/src/blocks/event.ts"
+    },
+    "event_broadcastandwait": {
+      "opcode": "event_broadcastandwait",
+      "category": "events",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "BROADCAST_INPUT": {
+          "type": "broadcast"
+        }
+      },
+      "fields": {},
+      "text": "broadcast %1 and wait",
+      "source": "scratch-blocks/src/blocks/event.ts"
+    },
+    "event_whenkeypressed": {
+      "opcode": "event_whenkeypressed",
+      "category": "events",
+      "shape": "hat",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "KEY_OPTION": {
+          "type": "menu",
+          "options": [
+            [
+              "EVENT_WHENKEYPRESSED_SPACE",
+              "space"
+            ],
+            [
+              "EVENT_WHENKEYPRESSED_UP",
+              "up arrow"
+            ],
+            [
+              "EVENT_WHENKEYPRESSED_DOWN",
+              "down arrow"
+            ],
+            [
+              "EVENT_WHENKEYPRESSED_RIGHT",
+              "right arrow"
+            ],
+            [
+              "EVENT_WHENKEYPRESSED_LEFT",
+              "left arrow"
+            ],
+            [
+              "EVENT_WHENKEYPRESSED_ANY",
+              "any"
+            ],
+            [
+              "a",
+              "a"
+            ],
+            [
+              "b",
+              "b"
+            ],
+            [
+              "c",
+              "c"
+            ],
+            [
+              "d",
+              "d"
+            ],
+            [
+              "e",
+              "e"
+            ],
+            [
+              "f",
+              "f"
+            ],
+            [
+              "g",
+              "g"
+            ],
+            [
+              "h",
+              "h"
+            ],
+            [
+              "i",
+              "i"
+            ],
+            [
+              "j",
+              "j"
+            ],
+            [
+              "k",
+              "k"
+            ],
+            [
+              "l",
+              "l"
+            ],
+            [
+              "m",
+              "m"
+            ],
+            [
+              "n",
+              "n"
+            ],
+            [
+              "o",
+              "o"
+            ],
+            [
+              "p",
+              "p"
+            ],
+            [
+              "q",
+              "q"
+            ],
+            [
+              "r",
+              "r"
+            ],
+            [
+              "s",
+              "s"
+            ],
+            [
+              "t",
+              "t"
+            ],
+            [
+              "u",
+              "u"
+            ],
+            [
+              "v",
+              "v"
+            ],
+            [
+              "w",
+              "w"
+            ],
+            [
+              "x",
+              "x"
+            ],
+            [
+              "y",
+              "y"
+            ],
+            [
+              "z",
+              "z"
+            ],
+            [
+              "0",
+              "0"
+            ],
+            [
+              "1",
+              "1"
+            ],
+            [
+              "2",
+              "2"
+            ],
+            [
+              "3",
+              "3"
+            ],
+            [
+              "4",
+              "4"
+            ],
+            [
+              "5",
+              "5"
+            ],
+            [
+              "6",
+              "6"
+            ],
+            [
+              "7",
+              "7"
+            ],
+            [
+              "8",
+              "8"
+            ],
+            [
+              "9",
+              "9"
+            ]
+          ]
+        }
+      },
+      "text": "when %1 key pressed",
+      "source": "scratch-blocks/src/blocks/event.ts"
+    },
+    "looks_sayforsecs": {
+      "opcode": "looks_sayforsecs",
+      "category": "looks",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "MESSAGE": {
+          "type": "value"
+        },
+        "SECS": {
+          "type": "number"
+        }
+      },
+      "fields": {},
+      "text": "say %1 for %2 seconds",
+      "source": "scratch-blocks/src/blocks/looks.ts"
+    },
+    "looks_say": {
+      "opcode": "looks_say",
+      "category": "looks",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "MESSAGE": {
+          "type": "text"
+        }
+      },
+      "fields": {},
+      "text": "say %1",
+      "source": "scratch-blocks/src/blocks/looks.ts"
+    },
+    "looks_thinkforsecs": {
+      "opcode": "looks_thinkforsecs",
+      "category": "looks",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "MESSAGE": {
+          "type": "value"
+        },
+        "SECS": {
+          "type": "number"
+        }
+      },
+      "fields": {},
+      "text": "think %1 for %2 seconds",
+      "source": "scratch-blocks/src/blocks/looks.ts"
+    },
+    "looks_think": {
+      "opcode": "looks_think",
+      "category": "looks",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "MESSAGE": {
+          "type": "text"
+        }
+      },
+      "fields": {},
+      "text": "think %1",
+      "source": "scratch-blocks/src/blocks/looks.ts"
+    },
+    "looks_show": {
+      "opcode": "looks_show",
+      "category": "looks",
+      "shape": "command",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "show",
+      "source": "scratch-blocks/src/blocks/looks.ts"
+    },
+    "looks_hide": {
+      "opcode": "looks_hide",
+      "category": "looks",
+      "shape": "command",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "hide",
+      "source": "scratch-blocks/src/blocks/looks.ts"
+    },
+    "looks_changeeffectby": {
+      "opcode": "looks_changeeffectby",
+      "category": "looks",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "CHANGE": {
+          "type": "number"
+        }
+      },
+      "fields": {
+        "EFFECT": {
+          "type": "menu",
+          "options": [
+            [
+              "LOOKS_EFFECT_COLOR",
+              "COLOR"
+            ],
+            [
+              "LOOKS_EFFECT_FISHEYE",
+              "FISHEYE"
+            ],
+            [
+              "LOOKS_EFFECT_WHIRL",
+              "WHIRL"
+            ],
+            [
+              "LOOKS_EFFECT_PIXELATE",
+              "PIXELATE"
+            ],
+            [
+              "LOOKS_EFFECT_MOSAIC",
+              "MOSAIC"
+            ],
+            [
+              "LOOKS_EFFECT_BRIGHTNESS",
+              "BRIGHTNESS"
+            ],
+            [
+              "LOOKS_EFFECT_GHOST",
+              "GHOST"
+            ]
+          ]
+        }
+      },
+      "text": "change %1 effect by %2",
+      "source": "scratch-blocks/src/blocks/looks.ts"
+    },
+    "looks_seteffectto": {
+      "opcode": "looks_seteffectto",
+      "category": "looks",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "VALUE": {
+          "type": "number"
+        }
+      },
+      "fields": {
+        "EFFECT": {
+          "type": "menu",
+          "options": [
+            [
+              "LOOKS_EFFECT_COLOR",
+              "COLOR"
+            ],
+            [
+              "LOOKS_EFFECT_FISHEYE",
+              "FISHEYE"
+            ],
+            [
+              "LOOKS_EFFECT_WHIRL",
+              "WHIRL"
+            ],
+            [
+              "LOOKS_EFFECT_PIXELATE",
+              "PIXELATE"
+            ],
+            [
+              "LOOKS_EFFECT_MOSAIC",
+              "MOSAIC"
+            ],
+            [
+              "LOOKS_EFFECT_BRIGHTNESS",
+              "BRIGHTNESS"
+            ],
+            [
+              "LOOKS_EFFECT_GHOST",
+              "GHOST"
+            ]
+          ]
+        }
+      },
+      "text": "set %1 effect to %2",
+      "source": "scratch-blocks/src/blocks/looks.ts"
+    },
+    "looks_cleargraphiceffects": {
+      "opcode": "looks_cleargraphiceffects",
+      "category": "looks",
+      "shape": "command",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "clear graphic effects",
+      "source": "scratch-blocks/src/blocks/looks.ts"
+    },
+    "looks_changesizeby": {
+      "opcode": "looks_changesizeby",
+      "category": "looks",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "CHANGE": {
+          "type": "number"
+        }
+      },
+      "fields": {},
+      "text": "change size by %1",
+      "source": "scratch-blocks/src/blocks/looks.ts"
+    },
+    "looks_setsizeto": {
+      "opcode": "looks_setsizeto",
+      "category": "looks",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "SIZE": {
+          "type": "number"
+        }
+      },
+      "fields": {},
+      "text": "set size to %1 %",
+      "source": "scratch-blocks/src/blocks/looks.ts"
+    },
+    "looks_size": {
+      "opcode": "looks_size",
+      "category": "looks",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "size",
+      "source": "scratch-blocks/src/blocks/looks.ts"
+    },
+    "looks_switchcostumeto": {
+      "opcode": "looks_switchcostumeto",
+      "category": "looks",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "COSTUME": {
+          "type": "menu"
+        }
+      },
+      "fields": {},
+      "text": "switch costume to %1",
+      "menu_inputs": {
+        "COSTUME": "looks_costume"
+      },
+      "source": "scratch-blocks/src/blocks/looks.ts"
+    },
+    "looks_nextcostume": {
+      "opcode": "looks_nextcostume",
+      "category": "looks",
+      "shape": "command",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "next costume",
+      "source": "scratch-blocks/src/blocks/looks.ts"
+    },
+    "looks_switchbackdropto": {
+      "opcode": "looks_switchbackdropto",
+      "category": "looks",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "BACKDROP": {
+          "type": "menu"
+        }
+      },
+      "fields": {},
+      "text": "switch backdrop to %1",
+      "menu_inputs": {
+        "BACKDROP": "looks_backdrops"
+      },
+      "source": "scratch-blocks/src/blocks/looks.ts"
+    },
+    "looks_gotofrontback": {
+      "opcode": "looks_gotofrontback",
+      "category": "looks",
+      "shape": "command",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "FRONT_BACK": {
+          "type": "menu",
+          "options": [
+            [
+              "LOOKS_GOTOFRONTBACK_FRONT",
+              "front"
+            ],
+            [
+              "LOOKS_GOTOFRONTBACK_BACK",
+              "back"
+            ]
+          ]
+        }
+      },
+      "text": "go to %1 layer",
+      "source": "scratch-blocks/src/blocks/looks.ts"
+    },
+    "looks_goforwardbackwardlayers": {
+      "opcode": "looks_goforwardbackwardlayers",
+      "category": "looks",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "NUM": {
+          "type": "number"
+        }
+      },
+      "fields": {
+        "FORWARD_BACKWARD": {
+          "type": "menu",
+          "options": [
+            [
+              "LOOKS_GOFORWARDBACKWARDLAYERS_FORWARD",
+              "forward"
+            ],
+            [
+              "LOOKS_GOFORWARDBACKWARDLAYERS_BACKWARD",
+              "backward"
+            ]
+          ]
+        }
+      },
+      "text": "go %1 %2 layers",
+      "source": "scratch-blocks/src/blocks/looks.ts"
+    },
+    "looks_backdropnumbername": {
+      "opcode": "looks_backdropnumbername",
+      "category": "looks",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "NUMBER_NAME": {
+          "type": "menu",
+          "options": [
+            [
+              "LOOKS_NUMBERNAME_NUMBER",
+              "number"
+            ],
+            [
+              "LOOKS_NUMBERNAME_NAME",
+              "name"
+            ]
+          ]
+        }
+      },
+      "text": "backdrop %1",
+      "source": "scratch-blocks/src/blocks/looks.ts"
+    },
+    "looks_costumenumbername": {
+      "opcode": "looks_costumenumbername",
+      "category": "looks",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "NUMBER_NAME": {
+          "type": "menu",
+          "options": [
+            [
+              "LOOKS_NUMBERNAME_NUMBER",
+              "number"
+            ],
+            [
+              "LOOKS_NUMBERNAME_NAME",
+              "name"
+            ]
+          ]
+        }
+      },
+      "text": "costume %1",
+      "source": "scratch-blocks/src/blocks/looks.ts"
+    },
+    "looks_switchbackdroptoandwait": {
+      "opcode": "looks_switchbackdroptoandwait",
+      "category": "looks",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "BACKDROP": {
+          "type": "menu"
+        }
+      },
+      "fields": {},
+      "text": "switch backdrop to %1 and wait",
+      "menu_inputs": {
+        "BACKDROP": "looks_backdrops"
+      },
+      "source": "scratch-blocks/src/blocks/looks.ts"
+    },
+    "looks_nextbackdrop": {
+      "opcode": "looks_nextbackdrop",
+      "category": "looks",
+      "shape": "command",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "next backdrop",
+      "source": "scratch-blocks/src/blocks/looks.ts"
+    },
+    "motion_movesteps": {
+      "opcode": "motion_movesteps",
+      "category": "motion",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "STEPS": {
+          "type": "number"
+        }
+      },
+      "fields": {},
+      "text": "move %1 steps",
+      "source": "scratch-blocks/src/blocks/motion.ts"
+    },
+    "motion_turnright": {
+      "opcode": "motion_turnright",
+      "category": "motion",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "DEGREES": {
+          "type": "number"
+        }
+      },
+      "fields": {},
+      "text": "turn %1 %2 degrees",
+      "source": "scratch-blocks/src/blocks/motion.ts"
+    },
+    "motion_turnleft": {
+      "opcode": "motion_turnleft",
+      "category": "motion",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "DEGREES": {
+          "type": "number"
+        }
+      },
+      "fields": {},
+      "text": "turn %1 %2 degrees",
+      "source": "scratch-blocks/src/blocks/motion.ts"
+    },
+    "motion_pointindirection": {
+      "opcode": "motion_pointindirection",
+      "category": "motion",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "DIRECTION": {
+          "type": "angle"
+        }
+      },
+      "fields": {},
+      "text": "point in direction %1",
+      "source": "scratch-blocks/src/blocks/motion.ts"
+    },
+    "motion_pointtowards": {
+      "opcode": "motion_pointtowards",
+      "category": "motion",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "TOWARDS": {
+          "type": "menu"
+        }
+      },
+      "fields": {},
+      "text": "point towards %1",
+      "menu_inputs": {
+        "TOWARDS": "motion_pointtowards_menu"
+      },
+      "source": "scratch-blocks/src/blocks/motion.ts"
+    },
+    "motion_gotoxy": {
+      "opcode": "motion_gotoxy",
+      "category": "motion",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "X": {
+          "type": "number"
+        },
+        "Y": {
+          "type": "number"
+        }
+      },
+      "fields": {},
+      "text": "go to x: %1 y: %2",
+      "source": "scratch-blocks/src/blocks/motion.ts"
+    },
+    "motion_goto": {
+      "opcode": "motion_goto",
+      "category": "motion",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "TO": {
+          "type": "menu"
+        }
+      },
+      "fields": {},
+      "text": "go to %1",
+      "menu_inputs": {
+        "TO": "motion_goto_menu"
+      },
+      "source": "scratch-blocks/src/blocks/motion.ts"
+    },
+    "motion_glidesecstoxy": {
+      "opcode": "motion_glidesecstoxy",
+      "category": "motion",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "SECS": {
+          "type": "number"
+        },
+        "X": {
+          "type": "number"
+        },
+        "Y": {
+          "type": "number"
+        }
+      },
+      "fields": {},
+      "text": "glide %1 secs to x: %2 y: %3",
+      "source": "scratch-blocks/src/blocks/motion.ts"
+    },
+    "motion_glideto": {
+      "opcode": "motion_glideto",
+      "category": "motion",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "SECS": {
+          "type": "number"
+        },
+        "TO": {
+          "type": "menu"
+        }
+      },
+      "fields": {},
+      "text": "glide %1 secs to %2",
+      "menu_inputs": {
+        "TO": "motion_glideto_menu"
+      },
+      "source": "scratch-blocks/src/blocks/motion.ts"
+    },
+    "motion_changexby": {
+      "opcode": "motion_changexby",
+      "category": "motion",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "DX": {
+          "type": "number"
+        }
+      },
+      "fields": {},
+      "text": "change x by %1",
+      "source": "scratch-blocks/src/blocks/motion.ts"
+    },
+    "motion_setx": {
+      "opcode": "motion_setx",
+      "category": "motion",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "X": {
+          "type": "number"
+        }
+      },
+      "fields": {},
+      "text": "set x to %1",
+      "source": "scratch-blocks/src/blocks/motion.ts"
+    },
+    "motion_changeyby": {
+      "opcode": "motion_changeyby",
+      "category": "motion",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "DY": {
+          "type": "number"
+        }
+      },
+      "fields": {},
+      "text": "change y by %1",
+      "source": "scratch-blocks/src/blocks/motion.ts"
+    },
+    "motion_sety": {
+      "opcode": "motion_sety",
+      "category": "motion",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "Y": {
+          "type": "number"
+        }
+      },
+      "fields": {},
+      "text": "set y to %1",
+      "source": "scratch-blocks/src/blocks/motion.ts"
+    },
+    "motion_ifonedgebounce": {
+      "opcode": "motion_ifonedgebounce",
+      "category": "motion",
+      "shape": "command",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "if on edge, bounce",
+      "source": "scratch-blocks/src/blocks/motion.ts"
+    },
+    "motion_setrotationstyle": {
+      "opcode": "motion_setrotationstyle",
+      "category": "motion",
+      "shape": "command",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "STYLE": {
+          "type": "menu",
+          "options": [
+            [
+              "MOTION_SETROTATIONSTYLE_LEFTRIGHT",
+              "left-right"
+            ],
+            [
+              "MOTION_SETROTATIONSTYLE_DONTROTATE",
+              "don't rotate"
+            ],
+            [
+              "MOTION_SETROTATIONSTYLE_ALLAROUND",
+              "all around"
+            ]
+          ]
+        }
+      },
+      "text": "set rotation style %1",
+      "source": "scratch-blocks/src/blocks/motion.ts"
+    },
+    "motion_xposition": {
+      "opcode": "motion_xposition",
+      "category": "motion",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "x position",
+      "source": "scratch-blocks/src/blocks/motion.ts"
+    },
+    "motion_yposition": {
+      "opcode": "motion_yposition",
+      "category": "motion",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "y position",
+      "source": "scratch-blocks/src/blocks/motion.ts"
+    },
+    "motion_direction": {
+      "opcode": "motion_direction",
+      "category": "motion",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "direction",
+      "source": "scratch-blocks/src/blocks/motion.ts"
+    },
+    "operator_add": {
+      "opcode": "operator_add",
+      "category": "operators",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {
+        "NUM1": {
+          "type": "number"
+        },
+        "NUM2": {
+          "type": "number"
+        }
+      },
+      "fields": {},
+      "text": "%1 + %2",
+      "source": "scratch-blocks/src/blocks/operators.ts"
+    },
+    "operator_subtract": {
+      "opcode": "operator_subtract",
+      "category": "operators",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {
+        "NUM1": {
+          "type": "number"
+        },
+        "NUM2": {
+          "type": "number"
+        }
+      },
+      "fields": {},
+      "text": "%1 - %2",
+      "source": "scratch-blocks/src/blocks/operators.ts"
+    },
+    "operator_multiply": {
+      "opcode": "operator_multiply",
+      "category": "operators",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {
+        "NUM1": {
+          "type": "number"
+        },
+        "NUM2": {
+          "type": "number"
+        }
+      },
+      "fields": {},
+      "text": "%1 * %2",
+      "source": "scratch-blocks/src/blocks/operators.ts"
+    },
+    "operator_divide": {
+      "opcode": "operator_divide",
+      "category": "operators",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {
+        "NUM1": {
+          "type": "number"
+        },
+        "NUM2": {
+          "type": "number"
+        }
+      },
+      "fields": {},
+      "text": "%1 / %2",
+      "source": "scratch-blocks/src/blocks/operators.ts"
+    },
+    "operator_random": {
+      "opcode": "operator_random",
+      "category": "operators",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {
+        "FROM": {
+          "type": "number"
+        },
+        "TO": {
+          "type": "number"
+        }
+      },
+      "fields": {},
+      "text": "pick random %1 to %2",
+      "source": "scratch-blocks/src/blocks/operators.ts"
+    },
+    "operator_lt": {
+      "opcode": "operator_lt",
+      "category": "operators",
+      "shape": "boolean",
+      "extension": null,
+      "inputs": {
+        "OPERAND1": {
+          "type": "value"
+        },
+        "OPERAND2": {
+          "type": "value"
+        }
+      },
+      "fields": {},
+      "text": "%1 < %2",
+      "source": "scratch-blocks/src/blocks/operators.ts"
+    },
+    "operator_equals": {
+      "opcode": "operator_equals",
+      "category": "operators",
+      "shape": "boolean",
+      "extension": null,
+      "inputs": {
+        "OPERAND1": {
+          "type": "value"
+        },
+        "OPERAND2": {
+          "type": "value"
+        }
+      },
+      "fields": {},
+      "text": "%1 = %2",
+      "source": "scratch-blocks/src/blocks/operators.ts"
+    },
+    "operator_gt": {
+      "opcode": "operator_gt",
+      "category": "operators",
+      "shape": "boolean",
+      "extension": null,
+      "inputs": {
+        "OPERAND1": {
+          "type": "value"
+        },
+        "OPERAND2": {
+          "type": "value"
+        }
+      },
+      "fields": {},
+      "text": "%1 > %2",
+      "source": "scratch-blocks/src/blocks/operators.ts"
+    },
+    "operator_and": {
+      "opcode": "operator_and",
+      "category": "operators",
+      "shape": "boolean",
+      "extension": null,
+      "inputs": {
+        "OPERAND1": {
+          "type": "boolean"
+        },
+        "OPERAND2": {
+          "type": "boolean"
+        }
+      },
+      "fields": {},
+      "text": "%1 and %2",
+      "source": "scratch-blocks/src/blocks/operators.ts"
+    },
+    "operator_or": {
+      "opcode": "operator_or",
+      "category": "operators",
+      "shape": "boolean",
+      "extension": null,
+      "inputs": {
+        "OPERAND1": {
+          "type": "boolean"
+        },
+        "OPERAND2": {
+          "type": "boolean"
+        }
+      },
+      "fields": {},
+      "text": "%1 or %2",
+      "source": "scratch-blocks/src/blocks/operators.ts"
+    },
+    "operator_not": {
+      "opcode": "operator_not",
+      "category": "operators",
+      "shape": "boolean",
+      "extension": null,
+      "inputs": {
+        "OPERAND": {
+          "type": "boolean"
+        }
+      },
+      "fields": {},
+      "text": "not %1",
+      "source": "scratch-blocks/src/blocks/operators.ts"
+    },
+    "operator_join": {
+      "opcode": "operator_join",
+      "category": "operators",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {
+        "STRING1": {
+          "type": "text"
+        },
+        "STRING2": {
+          "type": "text"
+        }
+      },
+      "fields": {},
+      "text": "join %1 %2",
+      "source": "scratch-blocks/src/blocks/operators.ts"
+    },
+    "operator_letter_of": {
+      "opcode": "operator_letter_of",
+      "category": "operators",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {
+        "LETTER": {
+          "type": "text"
+        },
+        "STRING": {
+          "type": "text"
+        }
+      },
+      "fields": {},
+      "text": "letter %1 of %2",
+      "source": "scratch-blocks/src/blocks/operators.ts"
+    },
+    "operator_length": {
+      "opcode": "operator_length",
+      "category": "operators",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {
+        "STRING": {
+          "type": "text"
+        }
+      },
+      "fields": {},
+      "text": "length of %1",
+      "source": "scratch-blocks/src/blocks/operators.ts"
+    },
+    "operator_contains": {
+      "opcode": "operator_contains",
+      "category": "operators",
+      "shape": "boolean",
+      "extension": null,
+      "inputs": {
+        "STRING1": {
+          "type": "text"
+        },
+        "STRING2": {
+          "type": "text"
+        }
+      },
+      "fields": {},
+      "text": "%1 contains %2?",
+      "source": "scratch-blocks/src/blocks/operators.ts"
+    },
+    "operator_mod": {
+      "opcode": "operator_mod",
+      "category": "operators",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {
+        "NUM1": {
+          "type": "number"
+        },
+        "NUM2": {
+          "type": "number"
+        }
+      },
+      "fields": {},
+      "text": "%1 mod %2",
+      "source": "scratch-blocks/src/blocks/operators.ts"
+    },
+    "operator_round": {
+      "opcode": "operator_round",
+      "category": "operators",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {
+        "NUM": {
+          "type": "number"
+        }
+      },
+      "fields": {},
+      "text": "round %1",
+      "source": "scratch-blocks/src/blocks/operators.ts"
+    },
+    "operator_mathop": {
+      "opcode": "operator_mathop",
+      "category": "operators",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {
+        "NUM": {
+          "type": "number"
+        }
+      },
+      "fields": {
+        "OPERATOR": {
+          "type": "menu",
+          "options": [
+            [
+              "OPERATORS_MATHOP_ABS",
+              "abs"
+            ],
+            [
+              "OPERATORS_MATHOP_FLOOR",
+              "floor"
+            ],
+            [
+              "OPERATORS_MATHOP_CEILING",
+              "ceiling"
+            ],
+            [
+              "OPERATORS_MATHOP_SQRT",
+              "sqrt"
+            ],
+            [
+              "OPERATORS_MATHOP_SIN",
+              "sin"
+            ],
+            [
+              "OPERATORS_MATHOP_COS",
+              "cos"
+            ],
+            [
+              "OPERATORS_MATHOP_TAN",
+              "tan"
+            ],
+            [
+              "OPERATORS_MATHOP_ASIN",
+              "asin"
+            ],
+            [
+              "OPERATORS_MATHOP_ACOS",
+              "acos"
+            ],
+            [
+              "OPERATORS_MATHOP_ATAN",
+              "atan"
+            ],
+            [
+              "OPERATORS_MATHOP_LN",
+              "ln"
+            ],
+            [
+              "OPERATORS_MATHOP_LOG",
+              "log"
+            ],
+            [
+              "OPERATORS_MATHOP_EEXP",
+              "e ^"
+            ],
+            [
+              "OPERATORS_MATHOP_10EXP",
+              "10 ^"
+            ]
+          ]
+        }
+      },
+      "text": "%1 of %2",
+      "source": "scratch-blocks/src/blocks/operators.ts"
+    },
+    "procedures_definition": {
+      "opcode": "procedures_definition",
+      "category": "procedures",
+      "shape": "hat",
+      "extension": null,
+      "inputs": {
+        "custom_block": {
+          "type": "substack"
+        }
+      },
+      "fields": {},
+      "text": "define %1",
+      "source": "scratch-blocks/src/blocks/procedures.ts"
+    },
+    "procedures_call": {
+      "opcode": "procedures_call",
+      "category": "procedures",
+      "shape": "command",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "",
+      "source": "scratch-blocks/src/blocks/procedures.ts"
+    },
+    "procedures_prototype": {
+      "opcode": "procedures_prototype",
+      "category": "procedures",
+      "shape": "command",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "",
+      "source": "scratch-blocks/src/blocks/procedures.ts"
+    },
+    "procedures_declaration": {
+      "opcode": "procedures_declaration",
+      "category": "procedures",
+      "shape": "command",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "",
+      "source": "scratch-blocks/src/blocks/procedures.ts"
+    },
+    "argument_reporter_boolean": {
+      "opcode": "argument_reporter_boolean",
+      "category": "procedures",
+      "shape": "boolean",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "VALUE": {
+          "type": "argument"
+        }
+      },
+      "text": "",
+      "source": "scratch-blocks/src/blocks/procedures.ts"
+    },
+    "argument_reporter_string_number": {
+      "opcode": "argument_reporter_string_number",
+      "category": "procedures",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "VALUE": {
+          "type": "argument"
+        }
+      },
+      "text": "",
+      "source": "scratch-blocks/src/blocks/procedures.ts"
+    },
+    "sensing_touchingobject": {
+      "opcode": "sensing_touchingobject",
+      "category": "sensing",
+      "shape": "boolean",
+      "extension": null,
+      "inputs": {
+        "TOUCHINGOBJECTMENU": {
+          "type": "menu"
+        }
+      },
+      "fields": {},
+      "text": "touching %1?",
+      "menu_inputs": {
+        "TOUCHINGOBJECTMENU": "sensing_touchingobjectmenu"
+      },
+      "source": "scratch-blocks/src/blocks/sensing.ts"
+    },
+    "sensing_touchingcolor": {
+      "opcode": "sensing_touchingcolor",
+      "category": "sensing",
+      "shape": "boolean",
+      "extension": null,
+      "inputs": {
+        "COLOR": {
+          "type": "color"
+        }
+      },
+      "fields": {},
+      "text": "touching color %1?",
+      "source": "scratch-blocks/src/blocks/sensing.ts"
+    },
+    "sensing_coloristouchingcolor": {
+      "opcode": "sensing_coloristouchingcolor",
+      "category": "sensing",
+      "shape": "boolean",
+      "extension": null,
+      "inputs": {
+        "COLOR": {
+          "type": "color"
+        },
+        "COLOR2": {
+          "type": "color"
+        }
+      },
+      "fields": {},
+      "text": "color %1 is touching %2?",
+      "source": "scratch-blocks/src/blocks/sensing.ts"
+    },
+    "sensing_distanceto": {
+      "opcode": "sensing_distanceto",
+      "category": "sensing",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {
+        "DISTANCETOMENU": {
+          "type": "menu"
+        }
+      },
+      "fields": {},
+      "text": "distance to %1",
+      "menu_inputs": {
+        "DISTANCETOMENU": "sensing_distancetomenu"
+      },
+      "source": "scratch-blocks/src/blocks/sensing.ts"
+    },
+    "sensing_askandwait": {
+      "opcode": "sensing_askandwait",
+      "category": "sensing",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "QUESTION": {
+          "type": "text"
+        }
+      },
+      "fields": {},
+      "text": "ask %1 and wait",
+      "source": "scratch-blocks/src/blocks/sensing.ts"
+    },
+    "sensing_answer": {
+      "opcode": "sensing_answer",
+      "category": "sensing",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "answer",
+      "source": "scratch-blocks/src/blocks/sensing.ts"
+    },
+    "sensing_keypressed": {
+      "opcode": "sensing_keypressed",
+      "category": "sensing",
+      "shape": "boolean",
+      "extension": null,
+      "inputs": {
+        "KEY_OPTION": {
+          "type": "menu"
+        }
+      },
+      "fields": {},
+      "text": "key %1 pressed?",
+      "source": "scratch-blocks/src/blocks/sensing.ts"
+    },
+    "sensing_mousedown": {
+      "opcode": "sensing_mousedown",
+      "category": "sensing",
+      "shape": "boolean",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "mouse down?",
+      "source": "scratch-blocks/src/blocks/sensing.ts"
+    },
+    "sensing_mousex": {
+      "opcode": "sensing_mousex",
+      "category": "sensing",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "mouse x",
+      "source": "scratch-blocks/src/blocks/sensing.ts"
+    },
+    "sensing_mousey": {
+      "opcode": "sensing_mousey",
+      "category": "sensing",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "mouse y",
+      "source": "scratch-blocks/src/blocks/sensing.ts"
+    },
+    "sensing_setdragmode": {
+      "opcode": "sensing_setdragmode",
+      "category": "sensing",
+      "shape": "command",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "DRAG_MODE": {
+          "type": "menu",
+          "options": [
+            [
+              "SENSING_SETDRAGMODE_DRAGGABLE",
+              "draggable"
+            ],
+            [
+              "SENSING_SETDRAGMODE_NOTDRAGGABLE",
+              "not draggable"
+            ]
+          ]
+        }
+      },
+      "text": "set drag mode %1",
+      "source": "scratch-blocks/src/blocks/sensing.ts"
+    },
+    "sensing_loudness": {
+      "opcode": "sensing_loudness",
+      "category": "sensing",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "loudness",
+      "source": "scratch-blocks/src/blocks/sensing.ts"
+    },
+    "sensing_loud": {
+      "opcode": "sensing_loud",
+      "category": "sensing",
+      "shape": "boolean",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "loud?",
+      "source": "scratch-blocks/src/blocks/sensing.ts"
+    },
+    "sensing_timer": {
+      "opcode": "sensing_timer",
+      "category": "sensing",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "timer",
+      "source": "scratch-blocks/src/blocks/sensing.ts"
+    },
+    "sensing_resettimer": {
+      "opcode": "sensing_resettimer",
+      "category": "sensing",
+      "shape": "command",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "reset timer",
+      "source": "scratch-blocks/src/blocks/sensing.ts"
+    },
+    "sensing_current": {
+      "opcode": "sensing_current",
+      "category": "sensing",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "CURRENTMENU": {
+          "type": "menu",
+          "options": [
+            [
+              "SENSING_CURRENT_YEAR",
+              "YEAR"
+            ],
+            [
+              "SENSING_CURRENT_MONTH",
+              "MONTH"
+            ],
+            [
+              "SENSING_CURRENT_DATE",
+              "DATE"
+            ],
+            [
+              "SENSING_CURRENT_DAYOFWEEK",
+              "DAYOFWEEK"
+            ],
+            [
+              "SENSING_CURRENT_HOUR",
+              "HOUR"
+            ],
+            [
+              "SENSING_CURRENT_MINUTE",
+              "MINUTE"
+            ],
+            [
+              "SENSING_CURRENT_SECOND",
+              "SECOND"
+            ]
+          ]
+        }
+      },
+      "text": "current %1",
+      "source": "scratch-blocks/src/blocks/sensing.ts"
+    },
+    "sensing_dayssince2000": {
+      "opcode": "sensing_dayssince2000",
+      "category": "sensing",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "days since 2000",
+      "source": "scratch-blocks/src/blocks/sensing.ts"
+    },
+    "sensing_username": {
+      "opcode": "sensing_username",
+      "category": "sensing",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "username",
+      "source": "scratch-blocks/src/blocks/sensing.ts"
+    },
+    "sound_play": {
+      "opcode": "sound_play",
+      "category": "sound",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "SOUND_MENU": {
+          "type": "menu"
+        }
+      },
+      "fields": {},
+      "text": "start sound %1",
+      "menu_inputs": {
+        "SOUND_MENU": "sound_sounds_menu"
+      },
+      "source": "scratch-blocks/src/blocks/sound.ts"
+    },
+    "sound_playuntildone": {
+      "opcode": "sound_playuntildone",
+      "category": "sound",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "SOUND_MENU": {
+          "type": "menu"
+        }
+      },
+      "fields": {},
+      "text": "play sound %1 until done",
+      "menu_inputs": {
+        "SOUND_MENU": "sound_sounds_menu"
+      },
+      "source": "scratch-blocks/src/blocks/sound.ts"
+    },
+    "sound_stopallsounds": {
+      "opcode": "sound_stopallsounds",
+      "category": "sound",
+      "shape": "command",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "stop all sounds",
+      "source": "scratch-blocks/src/blocks/sound.ts"
+    },
+    "sound_seteffectto": {
+      "opcode": "sound_seteffectto",
+      "category": "sound",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "VALUE": {
+          "type": "value"
+        }
+      },
+      "fields": {
+        "EFFECT": {
+          "type": "menu",
+          "options": [
+            [
+              "SOUND_EFFECTS_PITCH",
+              "PITCH"
+            ],
+            [
+              "SOUND_EFFECTS_PAN",
+              "PAN"
+            ]
+          ]
+        }
+      },
+      "text": "set %1 effect to %2",
+      "source": "scratch-blocks/src/blocks/sound.ts"
+    },
+    "sound_changeeffectby": {
+      "opcode": "sound_changeeffectby",
+      "category": "sound",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "VALUE": {
+          "type": "value"
+        }
+      },
+      "fields": {
+        "EFFECT": {
+          "type": "menu",
+          "options": [
+            [
+              "SOUND_EFFECTS_PITCH",
+              "PITCH"
+            ],
+            [
+              "SOUND_EFFECTS_PAN",
+              "PAN"
+            ]
+          ]
+        }
+      },
+      "text": "change %1 effect by %2",
+      "source": "scratch-blocks/src/blocks/sound.ts"
+    },
+    "sound_cleareffects": {
+      "opcode": "sound_cleareffects",
+      "category": "sound",
+      "shape": "command",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "clear sound effects",
+      "source": "scratch-blocks/src/blocks/sound.ts"
+    },
+    "sound_changevolumeby": {
+      "opcode": "sound_changevolumeby",
+      "category": "sound",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "VOLUME": {
+          "type": "number"
+        }
+      },
+      "fields": {},
+      "text": "change volume by %1",
+      "source": "scratch-blocks/src/blocks/sound.ts"
+    },
+    "sound_setvolumeto": {
+      "opcode": "sound_setvolumeto",
+      "category": "sound",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "VOLUME": {
+          "type": "number"
+        }
+      },
+      "fields": {},
+      "text": "set volume to %1%",
+      "source": "scratch-blocks/src/blocks/sound.ts"
+    },
+    "sound_volume": {
+      "opcode": "sound_volume",
+      "category": "sound",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "volume",
+      "source": "scratch-blocks/src/blocks/sound.ts"
+    },
+    "music_playDrumForBeats": {
+      "opcode": "music_playDrumForBeats",
+      "category": "music",
+      "shape": "command",
+      "extension": "music",
+      "inputs": {
+        "DRUM": {
+          "type": "menu"
+        },
+        "BEATS": {
+          "type": "text"
+        }
+      },
+      "fields": {},
+      "text": "play drum [DRUM] for [BEATS] beats",
+      "source": "scratch-vm/src/extensions/scratch3_music/index.js"
+    },
+    "music_midiPlayDrumForBeats": {
+      "opcode": "music_midiPlayDrumForBeats",
+      "category": "music",
+      "shape": "command",
+      "extension": "music",
+      "inputs": {
+        "DRUM": {
+          "type": "menu"
+        },
+        "BEATS": {
+          "type": "text"
+        }
+      },
+      "fields": {},
+      "text": "play drum [DRUM] for [BEATS] beats",
+      "source": "scratch-vm/src/extensions/scratch3_music/index.js"
+    },
+    "music_restForBeats": {
+      "opcode": "music_restForBeats",
+      "category": "music",
+      "shape": "command",
+      "extension": "music",
+      "inputs": {
+        "BEATS": {
+          "type": "text"
+        }
+      },
+      "fields": {},
+      "text": "rest for [BEATS] beats",
+      "source": "scratch-vm/src/extensions/scratch3_music/index.js"
+    },
+    "music_playNoteForBeats": {
+      "opcode": "music_playNoteForBeats",
+      "category": "music",
+      "shape": "command",
+      "extension": "music",
+      "inputs": {
+        "NOTE": {
+          "type": "menu"
+        },
+        "BEATS": {
+          "type": "text"
+        }
+      },
+      "fields": {},
+      "text": "play note [NOTE] for [BEATS] beats",
+      "source": "scratch-vm/src/extensions/scratch3_music/index.js"
+    },
+    "music_setInstrument": {
+      "opcode": "music_setInstrument",
+      "category": "music",
+      "shape": "command",
+      "extension": "music",
+      "inputs": {
+        "INSTRUMENT": {
+          "type": "menu"
+        }
+      },
+      "fields": {},
+      "text": "set instrument to [INSTRUMENT]",
+      "source": "scratch-vm/src/extensions/scratch3_music/index.js"
+    },
+    "music_midiSetInstrument": {
+      "opcode": "music_midiSetInstrument",
+      "category": "music",
+      "shape": "command",
+      "extension": "music",
+      "inputs": {
+        "INSTRUMENT": {
+          "type": "menu"
+        }
+      },
+      "fields": {},
+      "text": "set instrument to [INSTRUMENT]",
+      "source": "scratch-vm/src/extensions/scratch3_music/index.js"
+    },
+    "music_setTempo": {
+      "opcode": "music_setTempo",
+      "category": "music",
+      "shape": "command",
+      "extension": "music",
+      "inputs": {
+        "TEMPO": {
+          "type": "text"
+        }
+      },
+      "fields": {},
+      "text": "set tempo to [TEMPO]",
+      "source": "scratch-vm/src/extensions/scratch3_music/index.js"
+    },
+    "music_changeTempo": {
+      "opcode": "music_changeTempo",
+      "category": "music",
+      "shape": "command",
+      "extension": "music",
+      "inputs": {
+        "TEMPO": {
+          "type": "text"
+        }
+      },
+      "fields": {},
+      "text": "change tempo by [TEMPO]",
+      "source": "scratch-vm/src/extensions/scratch3_music/index.js"
+    },
+    "music_getTempo": {
+      "opcode": "music_getTempo",
+      "category": "music",
+      "shape": "command",
+      "extension": "music",
+      "inputs": {},
+      "fields": {},
+      "text": "tempo",
+      "source": "scratch-vm/src/extensions/scratch3_music/index.js"
+    },
+    "pen_clear": {
+      "opcode": "pen_clear",
+      "category": "pen",
+      "shape": "command",
+      "extension": "pen",
+      "inputs": {},
+      "fields": {},
+      "text": "erase all",
+      "source": "scratch-vm/src/extensions/scratch3_pen/index.js"
+    },
+    "pen_stamp": {
+      "opcode": "pen_stamp",
+      "category": "pen",
+      "shape": "command",
+      "extension": "pen",
+      "inputs": {},
+      "fields": {},
+      "text": "stamp",
+      "source": "scratch-vm/src/extensions/scratch3_pen/index.js"
+    },
+    "pen_penDown": {
+      "opcode": "pen_penDown",
+      "category": "pen",
+      "shape": "command",
+      "extension": "pen",
+      "inputs": {},
+      "fields": {},
+      "text": "pen down",
+      "source": "scratch-vm/src/extensions/scratch3_pen/index.js"
+    },
+    "pen_penUp": {
+      "opcode": "pen_penUp",
+      "category": "pen",
+      "shape": "command",
+      "extension": "pen",
+      "inputs": {},
+      "fields": {},
+      "text": "pen up",
+      "source": "scratch-vm/src/extensions/scratch3_pen/index.js"
+    },
+    "pen_setPenColorToColor": {
+      "opcode": "pen_setPenColorToColor",
+      "category": "pen",
+      "shape": "command",
+      "extension": "pen",
+      "inputs": {
+        "COLOR": {
+          "type": "text"
+        }
+      },
+      "fields": {},
+      "text": "set pen color to [COLOR]",
+      "source": "scratch-vm/src/extensions/scratch3_pen/index.js"
+    },
+    "pen_changePenColorParamBy": {
+      "opcode": "pen_changePenColorParamBy",
+      "category": "pen",
+      "shape": "command",
+      "extension": "pen",
+      "inputs": {
+        "COLOR_PARAM": {
+          "type": "menu"
+        },
+        "VALUE": {
+          "type": "text"
+        }
+      },
+      "fields": {},
+      "text": "change pen [COLOR_PARAM] by [VALUE]",
+      "source": "scratch-vm/src/extensions/scratch3_pen/index.js"
+    },
+    "pen_setPenColorParamTo": {
+      "opcode": "pen_setPenColorParamTo",
+      "category": "pen",
+      "shape": "command",
+      "extension": "pen",
+      "inputs": {
+        "COLOR_PARAM": {
+          "type": "menu"
+        },
+        "VALUE": {
+          "type": "text"
+        }
+      },
+      "fields": {},
+      "text": "set pen [COLOR_PARAM] to [VALUE]",
+      "source": "scratch-vm/src/extensions/scratch3_pen/index.js"
+    },
+    "pen_changePenSizeBy": {
+      "opcode": "pen_changePenSizeBy",
+      "category": "pen",
+      "shape": "command",
+      "extension": "pen",
+      "inputs": {
+        "SIZE": {
+          "type": "text"
+        }
+      },
+      "fields": {},
+      "text": "change pen size by [SIZE]",
+      "source": "scratch-vm/src/extensions/scratch3_pen/index.js"
+    },
+    "pen_setPenSizeTo": {
+      "opcode": "pen_setPenSizeTo",
+      "category": "pen",
+      "shape": "command",
+      "extension": "pen",
+      "inputs": {
+        "SIZE": {
+          "type": "text"
+        }
+      },
+      "fields": {},
+      "text": "set pen size to [SIZE]",
+      "source": "scratch-vm/src/extensions/scratch3_pen/index.js"
+    },
+    "pen_setPenShadeToNumber": {
+      "opcode": "pen_setPenShadeToNumber",
+      "category": "pen",
+      "shape": "command",
+      "extension": "pen",
+      "inputs": {
+        "SHADE": {
+          "type": "text"
+        }
+      },
+      "fields": {},
+      "text": "set pen shade to [SHADE]",
+      "source": "scratch-vm/src/extensions/scratch3_pen/index.js"
+    },
+    "pen_changePenShadeBy": {
+      "opcode": "pen_changePenShadeBy",
+      "category": "pen",
+      "shape": "command",
+      "extension": "pen",
+      "inputs": {
+        "SHADE": {
+          "type": "text"
+        }
+      },
+      "fields": {},
+      "text": "change pen shade by [SHADE]",
+      "source": "scratch-vm/src/extensions/scratch3_pen/index.js"
+    },
+    "pen_setPenHueToNumber": {
+      "opcode": "pen_setPenHueToNumber",
+      "category": "pen",
+      "shape": "command",
+      "extension": "pen",
+      "inputs": {
+        "HUE": {
+          "type": "text"
+        }
+      },
+      "fields": {},
+      "text": "set pen color to [HUE]",
+      "source": "scratch-vm/src/extensions/scratch3_pen/index.js"
+    },
+    "pen_changePenHueBy": {
+      "opcode": "pen_changePenHueBy",
+      "category": "pen",
+      "shape": "command",
+      "extension": "pen",
+      "inputs": {
+        "HUE": {
+          "type": "text"
+        }
+      },
+      "fields": {},
+      "text": "change pen color by [HUE]",
+      "source": "scratch-vm/src/extensions/scratch3_pen/index.js"
+    },
+    "speech2text_listenAndWait": {
+      "opcode": "speech2text_listenAndWait",
+      "category": "speech2text",
+      "shape": "command",
+      "extension": "speech2text",
+      "inputs": {},
+      "fields": {},
+      "text": "listen and wait",
+      "source": "scratch-vm/src/extensions/scratch3_speech2text/index.js"
+    },
+    "speech2text_whenIHearHat": {
+      "opcode": "speech2text_whenIHearHat",
+      "category": "speech2text",
+      "shape": "command",
+      "extension": "speech2text",
+      "inputs": {
+        "PHRASE": {
+          "type": "text"
+        }
+      },
+      "fields": {},
+      "text": "when I hear [PHRASE]",
+      "source": "scratch-vm/src/extensions/scratch3_speech2text/index.js"
+    },
+    "speech2text_getSpeech": {
+      "opcode": "speech2text_getSpeech",
+      "category": "speech2text",
+      "shape": "command",
+      "extension": "speech2text",
+      "inputs": {},
+      "fields": {},
+      "text": "speech",
+      "source": "scratch-vm/src/extensions/scratch3_speech2text/index.js"
+    },
+    "text2speech_speakAndWait": {
+      "opcode": "text2speech_speakAndWait",
+      "category": "text2speech",
+      "shape": "command",
+      "extension": "text2speech",
+      "inputs": {
+        "WORDS": {
+          "type": "text"
+        }
+      },
+      "fields": {},
+      "text": "speak [WORDS]",
+      "source": "scratch-vm/src/extensions/scratch3_text2speech/index.js"
+    },
+    "text2speech_setVoice": {
+      "opcode": "text2speech_setVoice",
+      "category": "text2speech",
+      "shape": "command",
+      "extension": "text2speech",
+      "inputs": {
+        "VOICE": {
+          "type": "menu"
+        }
+      },
+      "fields": {},
+      "text": "set voice to [VOICE]",
+      "source": "scratch-vm/src/extensions/scratch3_text2speech/index.js"
+    },
+    "text2speech_setLanguage": {
+      "opcode": "text2speech_setLanguage",
+      "category": "text2speech",
+      "shape": "command",
+      "extension": "text2speech",
+      "inputs": {
+        "LANGUAGE": {
+          "type": "menu"
+        }
+      },
+      "fields": {},
+      "text": "set language to [LANGUAGE]",
+      "source": "scratch-vm/src/extensions/scratch3_text2speech/index.js"
+    },
+    "translate_getTranslate": {
+      "opcode": "translate_getTranslate",
+      "category": "translate",
+      "shape": "command",
+      "extension": "translate",
+      "inputs": {
+        "WORDS": {
+          "type": "text"
+        },
+        "LANGUAGE": {
+          "type": "menu"
+        }
+      },
+      "fields": {},
+      "text": "translate [WORDS] to [LANGUAGE]",
+      "source": "scratch-vm/src/extensions/scratch3_translate/index.js"
+    },
+    "translate_getViewerLanguage": {
+      "opcode": "translate_getViewerLanguage",
+      "category": "translate",
+      "shape": "command",
+      "extension": "translate",
+      "inputs": {},
+      "fields": {},
+      "text": "language",
+      "source": "scratch-vm/src/extensions/scratch3_translate/index.js"
+    },
+    "videoSensing_whenMotionGreaterThan": {
+      "opcode": "videoSensing_whenMotionGreaterThan",
+      "category": "videoSensing",
+      "shape": "command",
+      "extension": "videoSensing",
+      "inputs": {
+        "REFERENCE": {
+          "type": "text"
+        }
+      },
+      "fields": {},
+      "text": "when video motion > [REFERENCE]",
+      "source": "scratch-vm/src/extensions/scratch3_video_sensing/index.js"
+    },
+    "videoSensing_videoOn": {
+      "opcode": "videoSensing_videoOn",
+      "category": "videoSensing",
+      "shape": "command",
+      "extension": "videoSensing",
+      "inputs": {
+        "ATTRIBUTE": {
+          "type": "menu"
+        },
+        "SUBJECT": {
+          "type": "menu"
+        }
+      },
+      "fields": {},
+      "text": "video [ATTRIBUTE] on [SUBJECT]",
+      "source": "scratch-vm/src/extensions/scratch3_video_sensing/index.js"
+    },
+    "videoSensing_videoToggle": {
+      "opcode": "videoSensing_videoToggle",
+      "category": "videoSensing",
+      "shape": "command",
+      "extension": "videoSensing",
+      "inputs": {
+        "VIDEO_STATE": {
+          "type": "menu"
+        }
+      },
+      "fields": {},
+      "text": "turn video [VIDEO_STATE]",
+      "source": "scratch-vm/src/extensions/scratch3_video_sensing/index.js"
+    },
+    "videoSensing_setVideoTransparency": {
+      "opcode": "videoSensing_setVideoTransparency",
+      "category": "videoSensing",
+      "shape": "command",
+      "extension": "videoSensing",
+      "inputs": {
+        "TRANSPARENCY": {
+          "type": "text"
+        }
+      },
+      "fields": {},
+      "text": "set video transparency to [TRANSPARENCY]",
+      "source": "scratch-vm/src/extensions/scratch3_video_sensing/index.js"
+    },
+    "event_whenbackdropswitchesto": {
+      "opcode": "event_whenbackdropswitchesto",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "BACKDROP": {
+          "type": "menu"
+        }
+      },
+      "source": "manual (scratch-gui 动态生成)",
+      "category": "events",
+      "shape": "hat"
+    },
+    "sensing_of": {
+      "opcode": "sensing_of",
+      "extension": null,
+      "inputs": {
+        "OBJECT": {
+          "type": "menu"
+        },
+        "PROPERTY": {
+          "type": "value"
+        }
+      },
+      "fields": {},
+      "source": "manual (scratch-gui 动态生成)",
+      "category": "sensing",
+      "shape": "reporter",
+      "menu_inputs": {
+        "OBJECT": "sensing_of_object_menu"
+      }
+    },
+    "control_stop": {
+      "opcode": "control_stop",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "STOP_OPTION": {
+          "type": "menu",
+          "options": [
+            [
+              "全部脚本",
+              "all"
+            ],
+            [
+              "这个脚本",
+              "this script"
+            ],
+            [
+              "其他脚本",
+              "other scripts in sprite"
+            ]
+          ]
+        }
+      },
+      "source": "manual (scratch-gui 动态生成)",
+      "category": "control",
+      "shape": "command"
+    },
+    "motion_goto_menu": {
+      "opcode": "motion_goto_menu",
+      "category": "other",
+      "shape": "menu-source",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "TO": {
+          "type": "menu",
+          "options": []
+        }
+      },
+      "source": "scratch-blocks (下拉影子积木)"
+    },
+    "motion_pointtowards_menu": {
+      "opcode": "motion_pointtowards_menu",
+      "category": "other",
+      "shape": "menu-source",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "TOWARDS": {
+          "type": "menu",
+          "options": []
+        }
+      },
+      "source": "scratch-blocks (下拉影子积木)"
+    },
+    "motion_glideto_menu": {
+      "opcode": "motion_glideto_menu",
+      "category": "other",
+      "shape": "menu-source",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "TO": {
+          "type": "menu",
+          "options": []
+        }
+      },
+      "source": "scratch-blocks (下拉影子积木)"
+    },
+    "sensing_touchingobjectmenu": {
+      "opcode": "sensing_touchingobjectmenu",
+      "category": "other",
+      "shape": "menu-source",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "TOUCHINGOBJECTMENU": {
+          "type": "menu",
+          "options": []
+        }
+      },
+      "source": "scratch-blocks (下拉影子积木)"
+    },
+    "sensing_distancetomenu": {
+      "opcode": "sensing_distancetomenu",
+      "category": "other",
+      "shape": "menu-source",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "DISTANCETOMENU": {
+          "type": "menu",
+          "options": []
+        }
+      },
+      "source": "scratch-blocks (下拉影子积木)"
+    },
+    "sensing_of_object_menu": {
+      "opcode": "sensing_of_object_menu",
+      "category": "other",
+      "shape": "menu-source",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "OBJECT": {
+          "type": "menu",
+          "options": []
+        }
+      },
+      "source": "scratch-blocks (下拉影子积木)"
+    },
+    "control_create_clone_of_menu": {
+      "opcode": "control_create_clone_of_menu",
+      "category": "other",
+      "shape": "menu-source",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "CLONE_OPTION": {
+          "type": "menu",
+          "options": []
+        }
+      },
+      "source": "scratch-blocks (下拉影子积木)"
+    },
+    "sound_sounds_menu": {
+      "opcode": "sound_sounds_menu",
+      "category": "other",
+      "shape": "menu-source",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "SOUND_MENU": {
+          "type": "menu",
+          "options": []
+        }
+      },
+      "source": "scratch-blocks (下拉影子积木)"
+    },
+    "sound_beats_menu": {
+      "opcode": "sound_beats_menu",
+      "category": "other",
+      "shape": "menu-source",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "BEATS": {
+          "type": "menu",
+          "options": []
+        }
+      },
+      "source": "scratch-blocks (下拉影子积木)"
+    },
+    "sound_effects_menu": {
+      "opcode": "sound_effects_menu",
+      "category": "other",
+      "shape": "menu-source",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "EFFECT": {
+          "type": "menu",
+          "options": []
+        }
+      },
+      "source": "scratch-blocks (下拉影子积木)"
+    },
+    "looks_costume": {
+      "opcode": "looks_costume",
+      "category": "other",
+      "shape": "menu-source",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "COSTUME": {
+          "type": "menu",
+          "options": []
+        }
+      },
+      "source": "scratch-blocks (下拉影子积木)"
+    },
+    "looks_backdrops": {
+      "opcode": "looks_backdrops",
+      "category": "other",
+      "shape": "menu-source",
+      "extension": null,
+      "inputs": {},
+      "fields": {
+        "BACKDROP": {
+          "type": "menu",
+          "options": []
+        }
+      },
+      "source": "scratch-blocks (下拉影子积木)"
+    },
+    "control_resettimer": {
+      "opcode": "control_resettimer",
+      "category": "control",
+      "shape": "command",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "reset timer",
+      "source": "scratch-blocks/src/blocks/control.ts"
+    },
+    "sensing_userid": {
+      "opcode": "sensing_userid",
+      "category": "sensing",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "user id",
+      "source": "scratch-blocks/src/blocks/sensing.ts"
+    },
+    "sensing_backdropname": {
+      "opcode": "sensing_backdropname",
+      "category": "sensing",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "backdrop name",
+      "source": "scratch-blocks/src/blocks/sensing.ts"
+    },
+    "sensing_backdrops": {
+      "opcode": "sensing_backdrops",
+      "category": "sensing",
+      "shape": "reporter",
+      "extension": null,
+      "inputs": {},
+      "fields": {},
+      "text": "backdrop #",
+      "source": "scratch-blocks/src/blocks/sensing.ts"
+    },
+    "looks_setghostto": {
+      "opcode": "looks_setghostto",
+      "category": "looks",
+      "shape": "command",
+      "extension": null,
+      "inputs": {
+        "GHOST": {
+          "type": "number"
+        }
+      },
+      "fields": {},
+      "text": "set ghost effect to (1) %",
+      "source": "scratch-blocks/src/blocks/looks.ts"
+    }
+  }
+}

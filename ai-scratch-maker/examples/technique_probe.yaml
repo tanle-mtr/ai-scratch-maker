@@ -1,0 +1,90 @@
+project:
+  name: 新技巧探针
+
+  stage:
+    backdrops:
+      - { name: 底, asset: assets/sample_bg_stage.png }
+    variables:
+      计数: 0
+    scripts:
+      - - when_green_flag_clicked:
+        - set_variable: { var: 计数, value: 0 }
+
+  sprites:
+    # ---- 克隆粒子 ----
+    - name: 火花
+      x: 0
+      y: 0
+      size: 20
+      costumes:
+        - { name: 点, asset: assets/cat_mouse/cat_dot.png }
+      variables:
+        vx: 0            # 私有变量（仅本角色）→ 每个克隆各有一份
+        vy: 0
+        是否克隆: 0
+      scripts:
+        - - when_green_flag_clicked:
+            comment: 本体隐藏，只当「粒子工厂」
+          - hide: null
+          - set_variable: { var: 是否克隆, value: 0 }
+        - - when_start_as_clone: { clone: _myself_ }
+            comment: 克隆启动：私有变量各不同
+          - show: null
+          - set_variable: { var: 是否克隆, value: 1 }
+          - set_variable: { var: vx, value: { random: { from: -5, to: 5 } } }
+          - set_variable: { var: vy, value: { random: { from: 1, to: 8 } } }
+          - repeat: 20
+            do:
+              - change_effect: { effect: GHOST, value: 5 }
+              - change_x: { dx: { var: vx } }
+              - change_y: { dy: { var: vy } }
+              # 阻尼用「乘」不用「减」
+              - set_variable: { var: vy, value: { multiply: [ {var: vy}, 0.92 ] } }
+          - delete_this_clone: null
+        - - when_this_sprite_clicked:
+            comment: 只有本体能生粒子（用私有标志排除克隆）
+          - if: { cond: { equals: { a: { var: 是否克隆 }, b: 0 } },
+                  do: [ { repeat: 10, do: [ { create_clone_of: { clone: 火花 } } ] } ] }
+
+    # ---- 视野阴影 / 手电筒 ----
+    - name: 黑暗
+      x: 0
+      y: 0
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 暗, asset: assets/cat_mouse/dark_overlay.png }
+        - { name: 点, asset: assets/cat_mouse/cat_dot.png }
+      scripts:
+        - - when_green_flag_clicked:
+            comment: 先切到极小造型再设大小，绕过 150% 尺寸上限
+          - hide: null
+          - switch_costume: { costume: 点 }
+          - set_size: { value: 250 }
+          - switch_costume: { costume: 暗 }
+          - set_effect: { effect: GHOST, value: 10 }
+        - - when_receive: { message: 开灯 }
+          - show: null
+          - go_to_front_back: front
+          - forever:
+              do:
+                - goto_xy: { x: { of: { object: 猫, property: x position } },
+                             y: { of: { object: 猫, property: y position } } }
+
+    - name: 猫
+      x: 0
+      y: 0
+      costumes:
+        - { name: 猫, asset: assets/cat_mouse/cat.png }
+      sounds:
+        - { name: 喵, asset: assets/cat_mouse/catch.wav }
+      scripts:
+        - - when_green_flag_clicked:
+          - show: null
+        - - when_this_sprite_clicked:
+            comment: 触屏检测 + 声音 + 音量
+          - if: { cond: { and: [ { mousedown: null }, { touching: { object: _mouse_ } } ] },
+                  do: [ { set_volume: { value: 40 } } ] }
+          - play_sound_until_done: { sound: 喵 }
+          - point_in_direction: { direction: 90 }
+          - glide_xy: { secs: 0.5, x: 40, y: 0 }

@@ -1,0 +1,86 @@
+{
+  "project": {
+    "name": "画笔与声音",
+    "extensions": [
+      "pen"
+    ],
+    "stage": {
+      "backdrops": [
+        {
+          "name": "草地",
+          "asset": "assets/backdrop1.svg"
+        }
+      ],
+      "scripts": []
+    },
+    "sprites": [
+      {
+        "name": "Cat",
+        "x": 0,
+        "y": 0,
+        "costumes": [
+          {
+            "name": "cat1",
+            "asset": "assets/cat.svg"
+          }
+        ],
+        "sounds": [
+          {
+            "name": "beep",
+            "asset": "assets/beep.wav"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_green_flag_clicked": null
+            },
+            {
+              "pen_down": null
+            },
+            {
+              "set_pen_color": {
+                "color": "#ff3366"
+              }
+            },
+            {
+              "set_pen_size": {
+                "size": 3
+              }
+            },
+            {
+              "repeat": {
+                "times": 36,
+                "do": [
+                  {
+                    "move_steps": 10
+                  },
+                  {
+                    "turn_right": 10
+                  }
+                ]
+              }
+            },
+            {
+              "pen_stamp": null
+            },
+            {
+              "pen_up": null
+            },
+            {
+              "play_sound": {
+                "sound": "beep"
+              }
+            },
+            {
+              "change_volume": {
+                "volume": -10
+              }
+            }
+          ]
+        ],
+        "rotationStyle": "left-right"
+      }
+    ]
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "project": {
+    "name": "云变量示例",
+    "stage": {
+      "backdrops": [
+        {
+          "name": "草地",
+          "asset": "assets/backdrop1.svg"
+        }
+      ],
+      "variables": {
+        "最高分": {
+          "value": 0,
+          "cloud": true
+        },
+        "在线人数": {
+          "value": 1,
+          "cloud": true
+        }
+      },
+      "lists": {
+        "排行榜": []
+      },
+      "scripts": [
+        [
+          {
+            "when_green_flag_clicked": null
+          },
+          {
+            "set_variable": {
+              "var": "在线人数",
+              "value": 1
+            }
+          },
+          {
+            "broadcast": "开始"
+          }
+        ]
+      ]
+    },
+    "sprites": [
+      {
+        "name": "Cat",
+        "x": 0,
+        "y": 0,
+        "size": 100,
+        "direction": 90,
+        "costumes": [
+          {
+            "name": "cat1",
+            "asset": "assets/cat.svg"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": "开始"
+            },
+            {
+              "repeat": {
+                "times": 10,
+                "do": [
+                  {
+                    "change_variable": {
+                      "var": "最高分",
+                      "by": 1
+                    }
+                  },
+                  {
+                    "if": {
+                      "cond": {
+                        "greater_than": {
+                          "a": {
+                            "var": "最高分"
+                          },
+                          "b": 5
+                        }
+                      },
+                      "do": [
+                        {
+                          "say": {
+                            "text": "破纪录啦！",
+                            "secs": 1
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "add_to_list": {
+                "list": "排行榜",
+                "item": {
+                  "var": "最高分"
+                }
+              }
+            },
+            {
+              "say": {
+                "text": {
+                  "join": {
+                    "a": "最高分 ",
+                    "b": {
+                      "var": "最高分"
+                    }
+                  }
+                },
+                "secs": 2
+              }
+            }
+          ]
+        ],
+        "rotationStyle": "left-right"
+      }
+    ]
+  }
+}

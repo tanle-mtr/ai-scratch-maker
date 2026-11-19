@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 130" width="120" height="130">
+  <defs>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5CD9BA"/>
+      <stop offset="1" stop-color="#3A8E7D"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 洞口泥土堆（暗示从地里钻出） -->
+  <ellipse cx="60" cy="120" rx="50" ry="13" fill="#675D5D"/>
+  <ellipse cx="60" cy="120" rx="38" ry="9" fill="#4F4A47"/>
+
+  <!-- 外描边（先于本体绘制，露出一圈深色边） -->
+  <ellipse cx="60" cy="62" rx="45" ry="44" fill="#4F4A47"/>
+
+  <!-- 耳朵 -->
+  <circle cx="40" cy="30" r="9" fill="#3A8E7D"/>
+  <circle cx="80" cy="30" r="9" fill="#3A8E7D"/>
+  <circle cx="40" cy="30" r="9" fill="#4F4A47" opacity="0.0"/>
+  <circle cx="40" cy="31" r="6" fill="#5CD9BA"/>
+  <circle cx="80" cy="31" r="6" fill="#5CD9BA"/>
+
+  <!-- 本体（渐变主体） -->
+  <ellipse cx="60" cy="62" rx="42" ry="41" fill="url(#body)"/>
+
+  <!-- 顶部受光高光 -->
+  <ellipse cx="58" cy="40" rx="30" ry="15" fill="#C4FFE3" opacity="0.55"/>
+
+  <!-- 底部内阴影（体积感） -->
+  <ellipse cx="60" cy="92" rx="38" ry="18" fill="#4F4A47" opacity="0.14"/>
+
+  <!-- 肚皮 -->
+  <ellipse cx="60" cy="80" rx="26" ry="22" fill="#C4FFE3"/>
+
+  <!-- 腮红 -->
+  <ellipse cx="34" cy="68" rx="7" ry="5" fill="#FFEDB3" opacity="0.85"/>
+  <ellipse cx="86" cy="68" rx="7" ry="5" fill="#FFEDB3" opacity="0.85"/>
+
+  <!-- 眼睛（黄底 + 深棕瞳孔） -->
+  <circle cx="46" cy="54" r="12" fill="#FFCF4D"/>
+  <circle cx="74" cy="54" r="12" fill="#FFCF4D"/>
+  <circle cx="46" cy="56" r="6" fill="#4F4A47"/>
+  <circle cx="74" cy="56" r="6" fill="#4F4A47"/>
+  <circle cx="44" cy="53" r="2.2" fill="#C4FFE3"/>
+  <circle cx="72" cy="53" r="2.2" fill="#C4FFE3"/>
+
+  <!-- 鼻子 -->
+  <ellipse cx="60" cy="68" rx="8" ry="6" fill="#4F4A47"/>
+
+  <!-- 爪子（扒在洞口边缘） -->
+  <ellipse cx="28" cy="104" rx="11" ry="9" fill="#3A8E7D"/>
+  <ellipse cx="92" cy="104" rx="11" ry="9" fill="#3A8E7D"/>
+  <ellipse cx="28" cy="104" rx="11" ry="9" fill="#4F4A47" opacity="0.0"/>
+  <ellipse cx="28" cy="105" rx="7" ry="5" fill="#5CD9BA"/>
+  <ellipse cx="92" cy="105" rx="7" ry="5" fill="#5CD9BA"/>
+</svg>

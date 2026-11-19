@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFCF4D"/>
+    <stop offset="1" stop-color="#FFEDB3"/>
+  </linearGradient>
+  <ellipse cx="60" cy="106" rx="26" ry="6" fill="#4F4A47" opacity="0.14"/>
+  <path d="M60 16 L71.1679 44.6287 L101.846 46.4033 L78.0701 65.8713 L85.8626 95.5967 L60 79 L34.1374 95.5967 L41.9299 65.8713 L18.1535 46.4033 L48.8321 44.6287 Z" fill="#876C26" stroke="#876C26" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M60 16 L71.1679 44.6287 L101.846 46.4033 L78.0701 65.8713 L85.8626 95.5967 L60 79 L34.1374 95.5967 L41.9299 65.8713 L18.1535 46.4033 L48.8321 44.6287 Z" fill="url(#body)"/>
+  <ellipse cx="46" cy="42" rx="11" ry="8" fill="#FFFFFF" opacity="0.5"/>
+  <ellipse cx="60" cy="80" rx="22" ry="10" fill="#876C26" opacity="0.18"/>
+</svg>

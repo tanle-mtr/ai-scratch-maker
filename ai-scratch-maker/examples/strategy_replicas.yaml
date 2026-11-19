@@ -1,0 +1,2194 @@
+project:
+  name: MOBA 与策略游戏复刻引擎（王者 / LOL / 三国杀 / 金铲铲）
+  stage:
+    backdrops:
+    - name: 舞台
+      asset: assets/uikit/bg_menu.svg
+    variables:
+      结果: ''
+      帧计数: 0
+      自动帧: 1
+      模式: 1
+      i: 0
+      j: 0
+      临时: 0
+      临时2: 0
+      种子: 1
+      游戏秒: 0
+      波次: 0
+      波间隔: 30
+      路: 1
+      兵线进度: 0
+      兵线速度: 0.01
+      遇敌: 0
+      塔血量: 1000
+      塔等级: 1
+      塔减伤: 1
+      塔锁定英雄: 0
+      刚伤害英雄: 0
+      无兵线: 0
+      塔攻击次数: 0
+      塔伤害: 0
+      目标类型: 0
+      候选数: 0
+      最优优先级: 99
+      最优单位: 0
+      最优距离: 99999
+      当前优先级: 0
+      当前距离: 0
+      候选伤害标记: 0
+      补刀: 0
+      金币: 0
+      漏刀系数: 0.8
+      全额金币: 21
+      镀层: 5
+      一血塔已发: 0
+      主基地血: 100
+      建筑序号: 1
+      破塔顺序: 0
+      超级兵: 0
+      结束: 0
+      回合角色: 1
+      当前阶段: 0
+      人数: 8
+      体力: 4
+      体力上限: 4
+      手牌数: 4
+      牌堆数: 10
+      弃牌堆数: 0
+      摸牌数: 2
+      判定区数: 0
+      判定牌: 0
+      判定花色: 0
+      判定点数: 0
+      改判可用: 0
+      改判次数: 0
+      判定结果: 0
+      基础距离: 0
+      实际距离: 0
+      攻击范围: 1
+      减一马: 0
+      加一马: 0
+      座位A: 1
+      座位B: 2
+      濒死者: 0
+      自救: 0
+      求桃数: 0
+      桃数: 2
+      主公死: 0
+      内奸存活: 0
+      反贼存活: 0
+      唯一存活内奸: 0
+      胜负: 继续
+      金币铲: 0
+      人口: 1
+      经验铲: 0
+      利息: 0
+      连胜: 0
+      连败: 0
+      回合收入: 0
+      基础收入: 5
+      连胜奖励: 0
+      本回合胜: 0
+      生命: 100
+      阶段: 1
+      回合: 1
+      刷新费: 2
+      抽签值: 0
+      概率门槛: 0
+      卡池剩余: 0
+      棋子费: 0
+      棋子ID: 0
+      同名数: 0
+      星级: 0
+      棋子ID表长度: 0
+      羁绊计数: 0
+      羁绊阈值: 2
+      羁绊激活: 0
+      战力: 0
+      敌战力: 0
+      存活棋子: 0
+      扣血: 0
+      阶段基础伤害: 3
+      淘汰: 0
+      选秀顺序: 0
+      最低血者: 0
+    lists:
+      候选类型:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      候选距离:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      候选伤害英雄:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      塔血量表:
+      - 1000
+      - 1200
+      - 1400
+      - 1600
+      - 1800
+      - 2000
+      建筑序号表:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      身份表:
+      - 1
+      - 2
+      - 2
+      - 3
+      - 3
+      - 3
+      - 3
+      - 4
+      体力表:
+      - 5
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 3
+      手牌表:
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      存活表:
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      牌堆:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+      弃牌堆:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      判定区:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      求桃队列:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      等级概率表:
+      - 80
+      - 20
+      - 0
+      - 0
+      - 0
+      卡池:
+      - 10
+      - 10
+      - 8
+      - 8
+      - 6
+      - 6
+      - 4
+      - 4
+      - 2
+      - 2
+      棋子ID表:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      棋子星级:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      棋子费表:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      羁绊计数表:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      羁绊阈值表:
+      - 2
+      - 4
+      - 6
+      - 2
+      - 4
+      - 6
+      - 2
+      - 4
+      - 6
+      - 2
+      - 4
+      - 6
+      战力表:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      生命表:
+      - 100
+      - 90
+      - 80
+      - 70
+      - 60
+      - 50
+      - 40
+      - 30
+    scripts:
+    - - when_green_flag_clicked: null
+      - set_variable:
+          var: 自动帧
+          value: 1
+      - set_variable:
+          var: 结果
+          value: MOBA / 策略复刻引擎：王者 / LOL / 三国杀 / 金铲铲
+      - show: null
+      - forever:
+          do:
+          - if:
+              cond:
+                equals:
+                - var: 自动帧
+                - 1
+              do:
+              - change_variable:
+                  var: 帧计数
+                  by: 1
+              - broadcast:
+                  message: 帧
+          - wait:
+              secs: 0.02
+    - - when_receive:
+          message: 重置
+      - set_variable:
+          var: 游戏秒
+          value: 0
+      - set_variable:
+          var: 波次
+          value: 0
+      - set_variable:
+          var: 兵线进度
+          value: 0
+      - set_variable:
+          var: 塔血量
+          value: 1000
+      - set_variable:
+          var: 塔攻击次数
+          value: 0
+      - set_variable:
+          var: 塔锁定英雄
+          value: 0
+      - set_variable:
+          var: 金币
+          value: 0
+      - set_variable:
+          var: 破塔顺序
+          value: 0
+      - set_variable:
+          var: 超级兵
+          value: 0
+      - set_variable:
+          var: 结束
+          value: 0
+      - set_variable:
+          var: 当前阶段
+          value: 0
+      - set_variable:
+          var: 回合角色
+          value: 1
+      - set_variable:
+          var: 牌堆数
+          value: 10
+      - set_variable:
+          var: 弃牌堆数
+          value: 0
+      - set_variable:
+          var: 判定区数
+          value: 0
+      - set_variable:
+          var: 胜负
+          value: 继续
+      - set_variable:
+          var: 金币铲
+          value: 0
+      - set_variable:
+          var: 人口
+          value: 1
+      - set_variable:
+          var: 生命
+          value: 100
+      - set_variable:
+          var: 连胜
+          value: 0
+      - set_variable:
+          var: 连败
+          value: 0
+      - set_variable:
+          var: 淘汰
+          value: 0
+      - set_variable:
+          var: 种子
+          value: 1
+      - set_variable:
+          var: 结果
+          value: 已重置
+  sprites:
+  - name: 裁判
+    x: 0
+    y: 0
+    costumes:
+    - name: dot
+      asset: assets/dot.svg
+    variables: {}
+    scripts:
+    - - when_receive:
+          message: 设模式
+      - if:
+          cond:
+            equals:
+            - var: 模式
+            - 1
+          do:
+          - set_variable:
+              var: 漏刀系数
+              value: 0.8
+          - set_variable:
+              var: 波间隔
+              value: 30
+          - set_variable:
+              var: 塔减伤
+              value: 0.6
+          - set_variable:
+              var: 镀层
+              value: 0
+          - set_variable:
+              var: 一血塔已发
+              value: 0
+      - if:
+          cond:
+            equals:
+            - var: 模式
+            - 2
+          do:
+          - set_variable:
+              var: 漏刀系数
+              value: 0.4
+          - set_variable:
+              var: 波间隔
+              value: 30
+          - set_variable:
+              var: 塔减伤
+              value: 1
+          - set_variable:
+              var: 镀层
+              value: 5
+          - set_variable:
+              var: 一血塔已发
+              value: 0
+      - if:
+          cond:
+            equals:
+            - var: 模式
+            - 3
+          do:
+          - set_variable:
+              var: 当前阶段
+              value: 0
+          - set_variable:
+              var: 回合角色
+              value: 1
+          - set_variable:
+              var: 牌堆数
+              value: 10
+          - set_variable:
+              var: 弃牌堆数
+              value: 0
+          - set_variable:
+              var: 判定区数
+              value: 0
+          - set_variable:
+              var: 胜负
+              value: 继续
+      - if:
+          cond:
+            equals:
+            - var: 模式
+            - 4
+          do:
+          - set_variable:
+              var: 金币铲
+              value: 0
+          - set_variable:
+              var: 人口
+              value: 1
+          - set_variable:
+              var: 生命
+              value: 100
+          - set_variable:
+              var: 连胜
+              value: 0
+          - set_variable:
+              var: 连败
+              value: 0
+          - set_variable:
+              var: 淘汰
+              value: 0
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a: '模式 '
+                  b:
+                    var: 模式
+              b: ' 已装载'
+    - - when_receive:
+          message: 兵线推进
+      - set_variable:
+          var: 波次
+          value:
+            add:
+            - 1
+            - round:
+              - divide:
+                - var: 游戏秒
+                - var: 波间隔
+      - set_variable:
+          var: 临时
+          value:
+            multiply:
+            - var: 兵线速度
+            - var: 波间隔
+      - if:
+          cond:
+            equals:
+            - var: 遇敌
+            - 1
+          do:
+          - set_variable:
+              var: 结果
+              value: 双方兵线接触：停下交战，进度不变
+          else:
+          - set_variable:
+              var: 兵线进度
+              value:
+                add:
+                - var: 兵线进度
+                - var: 临时
+          - if:
+              cond:
+                greater_than:
+                - var: 兵线进度
+                - 1
+              do:
+              - set_variable:
+                  var: 兵线进度
+                  value: 1
+          - set_variable:
+              var: 结果
+              value:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a: 波次
+                          b:
+                            var: 波次
+                      b: ' 进度'
+                  b:
+                    var: 兵线进度
+      - if:
+          cond:
+            equals:
+            - var: 超级兵
+            - 1
+          do:
+          - set_variable:
+              var: 结果
+              value:
+                join:
+                  a:
+                    var: 结果
+                  b: ' / 本波含超级兵'
+      - set_variable:
+          var: 临时2
+          value: 0
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 模式
+              - 2
+            - equals:
+              - mod:
+                - var: 波次
+                - 3
+              - 0
+          do:
+          - set_variable:
+              var: 临时2
+              value: 1
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 模式
+              - 1
+            - not:
+                operand:
+                  equals:
+                  - less_than:
+                    - var: 波次
+                    - 7
+                  - true
+          do:
+          - set_variable:
+              var: 临时2
+              value: 1
+      - if:
+          cond:
+            equals:
+            - var: 临时2
+            - 1
+          do:
+          - set_variable:
+              var: 结果
+              value:
+                join:
+                  a:
+                    var: 结果
+                  b: ' / 含炮车'
+    - - when_receive:
+          message: 塔索敌
+      - set_variable:
+          var: 最优优先级
+          value: 99
+      - set_variable:
+          var: 最优单位
+          value: 0
+      - set_variable:
+          var: 最优距离
+          value: 99999
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times:
+            var: 候选数
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - set_variable:
+              var: 目标类型
+              value:
+                item_of_list:
+                  list: 候选类型
+                  index:
+                    var: i
+          - set_variable:
+              var: 当前距离
+              value:
+                item_of_list:
+                  list: 候选距离
+                  index:
+                    var: i
+          - set_variable:
+              var: 候选伤害标记
+              value:
+                item_of_list:
+                  list: 候选伤害英雄
+                  index:
+                    var: i
+          - if:
+              cond:
+                equals:
+                - var: 模式
+                - 2
+              do:
+              - if:
+                  cond:
+                    equals:
+                    - var: 候选伤害标记
+                    - 1
+                  do:
+                  - set_variable:
+                      var: 当前优先级
+                      value: 1
+                  else:
+                  - if:
+                      cond:
+                        equals:
+                        - var: 目标类型
+                        - 6
+                      do:
+                      - set_variable:
+                          var: 当前优先级
+                          value: 2
+                      else:
+                      - if:
+                          cond:
+                            equals:
+                            - var: 目标类型
+                            - 7
+                          do:
+                          - set_variable:
+                              var: 当前优先级
+                              value: 3
+                          else:
+                          - if:
+                              cond:
+                                or:
+                                - equals:
+                                  - var: 目标类型
+                                  - 4
+                                - equals:
+                                  - var: 目标类型
+                                  - 5
+                              do:
+                              - set_variable:
+                                  var: 当前优先级
+                                  value: 4
+                              else:
+                              - if:
+                                  cond:
+                                    equals:
+                                    - var: 目标类型
+                                    - 2
+                                  do:
+                                  - set_variable:
+                                      var: 当前优先级
+                                      value: 5
+                                  else:
+                                  - if:
+                                      cond:
+                                        equals:
+                                        - var: 目标类型
+                                        - 3
+                                      do:
+                                      - set_variable:
+                                          var: 当前优先级
+                                          value: 6
+                                      else:
+                                      - set_variable:
+                                          var: 当前优先级
+                                          value: 7
+              else:
+              - if:
+                  cond:
+                    equals:
+                    - var: 候选伤害标记
+                    - 1
+                  do:
+                  - set_variable:
+                      var: 当前优先级
+                      value: 1
+                  else:
+                  - if:
+                      cond:
+                        not:
+                          operand:
+                            equals:
+                            - less_than:
+                              - var: 目标类型
+                              - 2
+                            - true
+                      do:
+                      - set_variable:
+                          var: 当前优先级
+                          value: 2
+                      else:
+                      - set_variable:
+                          var: 当前优先级
+                          value: 3
+          - if:
+              cond:
+                or:
+                - less_than:
+                  - var: 当前优先级
+                  - var: 最优优先级
+                - and:
+                  - equals:
+                    - var: 当前优先级
+                    - var: 最优优先级
+                  - less_than:
+                    - var: 当前距离
+                    - var: 最优距离
+              do:
+              - set_variable:
+                  var: 最优优先级
+                  value:
+                    var: 当前优先级
+              - set_variable:
+                  var: 最优单位
+                  value:
+                    var: i
+              - set_variable:
+                  var: 最优距离
+                  value:
+                    var: 当前距离
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 模式
+              - 2
+            - and:
+              - equals:
+                - var: 塔锁定英雄
+                - 1
+              - greater_than:
+                - var: 候选数
+                - 0
+          do:
+          - set_variable:
+              var: 结果
+              value:
+                join:
+                  a: 'LOL 保持英雄锁定 / 计算出的最优单位 '
+                  b:
+                    var: 最优单位
+      - if:
+          cond:
+            equals:
+            - var: 塔锁定英雄
+            - 0
+          do:
+          - set_variable:
+              var: 结果
+              value:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a: '塔目标 '
+                                  b:
+                                    var: 最优单位
+                              b: ' 优先级 '
+                          b:
+                            var: 最优优先级
+                      b: ' 距离 '
+                  b:
+                    var: 最优距离
+    - - when_receive:
+          message: 塔攻击
+      - change_variable:
+          var: 塔攻击次数
+          by: 1
+      - set_variable:
+          var: 塔伤害
+          value: 100
+      - if:
+          cond:
+            equals:
+            - var: 目标类型
+            - 2
+          do:
+          - set_variable:
+              var: 塔伤害
+              value: 45
+      - if:
+          cond:
+            equals:
+            - var: 目标类型
+            - 3
+          do:
+          - set_variable:
+              var: 塔伤害
+              value: 70
+      - if:
+          cond:
+            equals:
+            - var: 目标类型
+            - 4
+          do:
+          - set_variable:
+              var: 塔伤害
+              value: 14
+      - if:
+          cond:
+            equals:
+            - var: 目标类型
+            - 5
+          do:
+          - set_variable:
+              var: 塔伤害
+              value: 5
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 模式
+              - 1
+            - equals:
+              - var: 目标类型
+              - 1
+          do:
+          - set_variable:
+              var: 塔伤害
+              value:
+                multiply:
+                - 100
+                - add:
+                  - 1
+                  - multiply:
+                    - subtract:
+                      - var: 塔攻击次数
+                      - 1
+                    - 0.3
+      - if:
+          cond:
+            equals:
+            - var: 无兵线
+            - 1
+          do:
+          - set_variable:
+              var: 临时
+              value: 0.25
+      - if:
+          cond:
+            equals:
+            - var: 无兵线
+            - 0
+          do:
+          - set_variable:
+              var: 临时
+              value: 1
+      - set_variable:
+          var: 塔伤害
+          value:
+            multiply:
+            - var: 塔伤害
+            - var: 临时
+      - set_variable:
+          var: 塔伤害
+          value:
+            multiply:
+            - var: 塔伤害
+            - var: 塔减伤
+      - set_variable:
+          var: 塔血量
+          value:
+            subtract:
+            - var: 塔血量
+            - var: 塔伤害
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 模式
+              - 2
+            - and:
+              - greater_than:
+                - var: 镀层
+                - 0
+              - not:
+                  operand:
+                    equals:
+                    - greater_than:
+                      - var: 游戏秒
+                      - 840
+                    - true
+          do:
+          - change_variable:
+              var: 镀层
+              by: -1
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 模式
+              - 2
+            - greater_than:
+              - var: 游戏秒
+              - 840
+          do:
+          - set_variable:
+              var: 镀层
+              value: 0
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a: '塔伤害 '
+                              b:
+                                var: 塔伤害
+                          b: ' 剩余塔血 '
+                      b:
+                        var: 塔血量
+                  b: ' 镀层 '
+              b:
+                var: 镀层
+    - - when_receive:
+          message: 补刀结算
+      - if:
+          cond:
+            equals:
+            - var: 补刀
+            - 1
+          do:
+          - set_variable:
+              var: 金币
+              value:
+                add:
+                - var: 金币
+                - var: 全额金币
+          else:
+          - set_variable:
+              var: 金币
+              value:
+                add:
+                - var: 金币
+                - round:
+                  - multiply:
+                    - var: 全额金币
+                    - var: 漏刀系数
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a: '金币 '
+                              b:
+                                var: 金币
+                          b: ' / 补刀 '
+                      b:
+                        var: 补刀
+                  b: ' / 漏刀系数 '
+              b:
+                var: 漏刀系数
+    - - when_receive:
+          message: 破塔
+      - if:
+          cond:
+            less_than:
+            - var: 建筑序号
+            - var: 破塔顺序
+          do:
+          - set_variable:
+              var: 结果
+              value: ❌ 必须按顺序破塔
+          else:
+          - change_variable:
+              var: 破塔顺序
+              by: 1
+          - if:
+              cond:
+                not:
+                  operand:
+                    equals:
+                    - less_than:
+                      - var: 建筑序号
+                      - 4
+                    - true
+              do:
+              - set_variable:
+                  var: 超级兵
+                  value: 1
+          - if:
+              cond:
+                and:
+                - equals:
+                  - var: 一血塔已发
+                  - 0
+                - equals:
+                  - var: 破塔顺序
+                  - 1
+              do:
+              - set_variable:
+                  var: 一血塔已发
+                  value: 1
+              - change_variable:
+                  var: 金币
+                  by: 300
+          - if:
+              cond:
+                not:
+                  operand:
+                    equals:
+                    - less_than:
+                      - var: 破塔顺序
+                      - 6
+                    - true
+              do:
+              - set_variable:
+                  var: 主基地血
+                  value: 0
+              - set_variable:
+                  var: 结束
+                  value: 1
+          - set_variable:
+              var: 结果
+              value:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a: '破塔进度 '
+                                  b:
+                                    var: 破塔顺序
+                              b: ' 超级兵 '
+                          b:
+                            var: 超级兵
+                      b: ' 结束 '
+                  b:
+                    var: 结束
+    - - when_receive:
+          message: SG回合推进
+      - change_variable:
+          var: 当前阶段
+          by: 1
+      - if:
+          cond:
+            greater_than:
+            - var: 当前阶段
+            - 6
+          do:
+          - set_variable:
+              var: 当前阶段
+              value: 1
+          - set_variable:
+              var: 回合角色
+              value:
+                add:
+                - mod:
+                  - var: 回合角色
+                  - var: 人数
+                - 1
+      - if:
+          cond:
+            equals:
+            - var: 当前阶段
+            - 3
+          do:
+          - broadcast:
+              message: SG摸牌
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a: 角色
+                      b:
+                        var: 回合角色
+                  b: ' 阶段'
+              b:
+                var: 当前阶段
+    - - when_receive:
+          message: SG摸牌
+      - if:
+          cond:
+            not:
+              operand:
+                equals:
+                - greater_than:
+                  - var: 牌堆数
+                  - 0
+                - true
+          do:
+          - set_variable:
+              var: 牌堆数
+              value:
+                var: 弃牌堆数
+          - set_variable:
+              var: 弃牌堆数
+              value: 0
+          - set_variable:
+              var: 结果
+              value: 牌堆空 → 弃牌堆洗混成新牌堆
+      - if:
+          cond:
+            less_than:
+            - var: 牌堆数
+            - var: 摸牌数
+          do:
+          - set_variable:
+              var: 摸牌数
+              value:
+                var: 牌堆数
+      - set_variable:
+          var: 牌堆数
+          value:
+            subtract:
+            - var: 牌堆数
+            - var: 摸牌数
+      - change_variable:
+          var: 手牌数
+          by:
+            var: 摸牌数
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a:
+                                    var: 结果
+                                  b: ' / 摸 '
+                              b:
+                                var: 摸牌数
+                          b: ' 张 手牌 '
+                      b:
+                        var: 手牌数
+                  b: ' 牌堆 '
+              b:
+                var: 牌堆数
+    - - when_receive:
+          message: SG判定
+      - if:
+          cond:
+            equals:
+            - var: 判定区数
+            - 0
+          do:
+          - set_variable:
+              var: 结果
+              value: 判定区为空
+          else:
+          - set_variable:
+              var: 判定牌
+              value:
+                item_of_list:
+                  list: 判定区
+                  index:
+                    var: 判定区数
+          - set_variable:
+              var: 判定区数
+              value:
+                subtract:
+                - var: 判定区数
+                - 1
+          - set_variable:
+              var: 判定花色
+              value:
+                mod:
+                - var: 判定牌
+                - 4
+          - set_variable:
+              var: 判定点数
+              value:
+                add:
+                - mod:
+                  - var: 判定牌
+                  - 13
+                - 1
+          - set_variable:
+              var: 改判次数
+              value: 0
+          - if:
+              cond:
+                equals:
+                - var: 改判可用
+                - 1
+              do:
+              - change_variable:
+                  var: 改判次数
+                  by: 1
+              - set_variable:
+                  var: 判定牌
+                  value: 99
+              - set_variable:
+                  var: 判定花色
+                  value: 1
+              - set_variable:
+                  var: 判定点数
+                  value: 1
+          - set_variable:
+              var: 判定结果
+              value: 0
+          - if:
+              cond:
+                not:
+                  operand:
+                    equals:
+                    - var: 判定花色
+                    - 1
+              do:
+              - set_variable:
+                  var: 判定结果
+                  value: 1
+          - if:
+              cond:
+                and:
+                - equals:
+                  - var: 判定花色
+                  - 0
+                - and:
+                  - not:
+                      operand:
+                        equals:
+                        - less_than:
+                          - var: 判定点数
+                          - 2
+                        - true
+                  - not:
+                      operand:
+                        equals:
+                        - greater_than:
+                          - var: 判定点数
+                          - 9
+                        - true
+              do:
+              - set_variable:
+                  var: 判定结果
+                  value: 3
+          - set_variable:
+              var: 结果
+              value:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a:
+                                    join:
+                                      a:
+                                        join:
+                                          a:
+                                            join:
+                                              a:
+                                                join:
+                                                  a: '判定牌 '
+                                                  b:
+                                                    var: 判定牌
+                                              b: ' 花色 '
+                                          b:
+                                            var: 判定花色
+                                      b: ' 点数 '
+                                  b:
+                                    var: 判定点数
+                              b: ' 改判 '
+                          b:
+                            var: 改判次数
+                      b: ' 结果 '
+                  b:
+                    var: 判定结果
+    - - when_receive:
+          message: SG距离
+      - set_variable:
+          var: 临时
+          value:
+            mathop:
+              operator: abs
+              num:
+                subtract:
+                - var: 座位A
+                - var: 座位B
+      - set_variable:
+          var: 临时2
+          value:
+            subtract:
+            - var: 人数
+            - var: 临时
+      - set_variable:
+          var: 基础距离
+          value:
+            var: 临时
+      - if:
+          cond:
+            less_than:
+            - var: 临时2
+            - var: 临时
+          do:
+          - set_variable:
+              var: 基础距离
+              value:
+                var: 临时2
+      - set_variable:
+          var: 实际距离
+          value:
+            subtract:
+            - add:
+              - var: 基础距离
+              - var: 加一马
+            - var: 减一马
+      - if:
+          cond:
+            less_than:
+            - var: 实际距离
+            - 1
+          do:
+          - set_variable:
+              var: 实际距离
+              value: 1
+      - set_variable:
+          var: 临时
+          value: 0
+      - if:
+          cond:
+            not:
+              operand:
+                equals:
+                - greater_than:
+                  - var: 实际距离
+                  - var: 攻击范围
+                - true
+          do:
+          - set_variable:
+              var: 临时
+              value: 1
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a:
+                                    join:
+                                      a: '基础 '
+                                      b:
+                                        var: 基础距离
+                                  b: ' 实际 '
+                              b:
+                                var: 实际距离
+                          b: ' 攻击范围 '
+                      b:
+                        var: 攻击范围
+                  b: ' 合法 '
+              b:
+                var: 临时
+    - - when_receive:
+          message: SG求桃
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 自救
+              - 1
+            - greater_than:
+              - var: 桃数
+              - 0
+          do:
+          - set_variable:
+              var: 体力
+              value: 1
+          - set_variable:
+              var: 结果
+              value: 自救成功，体力回到 1
+          else:
+          - set_variable:
+              var: 临时
+              value: 0
+          - set_variable:
+              var: i
+              value: 0
+          - repeat:
+              times:
+                var: 人数
+              do:
+              - change_variable:
+                  var: i
+                  by: 1
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 临时
+                      - 0
+                    - greater_than:
+                      - item_of_list:
+                          list: 求桃队列
+                          index:
+                            var: i
+                      - 0
+                  do:
+                  - set_variable:
+                      var: 临时
+                      value:
+                        var: i
+          - if:
+              cond:
+                greater_than:
+                - var: 临时
+                - 0
+              do:
+              - set_variable:
+                  var: 体力
+                  value: 1
+              - set_variable:
+                  var: 结果
+                  value:
+                    join:
+                      a:
+                        join:
+                          a: '角色 '
+                          b:
+                            var: 临时
+                      b: ' 出桃救人，体力回到 1'
+              else:
+              - set_variable:
+                  var: 体力
+                  value: 0
+              - set_variable:
+                  var: 结果
+                  value: 全员无桃 → 死亡结算
+    - - when_receive:
+          message: SG胜负
+      - set_variable:
+          var: 胜负
+          value: 继续
+      - if:
+          cond:
+            equals:
+            - var: 主公死
+            - 1
+          do:
+          - if:
+              cond:
+                equals:
+                - var: 唯一存活内奸
+                - 1
+              do:
+              - set_variable:
+                  var: 胜负
+                  value: 内奸胜
+              else:
+              - set_variable:
+                  var: 胜负
+                  value: 反贼胜
+          else:
+          - if:
+              cond:
+                and:
+                - equals:
+                  - var: 反贼存活
+                  - 0
+                - equals:
+                  - var: 内奸存活
+                  - 0
+              do:
+              - set_variable:
+                  var: 胜负
+                  value: 主忠胜
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a: 胜负：
+              b:
+                var: 胜负
+    - - when_receive:
+          message: JCC收入
+      - set_variable:
+          var: 利息
+          value:
+            round:
+            - divide:
+              - var: 金币铲
+              - 10
+      - if:
+          cond:
+            greater_than:
+            - var: 利息
+            - 5
+          do:
+          - set_variable:
+              var: 利息
+              value: 5
+      - set_variable:
+          var: 连胜奖励
+          value: 0
+      - if:
+          cond:
+            not:
+              operand:
+                equals:
+                - less_than:
+                  - var: 连胜
+                  - 2
+                - true
+          do:
+          - set_variable:
+              var: 连胜奖励
+              value: 1
+      - if:
+          cond:
+            not:
+              operand:
+                equals:
+                - less_than:
+                  - var: 连胜
+                  - 4
+                - true
+          do:
+          - set_variable:
+              var: 连胜奖励
+              value: 2
+      - if:
+          cond:
+            not:
+              operand:
+                equals:
+                - less_than:
+                  - var: 连败
+                  - 2
+                - true
+          do:
+          - set_variable:
+              var: 连胜奖励
+              value: 1
+      - if:
+          cond:
+            not:
+              operand:
+                equals:
+                - less_than:
+                  - var: 连败
+                  - 4
+                - true
+          do:
+          - set_variable:
+              var: 连胜奖励
+              value: 2
+      - set_variable:
+          var: 回合收入
+          value:
+            add:
+            - add:
+              - add:
+                - var: 基础收入
+                - var: 利息
+              - var: 连胜奖励
+            - var: 本回合胜
+      - set_variable:
+          var: 金币铲
+          value:
+            add:
+            - var: 金币铲
+            - var: 回合收入
+      - if:
+          cond:
+            equals:
+            - var: 本回合胜
+            - 1
+          do:
+          - change_variable:
+              var: 连胜
+              by: 1
+          - set_variable:
+              var: 连败
+              value: 0
+          else:
+          - change_variable:
+              var: 连败
+              by: 1
+          - set_variable:
+              var: 连胜
+              value: 0
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a:
+                                    join:
+                                      a:
+                                        join:
+                                          a:
+                                            join:
+                                              a:
+                                                join:
+                                                  a:
+                                                    join:
+                                                      a: '收入 '
+                                                      b:
+                                                        var: 回合收入
+                                                  b: ' = 基础'
+                                              b:
+                                                var: 基础收入
+                                          b: ' + 利息'
+                                      b:
+                                        var: 利息
+                                  b: ' + 连胜连败'
+                              b:
+                                var: 连胜奖励
+                          b: ' + 胜利'
+                      b:
+                        var: 本回合胜
+                  b: ' / 金币'
+              b:
+                var: 金币铲
+    - - when_receive:
+          message: JCC刷新
+      - set_variable:
+          var: 金币铲
+          value:
+            subtract:
+            - var: 金币铲
+            - var: 刷新费
+      - set_variable:
+          var: 种子
+          value:
+            mod:
+            - multiply:
+              - var: 种子
+              - 16807
+            - 2147483647
+      - set_variable:
+          var: 抽签值
+          value:
+            mod:
+            - var: 种子
+            - 100
+      - set_variable:
+          var: 概率门槛
+          value:
+            item_of_list:
+              list: 等级概率表
+              index:
+                var: 人口
+      - if:
+          cond:
+            not:
+              operand:
+                equals:
+                - greater_than:
+                  - var: 抽签值
+                  - var: 概率门槛
+                - true
+          do:
+          - set_variable:
+              var: 棋子费
+              value: 1
+          else:
+          - if:
+              cond:
+                not:
+                  operand:
+                    equals:
+                    - greater_than:
+                      - var: 抽签值
+                      - add:
+                        - var: 概率门槛
+                        - 15
+                    - true
+              do:
+              - set_variable:
+                  var: 棋子费
+                  value: 2
+              else:
+              - if:
+                  cond:
+                    not:
+                      operand:
+                        equals:
+                        - greater_than:
+                          - var: 抽签值
+                          - add:
+                            - var: 概率门槛
+                            - 25
+                        - true
+                  do:
+                  - set_variable:
+                      var: 棋子费
+                      value: 3
+                  else:
+                  - set_variable:
+                      var: 棋子费
+                      value: 4
+      - set_variable:
+          var: 种子
+          value:
+            mod:
+            - multiply:
+              - var: 种子
+              - 16807
+            - 2147483647
+      - set_variable:
+          var: 棋子ID
+          value:
+            add:
+            - mod:
+              - var: 种子
+              - 10
+            - 1
+      - set_variable:
+          var: 卡池剩余
+          value:
+            item_of_list:
+              list: 卡池
+              index:
+                var: 棋子ID
+      - if:
+          cond:
+            greater_than:
+            - var: 卡池剩余
+            - 0
+          do:
+          - replace_item_of_list:
+              list: 卡池
+              index:
+                var: 棋子ID
+              item:
+                subtract:
+                - var: 卡池剩余
+                - 1
+          - set_variable:
+              var: 结果
+              value:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a: 刷到 棋子
+                                  b:
+                                    var: 棋子ID
+                              b: ' 费用'
+                          b:
+                            var: 棋子费
+                      b: ' 卡池剩'
+                  b:
+                    subtract:
+                    - var: 卡池剩余
+                    - 1
+          else:
+          - set_variable:
+              var: 结果
+              value: 该棋子已被共享卡池抽空，不可购买
+    - - when_receive:
+          message: JCC升星
+      - set_variable:
+          var: 同名数
+          value: 0
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times:
+            var: 棋子ID表长度
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - if:
+              cond:
+                and:
+                - equals:
+                  - item_of_list:
+                      list: 棋子ID表
+                      index:
+                        var: i
+                  - var: 棋子ID
+                - equals:
+                  - item_of_list:
+                      list: 棋子星级
+                      index:
+                        var: i
+                  - var: 星级
+              do:
+              - change_variable:
+                  var: 同名数
+                  by: 1
+      - if:
+          cond:
+            not:
+              operand:
+                equals:
+                - less_than:
+                  - var: 同名数
+                  - 3
+                - true
+          do:
+          - set_variable:
+              var: 星级
+              value:
+                add:
+                - var: 星级
+                - 1
+          - set_variable:
+              var: 结果
+              value:
+                join:
+                  a: '3 合 1 → 星级 '
+                  b:
+                    var: 星级
+          else:
+          - set_variable:
+              var: 结果
+              value:
+                join:
+                  a:
+                    join:
+                      a: '同名数 '
+                      b:
+                        var: 同名数
+                  b: ' < 3，不合成'
+    - - when_receive:
+          message: JCC羁绊
+      - set_variable:
+          var: 羁绊计数
+          value: 0
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times:
+            var: 棋子ID表长度
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - if:
+              cond:
+                greater_than:
+                - item_of_list:
+                    list: 棋子ID表
+                    index:
+                      var: i
+                - 0
+              do:
+              - change_variable:
+                  var: 羁绊计数
+                  by: 1
+      - set_variable:
+          var: 羁绊激活
+          value: 0
+      - if:
+          cond:
+            not:
+              operand:
+                equals:
+                - less_than:
+                  - var: 羁绊计数
+                  - var: 羁绊阈值
+                - true
+          do:
+          - set_variable:
+              var: 羁绊激活
+              value: 1
+      - set_variable:
+          var: 临时
+          value:
+            item_of_list:
+              list: 羁绊阈值表
+              index:
+                var: 人口
+      - if:
+          cond:
+            not:
+              operand:
+                equals:
+                - less_than:
+                  - var: 羁绊计数
+                  - var: 临时
+                - true
+          do:
+          - change_variable:
+              var: 羁绊激活
+              by: 1
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a: '不重复棋子 '
+                              b:
+                                var: 羁绊计数
+                          b: ' 阈值 '
+                      b:
+                        var: 羁绊阈值
+                  b: ' 激活层级 '
+              b:
+                var: 羁绊激活
+    - - when_receive:
+          message: JCC战斗
+      - if:
+          cond:
+            greater_than:
+            - var: 战力
+            - var: 敌战力
+          do:
+          - set_variable:
+              var: 本回合胜
+              value: 1
+          - set_variable:
+              var: 扣血
+              value: 0
+          - set_variable:
+              var: 结果
+              value: 战斗胜利
+          else:
+          - set_variable:
+              var: 本回合胜
+              value: 0
+          - set_variable:
+              var: 扣血
+              value:
+                add:
+                - var: 阶段基础伤害
+                - var: 存活棋子
+          - set_variable:
+              var: 生命
+              value:
+                subtract:
+                - var: 生命
+                - var: 扣血
+          - if:
+              cond:
+                not:
+                  operand:
+                    equals:
+                    - greater_than:
+                      - var: 生命
+                      - 0
+                    - true
+              do:
+              - set_variable:
+                  var: 生命
+                  value: 0
+              - set_variable:
+                  var: 淘汰
+                  value: 1
+          - set_variable:
+              var: 结果
+              value:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a: '战败 扣血 '
+                          b:
+                            var: 扣血
+                      b: ' 生命 '
+                  b:
+                    var: 生命
+    - - when_receive:
+          message: JCC选秀
+      - set_variable:
+          var: 最低血者
+          value: 1
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times: 8
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - if:
+              cond:
+                less_than:
+                - item_of_list:
+                    list: 生命表
+                    index:
+                      var: i
+                - item_of_list:
+                    list: 生命表
+                    index:
+                      var: 最低血者
+              do:
+              - set_variable:
+                  var: 最低血者
+                  value:
+                    var: i
+      - set_variable:
+          var: 选秀顺序
+          value:
+            var: 最低血者
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a: '选秀首个选择者 = 生命最低的 '
+              b:
+                var: 最低血者
+    - - when_green_flag_clicked: null
+      - hide: null
+  - name: 显示板
+    x: -226
+    y: 166
+    costumes:
+    - name: dot
+      asset: assets/dot.svg
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - goto_xy:
+          x: -226
+          y: 166
+      - set_size:
+          value: 60
+      - show: null
+    - - when_receive:
+          message: 帧
+      - looks_say:
+          MESSAGE:
+            var: 结果

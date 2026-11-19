@@ -1,0 +1,1122 @@
+project:
+  name: 地铁驾驶模拟（进阶）
+  stage:
+    backdrops:
+    - name: 背景1
+      asset: assets/backdrop1.svg
+    variables:
+      剩余里程: 5090
+      速度: 0
+      档位: 0
+      站点: 1
+      总段数: 5
+      完成数: 0
+      当前站: 前海湾
+      下一站: 桂湾
+      区间限速: 80
+      推荐速度: 80
+      制动率: 0.6
+      信号: 3
+      信号名: 绿
+      本车里程: 0
+      前车里程: 20000
+      前车速度: 80
+      间距: 18600
+      车长: 1400
+      车门: 0
+      运行状态: 0
+      对标误差: 0
+      停车结果: —
+      分值: 0
+      里程系数: 12
+      牵引加: 1.2
+      制动减: 1.5
+      紧急减: 3.5
+      列车x: -215
+      已画: 0
+      帧计数: 0
+      临时: 0
+      i: 0
+      自动帧: 1
+      使用键盘: 1
+      暂停: 0
+    lists:
+      站名:
+      - 前海湾
+      - 桂湾
+      - 前湾
+      - 前湾公园
+      - 妈湾
+      - 铁路公园
+      站距:
+      - 5090
+      - 12500
+      - 9790
+      - 11800
+      - 6370
+      限速表:
+      - 80
+      - 80
+      - 75
+      - 80
+      - 70
+    scripts:
+    - - when_green_flag_clicked: null
+      - set_variable:
+          var: 自动帧
+          value: 1
+      - set_variable:
+          var: 使用键盘
+          value: 1
+      - set_variable:
+          var: 总段数
+          value:
+            length_of_list:
+              list: 站距
+      - &id001
+        set_variable:
+          var: 剩余里程
+          value:
+            item_of_list:
+              list: 站距
+              index: 1
+      - &id002
+        set_variable:
+          var: 速度
+          value: 0
+      - &id003
+        set_variable:
+          var: 档位
+          value: 0
+      - &id004
+        set_variable:
+          var: 站点
+          value: 1
+      - &id005
+        set_variable:
+          var: 完成数
+          value: 0
+      - &id006
+        set_variable:
+          var: 当前站
+          value:
+            item_of_list:
+              list: 站名
+              index: 1
+      - &id007
+        set_variable:
+          var: 下一站
+          value:
+            item_of_list:
+              list: 站名
+              index: 2
+      - &id008
+        set_variable:
+          var: 区间限速
+          value:
+            item_of_list:
+              list: 限速表
+              index: 1
+      - &id009
+        set_variable:
+          var: 推荐速度
+          value:
+            item_of_list:
+              list: 限速表
+              index: 1
+      - &id010
+        set_variable:
+          var: 信号
+          value: 3
+      - &id011
+        set_variable:
+          var: 信号名
+          value: 绿
+      - &id012
+        set_variable:
+          var: 本车里程
+          value: 0
+      - &id013
+        set_variable:
+          var: 前车里程
+          value: 20000
+      - &id014
+        set_variable:
+          var: 前车速度
+          value: 80
+      - &id015
+        set_variable:
+          var: 间距
+          value: 18600
+      - &id016
+        set_variable:
+          var: 车门
+          value: 0
+      - &id017
+        set_variable:
+          var: 运行状态
+          value: 0
+      - &id018
+        set_variable:
+          var: 对标误差
+          value: 0
+      - &id019
+        set_variable:
+          var: 停车结果
+          value: —
+      - &id020
+        set_variable:
+          var: 分值
+          value: 0
+      - &id021
+        set_variable:
+          var: 列车x
+          value: -215
+      - &id022
+        set_variable:
+          var: 已画
+          value: 0
+      - &id023
+        set_variable:
+          var: 帧计数
+          value: 0
+      - broadcast:
+          message: 重置
+      - forever:
+          do:
+          - if:
+              cond:
+                equals:
+                - var: 自动帧
+                - 1
+              do:
+              - broadcast:
+                  message: 帧
+          - wait:
+              secs: 0.02
+    - - when_receive:
+          message: 重置
+      - *id001
+      - *id002
+      - *id003
+      - *id004
+      - *id005
+      - *id006
+      - *id007
+      - *id008
+      - *id009
+      - *id010
+      - *id011
+      - *id012
+      - *id013
+      - *id014
+      - *id015
+      - *id016
+      - *id017
+      - *id018
+      - *id019
+      - *id020
+      - *id021
+      - *id022
+      - *id023
+    - - when_receive:
+          message: 暂停
+      - set_variable:
+          var: 自动帧
+          value: 0
+    - - when_receive:
+          message: 继续
+      - set_variable:
+          var: 自动帧
+          value: 1
+  sprites:
+  - name: 行车电脑
+    x: 0
+    y: 0
+    costumes:
+    - name: dot
+      asset: assets/dot.svg
+    variables: {}
+    scripts:
+    - - when_receive:
+          message: 帧
+      - change_variable:
+          var: 帧计数
+          by: 1
+      - if:
+          cond:
+            equals:
+            - var: 使用键盘
+            - 1
+          do:
+          - if:
+              cond:
+                key_pressed:
+                  key: o
+              do:
+              - broadcast:
+                  message: 开门
+          - if:
+              cond:
+                key_pressed:
+                  key: c
+              do:
+              - broadcast:
+                  message: 关门
+          - if:
+              cond:
+                key_pressed:
+                  key: r
+              do:
+              - broadcast:
+                  message: 退回
+          - if:
+              cond:
+                key_pressed:
+                  key: up arrow
+              do:
+              - set_variable:
+                  var: 档位
+                  value: 1
+              else:
+              - if:
+                  cond:
+                    key_pressed:
+                      key: down arrow
+                  do:
+                  - set_variable:
+                      var: 档位
+                      value: 3
+                  else:
+                  - if:
+                      cond:
+                        key_pressed:
+                          key: left arrow
+                      do:
+                      - set_variable:
+                          var: 档位
+                          value: 4
+                      else:
+                      - set_variable:
+                          var: 档位
+                          value: 0
+      - if:
+          cond:
+            equals:
+            - var: 运行状态
+            - 3
+          do:
+          - stop:
+              option: this script
+      - if:
+          cond:
+            equals:
+            - var: 运行状态
+            - 1
+          do:
+          - set_variable:
+              var: 速度
+              value: 0
+      - set_variable:
+          var: 间距
+          value:
+            round:
+            - subtract:
+              - subtract:
+                - var: 前车里程
+                - var: 本车里程
+              - var: 车长
+      - if:
+          cond:
+            greater_than:
+            - var: 间距
+            - 9000
+          do:
+          - set_variable:
+              var: 信号
+              value: 3
+          - set_variable:
+              var: 信号名
+              value: 绿
+          else:
+          - if:
+              cond:
+                greater_than:
+                - var: 间距
+                - 5000
+              do:
+              - set_variable:
+                  var: 信号
+                  value: 2
+              - set_variable:
+                  var: 信号名
+                  value: 黄
+              else:
+              - set_variable:
+                  var: 信号
+                  value: 1
+              - set_variable:
+                  var: 信号名
+                  value: 红
+      - set_variable:
+          var: 推荐速度
+          value:
+            var: 区间限速
+      - set_variable:
+          var: 临时
+          value:
+            subtract:
+            - var: 剩余里程
+            - 5
+      - if:
+          cond:
+            less_than:
+            - var: 临时
+            - 0
+          do:
+          - set_variable:
+              var: 临时
+              value: 0
+      - set_variable:
+          var: 临时
+          value:
+            multiply:
+            - 3.6
+            - mathop:
+                operator: sqrt
+                num:
+                  multiply:
+                  - multiply:
+                    - 2
+                    - var: 制动率
+                  - var: 临时
+      - if:
+          cond:
+            less_than:
+            - var: 临时
+            - var: 推荐速度
+          do:
+          - set_variable:
+              var: 推荐速度
+              value:
+                var: 临时
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 信号
+              - 2
+            - greater_than:
+              - var: 推荐速度
+              - 45
+          do:
+          - set_variable:
+              var: 推荐速度
+              value: 45
+      - if:
+          cond:
+            equals:
+            - var: 信号
+            - 1
+          do:
+          - set_variable:
+              var: 推荐速度
+              value: 0
+      - set_variable:
+          var: 临时
+          value:
+            subtract:
+            - var: 间距
+            - 100
+      - if:
+          cond:
+            less_than:
+            - var: 临时
+            - 0
+          do:
+          - set_variable:
+              var: 临时
+              value: 0
+      - set_variable:
+          var: 临时
+          value:
+            multiply:
+            - 3.6
+            - mathop:
+                operator: sqrt
+                num:
+                  multiply:
+                  - multiply:
+                    - 2
+                    - var: 制动率
+                  - var: 临时
+      - if:
+          cond:
+            less_than:
+            - var: 临时
+            - var: 推荐速度
+          do:
+          - set_variable:
+              var: 推荐速度
+              value:
+                var: 临时
+      - if:
+          cond:
+            equals:
+            - var: 运行状态
+            - 1
+          do:
+          - set_variable:
+              var: 推荐速度
+              value: 0
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 档位
+              - 1
+            - and:
+              - equals:
+                - var: 车门
+                - 0
+              - equals:
+                - var: 运行状态
+                - 0
+          do:
+          - change_variable:
+              var: 速度
+              by:
+                var: 牵引加
+      - if:
+          cond:
+            equals:
+            - var: 档位
+            - 3
+          do:
+          - change_variable:
+              var: 速度
+              by:
+                subtract:
+                - 0
+                - var: 制动减
+      - if:
+          cond:
+            equals:
+            - var: 档位
+            - 4
+          do:
+          - change_variable:
+              var: 速度
+              by:
+                subtract:
+                - 0
+                - var: 紧急减
+      - if:
+          cond:
+            greater_than:
+            - var: 速度
+            - add:
+              - var: 推荐速度
+              - 3
+          do:
+          - change_variable:
+              var: 速度
+              by:
+                subtract:
+                - 0
+                - var: 紧急减
+      - if:
+          cond:
+            and:
+            - greater_than:
+              - var: 速度
+              - add:
+                - var: 推荐速度
+                - 0.5
+            - less_than:
+              - var: 速度
+              - add:
+                - var: 推荐速度
+                - 3
+          do:
+          - change_variable:
+              var: 速度
+              by:
+                subtract:
+                - 0
+                - multiply:
+                  - var: 制动减
+                  - 0.5
+      - if:
+          cond:
+            less_than:
+            - var: 速度
+            - 0
+          do:
+          - set_variable:
+              var: 速度
+              value: 0
+      - if:
+          cond:
+            greater_than:
+            - var: 速度
+            - var: 区间限速
+          do:
+          - set_variable:
+              var: 速度
+              value:
+                var: 区间限速
+      - change_variable:
+          var: 剩余里程
+          by:
+            subtract:
+            - 0
+            - divide:
+              - var: 速度
+              - var: 里程系数
+      - change_variable:
+          var: 本车里程
+          by:
+            divide:
+            - var: 速度
+            - var: 里程系数
+      - change_variable:
+          var: 前车里程
+          by:
+            divide:
+            - var: 前车速度
+            - var: 里程系数
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 运行状态
+              - 0
+            - equals:
+              - var: 速度
+              - 0
+          do:
+          - if:
+              cond:
+                not:
+                  operand:
+                    equals:
+                    - greater_than:
+                      - mathop:
+                          operator: abs
+                          num:
+                            var: 剩余里程
+                      - 5
+                    - true
+              do:
+              - set_variable:
+                  var: 对标误差
+                  value:
+                    round:
+                    - var: 剩余里程
+              - if:
+                  cond:
+                    not:
+                      operand:
+                        equals:
+                        - greater_than:
+                          - mathop:
+                              operator: abs
+                              num:
+                                var: 对标误差
+                          - 1
+                        - true
+                  do:
+                  - set_variable:
+                      var: 停车结果
+                      value: 完美对标
+                  - change_variable:
+                      var: 分值
+                      by: 100
+                  else:
+                  - set_variable:
+                      var: 停车结果
+                      value: 对标良好
+                  - change_variable:
+                      var: 分值
+                      by: 60
+              - set_variable:
+                  var: 运行状态
+                  value: 1
+              else:
+              - if:
+                  cond:
+                    and:
+                    - less_than:
+                      - var: 剩余里程
+                      - -5
+                    - equals:
+                      - var: 运行状态
+                      - 0
+                  do:
+                  - set_variable:
+                      var: 对标误差
+                      value:
+                        round:
+                        - var: 剩余里程
+                  - set_variable:
+                      var: 停车结果
+                      value: 冲标
+                  - change_variable:
+                      var: 分值
+                      by: -50
+                  - set_variable:
+                      var: 运行状态
+                      value: 2
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 运行状态
+              - 2
+            - not:
+                operand:
+                  equals:
+                  - greater_than:
+                    - mathop:
+                        operator: abs
+                        num:
+                          var: 剩余里程
+                    - 5
+                  - true
+          do:
+          - set_variable:
+              var: 对标误差
+              value:
+                round:
+                - var: 剩余里程
+          - set_variable:
+              var: 停车结果
+              value: 退回对标
+          - change_variable:
+              var: 分值
+              by: 40
+          - set_variable:
+              var: 运行状态
+              value: 1
+      - set_variable:
+          var: 临时
+          value:
+            subtract:
+            - 1
+            - divide:
+              - var: 剩余里程
+              - item_of_list:
+                  list: 站距
+                  index:
+                    var: 站点
+      - if:
+          cond:
+            less_than:
+            - var: 临时
+            - 0
+          do:
+          - set_variable:
+              var: 临时
+              value: 0
+      - if:
+          cond:
+            greater_than:
+            - var: 临时
+            - 1
+          do:
+          - set_variable:
+              var: 临时
+              value: 1
+      - set_variable:
+          var: 列车x
+          value:
+            add:
+            - -215
+            - multiply:
+              - 430
+              - divide:
+                - add:
+                  - var: 完成数
+                  - var: 临时
+                - var: 总段数
+    - - when_receive:
+          message: 开门
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 运行状态
+              - 1
+            - equals:
+              - var: 车门
+              - 0
+          do:
+          - set_variable:
+              var: 车门
+              value: 1
+    - - when_receive:
+          message: 关门
+      - if:
+          cond:
+            equals:
+            - var: 车门
+            - 1
+          do:
+          - set_variable:
+              var: 车门
+              value: 0
+          - if:
+              cond:
+                equals:
+                - var: 运行状态
+                - 1
+              do:
+              - change_variable:
+                  var: 完成数
+                  by: 1
+              - if:
+                  cond:
+                    not:
+                      operand:
+                        equals:
+                        - less_than:
+                          - var: 站点
+                          - var: 总段数
+                        - true
+                  do:
+                  - set_variable:
+                      var: 运行状态
+                      value: 3
+                  - broadcast:
+                      message: 结算
+                  else:
+                  - change_variable:
+                      var: 站点
+                      by: 1
+                  - set_variable:
+                      var: 剩余里程
+                      value:
+                        item_of_list:
+                          list: 站距
+                          index:
+                            var: 站点
+                  - set_variable:
+                      var: 区间限速
+                      value:
+                        item_of_list:
+                          list: 限速表
+                          index:
+                            var: 站点
+                  - set_variable:
+                      var: 推荐速度
+                      value:
+                        item_of_list:
+                          list: 限速表
+                          index:
+                            var: 站点
+                  - set_variable:
+                      var: 当前站
+                      value:
+                        item_of_list:
+                          list: 站名
+                          index:
+                            var: 站点
+                  - set_variable:
+                      var: 下一站
+                      value:
+                        item_of_list:
+                          list: 站名
+                          index:
+                            add:
+                            - var: 站点
+                            - 1
+                  - set_variable:
+                      var: 对标误差
+                      value: 0
+                  - set_variable:
+                      var: 停车结果
+                      value: —
+                  - set_variable:
+                      var: 运行状态
+                      value: 0
+    - - when_receive:
+          message: 退回
+      - if:
+          cond:
+            equals:
+            - var: 运行状态
+            - 2
+          do:
+          - set_variable:
+              var: 速度
+              value: 0
+          - change_variable:
+              var: 剩余里程
+              by: 12
+          - if:
+              cond:
+                greater_than:
+                - var: 剩余里程
+                - 5
+              do:
+              - set_variable:
+                  var: 剩余里程
+                  value: 5
+    - - when_green_flag_clicked: null
+      - hide: null
+  - name: 列车
+    x: -215
+    y: 120
+    costumes:
+    - name: dot
+      asset: assets/dot.svg
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - show: null
+      - set_size:
+          value: 160
+    - - when_receive:
+          message: 帧
+      - goto_xy:
+          x:
+            var: 列车x
+          y: 120
+  - name: 线路图
+    x: 0
+    y: 0
+    costumes:
+    - name: dot
+      asset: assets/dot.svg
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+      - set_pen_size:
+          size: 1
+      - pen_up: null
+    - - when_receive:
+          message: 帧
+      - if:
+          cond:
+            equals:
+            - var: 已画
+            - 0
+          do:
+          - pen_clear: null
+          - set_variable:
+              var: 已画
+              value: 1
+          - set_pen_size:
+              size: 4
+          - set_pen_color:
+              COLOR: '#7F7F7F'
+          - pen_up: null
+          - goto_xy:
+              x: -215
+              y: 120
+          - pen_down: null
+          - goto_xy:
+              x: 215
+              y: 120
+          - pen_up: null
+          - set_variable:
+              var: i
+              value: 0
+          - repeat:
+              times:
+                add:
+                - var: 总段数
+                - 1
+              do:
+              - change_variable:
+                  var: i
+                  by: 1
+              - set_pen_size:
+                  size: 3
+              - set_pen_color:
+                  COLOR: '#5CD9BA'
+              - pen_up: null
+              - goto_xy:
+                  x:
+                    add:
+                    - -215
+                    - multiply:
+                      - 430
+                      - divide:
+                        - subtract:
+                          - var: i
+                          - 1
+                        - var: 总段数
+                  y: 120
+              - pen_down: null
+              - goto_xy:
+                  x:
+                    add:
+                    - -215
+                    - multiply:
+                      - 430
+                      - divide:
+                        - subtract:
+                          - var: i
+                          - 1
+                        - var: 总段数
+                  y: 132
+              - pen_up: null
+    - - when_receive:
+          message: 重置
+      - set_variable:
+          var: 已画
+          value: 0
+  - name: 仪表
+    x: -235
+    y: 178
+    costumes:
+    - name: dot
+      asset: assets/dot.svg
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - goto_xy:
+          x: -235
+          y: 178
+      - point_in_direction:
+          direction: 90
+      - set_size:
+          value: 70
+      - show: null
+    - - when_receive:
+          message: 帧
+      - looks_say:
+          MESSAGE:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a:
+                                    join:
+                                      a:
+                                        join:
+                                          a:
+                                            join:
+                                              a: '速度 '
+                                              b:
+                                                round:
+                                                - var: 速度
+                                          b: ' km/h   限速 '
+                                      b:
+                                        var: 区间限速
+                                  b: '
+
+                                    '
+                              b:
+                                join:
+                                  a:
+                                    join:
+                                      a:
+                                        join:
+                                          a: '推荐 '
+                                          b:
+                                            round:
+                                            - var: 推荐速度
+                                      b: ' km/h   信号 '
+                                  b:
+                                    var: 信号名
+                          b: '
+
+                            '
+                      b:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a:
+                                    join:
+                                      a:
+                                        join:
+                                          a: '剩余 '
+                                          b:
+                                            round:
+                                            - var: 剩余里程
+                                      b: ' m   '
+                                  b:
+                                    var: 当前站
+                              b: →
+                          b:
+                            var: 下一站
+                  b: '
+
+                    '
+              b:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a: '对标 '
+                                  b:
+                                    var: 对标误差
+                              b: ' m   '
+                          b:
+                            var: 停车结果
+                      b: '   得分 '
+                  b:
+                    var: 分值
+  - name: 结算面板
+    x: 0
+    y: 0
+    costumes:
+    - name: dot
+      asset: assets/dot.svg
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+    - - when_receive:
+          message: 结算
+      - show: null
+      - goto_xy:
+          x: 0
+          y: 0
+      - set_size:
+          value: 1200
+      - looks_say:
+          MESSAGE:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a: '全部 '
+                          b:
+                            var: 总段数
+                      b: ' 段跑完！
+
+                        得分 '
+                  b:
+                    var: 分值
+              b: '
+
+
+                ▶ 点击本面板 = 再来一局'
+    - - when_receive:
+          message: 重置
+      - hide: null
+    - - when_this_sprite_clicked: null
+      - broadcast:
+          message: 重置

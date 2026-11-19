@@ -1,0 +1,59 @@
+project:
+  name: 扩展积木示教
+  extensions: [music, text2speech, translate, videoSensing]
+  stage:
+    backdrops:
+      - { name: 背景1, asset: assets/backdrop1.svg }
+    lists:
+      旋律: [60, 60, 67, 67, 69, 69, 67, 65, 65, 64, 64, 62, 62, 60]   # 小星星前两行
+    variables:
+      序号: 0
+      当前音: 0
+    comments:
+      - text: |
+          扩展积木示教（第八册）
+          绿旗：钢琴弹《小星星》+ 开启摄像头叠加（半透明）
+          鼓手角色：同步打鼓（复调）
+          广播「旁白」：角色念中文台词（需联网）
+          广播「翻译」：把 Hello 译成中文气泡（需联网）
+        x: 30
+        y: 30
+        width: 320
+        height: 150
+    scripts:
+      - - when_green_flag_clicked:
+            comment: 绿旗：旋律 + 视频叠加（命令积木，无头可跑通）
+        - music_set_tempo: { tempo: 100 }
+        - music_set_instrument: { instrument: 0 }        # 钢琴
+        - video_sensing_video_toggle: { video_state: "on" }
+        - video_sensing_set_video_transparency: { transparency: 50 }
+        - set_variable: { var: 序号, value: 1 }
+        - repeat: { times: 14, do:
+            [ { set_variable: { var: 当前音, value: { item_of_list: { index: { var: 序号 }, list: 旋律 } } } }
+            , { music_play_note_for_beats: { note: { var: 当前音 }, beats: 0.5 } }
+            , change_variable: { var: 序号, value: 1 } ] }
+        - music_change_tempo: { tempo: 30 }             # 加速
+        - say: { text: { music_get_tempo: null }, secs: 1 }
+      - - when_receive: 旁白
+        - text2speech_set_language: { language: "Chinese" }
+        - text2speech_set_voice: { voice: "ALTO" }
+        - text2speech_speak_and_wait: { words: "欢迎来到扩展积木示教！" }
+      - - when_receive: 翻译
+        - say: { text: { translate_get_translate: { words: "Hello", language: "Chinese (Simplified)" } }, secs: 2 }
+        - say: { text: { translate_get_viewer_language: null }, secs: 1 }
+  sprites:
+    - name: 鼓手
+      costumes:
+        - { name: 点, asset: assets/dot.svg }
+      variables:
+        拍: 0
+      scripts:
+        - - when_green_flag_clicked:
+              comment: 复调：与旋律同时打鼓（各自一条线程，互不阻塞）
+          - set_variable: { var: 拍, value: 1 }
+          - repeat: { times: 8, do:
+              [ { music_play_drum_for_beats: { drum: 1, beats: 0.25 } }   # 军鼓
+              , { music_rest_for_beats: { beats: 0.25 } }
+              , { music_play_drum_for_beats: { drum: 5, beats: 0.25 } }   # 踩镲
+              , { music_rest_for_beats: { beats: 0.25 } }
+              , change_variable: { var: 拍, value: 1 } ] }

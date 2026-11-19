@@ -1,0 +1,86 @@
+{
+  "project": {
+    "name": "过程示例",
+    "stage": {
+      "backdrops": [
+        {
+          "name": "草地",
+          "asset": "assets/backdrop1.svg"
+        }
+      ],
+      "scripts": []
+    },
+    "sprites": [
+      {
+        "name": "Cat",
+        "x": 0,
+        "y": 0,
+        "size": 100,
+        "direction": 90,
+        "costumes": [
+          {
+            "name": "cat1",
+            "asset": "assets/cat.svg"
+          }
+        ],
+        "procedures": [
+          {
+            "name": "画正方形 %n",
+            "args": [
+              "side"
+            ],
+            "script": [
+              {
+                "repeat": {
+                  "times": 4,
+                  "do": [
+                    {
+                      "move_steps": {
+                        "steps": {
+                          "var": "side"
+                        }
+                      }
+                    },
+                    {
+                      "turn_right": 90
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_green_flag_clicked": null
+            },
+            {
+              "pen_down": null
+            },
+            {
+              "call": {
+                "proc": "画正方形 %n",
+                "args": [
+                  100
+                ]
+              }
+            },
+            {
+              "call": {
+                "proc": "画正方形 %n",
+                "args": [
+                  50
+                ]
+              }
+            },
+            {
+              "pen_up": null
+            }
+          ]
+        ],
+        "rotationStyle": "left-right"
+      }
+    ]
+  }
+}

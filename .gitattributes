@@ -1,0 +1,21 @@
+# 统一行尾：仓库内一律 LF，避免 Windows / Linux 混编造成整文件 diff。
+# 二进制文件不做转换。
+* text=auto eol=lf
+
+*.py   text diff=python
+*.mjs  text diff=javascript
+*.js   text diff=javascript
+*.sh   text eol=lf
+*.json text
+*.yaml text
+*.yml  text
+*.md   text
+*.txt  text
+*.svg  text
+*.wav  binary
+*.mp3  binary
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.sb3  binary
+*.zip  binary

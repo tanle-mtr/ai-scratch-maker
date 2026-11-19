@@ -1,0 +1,11 @@
+{
+  "genre": "edu",
+  "label": "quiz",
+  "require_bitmap": false,
+  "min_costumes": 14,
+  "min_sounds": 0,
+  "min_sprites": 8,
+  "min_bytes": 150000,
+  "min_scenes": 2,
+  "min_blocks": 149
+}

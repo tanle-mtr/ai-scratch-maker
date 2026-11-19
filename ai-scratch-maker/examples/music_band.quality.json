@@ -1,0 +1,11 @@
+{
+  "genre": "music",
+  "label": "music_band",
+  "require_bitmap": false,
+  "min_costumes": 4,
+  "min_sounds": 0,
+  "min_sprites": 3,
+  "min_bytes": 150000,
+  "min_scenes": 1,
+  "min_blocks": 112
+}

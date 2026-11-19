@@ -1,0 +1,1082 @@
+{
+  "project": {
+    "name": "数字方块乐队（20 声部）",
+    "stage": {
+      "backdrops": [
+        {
+          "asset": "community:NGwJJ66J/backdrop11"
+        },
+        {
+          "asset": "community:pGeJJ66J/办公室亮灯有人面具"
+        },
+        {
+          "asset": "community:pGeJJ66J/办公室亮灯有人面具蓝眼"
+        }
+      ],
+      "scripts": [
+        [
+          {
+            "when_green_flag_clicked": null
+          },
+          {
+            "broadcast_and_wait": {
+              "message": "音符1"
+            }
+          },
+          {
+            "broadcast_and_wait": {
+              "message": "音符2"
+            }
+          },
+          {
+            "broadcast_and_wait": {
+              "message": "音符3"
+            }
+          },
+          {
+            "broadcast_and_wait": {
+              "message": "音符4"
+            }
+          },
+          {
+            "broadcast_and_wait": {
+              "message": "音符5"
+            }
+          },
+          {
+            "broadcast_and_wait": {
+              "message": "音符6"
+            }
+          },
+          {
+            "broadcast_and_wait": {
+              "message": "音符7"
+            }
+          },
+          {
+            "broadcast_and_wait": {
+              "message": "音符8"
+            }
+          },
+          {
+            "broadcast_and_wait": {
+              "message": "音符9"
+            }
+          },
+          {
+            "broadcast_and_wait": {
+              "message": "音符10"
+            }
+          },
+          {
+            "broadcast_and_wait": {
+              "message": "音符11"
+            }
+          },
+          {
+            "broadcast_and_wait": {
+              "message": "音符12"
+            }
+          },
+          {
+            "broadcast_and_wait": {
+              "message": "音符13"
+            }
+          },
+          {
+            "broadcast_and_wait": {
+              "message": "音符14"
+            }
+          },
+          {
+            "broadcast_and_wait": {
+              "message": "音符15"
+            }
+          },
+          {
+            "broadcast_and_wait": {
+              "message": "音符16"
+            }
+          },
+          {
+            "broadcast_and_wait": {
+              "message": "音符17"
+            }
+          },
+          {
+            "broadcast_and_wait": {
+              "message": "音符18"
+            }
+          },
+          {
+            "broadcast_and_wait": {
+              "message": "音符19"
+            }
+          },
+          {
+            "broadcast_and_wait": {
+              "message": "音符20"
+            }
+          }
+        ],
+        [
+          {
+            "when_green_flag_clicked": null
+          },
+          {
+            "play_sound": {
+              "sound": "FF0"
+            }
+          }
+        ]
+      ],
+      "sounds": [
+        {
+          "asset": "community:3AwJJ66J/FF0"
+        }
+      ]
+    },
+    "sprites": [
+      {
+        "name": "方块1",
+        "x": -180,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:NGwJJ66J/Flash",
+            "name": "方块1"
+          }
+        ],
+        "sounds": [
+          {
+            "asset": "community:bkiJJ66J/Error 404",
+            "name": "声1"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "音符1"
+              }
+            },
+            {
+              "show": null
+            },
+            {
+              "switch_costume": {
+                "costume": "方块1"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "声1"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "hide": null
+            }
+          ]
+        ]
+      },
+      {
+        "name": "方块2",
+        "x": -140,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:NGwJJ66J/costume1#3",
+            "name": "方块2"
+          }
+        ],
+        "sounds": [
+          {
+            "asset": "community:NGwJJ66J/pop#2",
+            "name": "声2"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "音符2"
+              }
+            },
+            {
+              "show": null
+            },
+            {
+              "switch_costume": {
+                "costume": "方块2"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "声2"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "hide": null
+            }
+          ]
+        ]
+      },
+      {
+        "name": "方块3",
+        "x": -100,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:NGwJJ66J/costume3#2",
+            "name": "方块3"
+          }
+        ],
+        "sounds": [
+          {
+            "asset": "community:2SwJJ66J/金钥匙#2",
+            "name": "声3"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "音符3"
+              }
+            },
+            {
+              "show": null
+            },
+            {
+              "switch_costume": {
+                "costume": "方块3"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "声3"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "hide": null
+            }
+          ]
+        ]
+      },
+      {
+        "name": "方块4",
+        "x": -60,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:NGwJJ66J/costume1#5",
+            "name": "方块4"
+          }
+        ],
+        "sounds": [
+          {
+            "asset": "community:WbwJJ66J/喵",
+            "name": "声4"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "音符4"
+              }
+            },
+            {
+              "show": null
+            },
+            {
+              "switch_costume": {
+                "costume": "方块4"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "声4"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "hide": null
+            }
+          ]
+        ]
+      },
+      {
+        "name": "方块5",
+        "x": -20,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:NGwJJ66J/costume2#2",
+            "name": "方块5"
+          }
+        ],
+        "sounds": [
+          {
+            "asset": "community:2SwJJ66J/pop",
+            "name": "声5"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "音符5"
+              }
+            },
+            {
+              "show": null
+            },
+            {
+              "switch_costume": {
+                "costume": "方块5"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "声5"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "hide": null
+            }
+          ]
+        ]
+      },
+      {
+        "name": "方块6",
+        "x": 20,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:NGwJJ66J/costume8#2",
+            "name": "方块6"
+          }
+        ],
+        "sounds": [
+          {
+            "asset": "community:NGwJJ66J/pop",
+            "name": "声6"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "音符6"
+              }
+            },
+            {
+              "show": null
+            },
+            {
+              "switch_costume": {
+                "costume": "方块6"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "声6"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "hide": null
+            }
+          ]
+        ]
+      },
+      {
+        "name": "方块7",
+        "x": 60,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:NGwJJ66J/costume5#2",
+            "name": "方块7"
+          }
+        ],
+        "sounds": [
+          {
+            "asset": "community:2SwJJ66J/魔法汤#2",
+            "name": "声7"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "音符7"
+              }
+            },
+            {
+              "show": null
+            },
+            {
+              "switch_costume": {
+                "costume": "方块7"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "声7"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "hide": null
+            }
+          ]
+        ]
+      },
+      {
+        "name": "方块8",
+        "x": 100,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:NGwJJ66J/costume7#2",
+            "name": "方块8"
+          }
+        ],
+        "sounds": [
+          {
+            "asset": "community:2SwJJ66J/闪光弹#2",
+            "name": "声8"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "音符8"
+              }
+            },
+            {
+              "show": null
+            },
+            {
+              "switch_costume": {
+                "costume": "方块8"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "声8"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "hide": null
+            }
+          ]
+        ]
+      },
+      {
+        "name": "方块9",
+        "x": 140,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:NGwJJ66J/999",
+            "name": "方块9"
+          }
+        ],
+        "sounds": [
+          {
+            "asset": "community:2SwJJ66J/能量星#2",
+            "name": "声9"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "音符9"
+              }
+            },
+            {
+              "show": null
+            },
+            {
+              "switch_costume": {
+                "costume": "方块9"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "声9"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "hide": null
+            }
+          ]
+        ]
+      },
+      {
+        "name": "方块10",
+        "x": 180,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:NGwJJ66J/1000#2",
+            "name": "方块10"
+          }
+        ],
+        "sounds": [
+          {
+            "asset": "community:2SwJJ66J/体力果#2",
+            "name": "声10"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "音符10"
+              }
+            },
+            {
+              "show": null
+            },
+            {
+              "switch_costume": {
+                "costume": "方块10"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "声10"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "hide": null
+            }
+          ]
+        ]
+      },
+      {
+        "name": "方块11",
+        "x": 220,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:NGwJJ66J/costume1",
+            "name": "方块11"
+          }
+        ],
+        "sounds": [
+          {
+            "asset": "community:bkiJJ66J/4f44ce53-acd1-4b5f-abb4-a55fd725c5ac",
+            "name": "声11"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "音符11"
+              }
+            },
+            {
+              "show": null
+            },
+            {
+              "switch_costume": {
+                "costume": "方块11"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "声11"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "hide": null
+            }
+          ]
+        ]
+      },
+      {
+        "name": "方块12",
+        "x": 260,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:NGwJJ66J/costume4#2",
+            "name": "方块12"
+          }
+        ],
+        "sounds": [
+          {
+            "asset": "community:2SwJJ66J/未知宝箱#2",
+            "name": "声12"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "音符12"
+              }
+            },
+            {
+              "show": null
+            },
+            {
+              "switch_costume": {
+                "costume": "方块12"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "声12"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "hide": null
+            }
+          ]
+        ]
+      },
+      {
+        "name": "方块13",
+        "x": 300,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:NGwJJ66J/working in progress",
+            "name": "方块13"
+          }
+        ],
+        "sounds": [
+          {
+            "asset": "community:2SwJJ66J/胜利",
+            "name": "声13"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "音符13"
+              }
+            },
+            {
+              "show": null
+            },
+            {
+              "switch_costume": {
+                "costume": "方块13"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "声13"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "hide": null
+            }
+          ]
+        ]
+      },
+      {
+        "name": "方块14",
+        "x": 340,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:NGwJJ66J/costume6#2",
+            "name": "方块14"
+          }
+        ],
+        "sounds": [
+          {
+            "asset": "community:bkiJJ66J/90f991e4-8402-4bbb-a60f-e89905b3816c2",
+            "name": "声14"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "音符14"
+              }
+            },
+            {
+              "show": null
+            },
+            {
+              "switch_costume": {
+                "costume": "方块14"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "声14"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "hide": null
+            }
+          ]
+        ]
+      },
+      {
+        "name": "方块15",
+        "x": 380,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:NGwJJ66J/text2",
+            "name": "方块15"
+          }
+        ],
+        "sounds": [
+          {
+            "asset": "community:bkiJJ66J/90f991e4-8402-4bbb-a60f-e89905b3816c3",
+            "name": "声15"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "音符15"
+              }
+            },
+            {
+              "show": null
+            },
+            {
+              "switch_costume": {
+                "costume": "方块15"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "声15"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "hide": null
+            }
+          ]
+        ]
+      },
+      {
+        "name": "方块16",
+        "x": 420,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:NGwJJ66J/991",
+            "name": "方块16"
+          }
+        ],
+        "sounds": [
+          {
+            "asset": "community:bkiJJ66J/7f52df2d-8b62-481e-b810-57725a4a7b93",
+            "name": "声16"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "音符16"
+              }
+            },
+            {
+              "show": null
+            },
+            {
+              "switch_costume": {
+                "costume": "方块16"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "声16"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "hide": null
+            }
+          ]
+        ]
+      },
+      {
+        "name": "方块17",
+        "x": 460,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:NGwJJ66J/996",
+            "name": "方块17"
+          }
+        ],
+        "sounds": [
+          {
+            "asset": "community:bkiJJ66J/90f991e4-8402-4bbb-a60f-e89905b3816c",
+            "name": "声17"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "音符17"
+              }
+            },
+            {
+              "show": null
+            },
+            {
+              "switch_costume": {
+                "costume": "方块17"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "声17"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "hide": null
+            }
+          ]
+        ]
+      },
+      {
+        "name": "方块18",
+        "x": 500,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:NGwJJ66J/997",
+            "name": "方块18"
+          }
+        ],
+        "sounds": [
+          {
+            "asset": "community:bkiJJ66J/Lightning",
+            "name": "声18"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "音符18"
+              }
+            },
+            {
+              "show": null
+            },
+            {
+              "switch_costume": {
+                "costume": "方块18"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "声18"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "hide": null
+            }
+          ]
+        ]
+      },
+      {
+        "name": "方块19",
+        "x": 540,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:NGwJJ66J/992",
+            "name": "方块19"
+          }
+        ],
+        "sounds": [
+          {
+            "asset": "community:NGwJJ66J/Lightning",
+            "name": "声19"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "音符19"
+              }
+            },
+            {
+              "show": null
+            },
+            {
+              "switch_costume": {
+                "costume": "方块19"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "声19"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "hide": null
+            }
+          ]
+        ]
+      },
+      {
+        "name": "方块20",
+        "x": 580,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:NGwJJ66J/993",
+            "name": "方块20"
+          }
+        ],
+        "sounds": [
+          {
+            "asset": "community:NGwJJ66J/explbomb",
+            "name": "声20"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "音符20"
+              }
+            },
+            {
+              "show": null
+            },
+            {
+              "switch_costume": {
+                "costume": "方块20"
+              }
+            },
+            {
+              "play_sound": {
+                "sound": "声20"
+              }
+            },
+            {
+              "wait": {
+                "secs": 0.5
+              }
+            },
+            {
+              "hide": null
+            }
+          ]
+        ]
+      }
+    ]
+  }
+}

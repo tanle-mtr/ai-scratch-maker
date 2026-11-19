@@ -1,0 +1,151 @@
+{
+  "project": {
+    "name": "列表迷宫 8x6",
+    "stage": {
+      "backdrops": [
+        {
+          "asset": "community:3AwJJ66J/backdrop1"
+        }
+      ],
+      "scripts": [
+        [
+          {
+            "when_green_flag_clicked": null
+          },
+          {
+            "set_variable": {
+              "var": "玩家X",
+              "value": 1
+            }
+          },
+          {
+            "set_variable": {
+              "var": "玩家Y",
+              "value": 1
+            }
+          },
+          {
+            "broadcast": "刷新格子"
+          }
+        ]
+      ],
+      "lists": {
+        "迷宫": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2
+        ]
+      },
+      "variables": {
+        "玩家X": 1,
+        "玩家Y": 1,
+        "索引": 0
+      }
+    },
+    "sprites": [
+      {
+        "name": "玩家",
+        "x": 0,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:2SwJJ66J/体力果",
+            "name": "玩家"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "刷新格子"
+              }
+            },
+            {
+              "set_variable": {
+                "var": "索引",
+                "value": {
+                  "add": [
+                    {
+                      "multiply": [
+                        {
+                          "var": "玩家Y"
+                        },
+                        8
+                      ]
+                    },
+                    {
+                      "add": [
+                        {
+                          "var": "玩家X"
+                        },
+                        1
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "say": {
+                "text": {
+                  "item_of_list": {
+                    "list": "迷宫",
+                    "index": {
+                      "var": "索引"
+                    }
+                  }
+                },
+                "secs": 1
+              }
+            }
+          ]
+        ]
+      }
+    ]
+  }
+}

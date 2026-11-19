@@ -1,0 +1,136 @@
+project:
+  name: 教育课件示例
+  stage:
+    backdrops:
+    - name: 背景1
+      asset: assets/backdrop1.svg
+    variables:
+      页码: 1
+      得分: 0
+      当前答案: 0
+      正确答案: 2
+      总页: 3
+    lists:
+      数据:
+      - 5
+      - 8
+      - 3
+      - 9
+      - 6
+    scripts:
+    - - when_green_flag_clicked: null
+      - set_variable:
+          var: 页码
+          value: 1
+      - set_variable:
+          var: 得分
+          value: 0
+      - set_variable:
+          var: 当前答案
+          value: 0
+      - set_variable:
+          var: 总页
+          value: 3
+      - set_variable:
+          var: 正确答案
+          value: 2
+      - broadcast:
+          message: 生成柱子
+    - - when_receive:
+          message: 下一页
+      - if:
+          cond:
+            lt:
+            - var: 页码
+            - var: 总页
+          do:
+          - change_variable:
+              var: 页码
+              by: 1
+    - - when_receive:
+          message: 上一页
+      - if:
+          cond:
+            gt:
+            - var: 页码
+            - 1
+          do:
+          - change_variable:
+              var: 页码
+              by: -1
+    - - when_receive:
+          message: 提交
+      - if:
+          cond:
+            equals:
+            - var: 当前答案
+            - var: 正确答案
+          do:
+          - change_variable:
+              var: 得分
+              by: 1
+  sprites:
+  - name: 柱子
+    x: 0
+    y: 0
+    costumes:
+    - name: 造型1
+      asset: assets/edu/bar.png
+    variables:
+      是克隆: 0
+      编号: 0
+      高度: 0
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+    - - when_receive:
+          message: 生成柱子
+      - if:
+          cond:
+            equals:
+            - var: 是克隆
+            - 0
+          do:
+          - set_variable:
+              var: 编号
+              value: 0
+          - repeat:
+              times: 5
+              do:
+              - change_variable:
+                  var: 编号
+                  by: 1
+              - create_clone_of:
+                  clone: _myself_
+    - - when_start_as_clone: null
+      - set_variable:
+          var: 是克隆
+          value: 1
+      - set_variable:
+          var: 高度
+          value:
+            item_of_list:
+              list: 数据
+              index:
+                var: 编号
+      - show: null
+    - - when_receive:
+          message: 选项A
+      - set_variable:
+          var: 当前答案
+          value: 1
+    - - when_receive:
+          message: 选项B
+      - set_variable:
+          var: 当前答案
+          value: 2
+    - - when_receive:
+          message: 选项C
+      - set_variable:
+          var: 当前答案
+          value: 3
+    - - when_receive:
+          message: 选项D
+      - set_variable:
+          var: 当前答案
+          value: 4

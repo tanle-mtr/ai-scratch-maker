@@ -1,0 +1,1003 @@
+project:
+  name: 第一人称体素光线投射参考工程
+  extensions:
+  - pen
+  stage:
+    name: 舞台
+    backdrops:
+    - name: 背景1
+      asset: assets/backdrop1.svg
+    variables:
+      地图宽: 16
+      地图高: 16
+      px: 1.5
+      py: 1.5
+      dir: 0
+      首射线距离: 0
+      碰撞测试: 0
+      测试后px: 0
+      命中距离: 0
+      命中格X: 0
+      命中格Y: 0
+      格值: 0
+      存档px: 0
+      存档py: 0
+      地图X: 0
+      地图Y: 0
+      射线X: 0
+      射线Y: 0
+      绝X: 0
+      绝Y: 0
+      ddx: 0
+      ddy: 0
+      步X: 0
+      步Y: 0
+      边距X: 0
+      边距Y: 0
+      命中: 0
+      面: 0
+      新x: 0
+      新y: 0
+      列号: 0
+      相机X: 0
+      射线角: 0
+      墙高: 0
+      顶Y: 0
+      底Y: 0
+      屏X: 0
+      g: 0
+      暗: 0
+      色: 0
+    lists:
+      地图:
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 0
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+    broadcasts:
+      开始: 开始
+    scripts:
+    - - when_green_flag_clicked: null
+      - pen_clear: null
+      - set_variable:
+          var: px
+          value: 1.5
+      - set_variable:
+          var: py
+          value: 1.5
+      - set_variable:
+          var: dir
+          value: 0
+      - broadcast:
+          message: 开始
+  sprites:
+  - name: 玩家
+    costumes:
+    - name: 点
+      asset: assets/dot.svg
+    procedures:
+    - name: 查格 %n %n
+      args:
+      - 格X
+      - 格Y
+      warp: true
+      script:
+      - if:
+          cond:
+            or:
+            - less_than:
+              - var: 格X
+              - 0
+            - or:
+              - greater_than:
+                - var: 格X
+                - 15
+              - or:
+                - less_than:
+                  - var: 格Y
+                  - 0
+                - greater_than:
+                  - var: 格Y
+                  - 15
+          do:
+          - set_variable:
+              var: 格值
+              value: 1
+      - if:
+          cond:
+            and:
+            - greater_than:
+              - var: 格X
+              - -1
+            - and:
+              - less_than:
+                - var: 格X
+                - 16
+              - and:
+                - greater_than:
+                  - var: 格Y
+                  - -1
+                - less_than:
+                  - var: 格Y
+                  - 16
+          do:
+          - set_variable:
+              var: 格值
+              value:
+                item_of_list:
+                  index:
+                    add:
+                    - add:
+                      - multiply:
+                        - var: 格Y
+                        - 16
+                      - var: 格X
+                    - 1
+                  list: 地图
+    - name: 投射射线 %n
+      args:
+      - 角度
+      warp: true
+      script:
+      - set_variable:
+          var: 射线X
+          value:
+            mathop:
+              op: cos
+              num:
+                var: 角度
+      - set_variable:
+          var: 射线Y
+          value:
+            mathop:
+              op: sin
+              num:
+                var: 角度
+      - set_variable:
+          var: 地图X
+          value:
+            mathop:
+              op: floor
+              num:
+                var: px
+      - set_variable:
+          var: 地图Y
+          value:
+            mathop:
+              op: floor
+              num:
+                var: py
+      - set_variable:
+          var: 绝X
+          value:
+            mathop:
+              op: abs
+              num:
+                var: 射线X
+      - set_variable:
+          var: ddx
+          value: 1000000
+      - if:
+          cond:
+            greater_than:
+            - var: 绝X
+            - 0.0001
+          do:
+          - set_variable:
+              var: ddx
+              value:
+                mathop:
+                  op: abs
+                  num:
+                    divide:
+                    - 1
+                    - var: 射线X
+      - set_variable:
+          var: 绝Y
+          value:
+            mathop:
+              op: abs
+              num:
+                var: 射线Y
+      - set_variable:
+          var: ddy
+          value: 1000000
+      - if:
+          cond:
+            greater_than:
+            - var: 绝Y
+            - 0.0001
+          do:
+          - set_variable:
+              var: ddy
+              value:
+                mathop:
+                  op: abs
+                  num:
+                    divide:
+                    - 1
+                    - var: 射线Y
+      - set_variable:
+          var: 步X
+          value: 1
+      - if:
+          cond:
+            less_than:
+            - var: 射线X
+            - 0
+          do:
+          - set_variable:
+              var: 步X
+              value: -1
+      - set_variable:
+          var: 边距X
+          value:
+            multiply:
+            - subtract:
+              - add:
+                - var: 地图X
+                - 1
+              - var: px
+            - var: ddx
+      - if:
+          cond:
+            less_than:
+            - var: 射线X
+            - 0
+          do:
+          - set_variable:
+              var: 边距X
+              value:
+                multiply:
+                - subtract:
+                  - var: px
+                  - var: 地图X
+                - var: ddx
+      - set_variable:
+          var: 步Y
+          value: 1
+      - if:
+          cond:
+            less_than:
+            - var: 射线Y
+            - 0
+          do:
+          - set_variable:
+              var: 步Y
+              value: -1
+      - set_variable:
+          var: 边距Y
+          value:
+            multiply:
+            - subtract:
+              - add:
+                - var: 地图Y
+                - 1
+              - var: py
+            - var: ddy
+      - if:
+          cond:
+            less_than:
+            - var: 射线Y
+            - 0
+          do:
+          - set_variable:
+              var: 边距Y
+              value:
+                multiply:
+                - subtract:
+                  - var: py
+                  - var: 地图Y
+                - var: ddy
+      - set_variable:
+          var: 命中
+          value: 0
+      - set_variable:
+          var: 面
+          value: 0
+      - repeat:
+          times: 32
+          do:
+          - if:
+              cond:
+                equals:
+                - var: 命中
+                - 0
+              do:
+              - if:
+                  cond:
+                    less_than:
+                    - var: 边距X
+                    - var: 边距Y
+                  do:
+                  - change_variable:
+                      var: 边距X
+                      value:
+                        var: ddx
+                  - change_variable:
+                      var: 地图X
+                      value:
+                        var: 步X
+                  - set_variable:
+                      var: 面
+                      value: 0
+                  else:
+                  - change_variable:
+                      var: 边距Y
+                      value:
+                        var: ddy
+                  - change_variable:
+                      var: 地图Y
+                      value:
+                        var: 步Y
+                  - set_variable:
+                      var: 面
+                      value: 1
+              - call:
+                  proc: 查格 %n %n
+                  args:
+                  - var: 地图X
+                  - var: 地图Y
+              - if:
+                  cond:
+                    equals:
+                    - var: 格值
+                    - 1
+                  do:
+                  - set_variable:
+                      var: 命中
+                      value: 1
+      - set_variable:
+          var: 命中距离
+          value:
+            subtract:
+            - var: 边距X
+            - var: ddx
+      - if:
+          cond:
+            equals:
+            - var: 面
+            - 1
+          do:
+          - set_variable:
+              var: 命中距离
+              value:
+                subtract:
+                - var: 边距Y
+                - var: ddy
+      - if:
+          cond:
+            less_than:
+            - var: 命中距离
+            - 0.0001
+          do:
+          - set_variable:
+              var: 命中距离
+              value: 0.0001
+      - set_variable:
+          var: 命中格X
+          value:
+            var: 地图X
+      - set_variable:
+          var: 命中格Y
+          value:
+            var: 地图Y
+    - name: 渲染
+      args: []
+      warp: true
+      script:
+      - pen_up: null
+      - pen_clear: null
+      - set_variable:
+          var: 列号
+          value: 0
+      - repeat:
+          times: 48
+          do:
+          - change_variable:
+              var: 列号
+              value: 1
+          - set_variable:
+              var: 相机X
+              value:
+                subtract:
+                - multiply:
+                  - divide:
+                    - var: 列号
+                    - 48
+                  - 2
+                - 1
+          - set_variable:
+              var: 射线角
+              value:
+                add:
+                - var: dir
+                - multiply:
+                  - var: 相机X
+                  - 30
+          - call:
+              proc: 投射射线 %n
+              args:
+              - var: 射线角
+          - set_variable:
+              var: 墙高
+              value:
+                divide:
+                - 160
+                - var: 命中距离
+          - set_variable:
+              var: 顶Y
+              value:
+                multiply:
+                - var: 墙高
+                - 0.5
+          - set_variable:
+              var: 底Y
+              value:
+                multiply:
+                - var: 墙高
+                - -0.5
+          - set_variable:
+              var: 屏X
+              value:
+                add:
+                - -240
+                - multiply:
+                  - var: 列号
+                  - 10
+          - set_variable:
+              var: g
+              value: 30
+          - set_variable:
+              var: 暗
+              value:
+                subtract:
+                - 220
+                - multiply:
+                  - var: 命中距离
+                  - 12
+          - if:
+              cond:
+                greater_than:
+                - var: 暗
+                - 30
+              do:
+              - set_variable:
+                  var: g
+                  value:
+                    var: 暗
+          - set_variable:
+              var: 色
+              value:
+                add:
+                - add:
+                  - multiply:
+                    - var: g
+                    - 65536
+                  - multiply:
+                    - var: g
+                    - 256
+                - var: g
+          - set_pen_color:
+              COLOR:
+                var: 色
+          - pen_up: null
+          - set_x:
+              x:
+                var: 屏X
+          - set_y:
+              y:
+                var: 顶Y
+          - pen_down: null
+          - set_y:
+              y:
+                var: 底Y
+          - pen_up: null
+    scripts:
+    - - when_receive:
+          message: 开始
+      - hide: null
+      - call:
+          proc: 投射射线 %n
+          args:
+          - var: dir
+      - set_variable:
+          var: 首射线距离
+          value:
+            var: 命中距离
+      - set_variable:
+          var: 存档px
+          value:
+            var: px
+      - set_variable:
+          var: 存档py
+          value:
+            var: py
+      - set_variable:
+          var: 新x
+          value:
+            add:
+            - var: px
+            - multiply:
+              - mathop:
+                  op: cos
+                  num:
+                    var: dir
+              - 0.2
+      - call:
+          proc: 查格 %n %n
+          args:
+          - mathop:
+              op: floor
+              num:
+                var: 新x
+          - mathop:
+              op: floor
+              num:
+                var: py
+      - if:
+          cond:
+            equals:
+            - var: 格值
+            - 0
+          do:
+          - set_variable:
+              var: px
+              value:
+                var: 新x
+      - set_variable:
+          var: 测试后px
+          value:
+            var: px
+      - set_variable:
+          var: px
+          value:
+            var: 存档px
+      - set_variable:
+          var: py
+          value:
+            var: 存档py
+      - call:
+          proc: 查格 %n %n
+          args:
+          - 0
+          - 1
+      - set_variable:
+          var: 碰撞测试
+          value:
+            var: 格值
+      - forever:
+          do:
+          - if:
+              cond:
+                or:
+                - key_pressed:
+                    key: up
+                - key_pressed:
+                    key: w
+              do:
+              - set_variable:
+                  var: 新x
+                  value:
+                    add:
+                    - var: px
+                    - multiply:
+                      - mathop:
+                          op: cos
+                          num:
+                            var: dir
+                      - 0.2
+              - set_variable:
+                  var: 新y
+                  value:
+                    add:
+                    - var: py
+                    - multiply:
+                      - mathop:
+                          op: sin
+                          num:
+                            var: dir
+                      - 0.2
+              - call:
+                  proc: 查格 %n %n
+                  args:
+                  - mathop:
+                      op: floor
+                      num:
+                        var: 新x
+                  - mathop:
+                      op: floor
+                      num:
+                        var: 新y
+              - if:
+                  cond:
+                    equals:
+                    - var: 格值
+                    - 0
+                  do:
+                  - set_variable:
+                      var: px
+                      value:
+                        var: 新x
+                  - set_variable:
+                      var: py
+                      value:
+                        var: 新y
+          - if:
+              cond:
+                or:
+                - key_pressed:
+                    key: down
+                - key_pressed:
+                    key: s
+              do:
+              - set_variable:
+                  var: 新x
+                  value:
+                    subtract:
+                    - var: px
+                    - multiply:
+                      - mathop:
+                          op: cos
+                          num:
+                            var: dir
+                      - 0.2
+              - set_variable:
+                  var: 新y
+                  value:
+                    subtract:
+                    - var: py
+                    - multiply:
+                      - mathop:
+                          op: sin
+                          num:
+                            var: dir
+                      - 0.2
+              - call:
+                  proc: 查格 %n %n
+                  args:
+                  - mathop:
+                      op: floor
+                      num:
+                        var: 新x
+                  - mathop:
+                      op: floor
+                      num:
+                        var: 新y
+              - if:
+                  cond:
+                    equals:
+                    - var: 格值
+                    - 0
+                  do:
+                  - set_variable:
+                      var: px
+                      value:
+                        var: 新x
+                  - set_variable:
+                      var: py
+                      value:
+                        var: 新y
+          - if:
+              cond:
+                or:
+                - key_pressed:
+                    key: left
+                - key_pressed:
+                    key: a
+              do:
+              - change_variable:
+                  var: dir
+                  value: -4
+          - if:
+              cond:
+                or:
+                - key_pressed:
+                    key: right
+                - key_pressed:
+                    key: d
+              do:
+              - change_variable:
+                  var: dir
+                  value: 4
+          - if:
+              cond:
+                key_pressed:
+                  key: space
+              do:
+              - call:
+                  proc: 投射射线 %n
+                  args:
+                  - var: dir
+              - if:
+                  cond:
+                    equals:
+                    - var: 格值
+                    - 1
+                  do:
+                  - replace_item_of_list:
+                      index:
+                        add:
+                        - add:
+                          - multiply:
+                            - var: 命中格Y
+                            - 16
+                          - var: 命中格X
+                        - 1
+                      list: 地图
+                      item: 0
+          - if:
+              cond:
+                key_pressed:
+                  key: b
+              do:
+              - call:
+                  proc: 投射射线 %n
+                  args:
+                  - var: dir
+              - replace_item_of_list:
+                  index:
+                    add:
+                    - add:
+                      - multiply:
+                        - var: 命中格Y
+                        - 16
+                      - var: 命中格X
+                    - 1
+                  list: 地图
+                  item: 1
+          - call:
+              proc: 渲染
+              args: []

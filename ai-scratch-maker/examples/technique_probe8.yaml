@@ -1,0 +1,432 @@
+project:
+  name: 画笔与伪3D示教
+  extensions: [pen]
+  stage:
+    backdrops:
+      - { name: 背景, asset: assets/backdrop1.svg }
+    variables: {}
+    lists: {}
+  sprites:
+    # ───────────────────────── §67 画笔基础：彩虹螺旋 + 图章环 ─────────────────────────
+    - name: 画笔基础
+      variables:
+        序号: 0
+        角度: 0
+        半径: 0
+        cx: 0
+        cy: 0
+      costumes:
+        - { name: 点, asset: assets/dot.svg }
+      scripts:
+        - - when_green_flag_clicked: null
+          - pen_clear: null
+          - set_pen_size: { size: 3 }
+          - set_pen_hue: { hue: 0 }
+          - pen_down: null
+          - repeat: { times: 120, do:
+              [ { move_steps: 4 }
+              , { turn_right: 11 }
+              , { change_pen_hue: { hue: 2 } }
+              , { change_pen_size: { size: 0.1 } } ] }
+          - pen_up: null
+          - pen_clear: null
+          - set_variable: { var: 序号, value: 0 }
+          - repeat: { times: 60, do:
+              [ { set_variable: { var: 角度, value: { multiply: [ { var: 序号 }, 6 ] } } }
+              , { set_variable: { var: 半径, value: 120 } }
+              , set_variable: { var: cx, value: { multiply: [ { var: 半径 }, { mathop: { op: cos, num: { var: 角度 } } } ] } }
+              , set_variable: { var: cy, value: { multiply: [ { var: 半径 }, { mathop: { op: sin, num: { var: 角度 } } } ] } }
+              , goto_xy: { x: { var: cx }, y: { var: cy } }
+              , stamp: null
+              , change_variable: { var: 序号, value: 1 } ] }
+
+    # ───────────────────────── §68 3D 线框渲染：旋转立方体 ─────────────────────────
+    - name: 三维立方体
+      costumes:
+        - { name: 点, asset: assets/dot.svg }
+      variables:
+        焦距: 240
+        相机距离: 300
+        角度Y: 0
+        角度X: 20
+        cY: 0
+        sY: 0
+        cX: 0
+        sX: 0
+        x: 0
+        y: 0
+        z: 0
+        k: 0
+        e: 0
+        a: 0
+        b: 0
+        pxA: 0
+        pyA: 0
+        pxB: 0
+        pyB: 0
+        rx: 0
+        ry: 0
+        rz: 0
+        ry2: 0
+        rz2: 0
+        sx: 0
+        sy: 0
+        ax: 0
+        az: 0
+        bz: 0
+        bz2: 0
+        ay: 0
+        azz: 0
+        by: 0
+        bzz: 0
+        深度: 0
+        比例: 0
+        i: 0
+      lists:
+        vx: [-100, 100, 100, -100, -100, 100, 100, -100]
+        vy: [-100, -100, 100, 100, -100, -100, 100, 100]
+        vz: [-100, -100, -100, -100, 100, 100, 100, 100]
+        边: [1, 2, 2, 3, 3, 4, 4, 1, 5, 6, 6, 7, 7, 8, 8, 5, 1, 5, 2, 6, 3, 7, 4, 8]
+        投影X: [0, 0, 0, 0, 0, 0, 0, 0]
+        投影Y: [0, 0, 0, 0, 0, 0, 0, 0]
+      procedures:
+        - name: 投影并画边 %n
+          args: [i]
+          warp: true
+          script:
+            - set_variable: { var: a, value: { item_of_list: { index: { subtract: [ { multiply: [ { var: i }, 2 ] }, 1 ] }, list: 边 } } }
+            - set_variable: { var: b, value: { item_of_list: { index: { multiply: [ { var: i }, 2 ] }, list: 边 } } }
+            - set_variable: { var: pxA, value: { item_of_list: { index: { var: a }, list: 投影X } } }
+            - set_variable: { var: pyA, value: { item_of_list: { index: { var: a }, list: 投影Y } } }
+            - set_variable: { var: pxB, value: { item_of_list: { index: { var: b }, list: 投影X } } }
+            - set_variable: { var: pyB, value: { item_of_list: { index: { var: b }, list: 投影Y } } }
+            - pen_up: null
+            - goto_xy: { x: { var: pxA }, y: { var: pyA } }
+            - pen_down: null
+            - goto_xy: { x: { var: pxB }, y: { var: pyB } }
+            - pen_up: null
+      scripts:
+        - - when_green_flag_clicked: null
+          - pen_clear: null
+          - hide: null
+          - forever:
+              do:
+                - pen_clear: null
+                - set_variable: { var: cY, value: { mathop: { op: cos, num: { var: 角度Y } } } }
+                - set_variable: { var: sY, value: { mathop: { op: sin, num: { var: 角度Y } } } }
+                - set_variable: { var: cX, value: { mathop: { op: cos, num: { var: 角度X } } } }
+                - set_variable: { var: sX, value: { mathop: { op: sin, num: { var: 角度X } } } }
+                - set_variable: { var: k, value: 1 }
+                - repeat: { times: 8, do:
+                    [ { set_variable: { var: x, value: { item_of_list: { index: { var: k }, list: vx } } } }
+                    , { set_variable: { var: y, value: { item_of_list: { index: { var: k }, list: vy } } } }
+                    , { set_variable: { var: z, value: { item_of_list: { index: { var: k }, list: vz } } } }
+                    # 绕 Y 轴：rx = x·cY − z·sY ; rz = x·sY + z·cY
+                    , { set_variable: { var: ax, value: { multiply: [ { var: x }, { var: cY } ] } } }
+                    , { set_variable: { var: az, value: { multiply: [ { var: x }, { var: sY } ] } } }
+                    , { set_variable: { var: bz, value: { multiply: [ { var: z }, { var: cY } ] } } }
+                    , { set_variable: { var: bz2, value: { multiply: [ { var: z }, { var: sY } ] } } }
+                    , { set_variable: { var: rx, value: { subtract: [ { var: ax }, { var: bz2 } ] } } }
+                    , { set_variable: { var: rz, value: { add: [ { var: az }, { var: bz } ] } } }
+                    , { set_variable: { var: ry, value: { var: y } } }
+                    # 绕 X 轴：ry2 = ry·cX − rz·sX ; rz2 = ry·sX + rz·cX
+                    , { set_variable: { var: ay, value: { multiply: [ { var: ry }, { var: cX } ] } } }
+                    , { set_variable: { var: azz, value: { multiply: [ { var: ry }, { var: sX } ] } } }
+                    , { set_variable: { var: by, value: { multiply: [ { var: rz }, { var: cX } ] } } }
+                    , { set_variable: { var: bzz, value: { multiply: [ { var: rz }, { var: sX } ] } } }
+                    , { set_variable: { var: ry2, value: { subtract: [ { var: ay }, { var: bzz } ] } } }
+                    , { set_variable: { var: rz2, value: { add: [ { var: azz }, { var: by } ] } } }
+                    # 透视投影：屏幕 = r · 焦距 / (rz2 + 相机距离)
+                    , { set_variable: { var: 深度, value: { add: [ { var: rz2 }, { var: 相机距离 } ] } } }
+                    , { set_variable: { var: 比例, value: { divide: [ { var: 焦距 }, { var: 深度 } ] } } }
+                    , { set_variable: { var: sx, value: { multiply: [ { var: rx }, { var: 比例 } ] } } }
+                    , { set_variable: { var: sy, value: { multiply: [ { var: ry2 }, { var: 比例 } ] } } }
+                    , replace_item_of_list: { index: { var: k }, item: { var: sx }, list: 投影X }
+                    , replace_item_of_list: { index: { var: k }, item: { var: sy }, list: 投影Y }
+                    , change_variable: { var: k, value: 1 } ] }
+                - set_variable: { var: e, value: 1 }
+                - repeat: { times: 12, do:
+                    [ { call: { proc: 投影并画边 %n, args: [ { var: e } ] } }
+                    , change_variable: { var: e, value: 1 } ] }
+                - change_variable: { var: 角度Y, value: 2 }
+
+    # ───────────────────────── §69 等距投影：单个等距方块 ─────────────────────────
+    - name: 等距方块
+      costumes:
+        - { name: 点, asset: assets/dot.svg }
+      variables:
+        焦距: 1
+        k: 0
+        屏幕x: 0
+        屏幕y: 0
+        差: 0
+        和: 0
+        半: 0
+        cx: 0
+        cy: 0
+        e: 0
+        pxA: 0
+        pyA: 0
+        pxB: 0
+        pyB: 0
+        i: 0
+        ix: 0
+        iy: 0
+        iz: 0
+      lists:
+        ixL: [-30, 30, 30, -30, -30, 30, 30, -30]
+        iyL: [-30, -30, 30, 30, -30, -30, 30, 30]
+        izL: [-30, -30, -30, -30, 30, 30, 30, 30]
+        边L: [1, 2, 2, 3, 3, 4, 4, 1, 5, 6, 6, 7, 7, 8, 8, 5, 1, 5, 2, 6, 3, 7, 4, 8]
+        投X: [0, 0, 0, 0, 0, 0, 0, 0]
+        投Y: [0, 0, 0, 0, 0, 0, 0, 0]
+      procedures:
+        - name: 等距画边 %n
+          args: [i]
+          warp: true
+          script:
+            - set_variable: { var: cx, value: { item_of_list: { index: { subtract: [ { multiply: [ { var: i }, 2 ] }, 1 ] }, list: 边L } } }
+            - set_variable: { var: cy, value: { item_of_list: { index: { multiply: [ { var: i }, 2 ] }, list: 边L } } }
+            - set_variable: { var: pxA, value: { item_of_list: { index: { var: cx }, list: 投X } } }
+            - set_variable: { var: pyA, value: { item_of_list: { index: { var: cx }, list: 投Y } } }
+            - set_variable: { var: pxB, value: { item_of_list: { index: { var: cy }, list: 投X } } }
+            - set_variable: { var: pyB, value: { item_of_list: { index: { var: cy }, list: 投Y } } }
+            - pen_up: null
+            - goto_xy: { x: { var: pxA }, y: { var: pyA } }
+            - pen_down: null
+            - goto_xy: { x: { var: pxB }, y: { var: pyB } }
+            - pen_up: null
+      scripts:
+        - - when_green_flag_clicked: null
+          - pen_clear: null
+          - hide: null
+          - set_pen_size: { size: 2 }
+          - set_variable: { var: k, value: 1 }
+          - repeat: { times: 8, do:
+              [ { set_variable: { var: ix, value: { item_of_list: { index: { var: k }, list: ixL } } } }
+              , { set_variable: { var: iy, value: { item_of_list: { index: { var: k }, list: iyL } } } }
+              , { set_variable: { var: iz, value: { item_of_list: { index: { var: k }, list: izL } } } }
+              , { set_variable: { var: 差, value: { subtract: [ { var: ix }, { var: iy } ] } } }
+              , { set_variable: { var: 屏幕x, value: { multiply: [ { var: 差 }, 0.866 ] } } }
+              , { set_variable: { var: 和, value: { add: [ { var: ix }, { var: iy } ] } } }
+              , { set_variable: { var: 半, value: { multiply: [ { var: 和 }, 0.5 ] } } }
+              , { set_variable: { var: 屏幕y, value: { subtract: [ { var: 半 }, { var: iz } ] } } }
+              , replace_item_of_list: { index: { var: k }, item: { var: 屏幕x }, list: 投X }
+              , replace_item_of_list: { index: { var: k }, item: { var: 屏幕y }, list: 投Y }
+              , change_variable: { var: k, value: 1 } ] }
+          - set_variable: { var: e, value: 1 }
+          - repeat: { times: 12, do:
+              [ { call: { proc: 等距画边 %n, args: [ { var: e } ] } }
+              , change_variable: { var: e, value: 1 } ] }
+
+    # ───────────────────────── §71 星空伪 3D ─────────────────────────
+    - name: 星空
+      variables:
+        i: 0
+        z: 0
+        rx: 0
+        ry: 0
+        sx: 0
+        sy: 0
+      lists:
+        vx: [-200, 80, -50, 150, -120, 30, 180, -90, 60, -160, 100, -40, 170, -70, 20, -180, 110, -30, 140, -100]
+        vy: [-120, 60, 90, -80, 40, -150, 70, -60, 130, -20, 50, -110, 80, -140, 30, -90, 120, -50, 100, -70]
+        vz: [400, 600, 300, 700, 200, 500, 350, 650, 250, 550, 450, 320, 600, 280, 520, 380, 480, 300, 620, 360]
+      costumes:
+        - { name: 点, asset: assets/dot.svg }
+      scripts:
+        - - when_green_flag_clicked: null
+          - pen_clear: null
+          - hide: null
+          - set_variable: { var: i, value: 1 }
+          - forever:
+              do:
+                - pen_clear: null
+                - set_variable: { var: i, value: 1 }
+                - repeat: { times: 20, do:
+                    [ { set_variable: { var: z, value: { subtract: [ { item_of_list: { index: { var: i }, list: vz } }, 4 ] } } }
+                    , if: { cond: { less_than: [ { var: z }, 1 ] }, do:
+                        [ { set_variable: { var: z, value: 800 } }
+                        , { set_variable: { var: rx, value: { random: [ -240, 240 ] } } }
+                        , replace_item_of_list: { index: { var: i }, item: { var: rx }, list: vx }
+                        , { set_variable: { var: ry, value: { random: [ -180, 180 ] } } }
+                        , replace_item_of_list: { index: { var: i }, item: { var: ry }, list: vy } ] }
+                    , replace_item_of_list: { index: { var: i }, item: { var: z }, list: vz }
+                    , { set_variable: { var: sx, value: { multiply: [ { divide: [ { item_of_list: { index: { var: i }, list: vx } }, { var: z } ] }, 240 ] } } }
+                    , { set_variable: { var: sy, value: { multiply: [ { divide: [ { item_of_list: { index: { var: i }, list: vy } }, { var: z } ] }, 240 ] } } }
+                    , set_size: { size: { divide: [ 240, { var: z } ] } }
+                    , goto_xy: { x: { var: sx }, y: { var: sy } }
+                    , stamp: null
+                    , change_variable: { var: i, value: 1 } ] }
+
+    # ───────────────────────── §72 分形树（递归自定义积木）─────────────────────────
+    - name: 分形树
+      variables:
+        长度: 0
+      costumes:
+        - { name: 点, asset: assets/dot.svg }
+      procedures:
+        - name: 画枝 %n
+          args: [长度]
+          warp: true
+          script:
+            - pen_down: null
+            - move_steps: { steps: { var: 长度 } }
+            - pen_up: null
+            - if: { cond: { greater_than: [ { var: 长度 }, 10 ] }, do:
+                [ turn_left: 25
+                , call: { proc: 画枝 %n, args: [ { multiply: [ { var: 长度 }, 0.7 ] } ] }
+                , turn_right: 50
+                , call: { proc: 画枝 %n, args: [ { multiply: [ { var: 长度 }, 0.7 ] } ] }
+                , turn_left: 25 ] }
+            - move_steps: { steps: { multiply: [ { var: 长度 }, -1 ] } }
+      scripts:
+        - - when_green_flag_clicked: null
+          - pen_clear: null
+          - set_pen_size: { size: 2 }
+          - goto_xy: { x: 0, y: -150 }
+          - point_in_direction: 90
+          - call: { proc: 画枝 %n, args: [ 100 ] }
+
+    # ───────────────────────── §73 贝塞尔曲线（乘法展开，无 pow）─────────────────────────
+    - name: 贝塞尔
+      variables:
+        t: 0
+        u: 0
+        u2: 0
+        u3: 0
+        t2: 0
+        t3: 0
+        bx: 0
+        by: 0
+        t1: 0
+        t2a: 0
+        t2b: 0
+        t3a: 0
+        t3b: 0
+        by2t: 0
+        by3t: 0
+        y1: 0
+        y2a: 0
+        y3a: 0
+        y4: 0
+        t4: 0
+      costumes:
+        - { name: 点, asset: assets/dot.svg }
+      scripts:
+        - - when_green_flag_clicked: null
+          - pen_clear: null
+          - set_pen_size: { size: 3 }
+          - pen_down: null
+          - set_variable: { var: t, value: 0 }
+          - repeat: { times: 50, do:
+              [ { set_variable: { var: u, value: { subtract: [ 1, { var: t } ] } } }
+              , { set_variable: { var: u2, value: { multiply: [ { var: u }, { var: u } ] } } }
+              , { set_variable: { var: u3, value: { multiply: [ { var: u2 }, { var: u } ] } } }
+              , { set_variable: { var: t2, value: { multiply: [ { var: t }, { var: t } ] } } }
+              , { set_variable: { var: t3, value: { multiply: [ { var: t2 }, { var: t } ] } } }
+              # Bx = u³·(-150) + 3·u²·t·(-50) + 3·u·t²·(50) + t³·(150)
+              , { set_variable: { var: t1, value: { multiply: [ { var: u3 }, -150 ] } } }
+              , { set_variable: { var: t2a, value: { multiply: [ 3, { var: u2 } ] } } }
+              , { set_variable: { var: t2b, value: { multiply: [ { var: t2a }, { var: t } ] } } }
+              , { set_variable: { var: t3a, value: { multiply: [ { var: t2b }, -50 ] } } }
+              , { set_variable: { var: t3b, value: { multiply: [ 3, { var: u } ] } } }
+              , { set_variable: { var: by2t, value: { multiply: [ { var: t3b }, { var: t2 } ] } } }
+              , { set_variable: { var: by3t, value: { multiply: [ { var: by2t }, 50 ] } } }
+              , { set_variable: { var: t4, value: { multiply: [ { var: t3 }, 150 ] } } }
+              , { set_variable: { var: bx, value: { add: [ { var: t1 }, { add: [ { var: t3a }, { add: [ { var: by3t }, { var: t4 } ] } ] } ] } } }
+              # By = u³·(-100) + 3·u²·t·(120) + 3·u·t²·(-120) + t³·(100)
+              , { set_variable: { var: y1, value: { multiply: [ { var: u3 }, -100 ] } } }
+              , { set_variable: { var: y2a, value: { multiply: [ { var: t2a }, 120 ] } } }
+              , { set_variable: { var: y3a, value: { multiply: [ { var: t3b }, -120 ] } } }
+              , { set_variable: { var: y4, value: { multiply: [ { var: t3 }, 100 ] } } }
+              , { set_variable: { var: by, value: { add: [ { var: y1 }, { add: [ { var: y2a }, { add: [ { var: y3a }, { var: y4 } ] } ] } ] } } }
+              , goto_xy: { x: { var: bx }, y: { var: by } }
+              , change_variable: { var: t, value: 0.02 } ] }
+          - pen_up: null
+
+    # ───────────────────────── §70 射线投射（步进版）迷宫 ─────────────────────────
+    - name: 射线迷宫
+      variables:
+        玩家X: 3.5
+        玩家Y: 3.5
+        方向X: -1
+        方向Y: 0
+        平面X: 0
+        平面Y: 0.66
+        列: 0
+        cameraX: 0
+        射线方向X: 0
+        射线方向Y: 0
+        射线位置X: 0
+        射线位置Y: 0
+        命中: 0
+        步数: 0
+        perpDist: 0
+        射线长: 0
+        深度: 0
+        墙高: 0
+        边长: 8
+        单元: 0
+        行: 0
+        列号: 0
+        基: 0
+        偏移: 0
+        索引: 0
+        x: 0
+      lists:
+        地图: [1,1,1,1,1,1,1,1, 1,0,0,0,0,0,0,1, 1,0,1,1,0,1,0,1,
+               1,0,0,0,0,0,0,1, 1,0,1,0,1,1,0,1, 1,0,1,0,0,0,0,1,
+               1,0,0,0,0,1,0,1, 1,1,1,1,1,1,1,1]
+      costumes:
+        - { name: 点, asset: assets/dot.svg }
+      procedures:
+        - name: 画一列 %n
+          args: [x]
+          warp: true
+          script:
+            - set_variable: { var: cameraX, value: { subtract: [ { multiply: [ 2, { divide: [ { var: x }, 240 ] } ] }, 1 ] } }
+            - set_variable: { var: 射线方向X, value: { add: [ { var: 方向X }, { multiply: [ { var: 平面X }, { var: cameraX } ] } ] } }
+            - set_variable: { var: 射线方向Y, value: { add: [ { var: 方向Y }, { multiply: [ { var: 平面Y }, { var: cameraX } ] } ] } }
+            - set_variable: { var: 射线位置X, value: { var: 玩家X } }
+            - set_variable: { var: 射线位置Y, value: { var: 玩家Y } }
+            - set_variable: { var: 命中, value: 0 }
+            - set_variable: { var: 步数, value: 0 }
+            # 未命中时的兜底深度（避免 300/0 = Infinity）
+            - set_variable: { var: perpDist, value: 12 }
+            - repeat_until: { cond: { or: [ { equals: [ { var: 命中 }, 1 ] }, { greater_than: [ { var: 步数 }, 200 ] } ] }, do:
+                [ { change_variable: { var: 步数, value: 1 } }
+                , { set_variable: { var: 射线位置X, value: { add: [ { var: 射线位置X }, { multiply: [ { var: 射线方向X }, 0.1 ] } ] } } }
+                , { set_variable: { var: 射线位置Y, value: { add: [ { var: 射线位置Y }, { multiply: [ { var: 射线方向Y }, 0.1 ] } ] } } }
+                , { set_variable: { var: 行, value: { mathop: { op: floor, num: { var: 射线位置Y } } } } }
+                , { set_variable: { var: 列号, value: { mathop: { op: floor, num: { var: 射线位置X } } } } }
+                , { set_variable: { var: 基, value: { multiply: [ { var: 行 }, { var: 边长 } ] } } }
+                , { set_variable: { var: 偏移, value: { add: [ { var: 基 }, { var: 列号 } ] } } }
+                , { set_variable: { var: 索引, value: { add: [ { var: 偏移 }, 1 ] } } }
+                , { set_variable: { var: 单元, value: 0 } }
+                , if: { cond: { and: [ { greater_than: [ { var: 索引 }, 0 ] }, { less_than: [ { var: 索引 }, 65 ] } ] }, do:
+                    [ { set_variable: { var: 单元, value: { item_of_list: { index: { var: 索引 }, list: 地图 } } } } ] }
+                , if: { cond: { equals: [ { var: 单元 }, 1 ] }, do:
+                    [ { set_variable: { var: 命中, value: 1 } }
+                    , { set_variable: { var: perpDist, value: { multiply: [ { var: 步数 }, 0.1 ] } } } ] } ] }
+            # 垂直距离 = 射线长 × cos(夹角)，消除鱼眼畸变
+            - set_variable: { var: 射线长, value: { mathop: { op: sqrt, num: { add: [ { multiply: [ { var: 射线方向X }, { var: 射线方向X } ] }, { multiply: [ { var: 射线方向Y }, { var: 射线方向Y } ] } ] } } } }
+            - set_variable: { var: 深度, value: { multiply: [ { var: perpDist }, { divide: [ { multiply: [ { var: 射线方向X }, { var: 方向X } ] }, { var: 射线长 } ] } ] } }
+            - set_variable: { var: 墙高, value: { divide: [ 300, { var: 深度 } ] } }
+            - pen_up: null
+            - goto_xy: { x: { subtract: [ { var: x }, 240 ] }, y: { multiply: [ { var: 墙高 }, -0.5 ] } }
+            - point_in_direction: 90
+            - pen_down: null
+            - move_steps: { steps: { var: 墙高 } }
+            - pen_up: null
+      scripts:
+        - - when_green_flag_clicked: null
+          - pen_clear: null
+          - hide: null
+          - forever:
+              do:
+                - pen_clear: null
+                - set_variable: { var: 列, value: 0 }
+                - repeat: { times: 240, do:
+                    [ { call: { proc: 画一列 %n, args: [ { var: 列 } ] } }
+                    , change_variable: { var: 列, value: 1 } ] }

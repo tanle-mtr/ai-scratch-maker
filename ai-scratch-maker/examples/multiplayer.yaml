@@ -1,0 +1,83 @@
+project:
+  name: 联机回合示例
+  stage:
+    backdrops:
+    - name: 背景1
+      asset: assets/backdrop1.svg
+    variables:
+      本机玩家: 1
+      云_回合:
+        value: 1
+        cloud: true
+      云_进度:
+        value: 0
+        cloud: true
+      局结束: 0
+      本机步进: 0
+    scripts:
+    - - when_green_flag_clicked: null
+      - set_variable:
+          var: 本机玩家
+          value: 1
+      - set_variable:
+          var: 云_回合
+          value: 1
+      - set_variable:
+          var: 云_进度
+          value: 0
+      - set_variable:
+          var: 局结束
+          value: 0
+      - set_variable:
+          var: 本机步进
+          value: 0
+    - - when_receive:
+          message: 我的回合行动
+      - if:
+          cond:
+            equals:
+            - var: 局结束
+            - 0
+          do:
+          - if:
+              cond:
+                equals:
+                - var: 本机玩家
+                - var: 云_回合
+              do:
+              - set_variable:
+                  var: 本机步进
+                  value: 1
+              - set_variable:
+                  var: 云_进度
+                  value:
+                    add:
+                    - var: 云_进度
+                    - 1
+              - set_variable:
+                  var: 云_回合
+                  value:
+                    subtract:
+                    - 3
+                    - var: 云_回合
+              - if:
+                  cond:
+                    equals:
+                    - var: 云_进度
+                    - 5
+                  do:
+                  - set_variable:
+                      var: 局结束
+                      value: 1
+  sprites:
+  - name: 客户端A
+    x: 0
+    y: 0
+    costumes:
+    - name: c
+      asset: assets/dot.svg
+    variables:
+      是克隆: 0
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null

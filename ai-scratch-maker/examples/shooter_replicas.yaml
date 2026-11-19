@@ -1,0 +1,1805 @@
+project:
+  name: 四款射击与摸金复刻引擎（CS2 / 和平精英 / 三角洲 / 超自然行动组）
+  stage:
+    backdrops:
+    - name: 舞台
+      asset: assets/uikit/bg_menu.svg
+    variables:
+      结果: ''
+      帧计数: 0
+      自动帧: 1
+      模式: 1
+      dt: 0.033
+      射线起点X: 0
+      射线起点Y: 0
+      射线方向X: 1
+      射线方向Y: 0
+      射线最大距: 1000
+      目标X: 500
+      目标Y: 0
+      目标半径: 800
+      投影t: 0
+      垂距平方: 0
+      入射t: 0
+      最近t: 0
+      墙体t: -1
+      穿墙系数: 1
+      命中: 0
+      命中部位: 0
+      临时: 0
+      临时2: 0
+      dx: 0
+      dy: 0
+      基础伤害: 35
+      部位倍率: 1
+      距离衰减: 1
+      护甲系数: 1
+      信号加成: 1
+      掩体系数: 1
+      实际伤害: 0
+      距离: 0
+      护甲等级: 0
+      弹药穿透: 0
+      护甲值: 0
+      头盔: 0
+      信号值: 100
+      血量: 100
+      目标血量: 100
+      目标护甲: 0
+      倒地: 0
+      淘汰: 0
+      连发数: 0
+      后坐垂直: 0
+      后坐水平: 0
+      散布: 0
+      基础散布: 1
+      移动速度: 0
+      蹲下: 0
+      开镜: 0
+      急停: 0
+      金钱: 800
+      连败档: 0
+      回合: 1
+      C4状态: 0
+      C4计时: 40
+      回合计时: 115
+      回合结果: 0
+      击杀武器: 0
+      下包: 0
+      本回合收入: 0
+      队伍分: 0
+      半场: 0
+      圈阶段: 0
+      圈中心X: 0
+      圈中心Y: 0
+      当前半径: 1000
+      收缩进度: 0
+      玩家X: 0
+      玩家Y: 0
+      圈外距离: 0
+      圈外倒计时: 180
+      阶段衰减: 1
+      存活数: 100
+      仓库价值: 0
+      背包价值: 0
+      安全箱价值: 0
+      带入价值: 0
+      目标金额: 10000
+      已入柜价值: 0
+      撤离点开放: 0
+      撤离前置: 0
+      撤离读条: 0
+      撤离需读秒: 8
+      撤离成功: 0
+      受击打断: 0
+      负重: 0
+      负重上限: 100
+      移速系数: 1
+      危险指数: 0
+      局内分钟: 0
+      龙珠: 0
+      战利品总权重: 0
+      抽签值: 0
+      抽到物品: 0
+      抽到价值: 0
+      容器类型: 1
+      难度系数: 1
+      怪物距离: 0
+      怪物视距: 300
+      声波半径: 0
+      门开: 1
+      玩家高度: 0
+      怪物高度: 0
+      怪物状态: 0
+      AI结果: ''
+      i: 0
+      j: 0
+      种子: 1
+    lists:
+      部位倍率表:
+      - 0.75
+      - 1.25
+      - 1.0
+      - 4.0
+      连败奖励表:
+      - 1400
+      - 1900
+      - 2400
+      - 2900
+      - 3400
+      击杀奖励表:
+      - 300
+      - 100
+      - 600
+      - 900
+      - 1500
+      - 300
+      武器基础伤害:
+      - 36
+      - 115
+      - 26
+      - 110
+      - 40
+      圈半径表:
+      - 800
+      - 600
+      - 420
+      - 280
+      - 180
+      - 100
+      - 55
+      - 20
+      - 0
+      - 0
+      圈衰减表:
+      - 1
+      - 2
+      - 3
+      - 5
+      - 8
+      - 12
+      - 18
+      - 25
+      - 50
+      - 50
+      圈倒计时表:
+      - 180
+      - 140
+      - 120
+      - 100
+      - 80
+      - 60
+      - 40
+      - 20
+      - 10
+      - 10
+      战利品ID:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      战利品权重:
+      - 50
+      - 30
+      - 15
+      - 8
+      - 4
+      - 1
+      战利品价值:
+      - 100
+      - 500
+      - 2000
+      - 8000
+      - 30000
+      - 200000
+      战利品品质:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      仓库物品:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      实体X:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      实体Y:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      实体血:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      实体甲:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      实体存活:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+    scripts:
+    - - when_green_flag_clicked: null
+      - set_variable:
+          var: 自动帧
+          value: 1
+      - set_variable:
+          var: 结果
+          value: 射击/摸金复刻引擎：CS2 / 和平精英 / 三角洲 / 超自然行动组
+      - show: null
+      - forever:
+          do:
+          - if:
+              cond:
+                equals:
+                - var: 自动帧
+                - 1
+              do:
+              - change_variable:
+                  var: 帧计数
+                  by: 1
+              - broadcast:
+                  message: 帧
+          - wait:
+              secs: 0.02
+    - - when_receive:
+          message: 重置
+      - set_variable:
+          var: 金钱
+          value: 800
+      - set_variable:
+          var: 连败档
+          value: 0
+      - set_variable:
+          var: 回合
+          value: 1
+      - set_variable:
+          var: 信号值
+          value: 100
+      - set_variable:
+          var: 血量
+          value: 100
+      - set_variable:
+          var: 目标血量
+          value: 100
+      - set_variable:
+          var: 圈阶段
+          value: 0
+      - set_variable:
+          var: 圈外倒计时
+          value: 180
+      - set_variable:
+          var: 淘汰
+          value: 0
+      - set_variable:
+          var: 仓库价值
+          value: 0
+      - set_variable:
+          var: 背包价值
+          value: 0
+      - set_variable:
+          var: 安全箱价值
+          value: 0
+      - set_variable:
+          var: 已入柜价值
+          value: 0
+      - set_variable:
+          var: 撤离读条
+          value: 0
+      - set_variable:
+          var: 撤离成功
+          value: 0
+      - set_variable:
+          var: 局内分钟
+          value: 0
+      - set_variable:
+          var: 危险指数
+          value: 0
+      - set_variable:
+          var: 龙珠
+          value: 0
+      - set_variable:
+          var: 连发数
+          value: 0
+      - set_variable:
+          var: 实际伤害
+          value: 0
+      - set_variable:
+          var: 命中
+          value: 0
+      - set_variable:
+          var: 种子
+          value: 1
+      - set_variable:
+          var: 负重
+          value: 0
+      - set_variable:
+          var: 结果
+          value: 已重置
+  sprites:
+  - name: 裁判
+    x: 0
+    y: 0
+    costumes:
+    - name: dot
+      asset: assets/dot.svg
+    variables: {}
+    scripts:
+    - - when_receive:
+          message: 设模式
+      - if:
+          cond:
+            equals:
+            - var: 模式
+            - 1
+          do:
+          - set_variable:
+              var: 目标金额
+              value: 0
+          - set_variable:
+              var: 金钱
+              value: 800
+          - set_variable:
+              var: 连败档
+              value: 0
+          - set_variable:
+              var: 回合计时
+              value: 115
+          - set_variable:
+              var: C4计时
+              value: 40
+          - set_variable:
+              var: 护甲值
+              value: 0
+          - set_variable:
+              var: 头盔
+              value: 0
+          - set_variable:
+              var: 信号值
+              value: 100
+          - set_variable:
+              var: 射线最大距
+              value: 2000
+          - set_variable:
+              var: 基础伤害
+              value: 36
+      - if:
+          cond:
+            equals:
+            - var: 模式
+            - 2
+          do:
+          - set_variable:
+              var: 信号值
+              value: 100
+          - set_variable:
+              var: 圈阶段
+              value: 0
+          - set_variable:
+              var: 当前半径
+              value: 1000
+          - set_variable:
+              var: 圈外倒计时
+              value: 180
+          - set_variable:
+              var: 存活数
+              value: 100
+          - set_variable:
+              var: 射线最大距
+              value: 3000
+          - set_variable:
+              var: 基础伤害
+              value: 41
+      - if:
+          cond:
+            equals:
+            - var: 模式
+            - 3
+          do:
+          - set_variable:
+              var: 仓库价值
+              value: 0
+          - set_variable:
+              var: 背包价值
+              value: 0
+          - set_variable:
+              var: 安全箱价值
+              value: 0
+          - set_variable:
+              var: 带入价值
+              value: 0
+          - set_variable:
+              var: 撤离读条
+              value: 0
+          - set_variable:
+              var: 撤离成功
+              value: 0
+          - set_variable:
+              var: 护甲等级
+              value: 3
+          - set_variable:
+              var: 弹药穿透
+              value: 3
+          - set_variable:
+              var: 基础伤害
+              value: 35
+      - if:
+          cond:
+            equals:
+            - var: 模式
+            - 4
+          do:
+          - set_variable:
+              var: 目标金额
+              value: 10000
+          - set_variable:
+              var: 已入柜价值
+              value: 0
+          - set_variable:
+              var: 局内分钟
+              value: 0
+          - set_variable:
+              var: 危险指数
+              value: 0
+          - set_variable:
+              var: 龙珠
+              value: 0
+          - set_variable:
+              var: 负重
+              value: 0
+          - set_variable:
+              var: 撤离成功
+              value: 0
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a: '模式 '
+                  b:
+                    var: 模式
+              b: ' 已装载'
+    - - when_receive:
+          message: 开火
+      - set_variable:
+          var: dx
+          value:
+            subtract:
+            - var: 目标X
+            - var: 射线起点X
+      - set_variable:
+          var: dy
+          value:
+            subtract:
+            - var: 目标Y
+            - var: 射线起点Y
+      - set_variable:
+          var: 投影t
+          value:
+            add:
+            - multiply:
+              - var: dx
+              - var: 射线方向X
+            - multiply:
+              - var: dy
+              - var: 射线方向Y
+      - set_variable:
+          var: 垂距平方
+          value:
+            subtract:
+            - add:
+              - multiply:
+                - var: dx
+                - var: dx
+              - multiply:
+                - var: dy
+                - var: dy
+            - multiply:
+              - var: 投影t
+              - var: 投影t
+      - set_variable:
+          var: 临时
+          value:
+            multiply:
+            - var: 目标半径
+            - var: 目标半径
+      - if:
+          cond:
+            and:
+            - not:
+                operand:
+                  equals:
+                  - less_than:
+                    - var: 投影t
+                    - 0
+                  - true
+            - and:
+              - not:
+                  operand:
+                    equals:
+                    - greater_than:
+                      - var: 投影t
+                      - var: 射线最大距
+                    - true
+              - not:
+                  operand:
+                    equals:
+                    - greater_than:
+                      - var: 垂距平方
+                      - var: 临时
+                    - true
+          do:
+          - set_variable:
+              var: 入射t
+              value:
+                subtract:
+                - var: 投影t
+                - mathop:
+                    operator: sqrt
+                    num:
+                      subtract:
+                      - var: 临时
+                      - var: 垂距平方
+          - if:
+              cond:
+                and:
+                - not:
+                    operand:
+                      equals:
+                      - less_than:
+                        - var: 墙体t
+                        - 0
+                      - true
+                - less_than:
+                  - var: 墙体t
+                  - var: 入射t
+              do:
+              - set_variable:
+                  var: 掩体系数
+                  value:
+                    var: 穿墙系数
+              - set_variable:
+                  var: 命中
+                  value: 1
+              else:
+              - set_variable:
+                  var: 掩体系数
+                  value: 1
+          - set_variable:
+              var: 命中
+              value: 1
+          - set_variable:
+              var: 命中部位
+              value: 0
+          - set_variable:
+              var: 距离
+              value:
+                var: 入射t
+          - set_variable:
+              var: 临时2
+              value:
+                subtract:
+                - add:
+                  - var: 射线起点Y
+                  - multiply:
+                    - var: 射线方向Y
+                    - var: 入射t
+                - var: 目标Y
+          - if:
+              cond:
+                less_than:
+                - var: 临时2
+                - -15
+              do:
+              - set_variable:
+                  var: 命中部位
+                  value: 1
+          - if:
+              cond:
+                and:
+                - not:
+                    operand:
+                      equals:
+                      - less_than:
+                        - var: 临时2
+                        - -15
+                      - true
+                - less_than:
+                  - var: 临时2
+                  - 0
+              do:
+              - set_variable:
+                  var: 命中部位
+                  value: 2
+          - if:
+              cond:
+                and:
+                - not:
+                    operand:
+                      equals:
+                      - less_than:
+                        - var: 临时2
+                        - 0
+                      - true
+                - less_than:
+                  - var: 临时2
+                  - 15
+              do:
+              - set_variable:
+                  var: 命中部位
+                  value: 3
+          - if:
+              cond:
+                not:
+                  operand:
+                    equals:
+                    - less_than:
+                      - var: 临时2
+                      - 15
+                    - true
+              do:
+              - set_variable:
+                  var: 命中部位
+                  value: 4
+          else:
+          - set_variable:
+              var: 命中
+              value: 0
+          - set_variable:
+              var: 命中部位
+              value: 0
+          - set_variable:
+              var: 结果
+              value: 未命中
+      - if:
+          cond:
+            equals:
+            - var: 命中
+            - 0
+          do: []
+          else:
+          - set_variable:
+              var: 部位倍率
+              value:
+                item_of_list:
+                  list: 部位倍率表
+                  index:
+                    var: 命中部位
+          - set_variable:
+              var: 距离衰减
+              value: 1
+          - if:
+              cond:
+                greater_than:
+                - var: 距离
+                - 1000
+              do:
+              - set_variable:
+                  var: 距离衰减
+                  value:
+                    subtract:
+                    - 1
+                    - divide:
+                      - subtract:
+                        - var: 距离
+                        - 1000
+                      - 4000
+          - set_variable:
+              var: 护甲系数
+              value: 1
+          - if:
+              cond:
+                equals:
+                - var: 模式
+                - 1
+              do:
+              - if:
+                  cond:
+                    greater_than:
+                    - var: 目标护甲
+                    - 0
+                  do:
+                  - set_variable:
+                      var: 护甲系数
+                      value: 0.5
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 命中部位
+                      - 4
+                    - equals:
+                      - var: 头盔
+                      - 1
+                  do:
+                  - set_variable:
+                      var: 护甲系数
+                      value:
+                        multiply:
+                        - var: 护甲系数
+                        - 0.6
+              else:
+              - if:
+                  cond:
+                    less_than:
+                    - var: 弹药穿透
+                    - var: 护甲等级
+                  do:
+                  - set_variable:
+                      var: 护甲系数
+                      value: 0.15
+                  else:
+                  - if:
+                      cond:
+                        equals:
+                        - var: 弹药穿透
+                        - var: 护甲等级
+                      do:
+                      - set_variable:
+                          var: 护甲系数
+                          value: 0.75
+                      else:
+                      - set_variable:
+                          var: 护甲系数
+                          value: 1
+          - set_variable:
+              var: 信号加成
+              value: 1
+          - if:
+              cond:
+                and:
+                - equals:
+                  - var: 模式
+                  - 2
+                - less_than:
+                  - var: 信号值
+                  - 75
+              do:
+              - set_variable:
+                  var: 信号加成
+                  value: 1.15
+          - if:
+              cond:
+                and:
+                - equals:
+                  - var: 模式
+                  - 2
+                - less_than:
+                  - var: 信号值
+                  - 50
+              do:
+              - set_variable:
+                  var: 信号加成
+                  value: 1.3
+          - if:
+              cond:
+                and:
+                - equals:
+                  - var: 模式
+                  - 2
+                - less_than:
+                  - var: 信号值
+                  - 25
+              do:
+              - set_variable:
+                  var: 信号加成
+                  value: 1.5
+          - set_variable:
+              var: 实际伤害
+              value:
+                multiply:
+                - multiply:
+                  - multiply:
+                    - multiply:
+                      - multiply:
+                        - var: 基础伤害
+                        - var: 部位倍率
+                      - var: 距离衰减
+                    - var: 护甲系数
+                  - var: 信号加成
+                - var: 掩体系数
+          - set_variable:
+              var: 实际伤害
+              value:
+                round:
+                - var: 实际伤害
+          - set_variable:
+              var: 目标血量
+              value:
+                subtract:
+                - var: 目标血量
+                - var: 实际伤害
+          - if:
+              cond:
+                not:
+                  operand:
+                    equals:
+                    - greater_than:
+                      - var: 目标血量
+                      - 0
+                    - true
+              do:
+              - set_variable:
+                  var: 倒地
+                  value: 1
+              - set_variable:
+                  var: 目标血量
+                  value: 0
+          - set_variable:
+              var: 结果
+              value:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a:
+                                    join:
+                                      a:
+                                        join:
+                                          a: 命中 部位
+                                          b:
+                                            var: 命中部位
+                                      b: ' t'
+                                  b:
+                                    var: 入射t
+                              b: ' 伤害'
+                          b:
+                            var: 实际伤害
+                      b: ' 剩余血'
+                  b:
+                    var: 目标血量
+    - - when_receive:
+          message: 后坐力
+      - change_variable:
+          var: 连发数
+          by: 1
+      - set_variable:
+          var: 后坐垂直
+          value:
+            multiply:
+            - var: 连发数
+            - 1.2
+      - if:
+          cond:
+            not:
+              operand:
+                equals:
+                - greater_than:
+                  - var: 连发数
+                  - 5
+                - true
+          do:
+          - set_variable:
+              var: 后坐水平
+              value:
+                multiply:
+                - var: 连发数
+                - 0.6
+          else:
+          - set_variable:
+              var: 后坐水平
+              value:
+                multiply:
+                - subtract:
+                  - 10
+                  - var: 连发数
+                - -0.5
+      - set_variable:
+          var: 散布
+          value:
+            add:
+            - var: 基础散布
+            - multiply:
+              - var: 连发数
+              - 0.8
+      - set_variable:
+          var: 散布
+          value:
+            add:
+            - var: 散布
+            - multiply:
+              - var: 移动速度
+              - 0.15
+      - if:
+          cond:
+            equals:
+            - var: 蹲下
+            - 1
+          do:
+          - set_variable:
+              var: 散布
+              value:
+                multiply:
+                - var: 散布
+                - 0.6
+      - if:
+          cond:
+            equals:
+            - var: 开镜
+            - 1
+          do:
+          - set_variable:
+              var: 散布
+              value:
+                multiply:
+                - var: 散布
+                - 0.5
+      - if:
+          cond:
+            equals:
+            - var: 急停
+            - 1
+          do:
+          - set_variable:
+              var: 散布
+              value:
+                var: 基础散布
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a:
+                                    join:
+                                      a: 第
+                                      b:
+                                        var: 连发数
+                                  b: '发 后坐 '
+                              b:
+                                var: 后坐垂直
+                          b: /
+                      b:
+                        var: 后坐水平
+                  b: ' 散布 '
+              b:
+                var: 散布
+    - - when_receive:
+          message: 回合结算
+      - set_variable:
+          var: 本回合收入
+          value: 0
+      - if:
+          cond:
+            or:
+            - equals:
+              - var: 回合结果
+              - 1
+            - equals:
+              - var: 回合结果
+              - 4
+          do:
+          - set_variable:
+              var: 本回合收入
+              value: 3250
+      - if:
+          cond:
+            equals:
+            - var: 回合结果
+            - 2
+          do:
+          - set_variable:
+              var: 本回合收入
+              value: 3500
+      - if:
+          cond:
+            equals:
+            - var: 回合结果
+            - 3
+          do:
+          - set_variable:
+              var: 连败档
+              value:
+                add:
+                - var: 连败档
+                - 1
+          - if:
+              cond:
+                greater_than:
+                - var: 连败档
+                - 5
+              do:
+              - set_variable:
+                  var: 连败档
+                  value: 5
+          - set_variable:
+              var: 本回合收入
+              value:
+                item_of_list:
+                  list: 连败奖励表
+                  index:
+                    var: 连败档
+          - if:
+              cond:
+                equals:
+                - var: 下包
+                - 1
+              do:
+              - set_variable:
+                  var: 本回合收入
+                  value:
+                    add:
+                    - var: 本回合收入
+                    - 800
+          else:
+          - if:
+              cond:
+                greater_than:
+                - var: 连败档
+                - 0
+              do:
+              - set_variable:
+                  var: 连败档
+                  value:
+                    subtract:
+                    - var: 连败档
+                    - 1
+      - if:
+          cond:
+            greater_than:
+            - var: 击杀武器
+            - 0
+          do:
+          - change_variable:
+              var: 本回合收入
+              by:
+                item_of_list:
+                  list: 击杀奖励表
+                  index:
+                    var: 击杀武器
+      - set_variable:
+          var: 金钱
+          value:
+            add:
+            - var: 金钱
+            - var: 本回合收入
+      - if:
+          cond:
+            greater_than:
+            - var: 金钱
+            - 16000
+          do:
+          - set_variable:
+              var: 金钱
+              value: 16000
+      - change_variable:
+          var: 回合
+          by: 1
+      - if:
+          cond:
+            greater_than:
+            - var: 回合
+            - 12
+          do:
+          - set_variable:
+              var: 回合
+              value: 1
+          - set_variable:
+              var: 金钱
+              value: 800
+          - set_variable:
+              var: 连败档
+              value: 0
+          - set_variable:
+              var: 半场
+              value: 1
+      - if:
+          cond:
+            equals:
+            - var: C4状态
+            - 1
+          do:
+          - set_variable:
+              var: 回合计时
+              value: 40
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a:
+                                    join:
+                                      a: 回合
+                                      b:
+                                        var: 回合
+                                  b: ' 收入'
+                              b:
+                                var: 本回合收入
+                          b: ' 金钱'
+                      b:
+                        var: 金钱
+                  b: ' 连败档'
+              b:
+                var: 连败档
+    - - when_receive:
+          message: 圈推进
+      - set_variable:
+          var: 阶段衰减
+          value:
+            item_of_list:
+              list: 圈衰减表
+              index:
+                add:
+                - var: 圈阶段
+                - 1
+      - set_variable:
+          var: 目标半径
+          value:
+            item_of_list:
+              list: 圈半径表
+              index:
+                add:
+                - var: 圈阶段
+                - 1
+      - set_variable:
+          var: 圈外距离
+          value:
+            mathop:
+              operator: sqrt
+              num:
+                add:
+                - multiply:
+                  - subtract:
+                    - var: 玩家X
+                    - var: 圈中心X
+                  - subtract:
+                    - var: 玩家X
+                    - var: 圈中心X
+                - multiply:
+                  - subtract:
+                    - var: 玩家Y
+                    - var: 圈中心Y
+                  - subtract:
+                    - var: 玩家Y
+                    - var: 圈中心Y
+      - if:
+          cond:
+            greater_than:
+            - var: 圈外距离
+            - var: 当前半径
+          do:
+          - set_variable:
+              var: 信号值
+              value:
+                subtract:
+                - var: 信号值
+                - var: 阶段衰减
+          - if:
+              cond:
+                less_than:
+                - var: 信号值
+                - 0
+              do:
+              - set_variable:
+                  var: 信号值
+                  value: 0
+          - set_variable:
+              var: 圈外倒计时
+              value:
+                subtract:
+                - var: 圈外倒计时
+                - 1
+          - if:
+              cond:
+                not:
+                  operand:
+                    equals:
+                    - greater_than:
+                      - var: 圈外倒计时
+                      - 0
+                    - true
+              do:
+              - set_variable:
+                  var: 淘汰
+                  value: 1
+              - set_variable:
+                  var: 结果
+                  value: 圈外倒计时结束 → 立即淘汰
+          - if:
+              cond:
+                equals:
+                - var: 淘汰
+                - 0
+              do:
+              - set_variable:
+                  var: 结果
+                  value:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a: 圈外 信号值
+                              b:
+                                var: 信号值
+                          b: ' 倒计时'
+                      b:
+                        var: 圈外倒计时
+          else:
+          - set_variable:
+              var: 圈外倒计时
+              value:
+                item_of_list:
+                  list: 圈倒计时表
+                  index:
+                    add:
+                    - var: 圈阶段
+                    - 1
+          - set_variable:
+              var: 结果
+              value: 圈内：信号值不减、倒计时复位
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    var: 结果
+                  b: ' / 血量'
+              b:
+                var: 血量
+    - - when_receive:
+          message: 搜刮
+      - set_variable:
+          var: 战利品总权重
+          value: 0
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times: 6
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - change_variable:
+              var: 战利品总权重
+              by:
+                multiply:
+                - item_of_list:
+                    list: 战利品权重
+                    index:
+                      var: i
+                - var: 难度系数
+      - set_variable:
+          var: 种子
+          value:
+            mod:
+            - multiply:
+              - var: 种子
+              - 16807
+            - 2147483647
+      - set_variable:
+          var: 抽签值
+          value:
+            mod:
+            - var: 种子
+            - var: 战利品总权重
+      - set_variable:
+          var: 抽到物品
+          value: 0
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times: 6
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - if:
+              cond:
+                and:
+                - equals:
+                  - var: 抽到物品
+                  - 0
+                - less_than:
+                  - var: 抽签值
+                  - multiply:
+                    - item_of_list:
+                        list: 战利品权重
+                        index:
+                          var: i
+                    - var: 难度系数
+              do:
+              - set_variable:
+                  var: 抽到物品
+                  value:
+                    var: i
+          - if:
+              cond:
+                equals:
+                - var: 抽到物品
+                - 0
+              do:
+              - set_variable:
+                  var: 抽签值
+                  value:
+                    subtract:
+                    - var: 抽签值
+                    - multiply:
+                      - item_of_list:
+                          list: 战利品权重
+                          index:
+                            var: i
+                      - var: 难度系数
+      - if:
+          cond:
+            equals:
+            - var: 抽到物品
+            - 0
+          do:
+          - set_variable:
+              var: 抽到物品
+              value: 1
+      - set_variable:
+          var: 抽到价值
+          value:
+            item_of_list:
+              list: 战利品价值
+              index:
+                var: 抽到物品
+      - change_variable:
+          var: 背包价值
+          by:
+            var: 抽到价值
+      - change_variable:
+          var: 负重
+          by:
+            item_of_list:
+              list: 战利品品质
+              index:
+                var: 抽到物品
+      - set_variable:
+          var: 移速系数
+          value:
+            subtract:
+            - 1
+            - multiply:
+              - divide:
+                - var: 负重
+                - var: 负重上限
+              - 0.5
+      - if:
+          cond:
+            less_than:
+            - var: 移速系数
+            - 0.4
+          do:
+          - set_variable:
+              var: 移速系数
+              value: 0.4
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a:
+                                    join:
+                                      a:
+                                        join:
+                                          a:
+                                            join:
+                                              a: 搜到 物品
+                                              b:
+                                                var: 抽到物品
+                                          b: ' 价值'
+                                      b:
+                                        var: 抽到价值
+                                  b: ' 背包'
+                              b:
+                                var: 背包价值
+                          b: ' 负重'
+                      b:
+                        var: 负重
+                  b: ' 移速系数'
+              b:
+                var: 移速系数
+    - - when_receive:
+          message: 撤离
+      - set_variable:
+          var: 撤离成功
+          value: 0
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 撤离点开放
+              - 1
+            - equals:
+              - var: 撤离前置
+              - 1
+          do:
+          - if:
+              cond:
+                equals:
+                - var: 受击打断
+                - 1
+              do:
+              - set_variable:
+                  var: 撤离读条
+                  value: 0
+              - set_variable:
+                  var: 结果
+                  value: 读条被受击打断
+              else:
+              - set_variable:
+                  var: 撤离读条
+                  value:
+                    add:
+                    - var: 撤离读条
+                    - var: dt
+              - if:
+                  cond:
+                    not:
+                      operand:
+                        equals:
+                        - less_than:
+                          - var: 撤离读条
+                          - var: 撤离需读秒
+                        - true
+                  do:
+                  - if:
+                      cond:
+                        and:
+                        - equals:
+                          - var: 模式
+                          - 4
+                        - less_than:
+                          - var: 已入柜价值
+                          - var: 目标金额
+                      do:
+                      - set_variable:
+                          var: 结果
+                          value: 目标金额未达标，不能撤离
+                      else:
+                      - set_variable:
+                          var: 撤离成功
+                          value: 1
+                      - change_variable:
+                          var: 仓库价值
+                          by:
+                            var: 背包价值
+                      - set_variable:
+                          var: 背包价值
+                          value: 0
+                      - set_variable:
+                          var: 结果
+                          value:
+                            join:
+                              a: 撤离成功 入账
+                              b:
+                                var: 仓库价值
+                  else:
+                  - set_variable:
+                      var: 结果
+                      value:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a: '撤离读条 '
+                                  b:
+                                    var: 撤离读条
+                              b: /
+                          b:
+                            var: 撤离需读秒
+          else:
+          - set_variable:
+              var: 结果
+              value: 撤离条件不满足（点未开放 / 前置未完成）
+    - - when_receive:
+          message: 阵亡
+      - set_variable:
+          var: 背包价值
+          value: 0
+      - set_variable:
+          var: 带入价值
+          value: 0
+      - set_variable:
+          var: 撤离成功
+          value: 0
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a: '阵亡：背包与带入装备全丢 / 安全箱保留 '
+              b:
+                var: 安全箱价值
+    - - when_receive:
+          message: 放入收纳柜
+      - change_variable:
+          var: 已入柜价值
+          by:
+            var: 背包价值
+      - set_variable:
+          var: 背包价值
+          value: 0
+      - set_variable:
+          var: 负重
+          value: 0
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a: '已入柜 '
+                      b:
+                        var: 已入柜价值
+                  b: ' / 目标 '
+              b:
+                var: 目标金额
+    - - when_receive:
+          message: 推进时间
+      - change_variable:
+          var: 局内分钟
+          by: 1
+      - set_variable:
+          var: 危险指数
+          value:
+            add:
+            - 1
+            - multiply:
+              - var: 局内分钟
+              - 0.15
+      - if:
+          cond:
+            equals:
+            - var: 龙珠
+            - 1
+          do:
+          - change_variable:
+              var: 危险指数
+              by: 3
+      - if:
+          cond:
+            not:
+              operand:
+                equals:
+                - less_than:
+                  - var: 局内分钟
+                  - 24
+                - true
+          do:
+          - set_variable:
+              var: 淘汰
+              value: 1
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a: 局内
+                              b:
+                                var: 局内分钟
+                          b: ' 危险指数'
+                      b:
+                        var: 危险指数
+                  b: ' 淘汰'
+              b:
+                var: 淘汰
+    - - when_receive:
+          message: 怪物AI
+      - set_variable:
+          var: AI结果
+          value: ''
+      - if:
+          cond:
+            or:
+            - and:
+              - less_than:
+                - var: 怪物距离
+                - var: 怪物视距
+              - equals:
+                - var: 门开
+                - 1
+            - and:
+              - less_than:
+                - var: 怪物距离
+                - var: 声波半径
+              - greater_than:
+                - var: 声波半径
+                - 0
+          do:
+          - set_variable:
+              var: 怪物状态
+              value: 2
+          - if:
+              cond:
+                greater_than:
+                - var: 玩家高度
+                - var: 怪物高度
+              do:
+              - set_variable:
+                  var: AI结果
+                  value: 追击但够不到（高低差防御生效）
+              else:
+              - set_variable:
+                  var: AI结果
+                  value: 追击并攻击
+          else:
+          - set_variable:
+              var: 怪物状态
+              value: 0
+          - set_variable:
+              var: AI结果
+              value: 巡逻（未感知）
+      - set_variable:
+          var: 结果
+          value:
+            var: AI结果
+    - - when_green_flag_clicked: null
+      - hide: null
+  - name: 显示板
+    x: -226
+    y: 166
+    costumes:
+    - name: dot
+      asset: assets/dot.svg
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - goto_xy:
+          x: -226
+          y: 166
+      - set_size:
+          value: 60
+      - show: null
+    - - when_receive:
+          message: 帧
+      - looks_say:
+          MESSAGE:
+            var: 结果

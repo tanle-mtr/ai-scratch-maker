@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="440" height="280" viewBox="0 0 440 280">
+<defs><linearGradient id="lg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#615C59" stop-opacity="1"/><stop offset="1" stop-color="#474340" stop-opacity="1"/></linearGradient></defs>
+<rect x="0" y="4" width="440" height="280" rx="18" fill="#000000" opacity="0.2"/>
+<rect x="0" y="0" width="440" height="280" rx="18" fill="#735D23"/>
+<rect x="3" y="3" width="434" height="274" rx="15" fill="url(#lg1)"/>
+<rect x="9" y="5" width="422" height="4" rx="2" fill="#FFFFFF" opacity="0.14"/>
+<rect x="7" y="269" width="426" height="5" rx="2.5" fill="#000000" opacity="0.18"/>
+<rect x="7" y="7" width="33.6" height="3" rx="1.5" fill="#FFCF4D" opacity="0.85"/>
+<rect x="7" y="7" width="3" height="33.6" rx="1.5" fill="#FFCF4D" opacity="0.85"/>
+<rect x="399.4" y="7" width="33.6" height="3" rx="1.5" fill="#FFCF4D" opacity="0.85"/>
+<rect x="430" y="7" width="3" height="33.6" rx="1.5" fill="#FFCF4D" opacity="0.85"/>
+<rect x="7" y="270" width="33.6" height="3" rx="1.5" fill="#FFCF4D" opacity="0.85"/>
+<rect x="7" y="239.4" width="3" height="33.6" rx="1.5" fill="#FFCF4D" opacity="0.85"/>
+<rect x="399.4" y="270" width="33.6" height="3" rx="1.5" fill="#FFCF4D" opacity="0.85"/>
+<rect x="430" y="239.4" width="3" height="33.6" rx="1.5" fill="#FFCF4D" opacity="0.85"/>
+</svg>

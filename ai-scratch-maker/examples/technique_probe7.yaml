@@ -1,0 +1,339 @@
+project:
+  name: 世界渲染与表现探针（第五册：瓦片地图/程序化音乐/平滑摄像机/缓动/昼夜/分支对话/小地图/过场）
+
+  extensions:
+    - pen
+    - music
+
+  stage:
+    backdrops:
+      - { name: 底, asset: assets/backdrop1.svg }
+      - { name: 森林, asset: assets/backdrop1.svg }
+      - { name: 新场景, asset: assets/backdrop1.svg }
+    variables:
+      # —— 摄像机（§59.4 / §61）——
+      摄像机X: 0
+      摄像机X最大值: 120
+      # —— 玩家世界坐标（§59.4 / §61 / §65）——
+      世界X: 0
+      世界Y: 0
+      # —— 小地图（§65）——
+      小地图X: 150
+      小地图Y: 90
+      # —— 昼夜（§63）——
+      灯光强度: 0
+    lists:
+      # §59 地图：每行一个字符串，字符 = 造型名（0 地板 / 1 墙 / 2 门）
+      地图:
+        - "11111111"
+        - "10000001"
+        - "10011001"
+        - "10000001"
+        - "10100101"
+        - "10000001"
+        - "10000021"
+        - "11111111"
+      # §60 旋律：音符列表 + 时值列表（60=中央 do）
+      旋律音符: [60, 60, 67, 67, 69, 69, 67, 65, 65, 64, 64, 62, 62, 60]
+      旋律时值: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1, 0.5, 0.5, 0.5, 0.5, 0.5, 1]
+    scripts:
+      - - when_green_flag_clicked:
+            comment: 开场：弹出分支对话的选项按钮（§64）
+        - broadcast: 提问1
+      - - when_receive:
+            message: 选了A
+            comment: §64 分支：不同选择切到不同背景
+        - switch_backdrop: 森林
+      - - when_receive:
+            message: 选了B
+        - switch_backdrop: 新场景
+
+  sprites:
+    # ==========================================================
+    # §59 数据驱动瓦片地图：列表存地图，嵌套循环 + stamp 绘制
+    # ==========================================================
+    - name: 瓦片渲染器
+      x: 0
+      y: 0
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - { name: "0", asset: assets/tile0.svg }
+        - { name: "1", asset: assets/tile1.svg }
+        - { name: "2", asset: assets/tile2.svg }
+      variables:
+        行号: 1
+        列号: 1
+        屏幕X: -140
+        屏幕Y: 140
+        字符: "0"
+      procedures:
+        - name: 绘制地图
+          warp: true
+          script:
+            - pen_clear: null
+            - set_variable: { var: 行号, value: 1 }
+            - set_variable: { var: 屏幕Y, value: 140 }
+            - repeat: 8
+              do:
+                - set_variable: { var: 列号, value: 1 }
+                - set_variable: { var: 屏幕X, value: -140 }
+                - repeat: 8
+                  do:
+                    # 读 (列号, 行号) 这一格的字符：letter of (item of list)
+                    - set_variable:
+                        var: 字符
+                        value:
+                          letter_of:
+                            letter: { var: 列号 }
+                            word: { item_of_list: { index: { var: 行号 }, list: 地图 } }
+                    - switch_costume: { costume: { var: 字符 } }   # 造型名必须和字符一致
+                    - goto_xy: { x: { var: 屏幕X }, y: { var: 屏幕Y } }
+                    - stamp: null
+                    - change_variable: { var: 屏幕X, by: 40 }
+                    - change_variable: { var: 列号, by: 1 }
+                - change_variable: { var: 屏幕Y, by: -40 }
+                - change_variable: { var: 行号, by: 1 }
+      scripts:
+        - - when_green_flag_clicked:
+            comment: §59.3 绘制地图必须「不刷新屏幕」（warp）才不卡
+          - hide: null
+          - call: { proc: 绘制地图 }
+
+    # ==========================================================
+    # §60 程序化音乐 / 音符序列器（音乐扩展）
+    # ==========================================================
+    - name: 音乐盒
+      x: 0
+      y: 0
+      size: 50
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 音符, asset: assets/cat_mouse/cat_dot.png }
+      variables:
+        i: 1
+      scripts:
+        - - when_green_flag_clicked:
+            comment: §60.2 设乐器 + 速度，然后广播开始演奏
+          - set_instrument: { instrument: 1 }
+          - set_tempo: { tempo: 120 }
+          - broadcast: 演奏列表旋律
+        - - when_receive:
+              message: 演奏列表旋律
+          - set_variable: { var: i, value: 1 }
+          - repeat:
+              times: { length_of_list: { list: 旋律音符 } }
+            do:
+              - play_note:
+                  note: { item_of_list: { index: { var: i }, list: 旋律音符 } }
+                  beats: { item_of_list: { index: { var: i }, list: 旋律时值 } }
+              - change_variable: { var: i, by: 1 }
+        - - when_receive:
+              message: 打鼓
+          - play_drum: { drum: 2, beats: 0.25 }
+
+    # ==========================================================
+    # §61 平滑摄像机 + §59.4 摄像机偏移显示 + §65 小地图来源
+    # ==========================================================
+    - name: 玩家
+      x: 0
+      y: 0
+      size: 50
+      rotationStyle: left-right
+      costumes:
+        - { name: 猫, asset: assets/cat_mouse/cat.png }
+        - { name: 猫左, asset: assets/cat_mouse/cat_left.png }
+      variables:
+        目标X: 0
+      scripts:
+        - - when_green_flag_clicked:
+            comment: §61 世界坐标归零；摄像机逻辑在 forever 里
+          - set_variable: { var: 世界X, value: 0 }
+          - set_variable: { var: 世界Y, value: 0 }
+          - forever:
+              do:
+                # 键盘移动“世界坐标”
+                - if: { cond: { key_pressed: { key: right arrow } }, do: [ { change_variable: { var: 世界X, by: 3 } } ] }
+                - if: { cond: { key_pressed: { key: left arrow } }, do: [ { change_variable: { var: 世界X, by: -3 } } ] }
+                - if: { cond: { key_pressed: { key: up arrow } }, do: [ { change_variable: { var: 世界Y, by: 3 } } ] }
+                - if: { cond: { key_pressed: { key: down arrow } }, do: [ { change_variable: { var: 世界Y, by: -3 } } ] }
+                # §61.2 死区：偏移 >100 才修正目标
+                - set_variable: { var: 目标X, value: { var: 摄像机X } }
+                - if:
+                    cond: { greater_than: [ { subtract: [ { var: 世界X }, { var: 摄像机X } ] }, 100 ] }
+                    do:
+                      - set_variable: { var: 目标X, value: { subtract: [ { var: 世界X }, 100 ] } }
+                - if:
+                    cond: { less_than: [ { subtract: [ { var: 世界X }, { var: 摄像机X } ] }, -100 ] }
+                    do:
+                      - set_variable: { var: 目标X, value: { add: [ { var: 世界X }, 100 ] } }
+                # §61.1 lerp：镜头朝目标平滑靠近（系数 0.2）
+                - set_variable:
+                    var: 摄像机X
+                    value:
+                      add:
+                        - { var: 摄像机X }
+                        - { multiply: [ { subtract: [ { var: 目标X }, { var: 摄像机X } ] }, 0.2 ] }
+                # §61.3 夹紧：镜头不露地图外
+                - if:
+                    cond: { greater_than: [ { var: 摄像机X }, { var: 摄像机X最大值 } ] }
+                    do:
+                      - set_variable: { var: 摄像机X, value: { var: 摄像机X最大值 } }
+                - if:
+                    cond: { less_than: [ { var: 摄像机X }, { multiply: [ { var: 摄像机X最大值 }, -1 ] } ] }
+                    do:
+                      - set_variable: { var: 摄像机X, value: { multiply: [ { var: 摄像机X最大值 }, -1 ] } }
+                # §59.4 屏幕坐标 = 世界坐标 − 摄像机
+                - goto_xy: { x: { subtract: [ { var: 世界X }, { var: 摄像机X } ] }, y: { var: 世界Y } }
+
+    # ==========================================================
+    # §65 迷你地图：世界坐标 → 缩放 + 偏移，永远跟着玩家
+    # ==========================================================
+    - name: 小地图指针
+      x: 0
+      y: 0
+      size: 30
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 点, asset: assets/cat_mouse/cat_dot.png }
+      scripts:
+        - - when_green_flag_clicked:
+          - forever:
+              do:
+                # 小地图左上 (150,90)，缩放 0.25；对齐世界原点
+                - set_variable:
+                    var: 小地图X
+                    value: { add: [ 150, { multiply: [ { add: [ { var: 世界X }, 240 ] }, 0.25 ] } ] }
+                - set_variable:
+                    var: 小地图Y
+                    value: { add: [ 90, { multiply: [ { add: [ { var: 世界Y }, 180 ] }, 0.25 ] } ] }
+                - goto_xy: { x: { var: 小地图X }, y: { var: 小地图Y } }
+                - go_to_front: { front_back: front }
+
+    # ==========================================================
+    # §62 缓动与补间：自定义积木 + ease-out（剩余距离 / 2）
+    # ==========================================================
+    - name: 缓动者
+      x: 0
+      y: 0
+      size: 40
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 块, asset: assets/cat_mouse/cat_dot.png }
+      procedures:
+        - name: 缓动到 %n %n
+          args: [目标x, 目标y]
+          warp: false
+          script:
+            # §62.2 ease-out：每帧移动剩余距离的 1/2，越近越慢
+            - repeat_until:
+                cond: { equals: [ { round: { num: { x_position } } }, { var: 目标x } ] }
+                do:
+                  - change_x: { dx: { divide: [ { subtract: [ { var: 目标x }, { x_position } ] }, 2 ] } }
+                  - change_y: { dy: { divide: [ { subtract: [ { var: 目标y }, { y_position } ] }, 2 ] } }
+      scripts:
+        - - when_green_flag_clicked:
+            comment: §62 调用自定义积木做一次平滑移动
+          - goto_xy: { x: -100, y: -100 }
+          - call: { proc: 缓动到 %n %n, args: [ 100, 80 ] }
+
+    # ==========================================================
+    # §63 昼夜循环与动态光照：夜幕用 ghost 做白天/夜晚，bounce 循环
+    # ==========================================================
+    - name: 夜幕
+      x: 0
+      y: 0
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 夜, asset: assets/night.svg }
+      variables:
+        方向: 2
+      scripts:
+        - - when_green_flag_clicked:
+            comment: §63.1 夜幕置最前层；ghost 0=全黑夜晚 / 100=完全透明白天
+          - go_to_front: { front_back: front }
+          - set_variable: { var: 灯光强度, value: 0 }
+          - set_variable: { var: 方向, value: 2 }
+          - set_effect: { effect: BRIGHTNESS, value: 0 }   # §63.3 演示 set_effect 积木（亮度）
+          - forever:
+              do:
+                - set_ghost: { ghost: { var: 灯光强度 } }
+                - change_variable: { var: 灯光强度, by: { var: 方向 } }
+                # §63.2 平滑过渡：在 0↔100 之间往返（白天⇄夜晚）
+                - if:
+                    cond: { greater_than: [ { var: 灯光强度 }, 100 ] }
+                    do:
+                      - set_variable: { var: 方向, value: -2 }
+                - if:
+                    cond: { less_than: [ { var: 灯光强度 }, 0 ] }
+                    do:
+                      - set_variable: { var: 方向, value: 2 }
+                - wait: 0.1
+
+    # ==========================================================
+    # §64 分支对话树：按钮 + 点击广播自己的选择
+    # ==========================================================
+    - name: 选项A
+      x: -80
+      y: -120
+      size: 60
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 按钮, asset: assets/btnA.svg }
+      scripts:
+        - - when_receive:
+              message: 提问1
+            comment: §64.1 被问到时显示，点击就广播自己的选择并隐藏
+          - show: null
+        - - when_this_sprite_clicked:
+          - broadcast: 选了A
+          - hide: null
+    - name: 选项B
+      x: 80
+      y: -120
+      size: 60
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 按钮, asset: assets/btnB.svg }
+      scripts:
+        - - when_receive:
+              message: 提问1
+          - show: null
+        - - when_this_sprite_clicked:
+          - broadcast: 选了B
+          - hide: null
+
+    # ==========================================================
+    # §66 屏幕过场与转场：黑屏淡入淡出 + 圆形 iris wipe
+    # ==========================================================
+    - name: 过场
+      x: 0
+      y: 0
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 实心黑, asset: assets/night.svg }
+        - { name: 小洞, asset: assets/iris_tiny.svg }
+      scripts:
+        - - when_receive:
+              message: 转场
+            comment: §66.1 黑屏淡入（ghost 100→0）后切场景，再淡出（0→100）
+          - go_to_front: { front_back: front }
+          - set_ghost: { ghost: 100 }
+          - show: null
+          - repeat: 20
+            do:
+              - change_effect: { effect: GHOST, value: -5 }
+          - switch_backdrop: 新场景
+          - repeat: 20
+            do:
+              - change_effect: { effect: GHOST, value: 5 }
+          - hide: null
+          # §66.2 圆形转场：先切小造型突破 150% 上限，再放大
+          - set_size: { size: 100 }
+          - switch_costume: { costume: 实心黑 }
+          - repeat: 12
+            do:
+              - switch_costume: { costume: 小洞 }
+              - change_size: { size: 5 }

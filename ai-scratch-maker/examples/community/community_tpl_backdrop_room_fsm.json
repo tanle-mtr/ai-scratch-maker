@@ -1,0 +1,270 @@
+{
+  "project": {
+    "name": "背景房间状态机（6 房间）",
+    "stage": {
+      "backdrops": [
+        {
+          "asset": "community:pGeJJ66J/监控解锁",
+          "name": "房间1"
+        },
+        {
+          "asset": "community:pGeJJ66J/监控006",
+          "name": "房间2"
+        },
+        {
+          "asset": "community:pGeJJ66J/监控113",
+          "name": "房间3"
+        },
+        {
+          "asset": "community:pGeJJ66J/监控114",
+          "name": "房间4"
+        },
+        {
+          "asset": "community:pGeJJ66J/监控003",
+          "name": "房间5"
+        },
+        {
+          "asset": "community:pGeJJ66J/N1",
+          "name": "房间6"
+        }
+      ],
+      "scripts": [
+        [
+          {
+            "when_green_flag_clicked": null
+          },
+          {
+            "switch_backdrop": {
+              "backdrop": "房间1"
+            }
+          }
+        ],
+        [
+          {
+            "when_backdrop_switches_to": {
+              "backdrop": "房间1"
+            }
+          },
+          {
+            "broadcast": "进入房间1"
+          }
+        ],
+        [
+          {
+            "when_receive": {
+              "message": "去房间1"
+            }
+          },
+          {
+            "switch_backdrop": {
+              "backdrop": "房间1"
+            }
+          }
+        ],
+        [
+          {
+            "when_backdrop_switches_to": {
+              "backdrop": "房间2"
+            }
+          },
+          {
+            "broadcast": "进入房间2"
+          }
+        ],
+        [
+          {
+            "when_receive": {
+              "message": "去房间2"
+            }
+          },
+          {
+            "switch_backdrop": {
+              "backdrop": "房间2"
+            }
+          }
+        ],
+        [
+          {
+            "when_backdrop_switches_to": {
+              "backdrop": "房间3"
+            }
+          },
+          {
+            "broadcast": "进入房间3"
+          }
+        ],
+        [
+          {
+            "when_receive": {
+              "message": "去房间3"
+            }
+          },
+          {
+            "switch_backdrop": {
+              "backdrop": "房间3"
+            }
+          }
+        ],
+        [
+          {
+            "when_backdrop_switches_to": {
+              "backdrop": "房间4"
+            }
+          },
+          {
+            "broadcast": "进入房间4"
+          }
+        ],
+        [
+          {
+            "when_receive": {
+              "message": "去房间4"
+            }
+          },
+          {
+            "switch_backdrop": {
+              "backdrop": "房间4"
+            }
+          }
+        ],
+        [
+          {
+            "when_backdrop_switches_to": {
+              "backdrop": "房间5"
+            }
+          },
+          {
+            "broadcast": "进入房间5"
+          }
+        ],
+        [
+          {
+            "when_receive": {
+              "message": "去房间5"
+            }
+          },
+          {
+            "switch_backdrop": {
+              "backdrop": "房间5"
+            }
+          }
+        ],
+        [
+          {
+            "when_backdrop_switches_to": {
+              "backdrop": "房间6"
+            }
+          },
+          {
+            "broadcast": "进入房间6"
+          }
+        ],
+        [
+          {
+            "when_receive": {
+              "message": "去房间6"
+            }
+          },
+          {
+            "switch_backdrop": {
+              "backdrop": "房间6"
+            }
+          }
+        ]
+      ]
+    },
+    "sprites": [
+      {
+        "name": "HUD",
+        "x": 0,
+        "y": 0,
+        "costumes": [
+          {
+            "asset": "community:pGeJJ66J/造型1#14",
+            "name": "默认"
+          }
+        ],
+        "scripts": [
+          [
+            {
+              "when_receive": {
+                "message": "进入房间1"
+              }
+            },
+            {
+              "say": {
+                "text": "已进入房间1",
+                "secs": 1
+              }
+            }
+          ],
+          [
+            {
+              "when_receive": {
+                "message": "进入房间2"
+              }
+            },
+            {
+              "say": {
+                "text": "已进入房间2",
+                "secs": 1
+              }
+            }
+          ],
+          [
+            {
+              "when_receive": {
+                "message": "进入房间3"
+              }
+            },
+            {
+              "say": {
+                "text": "已进入房间3",
+                "secs": 1
+              }
+            }
+          ],
+          [
+            {
+              "when_receive": {
+                "message": "进入房间4"
+              }
+            },
+            {
+              "say": {
+                "text": "已进入房间4",
+                "secs": 1
+              }
+            }
+          ],
+          [
+            {
+              "when_receive": {
+                "message": "进入房间5"
+              }
+            },
+            {
+              "say": {
+                "text": "已进入房间5",
+                "secs": 1
+              }
+            }
+          ],
+          [
+            {
+              "when_receive": {
+                "message": "进入房间6"
+              }
+            },
+            {
+              "say": {
+                "text": "已进入房间6",
+                "secs": 1
+              }
+            }
+          ]
+        ]
+      }
+    ]
+  }
+}

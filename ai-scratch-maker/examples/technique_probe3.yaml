@@ -1,0 +1,249 @@
+project:
+  name: 游戏系统探针（第三册：解谜/多人/动画/投射物/演出/镜头）
+
+  stage:
+    backdrops:
+      - { name: 底, asset: assets/sample_bg_stage.png }
+    variables:
+      帧号: 1
+      目标X: 0
+      目标Y: 0
+      玩家1x: { value: 0, cloud: true }
+      玩家1y: { value: 0, cloud: true }
+      玩家2x: { value: 0, cloud: true }
+      玩家2y: { value: 0, cloud: true }
+      我的编号: 1
+      打字文本: ""
+      血量: 100
+    lists:
+      地图: []
+      keyFrameTime: []
+      keyFrameX: []
+      keyFrameY: []
+    scripts:
+      - - when_green_flag_clicked:
+            comment: 建一张 4x4 的推箱子地图（0空地 1箱子 2墙 -1目标点）
+        - delete_all_of_list: { list: 地图 }
+        - repeat: 16
+          do:
+            - add_to_list: { item: 0, list: 地图 }
+        - replace_item_of_list: { item: 2, index: 1, list: 地图 }
+        - replace_item_of_list: { item: 1, index: 6, list: 地图 }
+        - replace_item_of_list: { item: -1, index: 11, list: 地图 }
+        - set_variable: { var: 帧号, value: 1 }
+        - reset_timer: null
+        - set_variable: { var: 我的编号, value: 1 }
+      - - when_receive:
+            message: 开始演出
+            comment: 关键帧运镜：计时器做全局节拍（不要叠加 wait）
+        - reset_timer: null
+        - set_variable: { var: 帧号, value: 1 }
+        - repeat_until:
+            cond: { greater_than: { a: { var: 帧号 }, b: { length_of_list: { list: keyFrameTime } } } }
+            do:
+              - if:
+                  cond:
+                    greater_than:
+                      a: { timer: null }
+                      b: { item_of_list: { index: { var: 帧号 }, list: keyFrameTime } }
+                  do:
+                    - set_variable:
+                        var: 目标X
+                        value: { item_of_list: { index: { var: 帧号 }, list: keyFrameX } }
+                    - set_variable:
+                        var: 目标Y
+                        value: { item_of_list: { index: { var: 帧号 }, list: keyFrameY } }
+                    - set_variable: { var: 帧号, value: { add: [ { var: 帧号 }, 1 ] } }
+                  else:
+                    - wait: 0.02
+      - - when_receive:
+            message: 同步位置
+            comment: 多人：每 0.2 秒写一次云变量（上限 10 次/秒）
+        - set_variable: { var: 玩家1x, value: { add: [ { x_position }, 250 ] } }
+        - set_variable: { var: 玩家1y, value: { add: [ { y_position }, 250 ] } }
+
+  sprites:
+    # ==========================================================
+    # 推箱子：网格存一条列表，推箱子要看「右边第二格」
+    # ==========================================================
+    - name: 推箱子手
+      x: 0
+      y: 0
+      size: 30
+      costumes:
+        - { name: 猫, asset: assets/cat_mouse/cat.png }
+      variables:
+        列数: 4
+        行号: 1
+        列号: 1
+        玩家格: 1
+        目标格: 1
+        右边格: 1
+        右边二格: 1
+      scripts:
+        - - when_green_flag_clicked:
+            comment: 算「右边那格」和「右边第二格」的列表索引
+          - set_variable:
+              var: 目标格
+              value: { add: [ { multiply: [ { subtract: [ {var: 行号}, 1 ] }, {var: 列数} ] }, {var: 列号} ] }
+          - set_variable: { var: 右边格, value: { add: [ { var: 目标格 }, 1 ] } }
+          - set_variable: { var: 右边二格, value: { add: [ { var: 目标格 }, 2 ] } }
+        - - when_receive:
+              message: 游戏进行
+          - forever:
+              do:
+                - if:
+                    cond: { equals: { a: { item_of_list: { index: { var: 右边格 }, list: 地图 } }, b: 1 } }
+                    do:
+                      - if:
+                          cond:
+                            or:
+                              - equals: { a: { item_of_list: { index: { var: 右边二格 }, list: 地图 } }, b: 0 }
+                              - equals: { a: { item_of_list: { index: { var: 右边二格 }, list: 地图 } }, b: -1 }
+                          do:
+                            - replace_item_of_list:
+                                item: 1
+                                index: { var: 右边二格 }
+                                list: 地图
+                            - replace_item_of_list:
+                                item: 0
+                                index: { var: 右边格 }
+                                list: 地图
+                - wait: 0.1
+
+    # ==========================================================
+    # 子弹：克隆 + 发射瞬间瞄准；子弹要 >= 10 像素否则会穿过目标
+    # ==========================================================
+    - name: 子弹
+      x: 0
+      y: 0
+      size: 100
+      costumes:
+        - { name: 弹, asset: assets/cat_mouse/cat_dot.png }
+      scripts:
+        - - when_green_flag_clicked:
+          - hide: null
+        - - when_receive:
+              message: 开火
+          - create_clone_of: { clone: 子弹 }
+        - - when_start_as_clone: { clone: _myself_ }
+          - goto_xy:
+              x: { of: { object: 推箱子手, property: x position } }
+              y: { of: { object: 推箱子手, property: y position } }
+          - point_towards: { TOWARDS: 准星 }
+          - show: null
+          - repeat_until:
+              cond:
+                or:
+                  - touching: { object: 推箱子手 }
+                  - greater_than: { a: { x_position }, b: 240 }
+              do:
+                - move_steps: 15
+          - broadcast: 命中
+          - delete_this_clone: null
+
+    # ==========================================================
+    # 准星：跟随鼠标
+    # ==========================================================
+    - name: 准星
+      x: 0
+      y: 0
+      size: 40
+      costumes:
+        - { name: 点, asset: assets/cat_mouse/cat_dot.png }
+      scripts:
+        - - when_green_flag_clicked:
+          - forever:
+              do:
+                - goto_xy: { x: { mouse_x: null }, y: { mouse_y: null } }
+
+    # ==========================================================
+    # 演出：三段式脚本头（开始游戏 / 游戏进行 / 演出）
+    # 「演出」开头 stop other scripts in this sprite，结尾广播回「游戏进行」
+    # ==========================================================
+    - name: 演员
+      x: 0
+      y: 100
+      size: 40
+      costumes:
+        - { name: 猫, asset: assets/cat_mouse/cat.png }
+      scripts:
+        - - when_green_flag_clicked:
+            comment: 「开始游戏」只重置数据
+          - hide: null
+          - set_variable: { var: 打字文本, value: "" }
+        - - when_receive:
+              message: 游戏进行
+            comment: 「游戏进行」是正常逻辑，不重置数据
+          - show: null
+          - forever:
+              do:
+                - if: { cond: { key_pressed: { key: right arrow } }, do: [ { change_x: { dx: 2 } } ] }
+        - - when_receive:
+              message: 演出
+            comment: 演出开始 -> 停掉本角色的「游戏进行」脚本
+          - stop: { stop_option: other scripts in sprite }
+          - show: null
+          - switch_costume: { costume: 猫 }
+          - glide_xy: { secs: 1, x: 120, y: 120 }
+          - switch_costume: { costume: 猫 }
+          - broadcast: 游戏进行
+
+    # ==========================================================
+    # 打字机：join + letter of
+    # ==========================================================
+    - name: 打字机
+      x: 0
+      y: -140
+      size: 100
+      costumes:
+        - { name: 底, asset: assets/cat_mouse/chat/chat_blank.png }
+      variables:
+        台词: "你好，世界"
+        i: 1
+      scripts:
+        - - when_receive:
+              message: 演出
+          - set_variable: { var: 打字文本, value: "" }
+          - set_variable: { var: i, value: 1 }
+          - repeat: 6
+            do:
+              - set_variable:
+                  var: 打字文本
+                  value:
+                    join:
+                      - { var: 打字文本 }
+                      - { letter_of: { letter: { var: i }, word: { var: 台词 } } }
+              - change_variable: { var: i, by: 1 }
+              - wait: 0.1
+
+    # ==========================================================
+    # 动画：命名造型走路循环 + 待机呼吸（比 next costume 稳）
+    # ==========================================================
+    - name: 走路的
+      x: 0
+      y: -60
+      size: 30
+      costumes:
+        - { name: 走1, asset: assets/cat_mouse/cat.png }
+        - { name: 走2, asset: assets/cat_mouse/cat_left.png }
+      variables:
+        呼吸: 0
+        呼吸大小: 100
+      scripts:
+        - - when_green_flag_clicked:
+          - show: null
+          - forever:
+              do:
+                - repeat: 4
+                  do:
+                    - switch_costume: { costume: 走1 }
+                    - wait: 0.15
+                    - switch_costume: { costume: 走2 }
+                    - wait: 0.15
+                - set_variable: { var: 呼吸, value: { add: [ { var: 呼吸 }, 1 ] } }
+                - if: { cond: { greater_than: { a: { var: 呼吸 }, b: 20 } }, do: [ { set_variable: { var: 呼吸, value: 0 } } ] }
+                - set_variable:
+                    var: 呼吸大小
+                    value: { add: [ 100, { divide: [ { subtract: [ {var: 呼吸}, 10 ] }, 10 ] } ] }
+                - set_size: { value: { var: 呼吸大小 } }

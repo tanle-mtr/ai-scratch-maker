@@ -1,0 +1,64 @@
+# ============================================================
+# ai-scratch-maker 开源仓库 .gitignore
+# 原则：**只提交「源码 + 自产素材 + 文档」**，凡第三方内容、构建产物、
+#       缓存、本地工作目录一律不进版本库。
+# ============================================================
+
+# ---------- 构建产物与缓存（可由源码完全重建） ----------
+.build_cache/
+build_tmp/
+_anim_test/
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.bak
+*.tmp
+*.orig
+*.log
+_t.sb3
+ai-scratch-maker/examples/output/
+ai-scratch-maker/examples/output_*/
+ai-scratch-maker/examples/_staged*   # verify 自测产物（SELFTEST_SLUG=_staged_selftest）
+*.sb3.map
+
+# ---------- 第三方素材（授权见 THIRD-PARTY-NOTICES.md） ----------
+# 社区素材包的**素材本体**来自第三方 Scratch 社区公开作品，授权声明要求
+# 「对外分发前须回溯原作者授权」，故二进制不进仓库。
+# 但归属索引（manifest.json：原始作品 CID / 标题 / 作品页 URL / 原始名）
+# 予以保留——它是回溯原作者的依据，也是使用这些素材时的署名依据。
+ai-scratch-maker/assets/community/samples/
+ai-scratch-maker/assets/community/generated/
+# 社区爬虫抓取到的作品与反编译产物（体积 1GB+，且是他人作品）
+community-crawler/data/
+community-crawler/demo/
+# Scratch 官方源码副本（第三方，按需自行 clone，见 README）
+reference/scratch-sources/
+# GitHub 参考作品里来自**无许可证**仓库（SilkRoad/Scratch，license=NONE）的那 8 个
+# .sb3 —— 无授权即不可再分发，故不进仓库；同目录其余 8 个来自 Unlicense 仓库，可分发。
+ai-scratch-maker/references/gh_reference_works/00*.sb3
+
+# 一次性补丁脚本（改完应删除；与 pack_skill.py 的排除规则保持一致）
+ai-scratch-maker/scripts/_*.py
+ai-scratch-maker/scripts/_*.mjs
+# skill 根目录的交付件副本（标准位置是 examples/output/cat_mouse.sb3）
+ai-scratch-maker/猫抓老鼠.sb3
+
+# ---------- 本地工作目录 ----------
+.workbuddy/
+_assets_backup/
+_new_assets/
+_processed_assets/
+generated-images/
+预览与源图/
+*.zip
+
+# ---------- 系统文件 ----------
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---------- 编辑器 ----------
+.vscode/
+.idea/
+*.swp

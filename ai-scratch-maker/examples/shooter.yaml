@@ -1,0 +1,595 @@
+project:
+  name: 纵版射击
+  stage:
+    backdrops:
+    - name: 背景1
+      asset: assets/backdrop1.svg
+    variables:
+      分数: 0
+      血量: 3
+      游戏结束: 0
+      玩家x: 0
+      玩家y: -150
+      敌计数器: 0
+      __spawn: 0
+      __k: 0
+    lists:
+      敌x:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      敌y:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      敌死:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+    scripts:
+    - - when_green_flag_clicked: null
+      - set_variable:
+          var: 分数
+          value: 0
+      - set_variable:
+          var: 血量
+          value: 3
+      - set_variable:
+          var: 游戏结束
+          value: 0
+      - set_variable:
+          var: 玩家x
+          value: 0
+      - set_variable:
+          var: 玩家y
+          value: -150
+      - set_variable:
+          var: __spawn
+          value: 0
+      - set_variable:
+          var: 敌计数器
+          value: 0
+      - set_variable:
+          var: __k
+          value: 0
+      - repeat:
+          times: 60
+          do:
+          - change_variable:
+              var: __k
+              by: 1
+          - replace_item_of_list:
+              list: 敌死
+              index:
+                var: __k
+              item: 0
+      - forever:
+          do:
+          - change_variable:
+              var: __spawn
+              by: 1
+          - if:
+              cond:
+                gt:
+                - var: __spawn
+                - 20
+              do:
+              - set_variable:
+                  var: __spawn
+                  value: 0
+              - broadcast:
+                  message: 生成敌人
+          - wait:
+              secs: 0.02
+    - - when_receive:
+          message: 结束
+      - set_variable:
+          var: 游戏结束
+          value: 1
+  sprites:
+  - name: 玩家
+    x: 0
+    y: -150
+    costumes:
+    - name: 造型1
+      asset: assets/shooter/player.png
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - goto_xy:
+          x: 0
+          y: -150
+      - show: null
+    - - when_green_flag_clicked: null
+      - forever:
+          do:
+          - if:
+              cond:
+                key_pressed:
+                  key: left arrow
+              do:
+              - change_variable:
+                  var: 玩家x
+                  by: -8
+          - if:
+              cond:
+                key_pressed:
+                  key: right arrow
+              do:
+              - change_variable:
+                  var: 玩家x
+                  by: 8
+          - if:
+              cond:
+                gt:
+                - var: 玩家x
+                - 220
+              do:
+              - set_variable:
+                  var: 玩家x
+                  value: 220
+          - if:
+              cond:
+                lt:
+                - var: 玩家x
+                - -220
+              do:
+              - set_variable:
+                  var: 玩家x
+                  value: -220
+          - set_x:
+              x:
+                var: 玩家x
+          - set_variable:
+              var: 玩家y
+              value: -150
+          - wait:
+              secs: 0.02
+    - - when_key_pressed:
+          key: space
+      - broadcast:
+          message: 发射
+  - name: 子弹
+    x: 0
+    y: 0
+    costumes:
+    - name: 造型1
+      asset: assets/shooter/bullet.png
+    variables:
+      是克隆: 0
+      bx: 0
+      by: 0
+      敌序: 0
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+    - - when_receive:
+          message: 发射
+      - if:
+          cond:
+            equals:
+            - var: 是克隆
+            - 0
+          do:
+          - create_clone_of:
+              clone: _myself_
+    - - when_start_as_clone: null
+      - set_variable:
+          var: 是克隆
+          value: 1
+      - set_variable:
+          var: bx
+          value:
+            var: 玩家x
+      - set_variable:
+          var: by
+          value:
+            var: 玩家y
+      - goto_xy:
+          x:
+            var: bx
+          y:
+            var: by
+      - show: null
+    - - when_start_as_clone: null
+      - forever:
+          do:
+          - change_variable:
+              var: by
+              by: 10
+          - goto_xy:
+              x:
+                var: bx
+              y:
+                var: by
+          - if:
+              cond:
+                gt:
+                - var: by
+                - 180
+              do:
+              - delete_this_clone: null
+          - set_variable:
+              var: 敌序
+              value: 0
+          - repeat:
+              times:
+                var: 敌计数器
+              do:
+              - change_variable:
+                  var: 敌序
+                  by: 1
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - item_of_list:
+                          list: 敌死
+                          index:
+                            var: 敌序
+                      - 0
+                    - and:
+                      - lt:
+                        - mathop:
+                            operator: abs
+                            num:
+                              subtract:
+                              - var: bx
+                              - item_of_list:
+                                  list: 敌x
+                                  index:
+                                    var: 敌序
+                        - 18
+                      - lt:
+                        - mathop:
+                            operator: abs
+                            num:
+                              subtract:
+                              - var: by
+                              - item_of_list:
+                                  list: 敌y
+                                  index:
+                                    var: 敌序
+                        - 18
+                  do:
+                  - change_variable:
+                      var: 分数
+                      by: 1
+                  - replace_item_of_list:
+                      list: 敌死
+                      index:
+                        var: 敌序
+                      item: 1
+          - wait:
+              secs: 0.02
+  - name: 敌人
+    x: 0
+    y: 0
+    costumes:
+    - name: 造型1
+      asset: assets/shooter/enemy.png
+    variables:
+      是克隆: 0
+      ex: 0
+      ey: 0
+      编号: 0
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+    - - when_receive:
+          message: 生成敌人
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 是克隆
+              - 0
+            - lt:
+              - var: 敌计数器
+              - 60
+          do:
+          - change_variable:
+              var: 敌计数器
+              by: 1
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 是克隆
+              - 0
+            - lt:
+              - var: 敌计数器
+              - 60
+          do:
+          - create_clone_of:
+              clone: _myself_
+    - - when_start_as_clone: null
+      - set_variable:
+          var: 是克隆
+          value: 1
+      - set_variable:
+          var: 编号
+          value:
+            var: 敌计数器
+      - set_variable:
+          var: ex
+          value:
+            random:
+              from: -200
+              to: 200
+      - set_variable:
+          var: ey
+          value: 170
+      - replace_item_of_list:
+          list: 敌x
+          index:
+            var: 编号
+          item:
+            var: ex
+      - replace_item_of_list:
+          list: 敌y
+          index:
+            var: 编号
+          item:
+            var: ey
+      - replace_item_of_list:
+          list: 敌死
+          index:
+            var: 编号
+          item: 0
+      - goto_xy:
+          x:
+            var: ex
+          y:
+            var: ey
+      - show: null
+    - - when_start_as_clone: null
+      - forever:
+          do:
+          - change_variable:
+              var: ey
+              by: -2
+          - goto_xy:
+              x:
+                var: ex
+              y:
+                var: ey
+          - replace_item_of_list:
+              list: 敌x
+              index:
+                var: 编号
+              item:
+                var: ex
+          - replace_item_of_list:
+              list: 敌y
+              index:
+                var: 编号
+              item:
+                var: ey
+          - if:
+              cond:
+                lt:
+                - var: ey
+                - -180
+              do:
+              - delete_this_clone: null
+          - if:
+              cond:
+                equals:
+                - item_of_list:
+                    list: 敌死
+                    index:
+                      var: 编号
+                - 1
+              do:
+              - delete_this_clone: null
+          - if:
+              cond:
+                and:
+                - lt:
+                  - mathop:
+                      operator: abs
+                      num:
+                        subtract:
+                        - var: ex
+                        - var: 玩家x
+                  - 18
+                - lt:
+                  - mathop:
+                      operator: abs
+                      num:
+                        subtract:
+                        - var: ey
+                        - var: 玩家y
+                  - 18
+              do:
+              - change_variable:
+                  var: 血量
+                  by: -1
+              - replace_item_of_list:
+                  list: 敌死
+                  index:
+                    var: 编号
+                  item: 1
+              - if:
+                  cond:
+                    lt:
+                    - var: 血量
+                    - 1
+                  do:
+                  - broadcast:
+                      message: 结束
+              - delete_this_clone: null
+          - wait:
+              secs: 0.02

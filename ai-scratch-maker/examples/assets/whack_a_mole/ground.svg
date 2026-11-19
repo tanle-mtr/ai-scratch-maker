@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" width="480" height="360">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#C4FFE3"/>
+      <stop offset="1" stop-color="#5CD9BA"/>
+    </linearGradient>
+    <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8CE243"/>
+      <stop offset="0.55" stop-color="#5FD100"/>
+      <stop offset="1" stop-color="#32AF00"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 天空 -->
+  <rect x="0" y="0" width="480" height="132" fill="url(#sky)"/>
+  <!-- 草地 -->
+  <rect x="0" y="118" width="480" height="242" fill="url(#grass)"/>
+
+  <!-- 草地上沿受光高光带 -->
+  <rect x="0" y="118" width="480" height="10" fill="#8CE243" opacity="0.55"/>
+
+  <!-- 9 个地洞（3x3 网格） -->
+  <!-- 坐标：列 90/240/390，行 110/185/260（SVG 像素，中心 240,180） -->
+  <g>
+    <!-- 第 1 行 -->
+    <ellipse cx="90"  cy="110" rx="40" ry="15" fill="#675D5D"/>
+    <ellipse cx="90"  cy="110" rx="31" ry="10" fill="#4F4A47"/>
+    <ellipse cx="240" cy="110" rx="40" ry="15" fill="#675D5D"/>
+    <ellipse cx="240" cy="110" rx="31" ry="10" fill="#4F4A47"/>
+    <ellipse cx="390" cy="110" rx="40" ry="15" fill="#675D5D"/>
+    <ellipse cx="390" cy="110" rx="31" ry="10" fill="#4F4A47"/>
+    <!-- 第 2 行 -->
+    <ellipse cx="90"  cy="185" rx="40" ry="15" fill="#675D5D"/>
+    <ellipse cx="90"  cy="185" rx="31" ry="10" fill="#4F4A47"/>
+    <ellipse cx="240" cy="185" rx="40" ry="15" fill="#675D5D"/>
+    <ellipse cx="240" cy="185" rx="31" ry="10" fill="#4F4A47"/>
+    <ellipse cx="390" cy="185" rx="40" ry="15" fill="#675D5D"/>
+    <ellipse cx="390" cy="185" rx="31" ry="10" fill="#4F4A47"/>
+    <!-- 第 3 行 -->
+    <ellipse cx="90"  cy="260" rx="40" ry="15" fill="#675D5D"/>
+    <ellipse cx="90"  cy="260" rx="31" ry="10" fill="#4F4A47"/>
+    <ellipse cx="240" cy="260" rx="40" ry="15" fill="#675D5D"/>
+    <ellipse cx="240" cy="260" rx="31" ry="10" fill="#4F4A47"/>
+    <ellipse cx="390" cy="260" rx="40" ry="15" fill="#675D5D"/>
+    <ellipse cx="390" cy="260" rx="31" ry="10" fill="#4F4A47"/>
+  </g>
+
+  <!-- 草丛点缀（亮绿小三角，纯装饰，不抢注意力） -->
+  <g fill="#8CE243" opacity="0.8">
+    <polygon points="30,300 36,288 42,300"/>
+    <polygon points="120,320 126,308 132,320"/>
+    <polygon points="300,310 306,298 312,310"/>
+    <polygon points="450,300 456,288 462,300"/>
+    <polygon points="200,330 206,318 212,330"/>
+    <polygon points="360,330 366,318 372,330"/>
+  </g>
+</svg>

@@ -1,0 +1,135 @@
+{
+  "project": {
+    "name": "运算与侦测",
+    "stage": {
+      "backdrops": [
+        {
+          "name": "草地",
+          "asset": "assets/backdrop1.svg"
+        }
+      ],
+      "scripts": []
+    },
+    "sprites": [
+      {
+        "name": "Cat",
+        "x": 0,
+        "y": 0,
+        "costumes": [
+          {
+            "name": "cat1",
+            "asset": "assets/cat.svg"
+          }
+        ],
+        "variables": {
+          "msg": ""
+        },
+        "scripts": [
+          [
+            {
+              "when_green_flag_clicked": null
+            },
+            {
+              "ask_and_wait": {
+                "question": {
+                  "join": {
+                    "a": "你几岁? ",
+                    "b": {
+                      "var": "msg"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "set_variable": {
+                "var": "msg",
+                "value": {
+                  "answer": null
+                }
+              }
+            },
+            {
+              "if": {
+                "cond": {
+                  "greater_than": {
+                    "a": {
+                      "var": "msg"
+                    },
+                    "b": 18
+                  }
+                },
+                "do": [
+                  {
+                    "say": {
+                      "text": "成年人",
+                      "secs": 2
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "if": {
+                "cond": {
+                  "key_pressed": {
+                    "key": "space"
+                  }
+                },
+                "do": [
+                  {
+                    "set_variable": {
+                      "var": "msg",
+                      "value": {
+                        "add": [
+                          1,
+                          2
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "if_else": {
+                "cond": {
+                  "touching": {
+                    "object": "_mouse_"
+                  }
+                },
+                "do": [
+                  {
+                    "set_variable": {
+                      "var": "msg",
+                      "value": {
+                        "random": [
+                          1,
+                          10
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "else": [
+                  {
+                    "set_variable": {
+                      "var": "msg",
+                      "value": {
+                        "mathop": {
+                          "operator": "sqrt",
+                          "num": 16
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        ],
+        "rotationStyle": "left-right"
+      }
+    ]
+  }
+}

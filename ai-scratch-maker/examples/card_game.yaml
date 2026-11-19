@@ -1,0 +1,4141 @@
+project:
+  name: 桌游判定台（斗地主 / UNO / 狼人杀 / 觉醒 / 新月事件）
+  stage:
+    backdrops:
+    - name: 牌桌
+      asset: assets/uikit/bg_menu.svg
+    variables:
+      结果: ''
+      帧计数: 0
+      自动帧: 1
+      张数: 0
+      v: 0
+      c: 0
+      单数: 0
+      对数: 0
+      三数: 0
+      四数: 0
+      最小: 0
+      最大: 0
+      三值: 0
+      四值: 0
+      三最小: 0
+      牌型: ''
+      主值: 0
+      上家型: ''
+      上家值: 0
+      能压: 0
+      判定词: ''
+      手牌张数: 0
+      台面色: 1
+      台面值: 0
+      可出数: 0
+      i: 0
+      色: 0
+      数x: 0
+      玩家数: 4
+      投票数: 0
+      最高票: 0
+      出局数: 0
+      j: 0
+      目标: 0
+      人数: 0
+      tmp: 0
+      身份名: ''
+      当前板子: 1
+      串: ''
+      段: ''
+      位: 0
+      字符: ''
+      竞选阶段: 0
+      候选数: 0
+      警长: 0
+      警徽状态: 0
+      竞选暂停次数: 0
+      双爆开关: 1
+      屠城开关: 0
+      流指针: 1
+      流转目标: 0
+      新警长: 0
+      死者: 0
+      自爆者: 0
+      自爆数: 0
+      自爆提示: ''
+      昼夜: 0
+      白天阶段: 0
+      存活狼: 0
+      存活神: 0
+      存活民: 0
+      总神: 0
+      总民: 0
+      胜负: 继续
+      阵营: 0
+      验A: 0
+      验B: 0
+      集合验果: 0
+      毒药次数: 0
+      毒目标: 0
+      需要协助: 0
+      协助全票: 0
+      协助生效: 0
+      临时: 0
+      亲传者: 0
+      接爪者: 0
+      亲传已用: 0
+      亲传结果: ''
+      爪守恒: 0
+      爪出局者: 0
+      可发动爪: 0
+      觉醒者: 0
+      偶像: 0
+      偶像死因: 0
+      变身状态: 0
+      变身前胜负: ''
+      继承身份: 0
+      梦语者: 0
+      上夜梦语者: 0
+      梦语指令: 0
+      夜数: 1
+      梦语结果: ''
+      决斗者: 0
+      决斗目标: 0
+      决斗结果: ''
+      白天继续: 0
+      事件已触发: 0
+      当前事件: 0
+      种子: 1
+      抽卡结果: ''
+      栈深: 0
+      快照顶: 0
+      撤销槽: 0
+      撤销结果: ''
+      票权开关: 1
+      叠加值: 0
+      天数: 1
+      推进结果: ''
+      事件胜负: 无
+      预言家座位: 0
+      愚者座位: 0
+      有盲目: 0
+      有下班: 0
+      存活好人: 0
+    lists:
+      身份名表:
+      - 狼人
+      - 村民
+      - 预言家
+      - 女巫
+      - 猎人
+      - 白痴
+      - 守卫
+      - 骑士
+      - 狼王
+      - 白狼王
+      - 狼美人
+      - 石像鬼
+      - 隐狼
+      - 恶灵骑士
+      - 魔镜少女
+      - 守墓人
+      - 奇迹商人
+      - 摄梦人
+      - 白兔
+      - 厚皮狼
+      - 饿狼
+      - 蓝狼
+      - 红月
+      - 猩红狼王
+      - 蜂之狂猎
+      - 追魂者
+      - 羊驼
+      - 咒狐
+      - 野孩子
+      - 丘比特
+      - 血月使徒
+      - 噩梦之影
+      - 蚀时狼妃
+      - 狼巫
+      - 狼鸦之爪
+      - 寂夜导师
+      - 蚀日侍女
+      - 夜之贵族
+      - 寻香魅影
+      - 觉醒隐狼
+      - 魔术师
+      - 乌鸦
+      - 猎魔人
+      - 定序王子
+      - 纯白之女
+      - 炼金魔女
+      - 熊
+      - 子狐
+      - 河豚
+      - 白猫
+      - 白昼学者
+      - 流光伯爵
+      - 觉醒预言家
+      - 觉醒女巫
+      - 觉醒猎人
+      - 觉醒守卫
+      - 觉醒狼王
+      - 觉醒狼美人
+      - 觉醒石像鬼
+      - 觉醒白狼王
+      - 刺客白狼王
+      - 老酒鬼
+      - 大公鸡
+      - 小绵羊
+      - 企鹅
+      - 通灵师
+      - 小女孩
+      - 炸弹师
+      - 月夜祭司
+      - 守夜人
+      - 变脸师
+      - 洞悉长老
+      - 牧羊人
+      - 巡警
+      - 招魂师
+      - 禁言长老
+      - 黑狼王
+      - 暴狼
+      - 机械狼
+      - 禁锢之影
+      - 憎恶猎人
+      - 红月使徒
+      - 傀儡师
+      - 月狼
+      - 复仇狼王
+      - 盗宝大师
+      - 窃贼
+      - 觉醒摄梦人
+      - 觉醒骑士
+      - 觉醒愚者
+      - 觉醒孤独少女
+      - 孤独少女
+      - 千面人
+      阵营表:
+      - 1
+      - 3
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 3
+      - 1
+      - 1
+      - 2
+      - 1
+      - 2
+      - 2
+      - 3
+      - 4
+      - 4
+      - 4
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 3
+      - 3
+      - 3
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 4
+      - 4
+      - 2
+      - 2
+      - 2
+      - 4
+      - 4
+      - 3
+      可自爆表:
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 1
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 0
+      - 0
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 1
+      - 0
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      板子名表:
+      - ''
+      - 6人明牌
+      - 9人暗牌
+      - 10人速推
+      - 12人标准场
+      - 12人进阶场
+      - 12人白狼王守卫
+      - 12人石像鬼守墓人
+      - 12人狼王计划
+      - 12人爱神局
+      - 12人基础·红狼
+      - 狼美人与老酒鬼
+      - 机械狼·红狼
+      - 黑狼王与织梦人
+      - 石像鬼与守夜人
+      - 白狼王与骑士·红狼
+      - 野孩子·红狼
+      - 炸弹师·红狼
+      - 疯狂动物园
+      - 爱神·红狼
+      - 觉醒之夜12
+      - 寻香识命12
+      - 觉醒狼王12
+      - 镜隐迷踪12
+      - 觉醒孤独少女12
+      - 觉醒女巫12
+      - 暗夜星辰12
+      - 觉醒石像鬼12
+      - 月坠光渊12
+      - 觉醒摄梦人12
+      - 觉醒骑士12
+      - 云端追踪12
+      - 沙龙之夜12
+      - 觉醒之夜10
+      - 月坠光渊10
+      - 觉醒骑士10
+      - 12人新月降临
+      板子人数表:
+      - 0
+      - 6
+      - 9
+      - 10
+      - 12
+      - 12
+      - 12
+      - 12
+      - 12
+      - 12
+      - 12
+      - 12
+      - 12
+      - 12
+      - 12
+      - 12
+      - 12
+      - 10
+      - 9
+      - 12
+      - 12
+      - 12
+      - 12
+      - 12
+      - 12
+      - 12
+      - 12
+      - 12
+      - 12
+      - 12
+      - 12
+      - 12
+      - 12
+      - 10
+      - 10
+      - 10
+      - 12
+      板子串表:
+      - ''
+      - 1,1,2,2,3,5
+      - 1,1,1,2,2,2,3,4,5
+      - 1,1,1,2,2,2,2,3,4,5
+      - 1,1,1,1,2,2,2,2,3,4,5,6
+      - 1,1,1,9,2,2,2,2,3,4,5,7
+      - 1,1,1,10,2,2,2,2,3,4,5,7
+      - 1,1,1,12,2,2,2,2,3,4,5,16
+      - 1,1,11,61,2,2,2,27,53,54,55,56
+      - 9,1,1,30,87,2,2,2,2,2,3,4,5,6
+      - 1,1,1,10,3,4,5,7,2,2,2,2
+      - 1,1,1,11,3,4,5,7,62,2,2,2
+      - 1,1,1,79,66,4,5,7,2,2,2,2
+      - 1,1,1,77,3,4,5,18,2,2,2,2
+      - 1,1,1,12,3,4,5,70,2,2,2,2
+      - 1,1,1,10,3,4,8,7,2,2,2,2
+      - 1,1,1,10,3,4,5,6,29,2,2,2
+      - 1,1,1,68,3,4,2,2,2,2
+      - 1,1,1,65,63,47,64,64,64
+      - 1,1,1,1,30,3,4,5,2,2,2,2
+      - 1,1,1,38,3,4,43,90,2,2,2,2
+      - 1,1,1,39,7,4,5,53,2,2,2,2
+      - 1,1,1,57,3,4,17,18,2,2,2,2
+      - 1,1,1,40,7,4,5,15,2,2,2,2
+      - 1,1,1,1,3,4,18,5,91,2,2,2
+      - 1,1,1,57,3,7,5,54,2,2,2,2
+      - 1,1,1,58,3,4,7,55,2,2,2,2
+      - 1,1,59,3,4,7,5,16,2,2,2,2
+      - 1,1,1,60,3,4,5,56,2,2,2,2
+      - 1,59,9,3,4,5,16,88,2,2,2,2
+      - 1,1,1,58,3,4,89,56,2,2,2,2
+      - 40,13,11,3,53,45,15,4,5,16,92,28
+      - 1,58,37,33,53,15,4,43,43,17,18,28
+      - 1,1,38,3,4,90,2,2,2,2
+      - 1,1,60,3,4,5,56,2,2,2
+      - 1,1,58,89,3,4,56,2,2,2
+      - 1,1,1,1,3,4,5,6,2,2,2,2
+      上警表:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      退水表:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      候选表:
+      - 0
+      并列表:
+      - 0
+      竞选票箱:
+      - 0
+      竞选票箱PK:
+      - 0
+      竞选票数表:
+      - 0
+      警徽流_验:
+      - 0
+      警徽流_金:
+      - 0
+      警徽流_杀:
+      - 0
+      查验结果:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      现阵营表:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      狼王爪持有:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      协助者表:
+      - 0
+      协助票箱:
+      - 0
+      协助过表:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      决斗已用:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      免疫夜伤:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      事件名表:
+      - 奇迹
+      - 群情激奋
+      - 葬礼
+      - 盲目之眼
+      - 到点下班
+      - 快乐星球
+      - 长毛了
+      - 星轨存续
+      - 咫尺天涯
+      - 惊人的不信任
+      事件时效表:
+      - 1
+      - 2
+      - 3
+      - 3
+      - 2
+      - 3
+      - 3
+      - 2
+      - 3
+      - 1
+      事件类型表:
+      - 5
+      - 3
+      - 2
+      - 3
+      - 3
+      - 4
+      - 5
+      - 2
+      - 4
+      - 3
+      事件票权表:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 2
+      - 0
+      - 0
+      - 0
+      - 3
+      活动栈:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      栈时效:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      栈到期:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      栈状态:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      栈快照:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+    scripts:
+    - - when_green_flag_clicked: null
+      - set_variable:
+          var: 自动帧
+          value: 1
+      - set_variable:
+          var: 结果
+          value: 桌游判定台：牌型/UNO/投票/警徽流/自爆/屠边/觉醒/新月事件
+      - show: null
+      - forever:
+          do:
+          - if:
+              cond:
+                equals:
+                - var: 自动帧
+                - 1
+              do:
+              - change_variable:
+                  var: 帧计数
+                  by: 1
+              - broadcast:
+                  message: 帧
+          - wait:
+              secs: 0.02
+    - - when_receive:
+          message: 重置
+      - set_variable:
+          var: 结果
+          value: 已重置
+  sprites:
+  - name: 裁判
+    x: 0
+    y: 0
+    costumes:
+    - name: dot
+      asset: assets/dot.svg
+    variables: {}
+    scripts:
+    - - when_receive:
+          message: 判牌型
+      - set_variable:
+          var: 张数
+          value:
+            length_of_list:
+              list: 牌组
+      - if:
+          cond:
+            equals:
+            - var: 张数
+            - 0
+          do:
+          - set_variable:
+              var: 牌型
+              value: 空
+          - set_variable:
+              var: 主值
+              value: 0
+          else:
+          - delete_all_of_list:
+              list: 计
+          - repeat:
+              times: 18
+              do:
+              - add_to_list:
+                  list: 计
+                  item: 0
+          - set_variable:
+              var: i
+              value: 0
+          - repeat:
+              times:
+                var: 张数
+              do:
+              - change_variable:
+                  var: i
+                  by: 1
+              - set_variable:
+                  var: v
+                  value:
+                    item_of_list:
+                      list: 牌组
+                      index:
+                        var: i
+              - if:
+                  cond:
+                    and:
+                    - not:
+                        operand:
+                          equals:
+                          - less_than:
+                            - var: v
+                            - 3
+                          - true
+                    - not:
+                        operand:
+                          equals:
+                          - greater_than:
+                            - var: v
+                            - 17
+                          - true
+                  do:
+                  - replace_item_of_list:
+                      list: 计
+                      index:
+                        var: v
+                      item:
+                        add:
+                        - item_of_list:
+                            list: 计
+                            index:
+                              var: v
+                        - 1
+          - set_variable:
+              var: 单数
+              value: 0
+          - set_variable:
+              var: 对数
+              value: 0
+          - set_variable:
+              var: 三数
+              value: 0
+          - set_variable:
+              var: 四数
+              value: 0
+          - set_variable:
+              var: 最小
+              value: 0
+          - set_variable:
+              var: 最大
+              value: 0
+          - set_variable:
+              var: 三值
+              value: 0
+          - set_variable:
+              var: 四值
+              value: 0
+          - set_variable:
+              var: 三最小
+              value: 0
+          - set_variable:
+              var: v
+              value: 0
+          - repeat:
+              times: 15
+              do:
+              - change_variable:
+                  var: v
+                  by: 1
+              - set_variable:
+                  var: c
+                  value:
+                    item_of_list:
+                      list: 计
+                      index:
+                        add:
+                        - var: v
+                        - 2
+              - if:
+                  cond:
+                    equals:
+                    - var: c
+                    - 1
+                  do:
+                  - change_variable:
+                      var: 单数
+                      by: 1
+              - if:
+                  cond:
+                    equals:
+                    - var: c
+                    - 2
+                  do:
+                  - change_variable:
+                      var: 对数
+                      by: 1
+              - if:
+                  cond:
+                    equals:
+                    - var: c
+                    - 3
+                  do:
+                  - change_variable:
+                      var: 三数
+                      by: 1
+                  - set_variable:
+                      var: 三值
+                      value:
+                        add:
+                        - var: v
+                        - 2
+                  - if:
+                      cond:
+                        equals:
+                        - var: 三最小
+                        - 0
+                      do:
+                      - set_variable:
+                          var: 三最小
+                          value:
+                            add:
+                            - var: v
+                            - 2
+              - if:
+                  cond:
+                    equals:
+                    - var: c
+                    - 4
+                  do:
+                  - change_variable:
+                      var: 四数
+                      by: 1
+                  - set_variable:
+                      var: 四值
+                      value:
+                        add:
+                        - var: v
+                        - 2
+              - if:
+                  cond:
+                    and:
+                    - greater_than:
+                      - var: c
+                      - 0
+                    - equals:
+                      - var: 最小
+                      - 0
+                  do:
+                  - set_variable:
+                      var: 最小
+                      value:
+                        add:
+                        - var: v
+                        - 2
+              - if:
+                  cond:
+                    greater_than:
+                    - var: c
+                    - 0
+                  do:
+                  - set_variable:
+                      var: 最大
+                      value:
+                        add:
+                        - var: v
+                        - 2
+          - set_variable:
+              var: 牌型
+              value: 不成牌型
+          - set_variable:
+              var: 主值
+              value: 0
+          - if:
+              cond:
+                and:
+                - equals:
+                  - var: 张数
+                  - 2
+                - and:
+                  - equals:
+                    - item_of_list:
+                        list: 计
+                        index: 16
+                    - 1
+                  - equals:
+                    - item_of_list:
+                        list: 计
+                        index: 17
+                    - 1
+              do:
+              - set_variable:
+                  var: 牌型
+                  value: 王炸
+              - set_variable:
+                  var: 主值
+                  value: 100
+          - if:
+              cond:
+                and:
+                - equals:
+                  - var: 张数
+                  - 4
+                - equals:
+                  - var: 四数
+                  - 1
+              do:
+              - set_variable:
+                  var: 牌型
+                  value: 炸弹
+              - set_variable:
+                  var: 主值
+                  value:
+                    add:
+                    - var: 四值
+                    - 50
+          - if:
+              cond:
+                equals:
+                - var: 张数
+                - 1
+              do:
+              - set_variable:
+                  var: 牌型
+                  value: 单张
+              - set_variable:
+                  var: 主值
+                  value:
+                    var: 最小
+          - if:
+              cond:
+                and:
+                - equals:
+                  - var: 张数
+                  - 2
+                - equals:
+                  - var: 对数
+                  - 1
+              do:
+              - set_variable:
+                  var: 牌型
+                  value: 对子
+              - set_variable:
+                  var: 主值
+                  value:
+                    var: 最小
+          - if:
+              cond:
+                and:
+                - equals:
+                  - var: 张数
+                  - 3
+                - equals:
+                  - var: 三数
+                  - 1
+              do:
+              - set_variable:
+                  var: 牌型
+                  value: 三张
+              - set_variable:
+                  var: 主值
+                  value:
+                    var: 三值
+          - if:
+              cond:
+                and:
+                - equals:
+                  - var: 张数
+                  - 4
+                - and:
+                  - equals:
+                    - var: 三数
+                    - 1
+                  - equals:
+                    - var: 单数
+                    - 1
+              do:
+              - set_variable:
+                  var: 牌型
+                  value: 三带一
+              - set_variable:
+                  var: 主值
+                  value:
+                    var: 三值
+          - if:
+              cond:
+                and:
+                - equals:
+                  - var: 张数
+                  - 5
+                - and:
+                  - equals:
+                    - var: 三数
+                    - 1
+                  - equals:
+                    - var: 对数
+                    - 1
+              do:
+              - set_variable:
+                  var: 牌型
+                  value: 三带二
+              - set_variable:
+                  var: 主值
+                  value:
+                    var: 三值
+          - if:
+              cond:
+                and:
+                - equals:
+                  - var: 张数
+                  - 6
+                - and:
+                  - equals:
+                    - var: 四数
+                    - 1
+                  - equals:
+                    - var: 单数
+                    - 2
+              do:
+              - set_variable:
+                  var: 牌型
+                  value: 四带二
+              - set_variable:
+                  var: 主值
+                  value:
+                    var: 四值
+          - if:
+              cond:
+                and:
+                - not:
+                    operand:
+                      equals:
+                      - less_than:
+                        - var: 张数
+                        - 5
+                      - true
+                - and:
+                  - equals:
+                    - var: 单数
+                    - var: 张数
+                  - and:
+                    - not:
+                        operand:
+                          equals:
+                          - greater_than:
+                            - var: 最大
+                            - 14
+                          - true
+                    - equals:
+                      - subtract:
+                        - add:
+                          - var: 最大
+                          - 1
+                        - var: 最小
+                      - var: 张数
+              do:
+              - set_variable:
+                  var: 牌型
+                  value: 顺子
+              - set_variable:
+                  var: 主值
+                  value:
+                    var: 最小
+          - if:
+              cond:
+                and:
+                - not:
+                    operand:
+                      equals:
+                      - less_than:
+                        - var: 张数
+                        - 6
+                      - true
+                - and:
+                  - equals:
+                    - mod:
+                      - var: 张数
+                      - 2
+                    - 0
+                  - and:
+                    - equals:
+                      - var: 对数
+                      - divide:
+                        - var: 张数
+                        - 2
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - greater_than:
+                              - var: 最大
+                              - 14
+                            - true
+                      - equals:
+                        - subtract:
+                          - add:
+                            - var: 最大
+                            - 1
+                          - var: 最小
+                        - divide:
+                          - var: 张数
+                          - 2
+              do:
+              - set_variable:
+                  var: 牌型
+                  value: 连对
+              - set_variable:
+                  var: 主值
+                  value:
+                    var: 最小
+          - if:
+              cond:
+                and:
+                - not:
+                    operand:
+                      equals:
+                      - less_than:
+                        - var: 张数
+                        - 6
+                      - true
+                - and:
+                  - equals:
+                    - mod:
+                      - var: 张数
+                      - 3
+                    - 0
+                  - and:
+                    - equals:
+                      - var: 三数
+                      - divide:
+                        - var: 张数
+                        - 3
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - greater_than:
+                              - var: 最大
+                              - 14
+                            - true
+                      - equals:
+                        - subtract:
+                          - add:
+                            - var: 最大
+                            - 1
+                          - var: 最小
+                        - divide:
+                          - var: 张数
+                          - 3
+              do:
+              - set_variable:
+                  var: 牌型
+                  value: 飞机
+              - set_variable:
+                  var: 主值
+                  value:
+                    var: 最小
+          - if:
+              cond:
+                and:
+                - not:
+                    operand:
+                      equals:
+                      - less_than:
+                        - var: 张数
+                        - 8
+                      - true
+                - and:
+                  - equals:
+                    - mod:
+                      - var: 张数
+                      - 4
+                    - 0
+                  - equals:
+                    - var: 三数
+                    - divide:
+                      - var: 张数
+                      - 4
+              do:
+              - set_variable:
+                  var: 牌型
+                  value: 飞机带单
+              - set_variable:
+                  var: 主值
+                  value:
+                    var: 三最小
+          - set_variable:
+              var: 结果
+              value:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a: 牌型：
+                          b:
+                            var: 牌型
+                      b: '  主值 '
+                  b:
+                    var: 主值
+    - - when_receive:
+          message: 比大小
+      - set_variable:
+          var: 能压
+          value: 0
+      - if:
+          cond:
+            or:
+            - equals:
+              - var: 上家型
+              - ''
+            - equals:
+              - var: 上家型
+              - 空
+          do:
+          - set_variable:
+              var: 能压
+              value: 1
+      - if:
+          cond:
+            equals:
+            - var: 牌型
+            - 不成牌型
+          do:
+          - set_variable:
+              var: 能压
+              value: 0
+      - if:
+          cond:
+            equals:
+            - var: 牌型
+            - 王炸
+          do:
+          - set_variable:
+              var: 能压
+              value: 1
+      - if:
+          cond:
+            equals:
+            - var: 上家型
+            - 王炸
+          do:
+          - if:
+              cond:
+                not:
+                  operand:
+                    equals:
+                    - var: 牌型
+                    - 王炸
+              do:
+              - set_variable:
+                  var: 能压
+                  value: 0
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 牌型
+              - 炸弹
+            - and:
+              - not:
+                  operand:
+                    equals:
+                    - var: 上家型
+                    - 炸弹
+              - not:
+                  operand:
+                    equals:
+                    - var: 上家型
+                    - 王炸
+          do:
+          - set_variable:
+              var: 能压
+              value: 1
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 上家型
+              - 炸弹
+            - and:
+              - not:
+                  operand:
+                    equals:
+                    - var: 牌型
+                    - 炸弹
+              - not:
+                  operand:
+                    equals:
+                    - var: 牌型
+                    - 王炸
+          do:
+          - set_variable:
+              var: 能压
+              value: 0
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 牌型
+              - var: 上家型
+            - not:
+                operand:
+                  equals:
+                  - var: 牌型
+                  - 炸弹
+          do:
+          - if:
+              cond:
+                greater_than:
+                - var: 主值
+                - var: 上家值
+              do:
+              - set_variable:
+                  var: 能压
+                  value: 1
+      - if:
+          cond:
+            equals:
+            - var: 能压
+            - 1
+          do:
+          - set_variable:
+              var: 判定词
+              value: 能压
+          else:
+          - set_variable:
+              var: 判定词
+              value: 压不过
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a: 出【
+                                  b:
+                                    var: 牌型
+                              b: 】
+                          b:
+                            var: 判定词
+                      b: '  上家【'
+                  b:
+                    var: 上家型
+              b: 】
+    - - when_receive:
+          message: 判UNO
+      - set_variable:
+          var: 可出数
+          value: 0
+      - delete_all_of_list:
+          list: 可出表
+      - set_variable:
+          var: 手牌张数
+          value:
+            length_of_list:
+              list: 手牌值
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times:
+            var: 手牌张数
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - set_variable:
+              var: 色
+              value:
+                item_of_list:
+                  list: 手牌色
+                  index:
+                    var: i
+          - set_variable:
+              var: 数x
+              value:
+                item_of_list:
+                  list: 手牌值
+                  index:
+                    var: i
+          - if:
+              cond:
+                or:
+                - equals:
+                  - var: 色
+                  - 0
+                - or:
+                  - equals:
+                    - var: 色
+                    - var: 台面色
+                  - equals:
+                    - var: 数x
+                    - var: 台面值
+              do:
+              - change_variable:
+                  var: 可出数
+                  by: 1
+              - add_to_list:
+                  list: 可出表
+                  item:
+                    var: i
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a:
+                                    join:
+                                      a: '台面 '
+                                      b:
+                                        var: 台面色
+                                  b: '-'
+                              b:
+                                var: 台面值
+                          b: '  可出 '
+                      b:
+                        var: 可出数
+                  b: ' / '
+              b:
+                var: 手牌张数
+    - - when_receive:
+          message: 统计票
+      - delete_all_of_list:
+          list: 票数表
+      - repeat:
+          times:
+            var: 玩家数
+          do:
+          - add_to_list:
+              list: 票数表
+              item: 0
+      - set_variable:
+          var: 投票数
+          value:
+            length_of_list:
+              list: 票箱
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times:
+            var: 投票数
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - set_variable:
+              var: 目标
+              value:
+                item_of_list:
+                  list: 票箱
+                  index:
+                    var: i
+          - if:
+              cond:
+                equals:
+                - item_of_list:
+                    list: 存活表
+                    index:
+                      var: 目标
+                - 1
+              do:
+              - if:
+                  cond:
+                    and:
+                    - not:
+                        operand:
+                          equals:
+                          - less_than:
+                            - var: 目标
+                            - 1
+                          - true
+                    - not:
+                        operand:
+                          equals:
+                          - greater_than:
+                            - var: 目标
+                            - var: 玩家数
+                          - true
+                  do:
+                  - replace_item_of_list:
+                      list: 票数表
+                      index:
+                        var: 目标
+                      item:
+                        add:
+                        - item_of_list:
+                            list: 票数表
+                            index:
+                              var: 目标
+                        - 1
+      - set_variable:
+          var: 最高票
+          value: 0
+      - set_variable:
+          var: j
+          value: 0
+      - repeat:
+          times:
+            var: 玩家数
+          do:
+          - change_variable:
+              var: j
+              by: 1
+          - if:
+              cond:
+                greater_than:
+                - item_of_list:
+                    list: 票数表
+                    index:
+                      var: j
+                - var: 最高票
+              do:
+              - set_variable:
+                  var: 最高票
+                  value:
+                    item_of_list:
+                      list: 票数表
+                      index:
+                        var: j
+      - delete_all_of_list:
+          list: 出局表
+      - set_variable:
+          var: 出局数
+          value: 0
+      - set_variable:
+          var: j
+          value: 0
+      - repeat:
+          times:
+            var: 玩家数
+          do:
+          - change_variable:
+              var: j
+              by: 1
+          - if:
+              cond:
+                and:
+                - greater_than:
+                  - var: 最高票
+                  - 0
+                - equals:
+                  - item_of_list:
+                      list: 票数表
+                      index:
+                        var: j
+                  - var: 最高票
+              do:
+              - change_variable:
+                  var: 出局数
+                  by: 1
+              - add_to_list:
+                  list: 出局表
+                  item:
+                    var: j
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a: '最高 '
+                          b:
+                            var: 最高票
+                      b: ' 票，候选 '
+                  b:
+                    var: 出局数
+              b: ' 人'
+    - - when_receive:
+          message: 发牌
+      - delete_all_of_list:
+          list: 身份池
+      - set_variable:
+          var: 人数
+          value:
+            length_of_list:
+              list: 板子池
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times:
+            var: 人数
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - add_to_list:
+              list: 身份池
+              item:
+                item_of_list:
+                  list: 板子池
+                  index:
+                    var: i
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times:
+            subtract:
+            - var: 人数
+            - 1
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - set_variable:
+              var: j
+              value:
+                random:
+                  from:
+                    var: i
+                  to:
+                    var: 人数
+          - set_variable:
+              var: tmp
+              value:
+                item_of_list:
+                  list: 身份池
+                  index:
+                    var: i
+          - replace_item_of_list:
+              list: 身份池
+              index:
+                var: i
+              item:
+                item_of_list:
+                  list: 身份池
+                  index:
+                    var: j
+          - replace_item_of_list:
+              list: 身份池
+              index:
+                var: j
+              item:
+                var: tmp
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a: '已发牌 '
+                  b:
+                    var: 人数
+              b: ' 张（洗牌后顺序随机）'
+    - - when_receive:
+          message: 装载板子
+      - set_variable:
+          var: 串
+          value:
+            item_of_list:
+              list: 板子串表
+              index:
+                var: 当前板子
+      - delete_all_of_list:
+          list: 板子池
+      - set_variable:
+          var: 段
+          value: ''
+      - set_variable:
+          var: 位
+          value: 1
+      - repeat_until:
+          cond:
+            greater_than:
+            - var: 位
+            - length_of:
+                string:
+                  var: 串
+          do:
+          - set_variable:
+              var: 字符
+              value:
+                letter_of:
+                  letter:
+                    var: 位
+                  word:
+                    var: 串
+          - if:
+              cond:
+                equals:
+                - var: 字符
+                - ','
+              do:
+              - add_to_list:
+                  list: 板子池
+                  item:
+                    var: 段
+              - set_variable:
+                  var: 段
+                  value: ''
+          - if:
+              cond:
+                not:
+                  operand:
+                    equals:
+                    - var: 字符
+                    - ','
+              do:
+              - set_variable:
+                  var: 段
+                  value:
+                    join:
+                      a:
+                        var: 段
+                      b:
+                        var: 字符
+          - change_variable:
+              var: 位
+              by: 1
+      - if:
+          cond:
+            not:
+              operand:
+                equals:
+                - var: 段
+                - ''
+          do:
+          - add_to_list:
+              list: 板子池
+              item:
+                var: 段
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a: 已装载「
+                          b:
+                            item_of_list:
+                              list: 板子名表
+                              index:
+                                var: 当前板子
+                      b: 」
+                  b:
+                    length_of_list:
+                      list: 板子池
+              b: ' 张身份'
+    - - when_receive:
+          message: 竞选计票
+      - delete_all_of_list:
+          list: 候选表
+      - set_variable:
+          var: 候选数
+          value: 0
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times:
+            var: 玩家数
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - if:
+              cond:
+                and:
+                - equals:
+                  - item_of_list:
+                      list: 上警表
+                      index:
+                        var: i
+                  - 1
+                - and:
+                  - equals:
+                    - item_of_list:
+                        list: 退水表
+                        index:
+                          var: i
+                    - 0
+                  - equals:
+                    - item_of_list:
+                        list: 存活表
+                        index:
+                          var: i
+                    - 1
+              do:
+              - change_variable:
+                  var: 候选数
+                  by: 1
+              - add_to_list:
+                  list: 候选表
+                  item:
+                    var: i
+      - if:
+          cond:
+            equals:
+            - var: 候选数
+            - 0
+          do:
+          - set_variable:
+              var: 警徽状态
+              value: 2
+          - set_variable:
+              var: 竞选阶段
+              value: 7
+          - set_variable:
+              var: 结果
+              value: 无人上警，警徽流失
+      - if:
+          cond:
+            equals:
+            - var: 候选数
+            - 1
+          do:
+          - set_variable:
+              var: 警长
+              value:
+                item_of_list:
+                  list: 候选表
+                  index: 1
+          - set_variable:
+              var: 警徽状态
+              value: 1
+          - set_variable:
+              var: 竞选阶段
+              value: 6
+          - set_variable:
+              var: 结果
+              value:
+                join:
+                  a:
+                    join:
+                      a: '警长 = '
+                      b:
+                        item_of_list:
+                          list: 候选表
+                          index: 1
+                  b: ' 号（唯一候选，直接当选）'
+      - if:
+          cond:
+            greater_than:
+            - var: 候选数
+            - 1
+          do:
+          - delete_all_of_list:
+              list: 竞选票数表
+          - set_variable:
+              var: j
+              value: 0
+          - repeat:
+              times:
+                var: 玩家数
+              do:
+              - change_variable:
+                  var: j
+                  by: 1
+              - add_to_list:
+                  list: 竞选票数表
+                  item: 0
+          - set_variable:
+              var: j
+              value: 0
+          - repeat:
+              times:
+                length_of_list:
+                  list: 竞选票箱
+              do:
+              - change_variable:
+                  var: j
+                  by: 1
+              - set_variable:
+                  var: 目标
+                  value:
+                    item_of_list:
+                      list: 竞选票箱
+                      index:
+                        var: j
+              - if:
+                  cond:
+                    and:
+                    - not:
+                        operand:
+                          equals:
+                          - less_than:
+                            - var: 目标
+                            - 1
+                          - true
+                    - and:
+                      - not:
+                          operand:
+                            equals:
+                            - greater_than:
+                              - var: 目标
+                              - var: 玩家数
+                            - true
+                      - and:
+                        - list_contains:
+                            list: 候选表
+                            item:
+                              var: 目标
+                        - and:
+                          - equals:
+                            - item_of_list:
+                                list: 存活表
+                                index:
+                                  var: 目标
+                            - 1
+                          - equals:
+                            - item_of_list:
+                                list: 上警表
+                                index:
+                                  var: j
+                            - 0
+                  do:
+                  - replace_item_of_list:
+                      list: 竞选票数表
+                      index:
+                        var: 目标
+                      item:
+                        add:
+                        - item_of_list:
+                            list: 竞选票数表
+                            index:
+                              var: 目标
+                        - 1
+          - set_variable:
+              var: 最高票
+              value: 0
+          - set_variable:
+              var: j
+              value: 0
+          - repeat:
+              times:
+                var: 玩家数
+              do:
+              - change_variable:
+                  var: j
+                  by: 1
+              - if:
+                  cond:
+                    greater_than:
+                    - item_of_list:
+                        list: 竞选票数表
+                        index:
+                          var: j
+                    - var: 最高票
+                  do:
+                  - set_variable:
+                      var: 最高票
+                      value:
+                        item_of_list:
+                          list: 竞选票数表
+                          index:
+                            var: j
+          - delete_all_of_list:
+              list: 出局表
+          - set_variable:
+              var: 出局数
+              value: 0
+          - set_variable:
+              var: j
+              value: 0
+          - repeat:
+              times:
+                var: 玩家数
+              do:
+              - change_variable:
+                  var: j
+                  by: 1
+              - if:
+                  cond:
+                    and:
+                    - greater_than:
+                      - var: 最高票
+                      - 0
+                    - equals:
+                      - item_of_list:
+                          list: 竞选票数表
+                          index:
+                            var: j
+                      - var: 最高票
+                  do:
+                  - change_variable:
+                      var: 出局数
+                      by: 1
+                  - add_to_list:
+                      list: 出局表
+                      item:
+                        var: j
+          - if:
+              cond:
+                equals:
+                - var: 最高票
+                - 0
+              do:
+              - set_variable:
+                  var: 警徽状态
+                  value: 2
+              - set_variable:
+                  var: 竞选阶段
+                  value: 7
+              - set_variable:
+                  var: 结果
+                  value: 无人得票，警徽流失
+          - if:
+              cond:
+                and:
+                - equals:
+                  - var: 出局数
+                  - 1
+                - greater_than:
+                  - var: 最高票
+                  - 0
+              do:
+              - set_variable:
+                  var: 警长
+                  value:
+                    item_of_list:
+                      list: 出局表
+                      index: 1
+              - set_variable:
+                  var: 警徽状态
+                  value: 1
+              - set_variable:
+                  var: 竞选阶段
+                  value: 6
+              - set_variable:
+                  var: 结果
+                  value:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a: '警长 = '
+                                  b:
+                                    var: 警长
+                              b: ' 号，得 '
+                          b:
+                            var: 最高票
+                      b: ' 票'
+          - if:
+              cond:
+                greater_than:
+                - var: 出局数
+                - 1
+              do:
+              - delete_all_of_list:
+                  list: 并列表
+              - set_variable:
+                  var: j
+                  value: 0
+              - repeat:
+                  times:
+                    var: 出局数
+                  do:
+                  - change_variable:
+                      var: j
+                      by: 1
+                  - add_to_list:
+                      list: 并列表
+                      item:
+                        item_of_list:
+                          list: 出局表
+                          index:
+                            var: j
+              - set_variable:
+                  var: 竞选阶段
+                  value: 5
+              - set_variable:
+                  var: 结果
+                  value:
+                    join:
+                      a:
+                        var: 出局数
+                      b: ' 人平票，进入 PK 发言'
+    - - when_receive:
+          message: PK投票
+      - delete_all_of_list:
+          list: 竞选票数表
+      - set_variable:
+          var: j
+          value: 0
+      - repeat:
+          times:
+            var: 玩家数
+          do:
+          - change_variable:
+              var: j
+              by: 1
+          - add_to_list:
+              list: 竞选票数表
+              item: 0
+      - set_variable:
+          var: j
+          value: 0
+      - repeat:
+          times:
+            length_of_list:
+              list: 竞选票箱PK
+          do:
+          - change_variable:
+              var: j
+              by: 1
+          - set_variable:
+              var: 目标
+              value:
+                item_of_list:
+                  list: 竞选票箱PK
+                  index:
+                    var: j
+          - if:
+              cond:
+                and:
+                - not:
+                    operand:
+                      equals:
+                      - less_than:
+                        - var: 目标
+                        - 1
+                      - true
+                - and:
+                  - not:
+                      operand:
+                        equals:
+                        - greater_than:
+                          - var: 目标
+                          - var: 玩家数
+                        - true
+                  - and:
+                    - list_contains:
+                        list: 并列表
+                        item:
+                          var: 目标
+                    - and:
+                      - equals:
+                        - item_of_list:
+                            list: 存活表
+                            index:
+                              var: 目标
+                        - 1
+                      - equals:
+                        - item_of_list:
+                            list: 上警表
+                            index:
+                              var: j
+                        - 0
+              do:
+              - replace_item_of_list:
+                  list: 竞选票数表
+                  index:
+                    var: 目标
+                  item:
+                    add:
+                    - item_of_list:
+                        list: 竞选票数表
+                        index:
+                          var: 目标
+                    - 1
+      - set_variable:
+          var: 最高票
+          value: 0
+      - set_variable:
+          var: j
+          value: 0
+      - repeat:
+          times:
+            var: 玩家数
+          do:
+          - change_variable:
+              var: j
+              by: 1
+          - if:
+              cond:
+                greater_than:
+                - item_of_list:
+                    list: 竞选票数表
+                    index:
+                      var: j
+                - var: 最高票
+              do:
+              - set_variable:
+                  var: 最高票
+                  value:
+                    item_of_list:
+                      list: 竞选票数表
+                      index:
+                        var: j
+      - delete_all_of_list:
+          list: 出局表
+      - set_variable:
+          var: 出局数
+          value: 0
+      - set_variable:
+          var: j
+          value: 0
+      - repeat:
+          times:
+            var: 玩家数
+          do:
+          - change_variable:
+              var: j
+              by: 1
+          - if:
+              cond:
+                and:
+                - greater_than:
+                  - var: 最高票
+                  - 0
+                - equals:
+                  - item_of_list:
+                      list: 竞选票数表
+                      index:
+                        var: j
+                  - var: 最高票
+              do:
+              - change_variable:
+                  var: 出局数
+                  by: 1
+              - add_to_list:
+                  list: 出局表
+                  item:
+                    var: j
+      - if:
+          cond:
+            equals:
+            - var: 最高票
+            - 0
+          do:
+          - set_variable:
+              var: 警徽状态
+              value: 2
+          - set_variable:
+              var: 竞选阶段
+              value: 7
+          - set_variable:
+              var: 结果
+              value: PK 无人得票，警徽流失
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 出局数
+              - 1
+            - greater_than:
+              - var: 最高票
+              - 0
+          do:
+          - set_variable:
+              var: 警长
+              value:
+                item_of_list:
+                  list: 出局表
+                  index: 1
+          - set_variable:
+              var: 警徽状态
+              value: 1
+          - set_variable:
+              var: 竞选阶段
+              value: 6
+          - set_variable:
+              var: 结果
+              value:
+                join:
+                  a:
+                    join:
+                      a: 'PK 决出警长 = '
+                      b:
+                        var: 警长
+                  b: ' 号'
+      - if:
+          cond:
+            greater_than:
+            - var: 出局数
+            - 1
+          do:
+          - set_variable:
+              var: 警徽状态
+              value: 2
+          - set_variable:
+              var: 竞选阶段
+              value: 7
+          - set_variable:
+              var: 结果
+              value:
+                join:
+                  a:
+                    join:
+                      a: PK 再次平票（
+                      b:
+                        var: 出局数
+                  b: ' 人），警徽流失'
+    - - when_receive:
+          message: 警长死亡
+      - if:
+          cond:
+            not:
+              operand:
+                equals:
+                - var: 死者
+                - var: 警长
+          do:
+          - set_variable:
+              var: 结果
+              value:
+                join:
+                  a:
+                    var: 死者
+                  b: ' 号不是警长，警徽不处理'
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 死者
+              - var: 警长
+            - equals:
+              - var: 警徽状态
+              - 1
+          do:
+          - if:
+              cond:
+                greater_than:
+                - var: 流指针
+                - length_of_list:
+                    list: 警徽流_验
+              do:
+              - set_variable:
+                  var: 警徽状态
+                  value: 2
+              - set_variable:
+                  var: 结果
+                  value: 警长没留警徽流，警徽流失
+          - if:
+              cond:
+                not:
+                  operand:
+                    equals:
+                    - greater_than:
+                      - var: 流指针
+                      - length_of_list:
+                          list: 警徽流_验
+                    - true
+              do:
+              - set_variable:
+                  var: 流转目标
+                  value:
+                    item_of_list:
+                      list: 警徽流_验
+                      index:
+                        var: 流指针
+              - if:
+                  cond:
+                    equals:
+                    - item_of_list:
+                        list: 查验结果
+                        index:
+                          var: 流转目标
+                    - 1
+                  do:
+                  - set_variable:
+                      var: 新警长
+                      value:
+                        item_of_list:
+                          list: 警徽流_金
+                          index:
+                            var: 流指针
+              - if:
+                  cond:
+                    not:
+                      operand:
+                        equals:
+                        - item_of_list:
+                            list: 查验结果
+                            index:
+                              var: 流转目标
+                        - 1
+                  do:
+                  - set_variable:
+                      var: 新警长
+                      value:
+                        item_of_list:
+                          list: 警徽流_杀
+                          index:
+                            var: 流指针
+              - if:
+                  cond:
+                    equals:
+                    - var: 新警长
+                    - 0
+                  do:
+                  - set_variable:
+                      var: 警徽状态
+                      value: 3
+                  - set_variable:
+                      var: 结果
+                      value:
+                        join:
+                          a:
+                            join:
+                              a: '验 '
+                              b:
+                                var: 流转目标
+                          b: ' 号 → 撕警徽（查杀无可托付）'
+              - if:
+                  cond:
+                    and:
+                    - greater_than:
+                      - var: 新警长
+                      - 0
+                    - equals:
+                      - item_of_list:
+                          list: 存活表
+                          index:
+                            var: 新警长
+                      - 0
+                  do:
+                  - set_variable:
+                      var: 警徽状态
+                      value: 2
+                  - set_variable:
+                      var: 结果
+                      value:
+                        join:
+                          a:
+                            join:
+                              a: '接徽人 '
+                              b:
+                                var: 新警长
+                          b: ' 号已出局，警徽流失'
+              - if:
+                  cond:
+                    and:
+                    - greater_than:
+                      - var: 新警长
+                      - 0
+                    - equals:
+                      - item_of_list:
+                          list: 存活表
+                          index:
+                            var: 新警长
+                      - 1
+                  do:
+                  - set_variable:
+                      var: 警长
+                      value:
+                        var: 新警长
+                  - change_variable:
+                      var: 流指针
+                      by: 1
+                  - set_variable:
+                      var: 结果
+                      value:
+                        join:
+                          a:
+                            join:
+                              a: '警徽移交给 '
+                              b:
+                                var: 新警长
+                          b: ' 号（金水确认）'
+    - - when_receive:
+          message: 自爆
+      - if:
+          cond:
+            equals:
+            - item_of_list:
+                list: 可自爆表
+                index:
+                  item_of_list:
+                    list: 身份池
+                    index:
+                      var: 自爆者
+            - 0
+          do:
+          - set_variable:
+              var: 结果
+              value:
+                join:
+                  a:
+                    var: 自爆者
+                  b: ' 号的身份不能自爆'
+      - if:
+          cond:
+            and:
+            - greater_than:
+              - var: 自爆者
+              - 0
+            - and:
+              - equals:
+                - item_of_list:
+                    list: 可自爆表
+                    index:
+                      item_of_list:
+                        list: 身份池
+                        index:
+                          var: 自爆者
+                - 1
+              - equals:
+                - item_of_list:
+                    list: 存活表
+                    index:
+                      var: 自爆者
+                - 1
+          do:
+          - replace_item_of_list:
+              list: 存活表
+              index:
+                var: 自爆者
+              item: 0
+          - set_variable:
+              var: 自爆数
+              value:
+                add:
+                - var: 自爆数
+                - 1
+          - set_variable:
+              var: 白天阶段
+              value: 0
+          - set_variable:
+              var: 自爆提示
+              value: 已自爆，跳过投票直接入夜
+          - if:
+              cond:
+                and:
+                - not:
+                    operand:
+                      equals:
+                      - less_than:
+                        - var: 竞选阶段
+                        - 1
+                      - true
+                - not:
+                    operand:
+                      equals:
+                      - greater_than:
+                        - var: 竞选阶段
+                        - 5
+                      - true
+              do:
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - var: 双爆开关
+                      - 1
+                    - equals:
+                      - var: 竞选暂停次数
+                      - 0
+                  do:
+                  - set_variable:
+                      var: 竞选暂停次数
+                      value: 1
+                  - set_variable:
+                      var: 竞选阶段
+                      value: 8
+                  - set_variable:
+                      var: 自爆提示
+                      value: 竞选期间自爆，竞选暂停（双爆规则，次日恢复）
+                  else:
+                  - set_variable:
+                      var: 警徽状态
+                      value: 2
+                  - set_variable:
+                      var: 竞选阶段
+                      value: 7
+                  - set_variable:
+                      var: 自爆提示
+                      value: 竞选期间自爆，警徽流失（吞警徽）
+          - if:
+              cond:
+                and:
+                - equals:
+                  - var: 警长
+                  - var: 自爆者
+                - equals:
+                  - var: 警徽状态
+                  - 1
+              do:
+              - set_variable:
+                  var: 自爆提示
+                  value: 警长自爆，警徽待移交或撕毁
+          - set_variable:
+              var: 昼夜
+              value: 1
+          - set_variable:
+              var: 结果
+              value:
+                join:
+                  a:
+                    join:
+                      a:
+                        var: 自爆者
+                      b: ' 号自爆：'
+                  b:
+                    var: 自爆提示
+    - - when_receive:
+          message: 恢复竞选
+      - if:
+          cond:
+            equals:
+            - var: 竞选阶段
+            - 8
+          do:
+          - set_variable:
+              var: 竞选阶段
+              value: 4
+          - set_variable:
+              var: 结果
+              value: 次日恢复竞选：直接进入退水与投票（不再重新发言）
+    - - when_receive:
+          message: 判胜负
+      - set_variable:
+          var: 存活狼
+          value: 0
+      - set_variable:
+          var: 存活神
+          value: 0
+      - set_variable:
+          var: 存活民
+          value: 0
+      - set_variable:
+          var: 总神
+          value: 0
+      - set_variable:
+          var: 总民
+          value: 0
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times:
+            var: 人数
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - set_variable:
+              var: 阵营
+              value:
+                item_of_list:
+                  list: 阵营表
+                  index:
+                    item_of_list:
+                      list: 身份池
+                      index:
+                        var: i
+          - if:
+              cond:
+                equals:
+                - var: 阵营
+                - 1
+              do:
+              - change_variable:
+                  var: 存活狼
+                  by:
+                    item_of_list:
+                      list: 存活表
+                      index:
+                        var: i
+          - if:
+              cond:
+                equals:
+                - var: 阵营
+                - 2
+              do:
+              - change_variable:
+                  var: 总神
+                  by: 1
+              - change_variable:
+                  var: 存活神
+                  by:
+                    item_of_list:
+                      list: 存活表
+                      index:
+                        var: i
+          - if:
+              cond:
+                equals:
+                - var: 阵营
+                - 3
+              do:
+              - change_variable:
+                  var: 总民
+                  by: 1
+              - change_variable:
+                  var: 存活民
+                  by:
+                    item_of_list:
+                      list: 存活表
+                      index:
+                        var: i
+      - set_variable:
+          var: 胜负
+          value: 继续
+      - if:
+          cond:
+            equals:
+            - var: 存活狼
+            - 0
+          do:
+          - set_variable:
+              var: 胜负
+              value: 好人胜
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 胜负
+              - 继续
+            - and:
+              - greater_than:
+                - var: 总神
+                - 0
+              - equals:
+                - var: 存活神
+                - 0
+          do:
+          - set_variable:
+              var: 胜负
+              value: 狼人胜·屠神
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 胜负
+              - 继续
+            - and:
+              - greater_than:
+                - var: 总民
+                - 0
+              - equals:
+                - var: 存活民
+                - 0
+          do:
+          - set_variable:
+              var: 胜负
+              value: 狼人胜·屠民
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 胜负
+              - 继续
+            - and:
+              - equals:
+                - var: 屠城开关
+                - 1
+              - and:
+                - equals:
+                  - var: 存活神
+                  - 0
+                - equals:
+                  - var: 存活民
+                  - 0
+          do:
+          - set_variable:
+              var: 胜负
+              value: 狼人胜·屠城
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a:
+                                    join:
+                                      a:
+                                        join:
+                                          a:
+                                            join:
+                                              a:
+                                                join:
+                                                  a:
+                                                    join:
+                                                      a: '狼 '
+                                                      b:
+                                                        var: 存活狼
+                                                  b: ' / 神 '
+                                              b:
+                                                var: 存活神
+                                          b: /
+                                      b:
+                                        var: 总神
+                                  b: ' / 民 '
+                              b:
+                                var: 存活民
+                          b: /
+                      b:
+                        var: 总民
+                  b: ' → '
+              b:
+                var: 胜负
+    - - when_receive:
+          message: 觉醒查验
+      - set_variable:
+          var: 集合验果
+          value: -1
+      - if:
+          cond:
+            not:
+              operand:
+                equals:
+                - var: 验A
+                - var: 验B
+          do:
+          - if:
+              cond:
+                or:
+                - equals:
+                  - item_of_list:
+                      list: 现阵营表
+                      index:
+                        var: 验A
+                  - 1
+                - equals:
+                  - item_of_list:
+                      list: 现阵营表
+                      index:
+                        var: 验B
+                  - 1
+              do:
+              - set_variable:
+                  var: 集合验果
+                  value: 1
+              else:
+              - set_variable:
+                  var: 集合验果
+                  value: 0
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a: '集合查验 '
+                                  b:
+                                    var: 验A
+                              b: +
+                          b:
+                            var: 验B
+                      b: ' → '
+                  b:
+                    var: 集合验果
+              b: （-1=同一个人，非法）
+    - - when_receive:
+          message: 毒药调配
+      - set_variable:
+          var: 需要协助
+          value:
+            add:
+            - var: 毒药次数
+            - 1
+      - set_variable:
+          var: 协助全票
+          value: 1
+      - set_variable:
+          var: 协助生效
+          value: 0
+      - if:
+          cond:
+            not:
+              operand:
+                equals:
+                - less_than:
+                  - var: 毒药次数
+                  - 3
+                - true
+          do:
+          - set_variable:
+              var: 协助生效
+              value: -1
+          - set_variable:
+              var: 结果
+              value: 毒药 3 次已用尽
+          else:
+          - if:
+              cond:
+                not:
+                  operand:
+                    equals:
+                    - length_of_list:
+                        list: 协助者表
+                    - var: 需要协助
+              do:
+              - set_variable:
+                  var: 协助生效
+                  value: -2
+              - set_variable:
+                  var: 结果
+                  value: 协助者人数不符
+              else:
+              - set_variable:
+                  var: 临时
+                  value: 0
+              - set_variable:
+                  var: i
+                  value: 0
+              - repeat:
+                  times:
+                    var: 需要协助
+                  do:
+                  - change_variable:
+                      var: i
+                      by: 1
+                  - set_variable:
+                      var: j
+                      value: 0
+                  - repeat:
+                      times:
+                        var: 需要协助
+                      do:
+                      - change_variable:
+                          var: j
+                          by: 1
+                      - if:
+                          cond:
+                            and:
+                            - greater_than:
+                              - var: j
+                              - var: i
+                            - equals:
+                              - item_of_list:
+                                  list: 协助者表
+                                  index:
+                                    var: i
+                              - item_of_list:
+                                  list: 协助者表
+                                  index:
+                                    var: j
+                          do:
+                          - set_variable:
+                              var: 临时
+                              value: 1
+              - set_variable:
+                  var: i
+                  value: 0
+              - repeat:
+                  times:
+                    var: 需要协助
+                  do:
+                  - change_variable:
+                      var: i
+                      by: 1
+                  - if:
+                      cond:
+                        or:
+                        - equals:
+                          - item_of_list:
+                              list: 协助票箱
+                              index:
+                                var: i
+                          - 0
+                        - or:
+                          - equals:
+                            - item_of_list:
+                                list: 协助过表
+                                index:
+                                  item_of_list:
+                                    list: 协助者表
+                                    index:
+                                      var: i
+                            - 1
+                          - equals:
+                            - item_of_list:
+                                list: 协助者表
+                                index:
+                                  var: i
+                            - var: 毒目标
+                      do:
+                      - set_variable:
+                          var: 协助全票
+                          value: 0
+              - if:
+                  cond:
+                    equals:
+                    - var: 临时
+                    - 1
+                  do:
+                  - set_variable:
+                      var: 协助全票
+                      value: 0
+              - if:
+                  cond:
+                    equals:
+                    - var: 协助全票
+                    - 1
+                  do:
+                  - set_variable:
+                      var: 协助生效
+                      value: 1
+                  - set_variable:
+                      var: i
+                      value: 0
+                  - repeat:
+                      times:
+                        var: 需要协助
+                      do:
+                      - change_variable:
+                          var: i
+                          by: 1
+                      - replace_item_of_list:
+                          list: 协助过表
+                          index:
+                            item_of_list:
+                              list: 协助者表
+                              index:
+                                var: i
+                          item: 1
+                  - change_variable:
+                      var: 毒药次数
+                      by: 1
+                  - set_variable:
+                      var: 结果
+                      value: 协助全票 → 毒药生效
+                  else:
+                  - set_variable:
+                      var: 协助生效
+                      value: 0
+                  - set_variable:
+                      var: 结果
+                      value: 协助未通过 → 毒药不生效（次数不增加）
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    var: 结果
+                  b: ' / 生效码='
+              b:
+                var: 协助生效
+    - - when_receive:
+          message: 亲传
+      - set_variable:
+          var: 亲传结果
+          value: 拒绝
+      - if:
+          cond:
+            and:
+            - not:
+                operand:
+                  equals:
+                  - less_than:
+                    - item_of_list:
+                        list: 狼王爪持有
+                        index:
+                          var: 亲传者
+                    - 1
+                  - true
+            - and:
+              - equals:
+                - item_of_list:
+                    list: 存活表
+                    index:
+                      var: 接爪者
+                - 1
+              - and:
+                - equals:
+                  - item_of_list:
+                      list: 现阵营表
+                      index:
+                        var: 接爪者
+                  - 1
+                - equals:
+                  - var: 亲传已用
+                  - 0
+          do:
+          - replace_item_of_list:
+              list: 狼王爪持有
+              index:
+                var: 亲传者
+              item:
+                subtract:
+                - item_of_list:
+                    list: 狼王爪持有
+                    index:
+                      var: 亲传者
+                - 1
+          - replace_item_of_list:
+              list: 狼王爪持有
+              index:
+                var: 接爪者
+              item:
+                add:
+                - item_of_list:
+                    list: 狼王爪持有
+                    index:
+                      var: 接爪者
+                - 1
+          - set_variable:
+              var: 亲传已用
+              value: 1
+          - set_variable:
+              var: 亲传结果
+              value: 已亲传
+          else:
+          - set_variable:
+              var: 亲传结果
+              value: 条件不满足（无爪/非狼/已传/已出局）
+      - set_variable:
+          var: 爪守恒
+          value: 0
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times:
+            var: 人数
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - change_variable:
+              var: 爪守恒
+              by:
+                item_of_list:
+                  list: 狼王爪持有
+                  index:
+                    var: i
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a: 狼王爪：
+                      b:
+                        var: 亲传结果
+                  b: ' / 全局守恒 = '
+              b:
+                var: 爪守恒
+    - - when_receive:
+          message: 爪结算
+      - set_variable:
+          var: 可发动爪
+          value: 0
+      - if:
+          cond:
+            and:
+            - not:
+                operand:
+                  equals:
+                  - less_than:
+                    - item_of_list:
+                        list: 狼王爪持有
+                        index:
+                          var: 爪出局者
+                    - 1
+                  - true
+            - greater_than:
+              - var: 存活狼
+              - 1
+          do:
+          - set_variable:
+              var: 可发动爪
+              value:
+                item_of_list:
+                  list: 狼王爪持有
+                  index:
+                    var: 爪出局者
+          - replace_item_of_list:
+              list: 狼王爪持有
+              index:
+                var: 爪出局者
+              item: 0
+          - set_variable:
+              var: 结果
+              value:
+                join:
+                  a:
+                    join:
+                      a: '出局发动 '
+                      b:
+                        var: 可发动爪
+                  b: ' 次狼王爪'
+          else:
+          - set_variable:
+              var: 可发动爪
+              value: 0
+          - set_variable:
+              var: 结果
+              value: 最后一狼 / 无爪 → 不能发动
+    - - when_receive:
+          message: 偶像出局
+      - set_variable:
+          var: 变身前胜负
+          value:
+            var: 胜负
+      - if:
+          cond:
+            equals:
+            - var: 偶像死因
+            - 2
+          do:
+          - set_variable:
+              var: 变身状态
+              value: 1
+          - replace_item_of_list:
+              list: 现阵营表
+              index:
+                var: 觉醒者
+              item: 1
+          - set_variable:
+              var: 结果
+              value: 偶像被放逐 → 变身为狼
+          else:
+          - set_variable:
+              var: 变身状态
+              value: 2
+          - set_variable:
+              var: 继承身份
+              value:
+                item_of_list:
+                  list: 身份池
+                  index:
+                    var: 偶像
+          - replace_item_of_list:
+              list: 身份池
+              index:
+                var: 觉醒者
+              item:
+                var: 继承身份
+          - replace_item_of_list:
+              list: 现阵营表
+              index:
+                var: 觉醒者
+              item:
+                item_of_list:
+                  list: 阵营表
+                  index:
+                    var: 继承身份
+          - set_variable:
+              var: 结果
+              value: 偶像非放逐出局 → 继承身份与技能
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            var: 结果
+                          b: ' / 变身前胜负='
+                      b:
+                        var: 变身前胜负
+                  b: ' / 状态='
+              b:
+                var: 变身状态
+    - - when_receive:
+          message: 梦语结算
+      - set_variable:
+          var: 梦语结果
+          value: ''
+      - if:
+          cond:
+            equals:
+            - var: 梦语者
+            - var: 上夜梦语者
+          do:
+          - set_variable:
+              var: 梦语结果
+              value: 连续两晚同目标：非法
+          else:
+          - if:
+              cond:
+                and:
+                - equals:
+                  - var: 梦语指令
+                  - 1
+                - not:
+                    operand:
+                      equals:
+                      - less_than:
+                        - var: 夜数
+                        - 2
+                      - true
+              do:
+              - replace_item_of_list:
+                  list: 存活表
+                  index:
+                    var: 梦语者
+                  item: 0
+              - set_variable:
+                  var: 梦语结果
+                  value: 梦语出局生效（技能通道）
+              else:
+              - set_variable:
+                  var: 梦语结果
+                  value: 未梦语出局
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a: 梦语：
+                      b:
+                        var: 梦语结果
+                  b: ' / 该玩家免疫夜伤 = '
+              b:
+                item_of_list:
+                  list: 免疫夜伤
+                  index:
+                    var: 梦语者
+    - - when_receive:
+          message: 决斗
+      - set_variable:
+          var: 白天继续
+          value: 0
+      - if:
+          cond:
+            equals:
+            - item_of_list:
+                list: 决斗已用
+                index:
+                  var: 决斗目标
+            - 1
+          do:
+          - set_variable:
+              var: 决斗结果
+              value: 该玩家只能被决斗一次
+          else:
+          - replace_item_of_list:
+              list: 决斗已用
+              index:
+                var: 决斗目标
+              item: 1
+          - if:
+              cond:
+                equals:
+                - item_of_list:
+                    list: 现阵营表
+                    index:
+                      var: 决斗目标
+                - 1
+              do:
+              - replace_item_of_list:
+                  list: 存活表
+                  index:
+                    var: 决斗目标
+                  item: 0
+              - set_variable:
+                  var: 决斗结果
+                  value: 决斗到狼·可连击
+              - set_variable:
+                  var: 白天继续
+                  value: 0
+              else:
+              - replace_item_of_list:
+                  list: 存活表
+                  index:
+                    var: 决斗目标
+                  item: 0
+              - replace_item_of_list:
+                  list: 存活表
+                  index:
+                    var: 决斗者
+                  item: 0
+              - set_variable:
+                  var: 决斗结果
+                  value: 决斗到好人·双方出局
+              - set_variable:
+                  var: 白天继续
+                  value: 1
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a: 决斗：
+                      b:
+                        var: 决斗结果
+                  b: ' / 继续白天='
+              b:
+                var: 白天继续
+    - - when_receive:
+          message: 新局初始化
+      - set_variable:
+          var: 事件已触发
+          value: 0
+      - set_variable:
+          var: 栈深
+          value: 0
+      - set_variable:
+          var: 快照顶
+          value: 0
+      - set_variable:
+          var: 票权开关
+          value: 1
+      - set_variable:
+          var: 天数
+          value: 1
+      - set_variable:
+          var: 夜数
+          value: 1
+      - set_variable:
+          var: 当前事件
+          value: 0
+      - set_variable:
+          var: 种子
+          value: 1
+      - set_variable:
+          var: 事件胜负
+          value: 无
+      - set_variable:
+          var: 撤销槽
+          value: 0
+      - set_variable:
+          var: 存活好人
+          value: 0
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times: 12
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - replace_item_of_list:
+              list: 活动栈
+              index:
+                var: i
+              item: 0
+          - replace_item_of_list:
+              list: 栈时效
+              index:
+                var: i
+              item: 0
+          - replace_item_of_list:
+              list: 栈到期
+              index:
+                var: i
+              item: 0
+          - replace_item_of_list:
+              list: 栈状态
+              index:
+                var: i
+              item: 0
+          - replace_item_of_list:
+              list: 栈快照
+              index:
+                var: i
+              item: 0
+      - set_variable:
+          var: 推进结果
+          value: 新局：事件状态已复位
+    - - when_receive:
+          message: 抽新月卡
+      - set_variable:
+          var: 抽卡结果
+          value: ''
+      - if:
+          cond:
+            equals:
+            - var: 事件已触发
+            - 1
+          do:
+          - set_variable:
+              var: 抽卡结果
+              value: 一局仅一次：拒绝重复抽卡
+          else:
+          - set_variable:
+              var: 事件已触发
+              value: 1
+          - set_variable:
+              var: 种子
+              value:
+                mod:
+                - multiply:
+                  - var: 种子
+                  - 16807
+                - 2147483647
+          - set_variable:
+              var: 当前事件
+              value:
+                add:
+                - mod:
+                  - var: 种子
+                  - length_of_list:
+                      list: 事件名表
+                - 1
+          - set_variable:
+              var: 栈深
+              value:
+                add:
+                - var: 栈深
+                - 1
+          - replace_item_of_list:
+              list: 活动栈
+              index:
+                var: 栈深
+              item:
+                var: 当前事件
+          - replace_item_of_list:
+              list: 栈时效
+              index:
+                var: 栈深
+              item:
+                item_of_list:
+                  list: 事件时效表
+                  index:
+                    var: 当前事件
+          - replace_item_of_list:
+              list: 栈到期
+              index:
+                var: 栈深
+              item:
+                add:
+                - var: 天数
+                - 1
+          - replace_item_of_list:
+              list: 栈状态
+              index:
+                var: 栈深
+              item: 1
+          - replace_item_of_list:
+              list: 栈快照
+              index:
+                var: 栈深
+              item:
+                var: 票权开关
+          - set_variable:
+              var: 快照顶
+              value:
+                var: 栈深
+          - set_variable:
+              var: 叠加值
+              value:
+                item_of_list:
+                  list: 事件票权表
+                  index:
+                    var: 当前事件
+          - if:
+              cond:
+                greater_than:
+                - var: 叠加值
+                - 0
+              do:
+              - set_variable:
+                  var: 票权开关
+                  value:
+                    var: 叠加值
+          - set_variable:
+              var: 抽卡结果
+              value:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a:
+                                join:
+                                  a: 抽到「
+                                  b:
+                                    item_of_list:
+                                      list: 事件名表
+                                      index:
+                                        var: 当前事件
+                              b: '」/ 时效 '
+                          b:
+                            item_of_list:
+                              list: 事件时效表
+                              index:
+                                var: 当前事件
+                      b: ' / 票权 '
+                  b:
+                    var: 票权开关
+      - set_variable:
+          var: 结果
+          value:
+            var: 抽卡结果
+    - - when_receive:
+          message: 事件推进
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times:
+            var: 栈深
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - if:
+              cond:
+                and:
+                - equals:
+                  - item_of_list:
+                      list: 栈状态
+                      index:
+                        var: i
+                  - 1
+                - equals:
+                  - item_of_list:
+                      list: 栈时效
+                      index:
+                        var: i
+                  - 1
+              do:
+              - replace_item_of_list:
+                  list: 栈状态
+                  index:
+                    var: i
+                  item: 3
+              else:
+              - if:
+                  cond:
+                    and:
+                    - equals:
+                      - item_of_list:
+                          list: 栈状态
+                          index:
+                            var: i
+                      - 1
+                    - and:
+                      - equals:
+                        - item_of_list:
+                            list: 栈时效
+                            index:
+                              var: i
+                        - 2
+                      - greater_than:
+                        - var: 天数
+                        - item_of_list:
+                            list: 栈到期
+                            index:
+                              var: i
+                  do:
+                  - replace_item_of_list:
+                      list: 栈状态
+                      index:
+                        var: i
+                      item: 3
+      - set_variable:
+          var: 推进结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a: 阶段末 天数=
+                      b:
+                        var: 天数
+                  b: ' 栈深='
+              b:
+                var: 栈深
+      - set_variable:
+          var: 结果
+          value:
+            var: 推进结果
+    - - when_receive:
+          message: 事件撤销
+      - set_variable:
+          var: 撤销结果
+          value: ''
+      - if:
+          cond:
+            or:
+            - equals:
+              - item_of_list:
+                  list: 栈状态
+                  index:
+                    var: 撤销槽
+              - 3
+            - equals:
+              - item_of_list:
+                  list: 栈状态
+                  index:
+                    var: 撤销槽
+              - 0
+          do:
+          - set_variable:
+              var: 撤销结果
+              value: 槽位无效或已撤销
+          else:
+          - if:
+              cond:
+                equals:
+                - var: 撤销槽
+                - var: 快照顶
+              do:
+              - replace_item_of_list:
+                  list: 栈状态
+                  index:
+                    var: 撤销槽
+                  item: 3
+              - set_variable:
+                  var: 票权开关
+                  value:
+                    item_of_list:
+                      list: 栈快照
+                      index:
+                        var: 撤销槽
+              - set_variable:
+                  var: 撤销结果
+                  value: 栈顶撤销：按快照恢复开关
+              else:
+              - replace_item_of_list:
+                  list: 栈状态
+                  index:
+                    var: 撤销槽
+                  item: 3
+              - set_variable:
+                  var: 撤销结果
+                  value: 非栈顶撤销：只标记，不动开关
+          - set_variable:
+              var: 快照顶
+              value: 0
+          - set_variable:
+              var: i
+              value: 0
+          - repeat:
+              times:
+                var: 栈深
+              do:
+              - change_variable:
+                  var: i
+                  by: 1
+              - if:
+                  cond:
+                    equals:
+                    - item_of_list:
+                        list: 栈状态
+                        index:
+                          var: i
+                    - 1
+                  do:
+                  - set_variable:
+                      var: 快照顶
+                      value:
+                        var: i
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            var: 撤销结果
+                          b: ' / 票权='
+                      b:
+                        var: 票权开关
+                  b: ' / 快照顶='
+              b:
+                var: 快照顶
+    - - when_receive:
+          message: 事件判胜负
+      - set_variable:
+          var: 事件胜负
+          value: 无
+      - set_variable:
+          var: 预言家座位
+          value: 0
+      - set_variable:
+          var: 愚者座位
+          value: 0
+      - set_variable:
+          var: 有盲目
+          value: 0
+      - set_variable:
+          var: 有下班
+          value: 0
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times:
+            var: 人数
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - if:
+              cond:
+                equals:
+                - item_of_list:
+                    list: 身份池
+                    index:
+                      var: i
+                - 3
+              do:
+              - set_variable:
+                  var: 预言家座位
+                  value:
+                    var: i
+          - if:
+              cond:
+                equals:
+                - item_of_list:
+                    list: 身份池
+                    index:
+                      var: i
+                - 6
+              do:
+              - set_variable:
+                  var: 愚者座位
+                  value:
+                    var: i
+      - set_variable:
+          var: i
+          value: 0
+      - repeat:
+          times:
+            var: 栈深
+          do:
+          - change_variable:
+              var: i
+              by: 1
+          - if:
+              cond:
+                and:
+                - equals:
+                  - item_of_list:
+                      list: 栈状态
+                      index:
+                        var: i
+                  - 1
+                - equals:
+                  - item_of_list:
+                      list: 活动栈
+                      index:
+                        var: i
+                  - 4
+              do:
+              - set_variable:
+                  var: 有盲目
+                  value: 1
+          - if:
+              cond:
+                and:
+                - equals:
+                  - item_of_list:
+                      list: 栈状态
+                      index:
+                        var: i
+                  - 1
+                - equals:
+                  - item_of_list:
+                      list: 活动栈
+                      index:
+                        var: i
+                  - 5
+              do:
+              - set_variable:
+                  var: 有下班
+                  value: 1
+      - if:
+          cond:
+            and:
+            - equals:
+              - var: 有盲目
+              - 1
+            - and:
+              - greater_than:
+                - var: 预言家座位
+                - 0
+              - equals:
+                - item_of_list:
+                    list: 存活表
+                    index:
+                      var: 预言家座位
+                - 0
+          do:
+          - set_variable:
+              var: 事件胜负
+              value: 狼人胜·盲目之眼
+          else:
+          - if:
+              cond:
+                and:
+                - equals:
+                  - var: 有下班
+                  - 1
+                - and:
+                  - not:
+                      operand:
+                        equals:
+                        - less_than:
+                          - var: 天数
+                          - 3
+                        - true
+                  - greater_than:
+                    - var: 存活好人
+                    - 0
+              do:
+              - set_variable:
+                  var: 事件胜负
+                  value: 好人胜·到点下班
+      - set_variable:
+          var: 结果
+          value:
+            join:
+              a:
+                join:
+                  a:
+                    join:
+                      a:
+                        join:
+                          a:
+                            join:
+                              a: 事件胜负：
+                              b:
+                                var: 事件胜负
+                          b: ' / 预座位='
+                      b:
+                        var: 预言家座位
+                  b: ' / 天数='
+              b:
+                var: 天数
+    - - when_green_flag_clicked: null
+      - hide: null
+  - name: 显示板
+    x: -226
+    y: 166
+    costumes:
+    - name: dot
+      asset: assets/dot.svg
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - goto_xy:
+          x: -226
+          y: 166
+      - set_size:
+          value: 60
+      - show: null
+    - - when_receive:
+          message: 帧
+      - looks_say:
+          MESSAGE:
+            var: 结果

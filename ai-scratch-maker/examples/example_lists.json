@@ -1,0 +1,109 @@
+{
+  "project": {
+    "name": "列表示例",
+    "stage": {
+      "backdrops": [
+        {
+          "name": "草地",
+          "asset": "assets/backdrop1.svg"
+        }
+      ],
+      "scripts": []
+    },
+    "sprites": [
+      {
+        "name": "Cat",
+        "x": 0,
+        "y": 0,
+        "costumes": [
+          {
+            "name": "cat1",
+            "asset": "assets/cat.svg"
+          }
+        ],
+        "variables": {
+          "n": 0,
+          "first": 0
+        },
+        "lists": {
+          "scores": []
+        },
+        "scripts": [
+          [
+            {
+              "when_green_flag_clicked": null
+            },
+            {
+              "repeat": {
+                "times": 5,
+                "do": [
+                  {
+                    "add_to_list": {
+                      "list": "scores",
+                      "item": {
+                        "var": "n"
+                      }
+                    }
+                  },
+                  {
+                    "change_variable": {
+                      "var": "n",
+                      "by": 1
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "set_variable": {
+                "var": "first",
+                "value": {
+                  "item_of_list": {
+                    "list": "scores",
+                    "index": 1
+                  }
+                }
+              }
+            },
+            {
+              "set_variable": {
+                "var": "n",
+                "value": {
+                  "length_of_list": {
+                    "list": "scores"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "cond": {
+                  "list_contains": {
+                    "list": "scores",
+                    "item": 3
+                  }
+                },
+                "do": [
+                  {
+                    "say": {
+                      "text": {
+                        "join": {
+                          "a": "包含3,共",
+                          "b": {
+                            "var": "n"
+                          }
+                        }
+                      },
+                      "secs": 2
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        ],
+        "rotationStyle": "left-right"
+      }
+    ]
+  }
+}

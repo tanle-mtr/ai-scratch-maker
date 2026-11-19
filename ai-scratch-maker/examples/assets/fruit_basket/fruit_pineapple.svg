@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FAF19B"/>
+    <stop offset="1" stop-color="#FFCF4D"/>
+  </linearGradient>
+  <ellipse cx="60" cy="104" rx="30" ry="7" fill="#4F4A47" opacity="0.16"/>
+  <ellipse cx="60" cy="68" rx="32" ry="38" fill="#876C26"/>
+  <ellipse cx="60" cy="68" rx="28" ry="34" fill="url(#body)"/>
+  <path d="M36 48 L84 42" fill="none" stroke="#876C26" stroke-width="2" opacity="0.45"/>
+  <path d="M36 63 L84 57" fill="none" stroke="#876C26" stroke-width="2" opacity="0.45"/>
+  <path d="M36 78 L84 72" fill="none" stroke="#876C26" stroke-width="2" opacity="0.45"/>
+  <path d="M36 93 L84 87" fill="none" stroke="#876C26" stroke-width="2" opacity="0.45"/>
+  <path d="M44 44 L50 96" fill="none" stroke="#876C26" stroke-width="2" opacity="0.35"/>
+  <path d="M60 44 L66 96" fill="none" stroke="#876C26" stroke-width="2" opacity="0.35"/>
+  <path d="M76 44 L82 96" fill="none" stroke="#876C26" stroke-width="2" opacity="0.35"/>
+  <ellipse cx="48" cy="50" rx="9" ry="12" fill="#FFFFFF" opacity="0.4"/>
+  <ellipse cx="60" cy="94" rx="22" ry="8" fill="#876C26" opacity="0.16"/>
+  <path d="M60 34 C 58 22, 50 14, 42 8 C 48 20, 52 26, 54 34 Z" fill="#32AF00"/>
+  <path d="M60 34 C 62 22, 70 14, 78 8 C 72 20, 68 26, 66 34 Z" fill="#5FD100"/>
+  <path d="M60 36 C 58 24, 58 16, 60 6 C 62 16, 62 24, 60 36 Z" fill="#8CE243"/>
+</svg>

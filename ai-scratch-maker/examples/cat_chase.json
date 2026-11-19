@@ -1,0 +1,132 @@
+{
+  "project": {
+    "name": "小猫散步",
+    "extensions": [
+      "pen"
+    ],
+    "stage": {
+      "backdrops": [
+        {
+          "name": "草地",
+          "asset": "assets/backdrop1.svg"
+        }
+      ],
+      "scripts": [
+        [
+          {
+            "when_green_flag_clicked": {
+              "comment": "绿旗：广播「出发」，让小猫开始散步"
+            }
+          },
+          {
+            "broadcast": "出发"
+          }
+        ]
+      ],
+      "comments": [
+        {
+          "text": "小猫散步 —— 演示用\n绿旗开始，小猫一边走一边用画笔留下轨迹。\n「出发」广播让小猫说出提示语。",
+          "x": 24,
+          "y": 24,
+          "width": 280,
+          "height": 110
+        }
+      ]
+    },
+    "sprites": [
+      {
+        "name": "Cat",
+        "x": 0,
+        "y": 0,
+        "size": 100,
+        "direction": 90,
+        "costumes": [
+          {
+            "name": "cat1",
+            "asset": "assets/cat.svg"
+          }
+        ],
+        "sounds": [
+          {
+            "name": "beep",
+            "asset": "assets/beep.wav"
+          }
+        ],
+        "variables": {
+          "score": 0
+        },
+        "scripts": [
+          [
+            {
+              "when_green_flag_clicked": {
+                "comment": "绿旗：落下画笔，然后走 50 步，每步随机左转一点 —— 画出弯曲的散步轨迹"
+              }
+            },
+            {
+              "pen_down": null
+            },
+            {
+              "set_variable": {
+                "var": "score",
+                "value": 0
+              }
+            },
+            {
+              "repeat": {
+                "times": 50,
+                "do": [
+                  {
+                    "move_steps": 10
+                  },
+                  {
+                    "turn_left": {
+                      "degrees": {
+                        "random": [
+                          -15,
+                          15
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "if": {
+                      "cond": {
+                        "mousedown": null
+                      },
+                      "do": [
+                        {
+                          "change_variable": {
+                            "var": "score",
+                            "by": 1
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "pen_up": null
+            }
+          ],
+          [
+            {
+              "when_receive": {
+                "message": "出发",
+                "comment": "收到「出发」广播：说出提示语（顺便演示广播与说字气泡）"
+              }
+            },
+            {
+              "say": {
+                "text": "出发啦！",
+                "secs": 2
+              }
+            }
+          ]
+        ],
+        "rotationStyle": "left-right"
+      }
+    ]
+  }
+}

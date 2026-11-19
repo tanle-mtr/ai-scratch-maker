@@ -1,0 +1,274 @@
+project:
+  name: 游戏系统探针（第二册技巧示教）
+
+  stage:
+    backdrops:
+      - { name: 底, asset: assets/sample_bg_stage.png }
+    variables:
+      分数: 0
+      金币: 0
+      连击数: 0
+      连击计时: 0
+      最高分: { value: 0, cloud: true }
+      当前关卡: { value: 1, cloud: true }
+    lists:
+      物品数量: []
+      物品名称: []
+      巡逻点X: []
+      巡逻点Y: []
+    scripts:
+      - - when_green_flag_clicked:
+            comment: 初始化背包映射表与巡逻路线（列表当数据表）
+        - delete_all_of_list: { list: 物品数量 }
+        - delete_all_of_list: { list: 物品名称 }
+        - delete_all_of_list: { list: 巡逻点X }
+        - delete_all_of_list: { list: 巡逻点Y }
+        - add_to_list: { item: 0, list: 物品数量 }
+        - add_to_list: { item: "金币", list: 物品名称 }
+        - add_to_list: { item: 0, list: 物品数量 }
+        - add_to_list: { item: "苹果", list: 物品名称 }
+        - add_to_list: { item: 100, list: 巡逻点X }
+        - add_to_list: { item: 100, list: 巡逻点Y }
+        - add_to_list: { item: 200, list: 巡逻点X }
+        - add_to_list: { item: 100, list: 巡逻点Y }
+        - set_variable: { var: 金币, value: 0 }
+      - - when_receive:
+            message: 命中
+            comment: 打击感：连击 + 音量脉冲 + 最高分上云
+        - change_variable: { var: 连击数, by: 1 }
+        - set_variable: { var: 连击计时, value: 60 }
+        - set_volume: { value: 80 }
+        - change_volume: { value: -5 }
+        - if:
+            cond: { greater_than: { a: {var: 分数}, b: {var: 最高分} } }
+            do:
+              - set_variable: { var: 最高分, value: {var: 分数} }
+
+  sprites:
+    # ==========================================================
+    # 守卫：敌人 AI（视野锥 + 角度归一化 + 巡逻 + 状态机）
+    # ==========================================================
+    - name: 守卫
+      x: 100
+      y: 0
+      size: 40
+      costumes:
+        - { name: 守卫, asset: assets/cat_mouse/mouse.png }
+      variables:
+        AI状态: 0
+        原方向: 0
+        目标方向: 0
+        方向差: 0
+        路点序号: 1
+      scripts:
+        - - when_green_flag_clicked:
+          - hide: null
+        - - when_receive:
+              message: 游戏开始
+              comment: 视野锥：借朝向算角度差，归一化到 -180..180
+          - show: null
+          - forever:
+              do:
+                - set_variable: { var: 原方向, value: { direction: null } }
+                - point_towards: { TOWARDS: 玩家 }
+                - set_variable: { var: 目标方向, value: { direction: null } }
+                - point_in_direction: { direction: { var: 原方向 } }
+                - set_variable: { var: 方向差, value: { subtract: [ {var: 目标方向}, {var: 原方向} ] } }
+                - if: { cond: { greater_than: { a: {var: 方向差}, b: 180 } },
+                        do: [ { set_variable: { var: 方向差, value: { subtract: [ {var: 方向差}, 360 ] } } } ] }
+                - if: { cond: { less_than: { a: {var: 方向差}, b: -180 } },
+                        do: [ { set_variable: { var: 方向差, value: { add: [ {var: 方向差}, 360 ] } } } ] }
+                - if:
+                    cond:
+                      and:
+                        - less_than: { a: { mathop: { operator: abs, num: {var: 方向差} } }, b: 45 }
+                        - less_than: { a: { distance_to: { object: 玩家 } }, b: 150 }
+                    do:
+                      - set_variable: { var: AI状态, value: 1 }
+                - if: { cond: { equals: { a: {var: AI状态}, b: 1 } },
+                        do: [ { point_towards: { TOWARDS: 玩家 } }, { move_steps: 3 } ] }
+                - wait: 0.1
+
+    # ==========================================================
+    # 玩家：平台跳跃物理（一条规则一个循环 + 郊狼时间）
+    # ==========================================================
+    - name: 玩家
+      x: 0
+      y: 0
+      size: 30
+      costumes:
+        - { name: 猫, asset: assets/cat_mouse/cat.png }
+      variables:
+        vx: 0
+        vy: 0
+        grounded: 0
+        郊狼计时: 0
+        跳跃缓冲: 0
+        格列: 3
+        格行: 6
+      scripts:
+        - - when_green_flag_clicked:
+          - show: null
+          - set_variable: { var: vx, value: 0 }
+          - set_variable: { var: vy, value: 0 }
+          - set_variable: { var: grounded, value: 0 }
+        - - when_receive:
+              message: 游戏开始
+          - forever:
+              do:
+                # 规则 1：水平移动（限速 + 摩擦）
+                - if: { cond: { key_pressed: { key: right arrow } }, do: [ { change_variable: { var: vx, by: 1 } } ] }
+                - if: { cond: { key_pressed: { key: left arrow } }, do: [ { change_variable: { var: vx, by: -1 } } ] }
+                - if: { cond: { greater_than: { a: {var: vx}, b: 5 } }, do: [ { set_variable: { var: vx, value: 5 } } ] }
+                - if: { cond: { less_than: { a: {var: vx}, b: -5 } }, do: [ { set_variable: { var: vx, value: -5 } } ] }
+                - set_variable: { var: vx, value: { multiply: [ {var: vx}, 0.9 ] } }
+                - change_x: { dx: { var: vx } }
+                # 规则 2：重力（只在空中）+ 终端速度
+                - if: { cond: { equals: { a: {var: grounded}, b: 0 } },
+                        do: [ { change_variable: { var: vy, by: 1 } } ] }
+                - if: { cond: { greater_than: { a: {var: vy}, b: 15 } }, do: [ { set_variable: { var: vy, value: 15 } } ] }
+                - change_y: { dy: { var: vy } }
+                # 规则 3：地面检测（碰到地面角色）
+                - if:
+                    cond: { touching: { object: 地面 } }
+                    do:
+                      - set_variable: { var: grounded, value: 1 }
+                      - set_variable: { var: vy, value: 0 }
+                      - change_y: { dy: 1 }
+                    else:
+                      - set_variable: { var: grounded, value: 0 }
+                # 规则 4：郊狼时间 + 跳跃缓冲
+                - if: { cond: { equals: { a: {var: grounded}, b: 1 } },
+                        do: [ { set_variable: { var: 郊狼计时, value: 5 } } ] }
+                - if: { cond: { equals: { a: {var: grounded}, b: 0 } },
+                        do: [ { change_variable: { var: 郊狼计时, by: -1 } } ] }
+                - if: { cond: { key_pressed: { key: space } },
+                        do: [ { set_variable: { var: 跳跃缓冲, value: 6 } } ],
+                        else: [ { change_variable: { var: 跳跃缓冲, by: -1 } } ] }
+                - if:
+                    cond:
+                      and:
+                        - greater_than: { a: {var: 跳跃缓冲}, b: 0 }
+                        - greater_than: { a: {var: 郊狼计时}, b: 0 }
+                    do:
+                      - set_variable: { var: vy, value: -12 }
+                      - set_variable: { var: 跳跃缓冲, value: 0 }
+                      - set_variable: { var: 郊狼计时, value: 0 }
+        - - when_receive:
+              message: 游戏开始
+              comment: 网格移动：只在格点接受转向输入
+          - forever:
+              do:
+                - if:
+                    cond:
+                      and:
+                        - equals: { a: { mod: { a: { x_position }, b: 30 } }, b: 0 }
+                        - equals: { a: { mod: { a: { y_position }, b: 30 } }, b: 0 }
+                    do:
+                      - if: { cond: { key_pressed: { key: up arrow } }, do: [ { point_in_direction: { direction: 0 } } ] }
+                      - if: { cond: { key_pressed: { key: down arrow } }, do: [ { point_in_direction: { direction: 180 } } ] }
+
+    # ==========================================================
+    # 地面：平台（碰到检测用）
+    # ==========================================================
+    - name: 地面
+      x: 0
+      y: -150
+      size: 100
+      rotationStyle: don't rotate
+      costumes:
+        - { name: 地, asset: assets/sample_bg_sprite.png }
+      scripts:
+        - - when_green_flag_clicked:
+          - show: null
+
+    # ==========================================================
+    # 方块：克隆分身（私有 ID 区分身份 + 全局方向同步）
+    # ==========================================================
+    - name: 方块
+      x: 0
+      y: 0
+      size: 30
+      costumes:
+        - { name: 点, asset: assets/cat_mouse/cat_dot.png }
+      variables:
+        ID: 0
+      scripts:
+        - - when_green_flag_clicked:
+            comment: 本体当工厂：先自增编号再克隆，克隆体就带着各自的 ID
+          - hide: null
+          - set_variable: { var: ID, value: 0 }
+          - repeat: 3
+            do:
+              - change_variable: { var: ID, by: 1 }
+              - create_clone_of: { clone: 方块 }
+        - - when_start_as_clone: { clone: _myself_ }
+          - show: null
+          - forever:
+              do:
+                - if: { cond: { equals: { a: {var: ID}, b: 1 } },
+                        do: [ { change_y: { dy: 2 } } ] }
+                - if: { cond: { equals: { a: {var: ID}, b: 2 } },
+                        do: [ { change_x: { dx: 2 } } ] }
+                - if: { cond: { equals: { a: {var: ID}, b: 3 } },
+                        do: [ { change_x: { dx: -2 } } ] }
+
+    # ==========================================================
+    # 拾取物：磁性吸附 + 背包写入（列表当背包）
+    # ==========================================================
+    - name: 苹果
+      x: -100
+      y: 50
+      size: 30
+      costumes:
+        - { name: 点, asset: assets/cat_mouse/cat_dot.png }
+      scripts:
+        - - when_green_flag_clicked:
+          - hide: null
+        - - when_receive:
+              message: 游戏开始
+          - show: null
+          - forever:
+              do:
+                - if:
+                    cond: { less_than: { a: { distance_to: { object: 玩家 } }, b: 120 } }
+                    do:
+                      - point_towards: { TOWARDS: 玩家 }
+                      - move_steps: 3
+                - if:
+                    cond: { less_than: { a: { distance_to: { object: 玩家 } }, b: 30 } }
+                    do:
+                      - replace_item_of_list:
+                          item: { add: [ { item_of_list: { index: { item_num_of_list: { item: "苹果", list: 物品名称 } }, list: 物品数量 } }, 1 ] }
+                          index: { item_num_of_list: { item: "苹果", list: 物品名称 } }
+                          list: 物品数量
+                      - delete_this_clone: null
+
+    # ==========================================================
+    # 飘字：伤害数字（克隆 + 私有变量）
+    # ==========================================================
+    - name: 飘字
+      x: 0
+      y: 0
+      size: 40
+      costumes:
+        - { name: 点, asset: assets/cat_mouse/cat_dot.png }
+      variables:
+        存活: 0
+      scripts:
+        - - when_green_flag_clicked:
+          - hide: null
+        - - when_start_as_clone: { clone: _myself_ }
+          - show: null
+          - set_variable: { var: 存活, value: 20 }
+          - repeat: 20
+            do:
+              - change_y: { dy: 2 }
+              - change_effect: { effect: GHOST, value: 5 }
+              - change_variable: { var: 存活, by: -1 }
+          - delete_this_clone: null
+        - - when_receive:
+              message: 命中
+          - goto_xy: { x: { of: { object: 玩家, property: x position } },
+                       y: { of: { object: 玩家, property: y position } } }
+          - create_clone_of: { clone: 飘字 }

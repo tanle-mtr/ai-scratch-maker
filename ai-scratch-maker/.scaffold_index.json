@@ -1,0 +1,678 @@
+[
+  {
+    "stem": "3d_demo",
+    "ir": "examples\\3d_demo.yaml",
+    "sb3": "3d_demo.sb3",
+    "genres": [
+      "3d"
+    ],
+    "total": 1.95,
+    "grade": "D",
+    "animated": 0,
+    "bitmap": 1,
+    "appearance": 85
+  },
+  {
+    "stem": "ato_train",
+    "ir": "examples\\ato_train.yaml",
+    "sb3": "ato_train.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 3.05,
+    "grade": "B",
+    "animated": 0,
+    "bitmap": 6,
+    "appearance": 85
+  },
+  {
+    "stem": "board_gomoku",
+    "ir": "examples\\board_gomoku.yaml",
+    "sb3": "board_gomoku.sb3",
+    "genres": [
+      "board"
+    ],
+    "total": 1.85,
+    "grade": "D",
+    "animated": 0,
+    "bitmap": 1,
+    "appearance": 68
+  },
+  {
+    "stem": "card_game",
+    "ir": "examples\\card_game.yaml",
+    "sb3": "card_game.sb3",
+    "genres": [
+      "board"
+    ],
+    "total": 1.85,
+    "grade": "D",
+    "animated": 0,
+    "bitmap": 2,
+    "appearance": 68
+  },
+  {
+    "stem": "cat_chase",
+    "ir": "examples\\cat_chase.json",
+    "sb3": "cat_chase.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 2.65,
+    "grade": "C",
+    "animated": 0,
+    "bitmap": 1,
+    "appearance": 50
+  },
+  {
+    "stem": "cat_chase",
+    "ir": "examples\\cat_chase.yaml",
+    "sb3": "cat_chase.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 2.65,
+    "grade": "C",
+    "animated": 0,
+    "bitmap": 1,
+    "appearance": 50
+  },
+  {
+    "stem": "cat_chase_ascii",
+    "ir": "examples\\cat_chase_ascii.json",
+    "sb3": "cat_chase_ascii.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 2.65,
+    "grade": "C",
+    "animated": 0,
+    "bitmap": 1,
+    "appearance": 50
+  },
+  {
+    "stem": "cat_mouse",
+    "ir": "examples\\cat_mouse.yaml",
+    "sb3": "cat_mouse.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 4.2,
+    "grade": "A",
+    "animated": 6,
+    "bitmap": 65,
+    "appearance": 90
+  },
+  {
+    "stem": "edu_demo",
+    "ir": "examples\\edu_demo.yaml",
+    "sb3": "edu_demo.sb3",
+    "genres": [
+      "edu"
+    ],
+    "total": 1.85,
+    "grade": "D",
+    "animated": 0,
+    "bitmap": 1,
+    "appearance": 50
+  },
+  {
+    "stem": "example_clones",
+    "ir": "examples\\example_clones.json",
+    "sb3": "example_clones.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 1.45,
+    "grade": "D",
+    "animated": 0,
+    "bitmap": 1,
+    "appearance": 50
+  },
+  {
+    "stem": "example_cloud",
+    "ir": "examples\\example_cloud.json",
+    "sb3": "example_cloud.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 1.45,
+    "grade": "D",
+    "animated": 0,
+    "bitmap": 1,
+    "appearance": 50
+  },
+  {
+    "stem": "example_lists",
+    "ir": "examples\\example_lists.json",
+    "sb3": "example_lists.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 1.45,
+    "grade": "D",
+    "animated": 0,
+    "bitmap": 1,
+    "appearance": 50
+  },
+  {
+    "stem": "example_operators_sensing",
+    "ir": "examples\\example_operators_sensing.json",
+    "sb3": "example_operators_sensing.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 1.85,
+    "grade": "D",
+    "animated": 0,
+    "bitmap": 1,
+    "appearance": 50
+  },
+  {
+    "stem": "example_pen_sound",
+    "ir": "examples\\example_pen_sound.json",
+    "sb3": "example_pen_sound.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 1.85,
+    "grade": "D",
+    "animated": 0,
+    "bitmap": 1,
+    "appearance": 50
+  },
+  {
+    "stem": "example_procedures",
+    "ir": "examples\\example_procedures.json",
+    "sb3": "example_procedures.sb3",
+    "genres": [
+      "edu"
+    ],
+    "total": 1.45,
+    "grade": "D",
+    "animated": 0,
+    "bitmap": 1,
+    "appearance": 50
+  },
+  {
+    "stem": "example_with_bg",
+    "ir": "examples\\example_with_bg.json",
+    "sb3": "example_with_bg.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 2.1,
+    "grade": "C",
+    "animated": 0,
+    "bitmap": 1,
+    "appearance": 54
+  },
+  {
+    "stem": "firstperson",
+    "ir": "examples\\firstperson.yaml",
+    "sb3": "firstperson.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 1.85,
+    "grade": "D",
+    "animated": 0,
+    "bitmap": 1,
+    "appearance": 50
+  },
+  {
+    "stem": "fruit_basket",
+    "ir": "examples\\fruit_basket.yaml",
+    "sb3": "fruit_basket.sb3",
+    "genres": [
+      "catch"
+    ],
+    "total": 4.75,
+    "grade": "S",
+    "animated": 3,
+    "bitmap": 19,
+    "appearance": 76
+  },
+  {
+    "stem": "match3",
+    "ir": "examples\\match3.yaml",
+    "sb3": "match3.sb3",
+    "genres": [
+      "match3"
+    ],
+    "total": 4.2,
+    "grade": "A",
+    "animated": 3,
+    "bitmap": 9,
+    "appearance": 68
+  },
+  {
+    "stem": "math_lab",
+    "ir": "examples\\math_lab.yaml",
+    "sb3": "math_lab.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 2.05,
+    "grade": "C",
+    "animated": 0,
+    "bitmap": 3,
+    "appearance": 68
+  },
+  {
+    "stem": "metro",
+    "ir": "examples\\metro.yaml",
+    "sb3": "metro.sb3",
+    "genres": [
+      "metro"
+    ],
+    "total": 2.85,
+    "grade": "C",
+    "animated": 0,
+    "bitmap": 5,
+    "appearance": 85
+  },
+  {
+    "stem": "metro_drive",
+    "ir": "examples\\metro_drive.yaml",
+    "sb3": "metro_drive.sb3",
+    "genres": [
+      "metro"
+    ],
+    "total": 3.05,
+    "grade": "B",
+    "animated": 0,
+    "bitmap": 5,
+    "appearance": 85
+  },
+  {
+    "stem": "multiplayer",
+    "ir": "examples\\multiplayer.yaml",
+    "sb3": "multiplayer.sb3",
+    "genres": [
+      "multiplayer"
+    ],
+    "total": 1.45,
+    "grade": "D",
+    "animated": 0,
+    "bitmap": 1,
+    "appearance": 50
+  },
+  {
+    "stem": "music_band",
+    "ir": "examples\\music_band.yaml",
+    "sb3": "music_band.sb3",
+    "genres": [
+      "music"
+    ],
+    "total": 4.05,
+    "grade": "A",
+    "animated": 1,
+    "bitmap": 5,
+    "appearance": 90
+  },
+  {
+    "stem": "platformer",
+    "ir": "examples\\platformer.yaml",
+    "sb3": "platformer.sb3",
+    "genres": [
+      "platformer"
+    ],
+    "total": 4.05,
+    "grade": "A",
+    "animated": 1,
+    "bitmap": 6,
+    "appearance": 90
+  },
+  {
+    "stem": "quiz",
+    "ir": "examples\\quiz.yaml",
+    "sb3": "quiz.sb3",
+    "genres": [
+      "quiz"
+    ],
+    "total": 4.45,
+    "grade": "A",
+    "animated": 5,
+    "bitmap": 13,
+    "appearance": 94
+  },
+  {
+    "stem": "ref_minecraft3d",
+    "ir": "examples\\ref_minecraft3d.yaml",
+    "sb3": "ref_minecraft3d.sb3",
+    "genres": [
+      "3d"
+    ],
+    "total": 2.25,
+    "grade": "C",
+    "animated": 0,
+    "bitmap": 1,
+    "appearance": 68
+  },
+  {
+    "stem": "rhythm_game",
+    "ir": "examples\\rhythm_game.yaml",
+    "sb3": "rhythm_game.sb3",
+    "genres": [
+      "rhythm"
+    ],
+    "total": 2.25,
+    "grade": "C",
+    "animated": 0,
+    "bitmap": 2,
+    "appearance": 68
+  },
+  {
+    "stem": "rhythm_replicas",
+    "ir": "examples\\rhythm_replicas.yaml",
+    "sb3": "rhythm_replicas.sb3",
+    "genres": [
+      "rhythm"
+    ],
+    "total": 2.5,
+    "grade": "C",
+    "animated": 0,
+    "bitmap": 2,
+    "appearance": 85
+  },
+  {
+    "stem": "rps",
+    "ir": "examples\\rps.yaml",
+    "sb3": "rps.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 4.35,
+    "grade": "A",
+    "animated": 3,
+    "bitmap": 13,
+    "appearance": 65
+  },
+  {
+    "stem": "semantic_check",
+    "ir": "examples\\semantic_check.yaml",
+    "sb3": "semantic_check.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 1.25,
+    "grade": "D",
+    "animated": 0,
+    "bitmap": 0,
+    "appearance": 50
+  },
+  {
+    "stem": "shooter",
+    "ir": "examples\\shooter.yaml",
+    "sb3": "shooter.sb3",
+    "genres": [
+      "shooter"
+    ],
+    "total": 2.6,
+    "grade": "C",
+    "animated": 0,
+    "bitmap": 3,
+    "appearance": 50
+  },
+  {
+    "stem": "shooter_replicas",
+    "ir": "examples\\shooter_replicas.yaml",
+    "sb3": "shooter_replicas.sb3",
+    "genres": [
+      "shooter"
+    ],
+    "total": 2.5,
+    "grade": "C",
+    "animated": 0,
+    "bitmap": 2,
+    "appearance": 85
+  },
+  {
+    "stem": "star_catch",
+    "ir": "examples\\star_catch.yaml",
+    "sb3": "star_catch.sb3",
+    "genres": [
+      "catch"
+    ],
+    "total": 4.75,
+    "grade": "S",
+    "animated": 3,
+    "bitmap": 19,
+    "appearance": 82
+  },
+  {
+    "stem": "story",
+    "ir": "examples\\story.yaml",
+    "sb3": "story.sb3",
+    "genres": [
+      "story"
+    ],
+    "total": 4.05,
+    "grade": "A",
+    "animated": 1,
+    "bitmap": 5,
+    "appearance": 82
+  },
+  {
+    "stem": "strategy_replicas",
+    "ir": "examples\\strategy_replicas.yaml",
+    "sb3": "strategy_replicas.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 2.5,
+    "grade": "C",
+    "animated": 0,
+    "bitmap": 2,
+    "appearance": 85
+  },
+  {
+    "stem": "technique_probe",
+    "ir": "examples\\technique_probe.yaml",
+    "sb3": "technique_probe.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 3.3,
+    "grade": "B",
+    "animated": 1,
+    "bitmap": 4,
+    "appearance": 72
+  },
+  {
+    "stem": "technique_probe10",
+    "ir": "examples\\technique_probe10.yaml",
+    "sb3": "technique_probe10.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 1.45,
+    "grade": "D",
+    "animated": 0,
+    "bitmap": 1,
+    "appearance": 50
+  },
+  {
+    "stem": "technique_probe11",
+    "ir": "examples\\technique_probe11.yaml",
+    "sb3": "technique_probe11.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 2.3,
+    "grade": "C",
+    "animated": 0,
+    "bitmap": 3,
+    "appearance": 85
+  },
+  {
+    "stem": "technique_probe13",
+    "ir": "examples\\technique_probe13.yaml",
+    "sb3": "technique_probe13.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 1.85,
+    "grade": "D",
+    "animated": 0,
+    "bitmap": 1,
+    "appearance": 68
+  },
+  {
+    "stem": "technique_probe14",
+    "ir": "examples\\technique_probe14.yaml",
+    "sb3": "technique_probe14.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 2.25,
+    "grade": "C",
+    "animated": 0,
+    "bitmap": 2,
+    "appearance": 68
+  },
+  {
+    "stem": "technique_probe2",
+    "ir": "examples\\technique_probe2.yaml",
+    "sb3": "technique_probe2.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 3.25,
+    "grade": "B",
+    "animated": 0,
+    "bitmap": 5,
+    "appearance": 72
+  },
+  {
+    "stem": "technique_probe3",
+    "ir": "examples\\technique_probe3.yaml",
+    "sb3": "technique_probe3.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 3.45,
+    "grade": "B",
+    "animated": 1,
+    "bitmap": 7,
+    "appearance": 90
+  },
+  {
+    "stem": "technique_probe4",
+    "ir": "examples\\technique_probe4.yaml",
+    "sb3": "technique_probe4.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 3.8,
+    "grade": "B",
+    "animated": 1,
+    "bitmap": 8,
+    "appearance": 90
+  },
+  {
+    "stem": "technique_probe5",
+    "ir": "examples\\technique_probe5.yaml",
+    "sb3": "technique_probe5.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 3.8,
+    "grade": "B",
+    "animated": 1,
+    "bitmap": 12,
+    "appearance": 72
+  },
+  {
+    "stem": "technique_probe6",
+    "ir": "examples\\technique_probe6.yaml",
+    "sb3": "technique_probe6.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 2.85,
+    "grade": "C",
+    "animated": 0,
+    "bitmap": 8,
+    "appearance": 90
+  },
+  {
+    "stem": "technique_probe7",
+    "ir": "examples\\technique_probe7.yaml",
+    "sb3": "technique_probe7.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 3.4,
+    "grade": "B",
+    "animated": 2,
+    "bitmap": 13,
+    "appearance": 88
+  },
+  {
+    "stem": "technique_probe8",
+    "ir": "examples\\technique_probe8.yaml",
+    "sb3": "technique_probe8.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 2.2,
+    "grade": "C",
+    "animated": 0,
+    "bitmap": 7,
+    "appearance": 68
+  },
+  {
+    "stem": "technique_probe9",
+    "ir": "examples\\technique_probe9.yaml",
+    "sb3": "technique_probe9.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 3.6,
+    "grade": "B",
+    "animated": 0,
+    "bitmap": 10,
+    "appearance": 78
+  },
+  {
+    "stem": "tower-defense",
+    "ir": "examples\\tower-defense.yaml",
+    "sb3": "tower-defense.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 2.2,
+    "grade": "C",
+    "animated": 0,
+    "bitmap": 3,
+    "appearance": 60
+  },
+  {
+    "stem": "ui_kit_demo",
+    "ir": "examples\\ui_kit_demo.yaml",
+    "sb3": "ui_kit_demo.sb3",
+    "genres": [
+      "misc"
+    ],
+    "total": 3.7,
+    "grade": "B",
+    "animated": 5,
+    "bitmap": 36,
+    "appearance": 50
+  },
+  {
+    "stem": "whack_a_mole",
+    "ir": "examples\\whack_a_mole.yaml",
+    "sb3": "whack_a_mole.sb3",
+    "genres": [
+      "whack"
+    ],
+    "total": 4.8,
+    "grade": "S",
+    "animated": 9,
+    "bitmap": 88,
+    "appearance": 94
+  }
+]
