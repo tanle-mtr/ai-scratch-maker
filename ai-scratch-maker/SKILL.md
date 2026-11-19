@@ -1,6 +1,6 @@
 ---
 name: ai-scratch-maker
-version: 0.20.0
+version: 0.21.0
 description: >
   让 AI 生成高质量 Scratch 3.0 作品（.sb3）。AI 不直接写 sb3，而是编写「中间表示（IR）」，
   由本 skill 的序列化器编译成合法 project.json + 素材并打包。核心工作流是
