@@ -205,8 +205,8 @@ scratch-vm）直接抽取，并交叉校验「运行时支持的原语 100% 收�
 
 ### 手册按需加载索引
 
-四十册手册的**详细摘要**已移到 `references/handbook-index.md`，**不要一次全读**。
-按题材查下表，只打开需要的那几册；节号跨册连续，§1–§502 为主编，§C1–§C6 为社区补编。
+四十一册手册的**详细摘要**已移到 `references/handbook-index.md`，**不要一次全读**。
+按题材查下表，只打开需要的那几册；节号跨册连续，§1–§526 为主编，§C1–§C6 为社区补编。
 
 | 题材 / 册 | 手册 | 节号 |
 |---|---|---|
@@ -250,6 +250,7 @@ scratch-vm）直接抽取，并交叉校验「运行时支持的原语 100% 收�
 | 第三十七册 新月事件卡与运行时规则改写引擎 | `references/newmoon-events.md` | §413–§432 |
 | 第三十九册 — | `references/rhythm-replicas.md` | §457–§478 |
 | 第四十册 射击与摸金（搜打撤）游戏复刻手册 | `references/shooter-replicas.md` | §479–§502 |
+| 第四十一册 MOBA 与策略游戏复刻手册 | `references/moba-strategy-replicas.md` | §503–§526 |
 | 补编 社区作品提炼 | `references/community-techniques.md` | §C1–§C5 |
 | 补编 社区素材包 | `references/community-asset-pack.md` | §C6 |
 
@@ -835,6 +836,7 @@ ai-scratch-maker/
 │   ├── rhythm-games.md          # ★ 第三十八册 音游：唯一时钟/帧量化窗口/谱面/长按/校准
 │   ├── rhythm-replicas.md       # ★ 第三十九册 五款代表作复刻：Phigros/PJSK/Milthm/跳舞的线/滚动的天空
 │   ├── shooter-replicas.md      # ★ 第四十册 射击与摸金复刻：CS2/和平精英/三角洲/超自然行动组
+│   ├── moba-strategy-replicas.md # ★ 第四十一册 MOBA与策略复刻：王者/LOL/三国杀/金铲铲
 │   ├── music-and-instruments.md # ★ 第三十二册 乐器与编曲（简谱→MIDI/变量换乐器/多声部/音频转乐器）
 │   ├── math-and-reasoning.md    # ★ 第三十册 数学与推理（回溯/筛法/分数/浮点/几何/排列组合）
 │   ├── polish-and-feel.md       # ★ 第二十六册 质感与手感（缓动/过冲/顿帧/错峰/微交互/20条清单）
@@ -936,6 +938,7 @@ ai-scratch-maker/
     ├── rhythm_game.yaml          # 第三十八册示教（BPM/谱面/四档判定/长按/结算，453 块）
     ├── rhythm_replicas.yaml      # 第三十九册示教（五模式复刻引擎/官谱换算/判定圈/双序列，1420 块）
     ├── shooter_replicas.yaml     # 第四十册示教（四模式射击引擎/伤害管线/圈/撤离/AI，706 块）
+    ├── strategy_replicas.yaml    # 第四十一册示教（四模式策略引擎/兵线/塔仇恨/回合/经济/羁绊，898 块）
     ├── 早期/专项示例：cat_chase / edu_demo / match3 / shooter / semantic_check /
     │   example_clones / example_cloud / example_lists / example_operators_sensing /
     │   example_pen_sound / example_procedures / example_with_bg（共 34 个 yaml）

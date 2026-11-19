@@ -36,9 +36,10 @@ declare -A MAP=(
   [board]=board_gomoku [ato]=ato_train [ui_kit]=ui_kit_demo [math]=math_lab [card]=card_game [music]=music_band
   [rhythm]=rhythm_game [rhythm_replicas]=rhythm_replicas
   [shooter_replicas]=shooter_replicas [towerdefense]=tower-defense
+  [strategy_replicas]=strategy_replicas
   [fruit_basket]=fruit_basket [cat_mouse]=cat_mouse [whack_a_mole]=whack_a_mole
 )
-KEYS="quiz match3 shooter edu story platformer metro metro_drive multiplayer 3d firstperson board ato ui_kit math card music rhythm rhythm_replicas shooter_replicas towerdefense fruit_basket cat_mouse whack_a_mole"
+KEYS="quiz match3 shooter edu story platformer metro metro_drive multiplayer 3d firstperson board ato ui_kit math card music rhythm rhythm_replicas shooter_replicas towerdefense strategy_replicas fruit_basket cat_mouse whack_a_mole"
 
 tmpdir=$(mktemp -d)
 mkdir -p "$tmpdir/generic"

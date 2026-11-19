@@ -82,7 +82,7 @@ community-crawler/           # 社区作品调研工具（只含代码，不含�
 deploy-tools/pack_skill.py   # 打包分发脚本
 ```
 
-`references/handbook-index.md` 是手册索引入口，共 **40 册**（§1–§502）+ 社区补编（§C1–§C7）。
+`references/handbook-index.md` 是手册索引入口，共 **41 册**（§1–§526）+ 社区补编（§C1–§C7）。
 
 ---
 

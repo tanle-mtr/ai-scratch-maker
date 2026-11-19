@@ -2192,3 +2192,81 @@ project:
       - looks_say:
           MESSAGE:
             var: 结果
+  - name: 结算板
+    x: 0
+    y: 30
+    costumes:
+    - name: 面板
+      asset: assets/uikit/panel_dialog.svg
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+    - - when_receive:
+          message: 帧
+      - if:
+          cond:
+            or:
+            - equals:
+              - var: 结束
+              - 1
+            - not:
+              operand:
+                equals:
+                - var: 胜负
+                - 继续
+            - equals:
+              - var: 淘汰
+              - 1
+          do:
+          - show: null
+          - looks_say:
+              MESSAGE:
+                var: 结果
+          else:
+          - hide: null
+  - name: 再来一局
+    x: 0
+    y: -80
+    costumes:
+    - name: 常态
+      asset: assets/uikit/btn_primary_normal_m.svg
+    - name: 按下
+      asset: assets/uikit/btn_primary_pressed_m.svg
+    variables: {}
+    scripts:
+    - - when_green_flag_clicked: null
+      - hide: null
+    - - when_receive:
+          message: 帧
+      - if:
+          cond:
+            or:
+            - equals:
+              - var: 结束
+              - 1
+            - not:
+              operand:
+                equals:
+                - var: 胜负
+                - 继续
+            - equals:
+              - var: 淘汰
+              - 1
+          do:
+          - goto_xy:
+              x: 0
+              y: -80
+          - show: null
+          - looks_say:
+              MESSAGE: "再来一局"
+          else:
+          - hide: null
+    - - when_this_sprite_clicked: null
+      - switch_costume:
+          costume: 按下
+      - broadcast:
+          message: 重置
+      - wait: 0.12
+      - switch_costume:
+          costume: 常态
