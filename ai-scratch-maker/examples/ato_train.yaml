@@ -71,7 +71,10 @@ project:
       - &id001
         set_variable:
           var: 剩余里程
-          value: 1200
+          value:
+            item_of_list:
+              list: 站距
+              index: 1
       - &id002
         set_variable:
           var: 速度
@@ -91,19 +94,31 @@ project:
       - &id006
         set_variable:
           var: 当前站
-          value: 前海湾
+          value:
+            item_of_list:
+              list: 站名
+              index: 1
       - &id007
         set_variable:
           var: 下一站
-          value: 桂湾
+          value:
+            item_of_list:
+              list: 站名
+              index: 2
       - &id008
         set_variable:
           var: 区间限速
-          value: 80
+          value:
+            item_of_list:
+              list: 限速表
+              index: 1
       - &id009
         set_variable:
           var: 推荐速度
-          value: 80
+          value:
+            item_of_list:
+              list: 限速表
+              index: 1
       - &id010
         set_variable:
           var: 目标速度

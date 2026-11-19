@@ -466,6 +466,18 @@ def analyze_completeness(sb3):
             if bn:
                 broadcast_names.add(str(bn))
 
+    # 1b) 自研随机（Park-Miller LCG 等）：不依赖 operator_random 积木，
+    #     而是「种子变量 + mod/乘 运算」组合出伪随机序列。
+    #     2026-11-19 修正：strategy_replicas 用自研 RNG（种子=mod(种子*16807, 2^31-1)）
+    #     实现四模式可复现抽卡，原判据完全漏检 -> 误判「无重玩价值」。
+    #     判据：存在名为「种子/随机种子/random_seed/seed」的变量，
+    #     且存在 operator_mod 积木（LCG 的必要组成部分）。
+    seed_vars = {vn for vn in var_names
+                 if any(k in vn.lower() for k in ("种子", "seed", "随机"))}
+    has_own_rng = bool(seed_vars) and "operator_mod" in opcodes
+    if has_own_rng:
+        has_random = True
+
     # 1) 玩家可操控：有输入（帽子式 或 轮询式「键/鼠标被按下?」）+ 有交互/运动逻辑
     has_input = input_hats > 0 or has_poll_input
     player_control = has_input and (
@@ -479,12 +491,17 @@ def analyze_completeness(sb3):
     win_lose = win_b or win_v or has_stop_all
 
     # 3) 重玩价值：随机数 / 计分 / 关卡递进 至少 2 条
+    #    2026-11-19 修正：关卡关键词补「波次 / 回合 / 局 / 难度」——
+    #    MOBA 走「波次」（兵线波次递增），策略游戏走「回合」（金铲铲回合经济），
+    #    这两者与「关卡」同属「难度/进度递进」语义，原关键词表漏检。
     rep = 0
     if has_random:
         rep += 1
     if any(any(k.lower() in vn.lower() for k in ("分数", "得分", "score")) for vn in var_names):
         rep += 1
-    if any(any(k.lower() in vn.lower() for k in ("关卡", "难度", "level", "stage")) for vn in var_names):
+    if any(any(k.lower() in vn.lower()
+               for k in ("关卡", "难度", "level", "stage", "波次", "回合", "局数"))
+               for vn in var_names):
         rep += 1
     replay_value = rep >= 2
 

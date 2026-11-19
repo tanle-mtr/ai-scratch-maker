@@ -32,6 +32,20 @@ function setVar(name, value) {
   return false;
 }
 
+// ★ 线路数据从产物里读，而不是写死在断言里。
+//   原因：scripts/gen_ato.py 支持换线路（站名/站距/限速表是参数），
+//   若断言写死「2 段 / 1500 米 / 75 限速 / 桂湾」，换线路后校验必然假红。
+//   改为读 站距 / 限速表 / 站名 三个列表，断言对任意线路都成立。
+function getList(name) {
+  for (const t of vm.runtime.targets) {
+    for (const id of Object.keys(t.variables || {})) {
+      const v = t.variables[id];
+      if (v && v.name === name && Array.isArray(v.value)) return v.value.map(String);
+    }
+  }
+  return [];
+}
+
 const stepN = async (n) => {
   for (let i = 0; i < n; i++) {
     vm.runtime.currentMSecs += 33;
@@ -61,9 +75,25 @@ snap.初_状态 = st();
 snap.初_剩余里程 = r2(num(getVar("剩余里程")));
 snap.初_速度 = r2(num(getVar("速度")));
 snap.初_总段数 = num(getVar("总段数"));
+
+// 线路数据（从产物读，供断言使用）
+const LINE_站名 = getList("站名");
+const LINE_站距 = getList("站距").map(Number);
+const LINE_限速 = getList("限速表").map(Number);
+const LINE_段数 = LINE_站距.length;
+snap.线路 = { 站名: LINE_站名, 站距: LINE_站距, 限速: LINE_限速 };
+
+if (LINE_段数 < 1) bad.push("线路数据缺失：站距列表为空");
+if (LINE_站名.length !== LINE_段数 + 1)
+  bad.push("站名数量应等于 站距数+1，实为 " + LINE_站名.length + "/" + (LINE_段数 + 1));
+if (LINE_限速.length !== LINE_段数)
+  bad.push("限速表长度应等于 站距长度，实为 " + LINE_限速.length + "/" + LINE_段数);
+
 if (snap.初_状态 !== 0) bad.push("初始状态应为 0（待发车），实为 " + snap.初_状态);
-if (Math.abs(snap.初_剩余里程 - 1200) > 0.5) bad.push("初始剩余里程应为 1200，实为 " + snap.初_剩余里程);
-if (snap.初_总段数 !== 2) bad.push("总段数应为 2，实为 " + snap.初_总段数);
+if (LINE_段数 > 0 && Math.abs(snap.初_剩余里程 - LINE_站距[0]) > 0.5)
+  bad.push("初始剩余里程应为首段站距 " + LINE_站距[0] + "，实为 " + snap.初_剩余里程);
+if (snap.初_总段数 !== LINE_段数)
+  bad.push("总段数应为 " + LINE_段数 + "，实为 " + snap.初_总段数);
 
 // ---------------------------------------------------------------- 1. 自动起步
 let g = 0;
@@ -135,10 +165,14 @@ snap.站点2_限速 = num(getVar("区间限速"));
 snap.站点2_当前站 = getVar("当前站");
 snap.站点2_下一站 = getVar("下一站");
 if (snap.站点2_站点 !== 2) bad.push("关门后站点应推进到 2，实为 " + snap.站点2_站点);
-if (Math.abs(snap.站点2_剩余里程 - 1500) > 0.5)
-  bad.push("站点推进后剩余里程应重置为 1500，实为 " + snap.站点2_剩余里程);
-if (snap.站点2_限速 !== 75) bad.push("第二段限速应切到 75，实为 " + snap.站点2_限速);
-if (snap.站点2_当前站 !== "桂湾") bad.push("当前站应更新为桂湾，实为 " + snap.站点2_当前站);
+if (LINE_段数 > 1) {
+  if (Math.abs(snap.站点2_剩余里程 - LINE_站距[1]) > 0.5)
+    bad.push("站点推进后剩余里程应重置为第 2 段站距 " + LINE_站距[1] + "，实为 " + snap.站点2_剩余里程);
+  if (snap.站点2_限速 !== LINE_限速[1])
+    bad.push("第二段限速应切到 " + LINE_限速[1] + "，实为 " + snap.站点2_限速);
+  if (snap.站点2_当前站 !== LINE_站名[1])
+    bad.push("当前站应更新为 " + LINE_站名[1] + "，实为 " + snap.站点2_当前站);
+}
 if (num(getVar("门位")) !== 0) bad.push("关门后门位应归零");
 
 // ---------------------------------------------------------------- 8. 第二段自动发车
@@ -157,7 +191,8 @@ snap.终点_分值 = num(getVar("分值"));
 snap.终点_能耗率 = num(getVar("能耗率"));
 snap.终点_完美数 = num(getVar("完美数"));
 if (st() !== 6) bad.push("全程未跑完，状态 " + st() + "（可能半路停死）");
-if (snap.终点_完成数 !== 2) bad.push("完成段数应为 2，实为 " + snap.终点_完成数);
+if (snap.终点_完成数 !== LINE_段数)
+  bad.push("完成段数应为 " + LINE_段数 + "，实为 " + snap.终点_完成数);
 if (snap.终点_分值 <= 0) bad.push("完成全程分值应 > 0，实为 " + snap.终点_分值);
 if (snap.终点_能耗率 <= 0 || snap.终点_能耗率 >= 100)
   bad.push("牵引能耗占比异常: " + snap.终点_能耗率 + "%（应在 0~100 之间）");

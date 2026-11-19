@@ -206,7 +206,7 @@ scratch-vm）直接抽取，并交叉校验「运行时支持的原语 100% 收�
 ### 手册按需加载索引
 
 四十一册手册的**详细摘要**已移到 `references/handbook-index.md`，**不要一次全读**。
-按题材查下表，只打开需要的那几册；节号跨册连续，§1–§526 为主编，§C1–§C6 为社区补编。
+按题材查下表，只打开需要的那几册；节号跨册连续，§1–§529 为主编，§C1–§C6 为社区补编。
 
 | 题材 / 册 | 手册 | 节号 |
 |---|---|---|
@@ -250,7 +250,7 @@ scratch-vm）直接抽取，并交叉校验「运行时支持的原语 100% 收�
 | 第三十七册 新月事件卡与运行时规则改写引擎 | `references/newmoon-events.md` | §413–§432 |
 | 第三十九册 — | `references/rhythm-replicas.md` | §457–§478 |
 | 第四十册 射击与摸金（搜打撤）游戏复刻手册 | `references/shooter-replicas.md` | §479–§502 |
-| 第四十一册 MOBA 与策略游戏复刻手册 | `references/moba-strategy-replicas.md` | §503–§526 |
+| 第四十一册 MOBA 与策略游戏复刻手册 | `references/moba-strategy-replicas.md` | §503–§528 |
 | 补编 社区作品提炼 | `references/community-techniques.md` | §C1–§C5 |
 | 补编 社区素材包 | `references/community-asset-pack.md` | §C6 |
 
@@ -905,6 +905,7 @@ ai-scratch-maker/
 │   ├── gen_probe11.py           # 生成第九册示教工程（technique_probe11.yaml：开关阵列/平台跳跃/阴影光追/加载圈）
 │   ├── gen_probe13.py           # 生成阴影光追专项示教（technique_probe13.yaml：线段求交/可见性多边形）
 │   ├── gen_probe14.py           # 生成瓦片相机专项示教（technique_probe14.yaml：滚动地图/相机跟随/边界钳制）
+│   ├── gen_ato.py              # ★ 生成 ATO 自动驾驶工程（--line 换线路：站名/站距/限速表参数化）
 │   ├── gen_ref_minecraft3d.py   # 生成完整可玩参考工程（ref_minecraft3d.yaml：第一人称体素光线投射）
 │   ├── analyze_corpus.py        # 批量反编译社区 .sb3，抽取技术指纹（扩展/积木频谱/变量/克隆/画笔）
 │   ├── digest_sb3.py            # 大工程速读：广播表/自制积木表/注释/opcode 直方图（先看架构）
@@ -938,7 +939,8 @@ ai-scratch-maker/
     ├── rhythm_game.yaml          # 第三十八册示教（BPM/谱面/四档判定/长按/结算，453 块）
     ├── rhythm_replicas.yaml      # 第三十九册示教（五模式复刻引擎/官谱换算/判定圈/双序列，1420 块）
     ├── shooter_replicas.yaml     # 第四十册示教（四模式射击引擎/伤害管线/圈/撤离/AI，706 块）
-    ├── strategy_replicas.yaml    # 第四十一册示教（四模式策略引擎/兵线/塔仇恨/回合/经济/羁绊，898 块）
+    ├── strategy_replicas.yaml    # 第四十一册示教（四模式策略引擎/兵线/塔仇恨/回合/经济/羁绊/音效/得分，986 块）
+    ├── strategy_replicas.quality.json  # 第四十一册规格表（门禁 9/9 优秀）
     ├── 早期/专项示例：cat_chase / edu_demo / match3 / shooter / semantic_check /
     │   example_clones / example_cloud / example_lists / example_operators_sensing /
     │   example_pen_sound / example_procedures / example_with_bg（共 34 个 yaml）

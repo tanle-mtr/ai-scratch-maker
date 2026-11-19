@@ -4,7 +4,21 @@ project:
     backdrops:
     - name: 舞台
       asset: assets/uikit/bg_menu.svg
+    sounds:
+    - {name: 背景乐, asset: assets/bgm_calm.wav}
+    - {name: 点击音, asset: assets/sfx/ui_click.wav}
+    - {name: 塔击音, asset: assets/sfx/fx_hit.wav}
+    - {name: 补刀音, asset: assets/sfx/fx_pickup.wav}
+    - {name: 战斗音, asset: assets/sfx/fx_pop.wav}
+    - {name: 金币音, asset: assets/sfx/fx_coin.wav}
+    - {name: 救援音, asset: assets/sfx/fx_heal.wav}
+    - {name: 破塔音, asset: assets/sfx/ev_alarm.wav}
+    - {name: 胜利音, asset: assets/sfx/ev_win.wav}
+    - {name: 失败音, asset: assets/sfx/ev_lose.wav}
+    - {name: 回合音, asset: assets/sfx/ev_levelup.wav}
     variables:
+      音效开: 1
+      得分: 0
       结果: ''
       帧计数: 0
       自动帧: 1
@@ -348,6 +362,14 @@ project:
           var: 结果
           value: MOBA / 策略复刻引擎：王者 / LOL / 三国杀 / 金铲铲
       - show: null
+      - if:
+          cond:
+            equals:
+            - var: 音效开
+            - 1
+          do:
+          - play_sound_until_done:
+              sound: 背景乐
       - forever:
           do:
           - if:
@@ -365,6 +387,9 @@ project:
               secs: 0.02
     - - when_receive:
           message: 重置
+      - set_variable:
+          var: 得分
+          value: 0
       - set_variable:
           var: 游戏秒
           value: 0
@@ -448,6 +473,22 @@ project:
     scripts:
     - - when_receive:
           message: 设模式
+      - if:
+
+          cond:
+
+            equals:
+
+            - var: 音效开
+
+            - 1
+
+          do:
+
+          - play_sound:
+
+              sound: 点击音
+
       - if:
           cond:
             equals:
@@ -1039,6 +1080,22 @@ project:
                   b: ' 镀层 '
               b:
                 var: 镀层
+      - if:
+
+          cond:
+
+            equals:
+
+            - var: 音效开
+
+            - 1
+
+          do:
+
+          - play_sound:
+
+              sound: 塔击音
+
     - - when_receive:
           message: 补刀结算
       - if:
@@ -1053,6 +1110,9 @@ project:
                 add:
                 - var: 金币
                 - var: 全额金币
+          - change_variable:
+              var: 得分
+              by: 50
           else:
           - set_variable:
               var: 金币
@@ -1063,6 +1123,9 @@ project:
                   - multiply:
                     - var: 全额金币
                     - var: 漏刀系数
+          - change_variable:
+              var: 得分
+              by: 20
       - set_variable:
           var: 结果
           value:
@@ -1083,7 +1146,30 @@ project:
                         var: 补刀
                   b: ' / 漏刀系数 '
               b:
-                var: 漏刀系数
+                join:
+                  a:
+                    join:
+                      a:
+                        var: 漏刀系数
+                      b: ' / 得分 '
+                  b:
+                    var: 得分
+      - if:
+
+          cond:
+
+            equals:
+
+            - var: 音效开
+
+            - 1
+
+          do:
+
+          - play_sound:
+
+              sound: 补刀音
+
     - - when_receive:
           message: 破塔
       - if:
@@ -1099,6 +1185,17 @@ project:
           - change_variable:
               var: 破塔顺序
               by: 1
+          - if:
+              cond:
+                equals:
+                - var: 音效开
+                - 1
+              do:
+              - play_sound:
+                  sound: 破塔音
+          - change_variable:
+              var: 得分
+              by: 100
           - if:
               cond:
                 not:
@@ -1165,8 +1262,40 @@ project:
                       b: ' 结束 '
                   b:
                     var: 结束
+      - if:
+
+          cond:
+
+            equals:
+
+            - var: 音效开
+
+            - 1
+
+          do:
+
+          - play_sound:
+
+              sound: 破塔音
+
     - - when_receive:
           message: SG回合推进
+      - if:
+
+          cond:
+
+            equals:
+
+            - var: 音效开
+
+            - 1
+
+          do:
+
+          - play_sound:
+
+              sound: 回合音
+
       - change_variable:
           var: 当前阶段
           by: 1
@@ -1410,6 +1539,22 @@ project:
                       b: ' 结果 '
                   b:
                     var: 判定结果
+      - if:
+
+          cond:
+
+            equals:
+
+            - var: 音效开
+
+            - 1
+
+          do:
+
+          - play_sound:
+
+              sound: 战斗音
+
     - - when_receive:
           message: SG距离
       - set_variable:
@@ -1577,6 +1722,22 @@ project:
               - set_variable:
                   var: 结果
                   value: 全员无桃 → 死亡结算
+      - if:
+
+          cond:
+
+            equals:
+
+            - var: 音效开
+
+            - 1
+
+          do:
+
+          - play_sound:
+
+              sound: 救援音
+
     - - when_receive:
           message: SG胜负
       - set_variable:
@@ -1622,6 +1783,54 @@ project:
               a: 胜负：
               b:
                 var: 胜负
+      - if:
+          cond:
+            not:
+              operand:
+                equals:
+                - var: 胜负
+                - 继续
+          do:
+          - if:
+              cond:
+                equals:
+                - var: 主公死
+                - 1
+              do:
+              - if:
+                  cond:
+                    equals:
+                    - var: 音效开
+                    - 1
+                  do:
+                  - play_sound:
+                      sound: 失败音
+              else:
+              - change_variable:
+                  var: 得分
+                  by: 500
+              - if:
+                  cond:
+                    equals:
+                    - var: 音效开
+                    - 1
+                  do:
+                  - play_sound:
+                      sound: 胜利音
+          - set_variable:
+              var: 结果
+              value:
+                join:
+                  a:
+                    join:
+                      a: 胜负：
+                      b:
+                        var: 胜负
+                  b:
+                    join:
+                      a: ' / 得分 '
+                      b:
+                        var: 得分
     - - when_receive:
           message: JCC收入
       - set_variable:
@@ -1730,6 +1939,19 @@ project:
           - set_variable:
               var: 连胜
               value: 0
+      - if:
+          cond:
+            equals:
+            - var: 本回合胜
+            - 1
+          do:
+          - change_variable:
+              var: 得分
+              by: 60
+          else:
+          - change_variable:
+              var: 得分
+              by: 20
       - set_variable:
           var: 结果
           value:
@@ -1772,6 +1994,22 @@ project:
                   b: ' / 金币'
               b:
                 var: 金币铲
+      - if:
+
+          cond:
+
+            equals:
+
+            - var: 音效开
+
+            - 1
+
+          do:
+
+          - play_sound:
+
+              sound: 金币音
+
     - - when_receive:
           message: JCC刷新
       - set_variable:
@@ -2233,6 +2471,8 @@ project:
       asset: assets/uikit/btn_primary_normal_m.svg
     - name: 按下
       asset: assets/uikit/btn_primary_pressed_m.svg
+    sounds:
+    - {name: 点击音, asset: assets/sfx/ui_click.wav}
     variables: {}
     scripts:
     - - when_green_flag_clicked: null
@@ -2265,6 +2505,8 @@ project:
     - - when_this_sprite_clicked: null
       - switch_costume:
           costume: 按下
+      - play_sound:
+          sound: 点击音
       - broadcast:
           message: 重置
       - wait: 0.12

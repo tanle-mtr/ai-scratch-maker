@@ -1,6 +1,6 @@
 ---
 name: ai-scratch-maker
-version: 0.22.0
+version: 0.23.0
 description: >
   让 AI 生成高质量 Scratch 3.0 作品（.sb3）。AI 不直接写 sb3，而是编写「中间表示（IR）」，
   由本 skill 的序列化器编译成合法 project.json + 素材并打包。核心工作流是
@@ -116,6 +116,8 @@ UI 矢量五层体积感 / 音效四层响度——**技术完整但观感拉胯
   遮罩，保留文字的同时变「合适资产」；`--check` 只体检不写。
 - 音效：`scripts/gen_audio.py <mood>` 或 `scripts/gen_sfx_kit.py`（22 预设），
   四层响度 ui-18 / fx-9 / ev-3 / amb-15 dBFS（铁律18）。
+- ATO / 自动驾驶类工程用 `scripts/gen_ato.py` 生成（`--line` 换线路：站名/站距/限速表参数化，
+  `--list-lines` 看内置线路）；**模板初值一律 `item_of_list` 从列表取，不要写死**。
 - 有现成真实素材优先 `python scripts/asset_pack.py search <关键词>`（§C6），
   IR 写 `asset: community:<id>`。
 - 首页/聊天框/数字牌面可用 `scripts/make_ui_assets.py`。
@@ -201,7 +203,7 @@ bash scripts/verify_project.sh --only-advisory   # 只跑阶段6 建议层（秒
 | 画面糙 / 配色被拦 | `references/quality-checklist.md`、`references/hard-requirements.md` |
 | 不知道某题材怎么写 | `references/genre-quickref.md`（11 类速查）、`references/ir-patterns.md` |
 | 反复踩同一个坑 | `references/failure-modes.md`（易错→正确写法 + 已知误报 + 既有欠债清单） |
-| 41 册手册某册在讲什么 | `references/handbook-index.md`（§1–§526 + §C1–§C7） |
+| 41 册手册某册在讲什么 | `references/handbook-index.md`（§1–§529 + §C1–§C7） |
 | 铁律全文（29 条） | `references/hard-requirements.md` |
 | 端到端可复现命令链 | `references/golden-path.md` |
 | 创作方法论 / 网络秘诀 / 三范例对照 | `references/creation-playbook.md` |

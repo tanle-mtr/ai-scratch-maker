@@ -1,0 +1,12 @@
+{
+  "genre": "game",
+  "label": "MOBA 与策略游戏复刻引擎（王者 / LOL / 三国杀 / 金铲铲）",
+  "require_bitmap": false,
+  "min_costumes": 6,
+  "min_sounds": 8,
+  "min_sprites": 3,
+  "min_bytes": 150000,
+  "min_scenes": 1,
+  "min_blocks": 800,
+  "_note": "本作为四模式复刻引擎：5 目标（舞台 + 裁判 + 显示板 + 结算板 + 再来一局）/ 959 块 / 11 个音效（ui_click/fx_hit/fx_pickup/fx_pop/fx_coin/fx_heal/ev_alarm/ev_win/ev_lose/ev_levelup + BGM）。全部素材为矢量 SVG + 程序生成 WAV，require_bitmap=false。min_blocks 取 800 是因为本作是「单引擎四模式」的密集逻辑体（塔索敌/补刀/破塔/三国杀六阶段/金铲铲经济羁绊），块数本身就是核心资产；B 层玩法完整度（玩家可操控/胜负条件/重玩价值）由 strategy_replicas_behavior_check.mjs 的 17 组断言保障。"
+}
