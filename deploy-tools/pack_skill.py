@@ -41,11 +41,19 @@ EXCLUDE_DIRS = {'__pycache__', '.workbuddy', '.git',
 EXCLUDE_PATHS = {
     '猫抓老鼠.sb3',              # 根目录交付件（examples/output/cat_mouse.sb3 才是标准位置）
     'agents/openai.yaml',        # WorkBuddy 专属界面定义，其他 agent 不识别
-    'assets/community/generated',  # 社区素材占位降级时运行时生成的占位图/音，不进包
-    'assets/community/samples',  # 社区素材样本：第三方作品的二进制，公开分发前须回溯原作者授权
     '_t.sb3',                    # 构建调试用的临时 sb3 副本
 }
 EXCLUDE_SUFFIX = ('.pyc', '.pyo', '.bak', '.tmp', '.orig', '.log')
+# 前缀排除（相对 skill 根）。用于「同目录下按编号/前缀区分、但整体不可分发」的成组文件。
+EXCLUDE_PATH_PREFIXES = {
+    # 社区素材样本：第三方作品的二进制，公开分发前须回溯原作者授权（见 THIRD-PARTY-NOTICES.md）
+    'assets/community/samples',
+    # 社区素材占位降级时运行时生成的占位图/音，不进包
+    'assets/community/generated',
+    # GitHub 参考作品里来自**无许可证**仓库（SilkRoad/Scratch，license=NONE）的 8 个 .sb3：
+    # 无授权即不可再分发，故不进包；同目录其余 8 个来自 Unlicense 仓库，可分发。
+    'references/gh_reference_works/00',
+}
 # 一次性补丁脚本（_patch_xxx.py / _splice_xxx.py / _fix_xxx.py …）改完应当删除，
 # 漏删也绝不能进交付包：2026-11-06 体检发现 _add_deal.py / _fix_rules.py 混进 v0.15.0 包。
 EXCLUDE_TEMP_DIRS = {'scripts'}
@@ -94,6 +102,8 @@ def collect(root, include_outputs):
             full = os.path.join(dp, f)
             rel = os.path.relpath(full, root).replace(os.sep, '/')
             if rel in EXCLUDE_PATHS:
+                continue
+            if any(rel.startswith(p) for p in EXCLUDE_PATH_PREFIXES):
                 continue
             items.append((rel, full))
     return items
