@@ -40,7 +40,16 @@ jobs:
 
       - name: 构建旗舰示例工程
         working-directory: ai-scratch-maker
-        run: python scripts/build_all.py --no-cache --only cat_mouse,fruit_basket,match3,music_band,platformer,quiz,rps,star_catch,story,whack_a_mole
+        run: |
+          # 构建名单**从质量门禁规格表派生**，不再手工维护。
+          # 规格表 = 「要进质量门禁的作品」的权威清单；四层校验与门禁两步都按
+          # examples/*.quality.json 遍历，因此构建名单必须与它完全一致。
+          # 2026-11-19 事故：新增 strategy_replicas.quality.json 却没把该作品加进
+          # 手工白名单 → CI 里 examples/output/strategy_replicas.sb3 根本没构建，
+          # 四层校验去校验一个不存在的文件 → exit 1。派生写法让这类漏配不可能再发生。
+          names=$(for spec in examples/*.quality.json; do basename "$spec" .quality.json; done | paste -sd, -)
+          echo "构建名单（由规格表派生）: $names"
+          python scripts/build_all.py --no-cache --only "$names"
 
       - name: 四层结构校验（L1 结构 / L2 官方 schema / L3 解析器 / L4 运行时）
         working-directory: ai-scratch-maker
