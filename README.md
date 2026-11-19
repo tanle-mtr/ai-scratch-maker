@@ -75,14 +75,18 @@ ai-scratch-maker/            # Skill 本体（安装这一个目录即可）
 ├── SKILL.md                 # AI 的工作流说明书：铁律 + 步骤 + 验收清单
 ├── scripts/                 # 80+ 个工具：构建 / 校验 / 门禁 / 生成 / 拆解
 ├── references/              # 62 篇手册（8.6MB）：技巧大全 + 铁律详解 + UI 规范
-├── examples/                # 30+ 个可运行示例工程 + 10 张质量门禁规格表
+├── examples/                # 30+ 个可运行示例工程 + 11 张质量门禁规格表
 ├── assets/                  # 自产素材（SVG / PNG / WAV）
 └── raw_assets/              # 生成管线的素材输入样本
 community-crawler/           # 社区作品调研工具（只含代码，不含抓取到的作品）
-deploy-tools/pack_skill.py   # 打包分发脚本
+deploy-tools/
+├── pack_skill.py            # 打包分发脚本（自动带上 LICENSE / 第三方声明）
+├── install_all_envs.py      # 一键同步到本机所有 agent 环境（精确镜像）
+├── verify_env_bytes.py      # 逐字节核对各环境副本与开发副本一致
+└── verify_all_envs.py       # 核对各环境安装完整性与关键文件
 ```
 
-`references/handbook-index.md` 是手册索引入口，共 **41 册**（§1–§526）+ 社区补编（§C1–§C7）。
+`references/handbook-index.md` 是手册索引入口，共 **41 册**（§1–§529）+ 社区补编（§C1–§C7）。
 
 ---
 
@@ -267,14 +271,32 @@ cp -r ai-scratch-maker ~/.workbuddy/skills/ai-scratch-maker
 
 `SKILL.md` 的 frontmatter 就是 skill 声明（`name` / `description` / `type` / `version`）。
 
-打包成 zip 分发：
+### 一键同步到本机所有 agent 环境
 
 ```bash
-python deploy-tools/pack_skill.py --exclude-outputs --out ai-scratch-maker.zip
-python deploy-tools/pack_skill.py --exclude-outputs --portable --out ai-scratch-maker-portable.zip
+python deploy-tools/install_all_envs.py      # 开发副本 → WorkBuddy / Claude / Codex / Cursor / opencode
+python deploy-tools/verify_env_bytes.py      # 逐字节核对各副本与开发副本是否一致
 ```
 
+同步是**精确镜像**：会删除目标里开发副本已不存在的文件（历史残留），并跳过
+`.build_cache` / `build_tmp` / `*.log` 等编译缓存与调试残留（实测缓存合计 243MB，
+原样拷贝会往每个环境灌一份）。各环境副本的 `SKILL.md` 会按环境改写 frontmatter
+（去掉 WorkBuddy 专属字段），因此字节核对时正文一致即算通过。
+
+### 打包成 zip 分发
+
+```bash
+python deploy-tools/pack_skill.py --out ai-scratch-maker.zip
+python deploy-tools/pack_skill.py --portable --out ai-scratch-maker-portable.zip
+```
+
+分发包会自动带上仓库根的 `LICENSE` 与 `THIRD-PARTY-NOTICES.md`——接收方必须能从包里
+直接读到授权条款与第三方素材的来源限制。
+
 > `pack_skill.py` 用手写 argv 解析（无 argparse），`--help` 会被忽略并**直接执行打包**。
+> `--out` 必须显式指定，否则按 `SKILL.md` 的 `version` 生成默认文件名。
+> `--portable` 会重写 `SKILL.md` 的 frontmatter 为通用的两字段版本，**会覆盖同名标准包**，
+> 两个包要一起产出时务必各自显式给 `--out`。
 
 ---
 

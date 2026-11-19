@@ -35,6 +35,15 @@ _CANDIDATES = [
 SKILL_ROOT = next((c for c in _CANDIDATES
                     if os.path.exists(os.path.join(c, 'SKILL.md'))), _PARENT)
 
+# 仓库根（LICENSE / THIRD-PARTY-NOTICES.md 所在层）。标准布局是 repo/ai-scratch-maker/，
+# 故仓库根 = skill 根的上一级。
+REPO_ROOT = os.path.dirname(SKILL_ROOT)
+# 分发包必须自带许可与第三方声明：仓库本身以 CC BY-SA 4.0 授权，且社区素材包有
+# 「对外分发前须回溯原作者授权」的明确限制（见 THIRD-PARTY-NOTICES.md）。
+# 2026-11-19 体检发现 v0.22.0 包里只有 node_modules 自带的 LICENSE，
+# 仓库自己的许可与第三方声明**根本没进包**——接收方无从得知授权条款。
+EXTRA_FILES = ['LICENSE', 'THIRD-PARTY-NOTICES.md']
+
 EXCLUDE_DIRS = {'__pycache__', '.workbuddy', '.git',
                 '.build_cache', 'build_tmp', '_anim_test'}
 # 相对 skill 根的路径（不含分隔符差异），逐项精确排除
@@ -135,6 +144,14 @@ def main():
             out = args[i + 1]
 
     items = collect(SKILL_ROOT, include_outputs)
+    extras = []
+    for fn in EXTRA_FILES:
+        p = os.path.join(REPO_ROOT, fn)
+        if os.path.exists(p):
+            extras.append((fn, p))
+        else:
+            sys.stderr.write('  [warn] 仓库根缺少 %s，分发包将不带该文件\n' % fn)
+
     out_path = os.path.abspath(out)
     with zipfile.ZipFile(out_path, 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as z:
         for rel, full in sorted(items):
@@ -148,13 +165,16 @@ def main():
                 # 并发 verify 可能正在 create/delete 临时文件（如 _staged_selftest.*），
                 # collect 时存在、write 时消失 → 跳过并告警，不中断打包。
                 sys.stderr.write('  [warn] 跳过已消失的文件: %s\n' % rel)
+        for rel, full in extras:
+            z.write(full, rel)
 
     size = os.path.getsize(out_path)
     print('打包完成: %s' % out_path)
-    print('  文件数: %d' % len(items))
+    print('  文件数: %d' % (len(items) + len(extras)))
     print('  体积: %.1f MB' % (size / 1024 / 1024))
     print('  examples/output 产物: %s' % ('包含' if include_outputs else '不含'))
     print('  frontmatter: %s' % ('通用两字段(portable)' if portable else '原样(含 type/version)'))
+    print('  许可与声明: %s' % (', '.join(r for r, _ in extras) or '缺失！'))
 
 
 if __name__ == '__main__':

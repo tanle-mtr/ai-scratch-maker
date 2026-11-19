@@ -27,8 +27,9 @@ KEY_FILES = [
     'scripts/build_sb3.py',
     'scripts/validate_sb3.py',
     'scripts/validate_schema.mjs',
-    'scripts/adapt_skill_md.py',
-    'scripts/make_portable_md.py',
+    # 注意：adapt_skill_md.py / make_portable_md.py 属于 deploy-tools（打包期适配脚本），
+    # **不进 skill 本体**，因此各环境副本里本来就没有它们。2026-11-19 之前把它们列进
+    # 关键文件清单，导致校验恒报 MISS:2，是清单陈旧而非安装缺失。
     'references/blocks-spec.json',
     'references/blocks.md',
     'references/ir-format.md',
@@ -36,13 +37,16 @@ KEY_FILES = [
     'references/sb3-schema/sb3_definitions.json',
     'examples/cat_mouse.yaml',
     'examples/ref_minecraft3d.yaml',
+    'scripts/gen_ato.py',
+    'examples/strategy_replicas.quality.json',
 ]
 
 
 def count_files(root):
     n = 0
     for dp, dns, fns in os.walk(root):
-        dns[:] = [d for d in dns if d != '__pycache__']
+        dns[:] = [d for d in dns if d not in ('__pycache__', '.build_cache',
+                                             'build_tmp', '_anim_test')]
         n += len(fns)
     return n
 
@@ -67,8 +71,12 @@ def main():
     print('-' * 56)
     for name, root in ENVS:
         if not os.path.isdir(root):
-            print('%-12s MISSING' % name)
-            all_ok = False
+            # 该 agent 的配置根目录本机都不存在 → 属于「未启用该 agent」，
+            # 不是安装缺失（install_all_envs.py 同样会跳过），不应判为失败。
+            skipped = not os.path.isdir(os.path.dirname(root))
+            print('%-12s %s' % (name, '跳过(该 agent 未启用)' if skipped else 'MISSING'))
+            if not skipped:
+                all_ok = False
             continue
         n = count_files(root)
         fm_ok = 'OK'
