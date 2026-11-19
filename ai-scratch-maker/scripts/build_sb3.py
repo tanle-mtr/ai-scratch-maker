@@ -2125,6 +2125,14 @@ def build_one(ir_path, out_path, spec_path=None, assets_src=None, workdir=None,
     """
     here = os.path.dirname(os.path.abspath(__file__))
     spec_path = spec_path or os.path.join(here, "..", "references", "blocks-spec.json")
+    # 产物目录可能不存在：全新 clone 时 examples/output/ 是 .gitignore 掉的空目录。
+    # 不建目录就直接写会报 FileNotFoundError，用户会以为是构建器坏了。
+    out_dir = os.path.dirname(os.path.abspath(out_path))
+    if out_dir and not os.path.isdir(out_dir):
+        try:
+            os.makedirs(out_dir, exist_ok=True)
+        except Exception as e:
+            return False, "无法创建产物目录 %s: %s" % (out_dir, e), 2
     try:
         spec = load_spec_file(spec_path)
     except Exception as e:
